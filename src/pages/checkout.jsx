@@ -34,7 +34,7 @@ import { UserContext } from "@context/UserContext";
 import Loading from "@component/preloader/Loading";
 import DeliveryServices from "@services/DeliveryServices";
 import MainModal from "@component/modal/MainModal";
-import UserAddressUpdate from "@component/userAddressUpdate/userAddressUpdate";
+import UserAddressUpdate from "../component/userAddressUpdate/userAddressUpdate";
 import { notifyError } from "@utils/toast";
 
 const Checkout = () => {

@@ -5,7 +5,7 @@ import Image from "next/image";
 //internal import
 import OrderTable from "@component/order/OrderTable";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import newLogo from "public/newLogo.svg"
+import newLogo from "../../../public/newLogo.svg"
 import useTranslation from "next-translate/useTranslation";
 import Cookies from "js-cookie";
 import 'dayjs/locale/he'; // ייבוא תאריכים בעברית
