@@ -1,0 +1,552 @@
+import React, { useContext, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { CardElement } from "@stripe/react-stripe-js";
+import Link from "next/link";
+import {
+  IoReturnUpBackOutline,
+  IoArrowForward,
+  IoBagHandle,
+  IoWalletSharp,
+} from "react-icons/io5";
+import { CiUser } from "react-icons/ci";
+import deliveryIcon from 'public/shippedGreen.svg'
+import { ImCreditCard } from "react-icons/im";
+import useTranslation from "next-translate/useTranslation";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import { LiaTruckPickupSolid } from "react-icons/lia";
+
+
+//internal import
+import Layout from "@layout/Layout";
+import useAsync from "@hooks/useAsync";
+import Label from "@component/form/Label";
+import Error from "@component/form/Error";
+import CartItem from "@component/cart/CartItem";
+import InputArea from "@component/form/InputArea";
+import useGetSetting from "@hooks/useGetSetting";
+import InputShipping from "@component/form/InputShipping";
+import InputPayment from "@component/form/InputPayment";
+import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
+import useUtilsFunction from "@hooks/useUtilsFunction";
+import SettingServices from "@services/SettingServices";
+import { UserContext } from "@context/UserContext";
+import Loading from "@component/preloader/Loading";
+import DeliveryServices from "@services/DeliveryServices";
+import MainModal from "@component/modal/MainModal";
+import UserAddressUpdate from "@component/userAddressUpdate/userAddressUpdate";
+import { notifyError } from "@utils/toast";
+
+const Checkout = () => {
+  const {
+    handleSubmit,
+    submitHandler,
+    handleShippingCost,
+    register,
+    errors,
+    showCard,
+    setShowCard,
+    error,
+    // stripe,
+    couponInfo,
+    couponRef,
+    handleCouponCode,
+    discountAmount,
+    shippingCost,
+    total,
+    isEmpty,
+    items,
+    customCartTotal,
+    currency,
+    isCheckoutSubmit,
+    isDeliveryMetod,
+  } = useCheckoutSubmit();
+
+  const { t } = useTranslation();
+  const { storeCustomizationSetting } = useGetSetting();
+  const { showingTranslateValue } = useUtilsFunction();
+  const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
+
+  const { state: { userInfo } } = useContext(UserContext);
+  const [city, setCity] = useState(userInfo && userInfo?.address?.city?.city_name_he)
+  const [isDeliverable, setIsDeliverable] = useState(null);
+  const [deliveryPrice, setDeliveryPrice] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!userInfo) {
+      router.push("/login");
+    } else {
+      if (!userInfo.address.city) {
+        localStorage.setItem("firstTime", true);
+        router.push("/");
+      } else {
+        setLoading(false);
+      }
+    }
+  }, [userInfo]);
+
+  // פונקציה לבדיקת כתובת
+  const isAddressDeliverable = async (address) => {
+    const response = await DeliveryServices.getByCityName(address);
+
+    return response ? response.price : null; // יחזיר את עלות המשלוח או null אם אין משלוח לכתובת זו
+  };
+
+  // עדכון פונקציית submitHandler
+  const handleSubmitWithAddressCheck = async () => {
+    if (city) {
+      handleShippingCost(deliveryPrice); // עדכון עלות המשלוח
+    } else {
+      alert("Please enter a city.");
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const check = await isAddressDeliverable(city);
+        setIsDeliverable(true);
+        setDeliveryPrice(check);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setIsDeliverable(false);
+        } else {
+          alert("משהו השתבש, נסה שוב");
+          console.error(error);
+        }
+      }
+    };
+
+    if (city) {
+      fetchData();
+    }
+  }, [city]);
+
+
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
+
+  let currentLang = Cookies.get('_lang');
+
+  switch (currentLang) {
+    case 'he':
+      currentLang = true;
+      break;
+    case 'en':
+      currentLang = false;
+      break;
+    default:
+      currentLang = false;
+      break;
+  }
+
+  return (
+    <>
+      {modalOpen && (
+        <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+          <div className="px-11 py-8">
+            <UserAddressUpdate />
+          </div>
+        </MainModal>
+      )}
+      <Layout title="Checkout" description="this is checkout page">
+        <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+          <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
+            <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
+              <div className="mt-5 md:mt-0 md:col-span-2">
+                <form onSubmit={handleSubmit(submitHandler)}>
+                  <div className="w-full flex flex-col md:flex-row items-center pb-3 gap-3.5">
+                    {/* פרטים אישיים */}
+                    <div className="w-full md:w-3/4 h-16 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
+                      <CiUser className="text-[41px] text-customGreen group-hover:text-white transition ease-in-out duration-300" />
+                      <div className="flex flex-col items-start">
+                        <h2 className="text-xl">{userInfo?.name}</h2>
+                        {city &&
+                          <p className="text-base text-gray-400 -mt-1">{city}, {userInfo?.address?.street}, {userInfo?.address?.houseNumber}{
+                            userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''
+                          }</p>
+                        }
+                      </div>
+                      <button type="button" className="underline mr-auto" onClick={() => setModalOpen(true)}>
+                        {t("common:changeAddress")}
+                      </button>
+                    </div>
+                    {/* שיטת משלוח */}
+                    <div className="w-full h-16 flex items-center gap-1.5">
+                      <div className="w-full h-full relative">
+                        {isDeliverable && <span className="absolute -top-6">
+                          <Error errorName={errors.shippingOption} />
+                        </span>}
+                        <InputShipping
+                          currency={currency}
+                          handleShippingCost={handleSubmitWithAddressCheck}
+                          register={register}
+                          value="משלוח"
+                          isDeliverable={isDeliverable}
+                        />
+                      </div>
+
+                      <div className="w-full h-full relative">
+                        <span className="absolute -top-6">
+                          <Error errorName={errors.shippingOption} />
+                        </span>
+                        <InputShipping
+                          currency={currency}
+                          handleShippingCost={handleShippingCost}
+                          register={register}
+                          value="איסוף עצמי"
+                          isDeliverable={true}
+                          icon={<LiaTruckPickupSolid />}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+
+                  {/* סיכום הזמנה */}
+                  <div className="w-full flex flex-col h-full md:order-2 lg:order-2">
+                    <div className="border p-5 lg:px-8 lg:py-8 rounded-lg bg-white order-1 sm:order-2">
+                      <h2 className="font-semibold font-serif text-lg pb-4">
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.checkout?.order_summary
+                        )}
+                      </h2>
+
+                      <div className="overflow-y-auto flex-grow scrollbar-hide w-full max-h-64 bg-gray-50 block">
+                        {items.map((item) => (
+                          <CartItem key={item.id} item={item} currency={currency} />
+                        ))}
+
+                        {isEmpty && (
+                          <div className="text-center py-10">
+                            <span className="flex justify-center my-auto text-gray-500 font-semibold text-4xl">
+                              <IoBagHandle />
+                            </span>
+                            <h2 className="font-medium font-serif text-sm pt-2 text-gray-600">
+                              {t("common:noItemAdded")}
+                            </h2>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+                        <form className="w-full">
+                          {couponInfo.couponCode ? (
+                            <span className="bg-customGreen-superLight px-4 py-3 leading-tight w-full rounded-md flex justify-between">
+                              {" "}
+                              <p className="text-customGreen-dark">{t("common:couponApplied")} </p>{" "}
+                              <span className="text-red-500 text-right">
+                                {couponInfo.couponCode}
+                              </span>
+                            </span>
+                          ) : (
+                            <div className="flex flex-col sm:flex-row items-start justify-end gap-2">
+                              <input
+                                ref={couponRef}
+                                type="text"
+                                placeholder={t("common:couponCode")}
+                                className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-md h-12 duration-200 bg-white border-gray-200 focus:ring-0 focus:outline-none focus:border-customGreen placeholder-gray-500 placeholder-opacity-75"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleCouponCode}
+                                className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-customGreen h-12 text-sm lg:text-base w-full sm:w-auto"
+                              >
+                                {showingTranslateValue(
+                                  storeCustomizationSetting?.checkout?.apply_button
+                                )}
+                              </button>
+                            </div>
+                          )}
+                        </form>
+                      </div>
+                      <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.checkout?.sub_total
+                        )}
+                        <span className="ml-auto flex-shrink-0 text-gray-800 font-bold">
+                          {currency}
+                          {customCartTotal?.toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.checkout?.shipping_cost
+                        )}
+                        <span className="ml-auto flex-shrink-0 text-gray-800 font-bold">
+                          {currency}
+                          {shippingCost?.toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.checkout?.discount
+                        )}
+                        <span className="ml-auto flex-shrink-0 font-bold text-orange-400">
+                          {currency}
+                          {discountAmount?.toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="border-t mt-4">
+                        <div className="flex items-center font-bold font-serif justify-between pt-5 text-sm uppercase">
+                          {showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.total_cost
+                          )}
+                          <span className="font-serif font-extrabold text-lg">
+                            {currency}
+                            {parseFloat(total).toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* כפתורי אישור וחזרה */}
+                  <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
+                    <div className="col-span-6 sm:col-span-3">
+                      <Link
+                        href="/"
+                        className={currentLang ? "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center gap-2 font-serif w-full" : "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex flex-row-reverse justify-center gap-2 font-serif w-full"}
+                      >
+                        <span className="text-xl">
+                          <IoReturnUpBackOutline
+                            className={currentLang ? "transform scale-x-[-1]" : ""}
+                          />
+                        </span>
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.checkout?.continue_button
+                        )}
+                      </Link>
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <button
+                        onClick={() => isDeliveryMetod ? {} : notifyError(t("common:selectDeliveryMethod"))}
+                        type="submit"
+                        disabled={isEmpty || isCheckoutSubmit}
+                        className="bg-customGreen hover:bg-customGreen-dark border border-customGreen transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
+                      >
+                        {isCheckoutSubmit ? (
+                          <span className="flex flex-row-reverse justify-center text-center">
+                            {" "}
+                            <img
+                              src="/loader/spinner.gif"
+                              alt="Loading"
+                              width={20}
+                              height={10}
+                            />{" "}
+                            <span className="ml-2">
+                              {t("common:processing")}
+                            </span>
+                          </span>
+                        ) : (
+                          <span className={currentLang ? "flex justify-center gap-2 text-center" : "flex flex-row-reverse justify-center gap-2 text-center"}>
+                            {showingTranslateValue(
+                              storeCustomizationSetting?.checkout
+                                ?.confirm_button
+                            )}
+                            <span className="text-xl">
+                              {" "}
+                              <IoArrowForward
+                                className={currentLang ? "transform scale-x-[-1]" : ""}
+                              />
+                            </span>
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            {/* <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
+              <div className="mt-5 md:mt-0 md:col-span-2">
+                <form onSubmit={handleSubmit(submitHandler)}>
+                  <div className="form-group">
+                    <h2 className="font-semibold font-serif text-lg text-gray-700 pb-3">
+                      1.{" "}
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.checkout?.personal_details
+                      )}
+                    </h2>
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.first_name
+                          )}
+                          name="name"
+                          type="text"
+                          placeholder={t("common:fullName")}
+                          defaultValue={userInfo?.name} // Default value from user data
+                        />
+                        <Error errorName={errors.name} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.email_address
+                          )}
+                          name="email"
+                          type="email"
+                          placeholder="youremail@gmail.com"
+                          defaultValue={userInfo?.email} // Default value from user data
+                        />
+                        <Error errorName={errors.email} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.checkout_phone
+                          )}
+                          name="phone"
+                          type="tel"
+                          placeholder={t("common:phoneMobile")}
+                          defaultValue={userInfo?.phone} // Default value from user data
+                        />
+
+                        <Error errorName={errors.phone} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="form-group mt-14">
+                    <h2 className="font-semibold font-serif text-lg text-gray-700 pb-3">
+                      2.{" "}
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.checkout?.shipping_details
+                      )}
+                    </h2>
+
+                    <div className="grid grid-cols-6 gap-6 mb-8">
+                      <div className="lg:col-span-3 col-span-6">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.street_address
+                          )}
+                          name="address"
+                          type="text"
+                          placeholder={t("common:yourAddress")}
+                          defaultValue={userInfo?.address?.street} // Default value from user data
+                        />
+                        <Error errorName={errors.address} />
+                      </div>
+
+                      <div className="lg:col-span-3 col-span-6">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.city
+                          )}
+                          name="city"
+                          type="text"
+                          onChange={(e) => setCity(e.target.value)}
+                          placeholder={t("common:city")}
+                          defaultValue={city}
+                        />
+                        <Error errorName={errors.city} />
+                      </div>
+                    </div>
+
+                    <Label
+                      label={showingTranslateValue(
+                        storeCustomizationSetting?.checkout?.shipping_cost
+                      )}
+                    />
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputShipping
+                          currency={currency}
+                          handleShippingCost={handleSubmitWithAddressCheck}
+                          register={register}
+                          value="משלוח"
+                        />
+                        <Error errorName={errors.shippingOption} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputShipping
+                          currency={currency}
+                          handleShippingCost={handleShippingCost}
+                          register={register}
+                          value="איסוף עצמי"
+                          icon={<LiaTruckPickupSolid />}
+                        />
+                        <Error errorName={errors.shippingOption} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
+                    <div className="col-span-6 sm:col-span-3">
+                      <Link
+                        href="/"
+                        className={currentLang ? "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center gap-2 font-serif w-full" : "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex flex-row-reverse justify-center gap-2 font-serif w-full"}
+                      >
+                        <span className="text-xl">
+                          <IoReturnUpBackOutline
+                            className={currentLang ? "transform scale-x-[-1]" : ""}
+                          />
+                        </span>
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.checkout?.continue_button
+                        )}
+                      </Link>
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <button
+                        type="submit"
+                        disabled={isEmpty || isCheckoutSubmit}
+                        className="bg-customGreen hover:bg-customGreen-dark border border-customGreen transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
+                      >
+                        {isCheckoutSubmit ? (
+                          <span className="flex flex-row-reverse justify-center text-center">
+                            {" "}
+                            <img
+                              src="/loader/spinner.gif"
+                              alt="Loading"
+                              width={20}
+                              height={10}
+                            />{" "}
+                            <span className="ml-2">
+                              {t("common:processing")}
+                            </span>
+                          </span>
+                        ) : (
+                          <span className={currentLang ? "flex justify-center gap-2 text-center" : "flex flex-row-reverse justify-center gap-2 text-center"}>
+                            {showingTranslateValue(
+                              storeCustomizationSetting?.checkout
+                                ?.confirm_button
+                            )}
+                            <span className="text-xl">
+                              {" "}
+                              <IoArrowForward
+                                className={currentLang ? "transform scale-x-[-1]" : ""}
+                              />
+                            </span>
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div> */}
+          </div>
+        </div>
+      </Layout>
+    </>
+  );
+};
+
+export default dynamic(() => Promise.resolve(Checkout), { ssr: false });
