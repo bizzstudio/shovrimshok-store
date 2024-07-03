@@ -18,7 +18,7 @@ import CartDrawer from "@component/drawer/CartDrawer";
 import { SidebarContext } from "@context/SidebarContext";
 import useGetSetting from "@hooks/useGetSetting";
 import { handleLogEvent } from "@utils/analytics";
-import logo from "../../../public/newLogo.svg";
+import logo from "public/newlogo.svg";
 import ProductServices from "@services/ProductServices";
 import ResultWindow from "@component/resultWindow/resultWindow";
 import AttributeServices from "@services/AttributeServices";
