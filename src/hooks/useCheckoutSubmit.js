@@ -34,6 +34,7 @@ const useCheckoutSubmit = () => {
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [paymentSrc, setPaymentSrc] = useState(null);
 
   const router = useRouter();
   // const stripe = useStripe();
@@ -142,24 +143,75 @@ const useCheckoutSubmit = () => {
         zipCode: userInfo?.address?.postalCode,
       };
 
-      let orderInfo = {
+      const orderInfo = {
         user_info: userDetails,
         shippingOption: data.shippingOption,
         paymentMethod: data.paymentMethod,
-        status: "Pending",
+        status: "ממתין לתשלום",
         cart: items,
-        subTotal: customCartTotal,
+        subTotal: Number(customCartTotal.toFixed(2)),
         shippingCost: shippingCost,
         discount: discountAmount,
         total: total,
       };
 
       console.log('orderInfo: ', orderInfo)
+      // יצירת ההזמנה בדטאבייס עם סטטוס ממתין לתשלום
+      const dbOrder = await OrderServices.addOrder(orderInfo);
+      console.log("dbOrder: ", dbOrder)
 
-      // cardcom
-      
+      console.log('process.env.API_NAME_TEST: ', process.env.API_NAME_TEST)
+      console.log('process.env.NEXT_PUBLIC_API_BASE_URL: ', process.env.NEXT_PUBLIC_API_BASE_URL)
 
-      // await OrderServices.addOrder(orderInfo);
+      // for test only
+      const cardcomObj = {
+        TerminalNumber: 1000,
+        ApiName: "test2025",
+        ReturnValue: dbOrder._id,
+        Amount: orderInfo.total,
+        SuccessRedirectUrl: "http://localhost:3000/user/my-orders",
+        FailedRedirectUrl: "https://www.yahoo.com",
+        WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
+        Document: {
+          To: userInfo.name,
+          Email: userInfo.email,
+          Products: [...orderInfo.cart.map(p => ({ Description: p.title, UnitCost: p.calculatedTotalPrice })), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)) }]
+        }
+      }
+      // const cardcomObj = {
+      //   TerminalNumber: 119208,
+      //   ApiName: process.env.API_NAME,
+      //   ReturnValue: dbOrder._id,
+      //   Amount: orderInfo.total,
+      //   SuccessRedirectUrl: "https://www.google.com",
+      //   FailedRedirectUrl: "https://www.yahoo.com",
+      //   WebHookUrl: "http://localhost:3000/CardComLPWebHook",
+      //   Document: {
+      //     To: userInfo.name,
+      //     Email: userInfo.email,
+      //     Products: [...orderInfo.cart.map(p => ({ Description: p.title, UnitCost: p.calculatedTotalPrice })), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)) }]
+      //   }
+      // }
+
+      console.log('cardcomObj: ', cardcomObj)
+      const response = await fetch('https://secure.cardcom.solutions/api/v11/LowProfile/Create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardcomObj)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('result: ', result)
+
+      setPaymentSrc(result.Url);
+
+
 
       // if (data.paymentMethod === "Card") {
       //   // if (!elements) {
@@ -335,6 +387,8 @@ const useCheckoutSubmit = () => {
     isCheckoutSubmit,
     isCouponApplied,
     isDeliveryMetod,
+    paymentSrc,
+    setPaymentSrc,
   };
 };
 

@@ -1,7 +1,7 @@
 import DeliveryServices from "@services/DeliveryServices";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
-import { FiTruck } from "react-icons/fi";
+import { FiInfo, FiTruck } from "react-icons/fi";
 
 const InputShipping = ({
   register,
@@ -12,6 +12,7 @@ const InputShipping = ({
   handleShippingCost,
   icon = <FiTruck />,
   isDeliverable,
+  note = '',
 }) => {
 
   const { t } = useTranslation();
@@ -25,8 +26,8 @@ const InputShipping = ({
               {icon}
             </span>
             <div>
-              <h6 className={`font-serif font-medium text-base ${isDeliverable ? "text-gray-600" : "text-gray-400"} `}>
-                {value}
+              <h6 className={`flex items-center gap-1 font-serif font-medium text-base ${isDeliverable ? "text-gray-600" : "text-gray-400"} `}>
+                {value} {note && <span className="text-base text-gray-400" title={note}><FiInfo /></span>}
               </h6>
               {!isDeliverable && <p className="text-sm text-gray-400 -mt-1">
                 {t("common:cannotDeliver")}
