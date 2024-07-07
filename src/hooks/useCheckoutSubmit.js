@@ -170,7 +170,8 @@ const useCheckoutSubmit = () => {
         Amount: orderInfo.total,
         SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/user/my-orders",
         FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN,
-        WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
+        // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
+        WebHookUrl: "https://kirshner-backend.vercel.app/api" + "/orders/" + dbOrder._id,
         Document: {
           To: userInfo.name,
           Email: userInfo.email,
@@ -183,7 +184,7 @@ const useCheckoutSubmit = () => {
               TotalLineCost: p.calculatedTotalPrice,
               IsVatFree: true,
             }
-          }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)) },
+          }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)), IsVatFree: true },
           shippingCost > 0 ? {
             Description: "משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
             UnitCost: shippingCost,
