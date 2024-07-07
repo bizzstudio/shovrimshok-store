@@ -177,7 +177,7 @@ const useCheckoutSubmit = () => {
         Amount: orderInfo.total,
         SuccessRedirectUrl: "http://localhost:3000/user/my-orders",
         FailedRedirectUrl: "https://www.yahoo.com",
-        WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
+        WebHookUrl: "https://kirshner-backend.vercel.app/api" + "/orders/" + dbOrder._id,
         Document: {
           To: userInfo.name,
           Email: userInfo.email,
