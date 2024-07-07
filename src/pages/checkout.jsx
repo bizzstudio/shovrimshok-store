@@ -129,7 +129,7 @@ const Checkout = () => {
   }, [city]);
 
   const navToPaymentPage = () => {
-    // router.push(paymentSrc)
+    router.push(paymentSrc)
   }
 
   if (loading) {

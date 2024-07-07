@@ -127,8 +127,6 @@ const useCheckoutSubmit = () => {
 
   const submitHandler = async (data) => {
     try {
-      console.log('data: ', data)
-      console.log('userInfo: ', userInfo)
       dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
       Cookies.set("shippingAddress", JSON.stringify(data));
       setIsCheckoutSubmit(true);
@@ -155,7 +153,6 @@ const useCheckoutSubmit = () => {
         total: total,
       };
 
-      console.log('orderInfo: ', orderInfo)
       // יצירת ההזמנה בדטאבייס עם סטטוס ממתין לתשלום
       const dbOrder = await OrderServices.addOrder(orderInfo);
       // console.log("dbOrder: ", dbOrder)
