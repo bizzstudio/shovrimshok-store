@@ -163,6 +163,12 @@ const useCheckoutSubmit = () => {
       console.log('process.env.API_NAME_TEST: ', process.env.API_NAME_TEST)
       console.log('process.env.NEXT_PUBLIC_API_BASE_URL: ', process.env.NEXT_PUBLIC_API_BASE_URL)
 
+      // שלבים:
+      // 1. לעדכן את האובייקט שנשלח לקארדקום עם כמויות והכל.
+      // 2. ראוט נפרד לוובהוק שיעדכן את ההזמנה הנכנסת לשולמה או לא.
+      // 3. להאזין לIfrme- שינתב את כל האתר לדף הצלחה/כישלון.
+      // 4. לעצב את הIframe-.
+
       // for test only
       const cardcomObj = {
         TerminalNumber: 1000,
@@ -175,9 +181,29 @@ const useCheckoutSubmit = () => {
         Document: {
           To: userInfo.name,
           Email: userInfo.email,
-          Products: [...orderInfo.cart.map(p => ({ Description: p.title, UnitCost: p.calculatedTotalPrice })), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)) }]
+          Products: [...orderInfo.cart.map(p => {
+            return {
+              ProductID: p._id,
+              Description: p.title,
+              Quantity: p.quantity,
+              UnitCost: p.calculatedTotalPrice / p.quantity,
+              TotalLineCost: p.calculatedTotalPrice,
+              IsVatFree: true,
+            }
+          }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)) },
+          shippingCost > 0 ? {
+            Description: "משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
+            UnitCost: shippingCost,
+            IsVatFree: false,
+          } : null,
+          discountAmount > 0 ? {
+            Description: "הנחה",
+            UnitCost: -discountAmount,
+          } : null,
+          ].filter(Boolean)
         }
       }
+
       // const cardcomObj = {
       //   TerminalNumber: 119208,
       //   ApiName: process.env.API_NAME,
