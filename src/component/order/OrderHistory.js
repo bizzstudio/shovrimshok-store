@@ -20,7 +20,7 @@ const OrderHistory = ({ order, currency }) => {
     else if (order.status === "Processing")
       return <span className="text-customBrown-light0">{t(`common:${order.status}`)}</span>
     else
-      return <span className=" text-customGreen">{t(`common:${order.status}`)}</span>
+      return <span className=" text-customGreen">{order.status}</span>
   }
   // console.log("order: ", order);
 

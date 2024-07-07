@@ -146,7 +146,7 @@ const useCheckoutSubmit = () => {
       const orderInfo = {
         user_info: userDetails,
         shippingOption: data.shippingOption,
-        paymentMethod: data.paymentMethod,
+        paymentMethod: "creditCard", // data.paymentMethod,
         status: "ממתין לתשלום",
         cart: items,
         subTotal: Number(customCartTotal.toFixed(2)),
@@ -158,10 +158,7 @@ const useCheckoutSubmit = () => {
       console.log('orderInfo: ', orderInfo)
       // יצירת ההזמנה בדטאבייס עם סטטוס ממתין לתשלום
       const dbOrder = await OrderServices.addOrder(orderInfo);
-      console.log("dbOrder: ", dbOrder)
-
-      console.log('process.env.API_NAME_TEST: ', process.env.API_NAME_TEST)
-      console.log('process.env.NEXT_PUBLIC_API_BASE_URL: ', process.env.NEXT_PUBLIC_API_BASE_URL)
+      // console.log("dbOrder: ", dbOrder)
 
       // שלבים:
       // 1. לעדכן את האובייקט שנשלח לקארדקום עם כמויות והכל.
@@ -169,15 +166,14 @@ const useCheckoutSubmit = () => {
       // 3. להאזין לIfrme- שינתב את כל האתר לדף הצלחה/כישלון.
       // 4. לעצב את הIframe-.
 
-      // for test only
       const cardcomObj = {
-        TerminalNumber: 1000,
-        ApiName: "test2025",
+        TerminalNumber: process.env.NEXT_PUBLIC_TERMINAL_NUMBER,
+        ApiName: process.env.NEXT_PUBLIC_API_NAME,
         ReturnValue: dbOrder._id,
         Amount: orderInfo.total,
-        SuccessRedirectUrl: "http://localhost:3000/user/my-orders",
-        FailedRedirectUrl: "https://www.yahoo.com",
-        WebHookUrl: "https://kirshner-backend.vercel.app/api" + "/orders/" + dbOrder._id,
+        SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/user/my-orders",
+        FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN,
+        WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
         Document: {
           To: userInfo.name,
           Email: userInfo.email,
@@ -203,23 +199,7 @@ const useCheckoutSubmit = () => {
           ].filter(Boolean)
         }
       }
-
-      // const cardcomObj = {
-      //   TerminalNumber: 119208,
-      //   ApiName: process.env.API_NAME,
-      //   ReturnValue: dbOrder._id,
-      //   Amount: orderInfo.total,
-      //   SuccessRedirectUrl: "https://www.google.com",
-      //   FailedRedirectUrl: "https://www.yahoo.com",
-      //   WebHookUrl: "http://localhost:3000/CardComLPWebHook",
-      //   Document: {
-      //     To: userInfo.name,
-      //     Email: userInfo.email,
-      //     Products: [...orderInfo.cart.map(p => ({ Description: p.title, UnitCost: p.calculatedTotalPrice })), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)) }]
-      //   }
-      // }
-
-      console.log('cardcomObj: ', cardcomObj)
+      // console.log('cardcomObj: ', cardcomObj)
       const response = await fetch('https://secure.cardcom.solutions/api/v11/LowProfile/Create', {
         method: 'POST',
         headers: {
@@ -233,11 +213,7 @@ const useCheckoutSubmit = () => {
       }
 
       const result = await response.json();
-      console.log('result: ', result)
-
       setPaymentSrc(result.Url);
-
-
 
       // if (data.paymentMethod === "Card") {
       //   // if (!elements) {
