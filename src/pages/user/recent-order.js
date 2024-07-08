@@ -74,7 +74,8 @@ const RecentOrder = ({ data, loading, error }) => {
                             scope="col"
                             className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
                           >
-                            {t("common:status")}
+                            {/* {t("common:status")} */}
+                            סטטוס/שם מלקט
                           </th>
                           <th
                             scope="col"
@@ -96,11 +97,11 @@ const RecentOrder = ({ data, loading, error }) => {
                       <div className="paginationOrder">
                         <ReactPaginate
                           breakLabel="..."
-                          nextLabel="Next"
+                          nextLabel={t("common:next")}
                           onPageChange={(e) => handleChangePage(e.selected + 1)}
                           pageRangeDisplayed={3}
                           pageCount={pageCount}
-                          previousLabel="Previous"
+                          previousLabel={t("common:previous")}
                           renderOnZeroPageCount={null}
                           pageClassName="page--item"
                           pageLinkClassName="page--link"

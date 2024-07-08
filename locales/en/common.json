@@ -262,7 +262,6 @@
 
   "continueShoppingBtn": "Continue Shopping",
   "confirmOrderBtn": "Confirm Order",
-  "Processing": "Processing",
 
   "orderSummary": "Order Summary",
   "applyBtn": "Apply",
@@ -295,9 +294,12 @@
   "/=================* Invoice * =================/": "",
 
   "invoice": "Invoice",
+  "order": "Order",
   "date": "Date",
   "invoiceNo": "Invoice No.",
+  "orderNo": "Order No.",
   "invoiceTo": "Invoice To.",
+  "orderTo": "Order To.",
   "sr": "Sr.",
   "productName": "Product Name",
   "quantity": "Quantity",
@@ -308,8 +310,10 @@
   "totalAmount": "Total Amount",
   "downloadInvoice": "Download Invoice",
   "printInvoice": "Print Invoice",
+  "downloadOrder": "Download Order",
+  "printOrder": "Print Order",
   "thankyou": "Thank you",
-  "orderReceivedMsg": "Your order have been received !",
+  "orderReceivedMsg": "Your order have been received!",
 
   "/=================* My account * =================/": "",
 
@@ -337,6 +341,7 @@
   "Delivered": "Delivered",
   "Pending": "Pending",
   "Processing": "Processing",
+  "processing": "Processing",
   "Cancel": "Cancel",
   
   "fileToBig": "The image size exceeds 3MB.",

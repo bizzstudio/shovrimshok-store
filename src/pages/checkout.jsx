@@ -348,7 +348,7 @@ const Checkout = () => {
                                 height={10}
                               />{" "}
                               <span className="ml-2">
-                                {t("common:Processing")}
+                                {t("common:processing")}
                               </span>
                             </span>
                           ) : (
@@ -529,7 +529,7 @@ const Checkout = () => {
                               height={10}
                             />{" "}
                             <span className="ml-2">
-                              {t("common:Processing")}
+                              {t("common:processing")}
                             </span>
                           </span>
                         ) : (

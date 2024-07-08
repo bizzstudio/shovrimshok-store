@@ -38,7 +38,7 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
       <div className="bg-customBrown-light p-8 rounded-t-xl">
         <div className="flex lg:flex-row md:flex-row flex-col lg:items-center justify-between pb-4 border-b border-gray-50">
           <div>
-            <h1 className="font-bold font-serif text-2xl uppercase">{t("common:invoice")}</h1>
+            <h1 className="font-bold font-serif text-2xl uppercase">{t("common:order")}</h1>
             <h6 className="text-gray-700">
               <b>{t("common:status")}: </b>
               {(() => {
@@ -92,7 +92,7 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
           </div>
           <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
             <span className="font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:invoiceNo")}
+              {t("common:orderNo")}
             </span>
             <span className="text-sm text-gray-500 block">
               #{data?.invoice}
@@ -100,7 +100,7 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
           </div>
           <div className="flex flex-col lg:text-right text-left">
             <span className="font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:invoiceTo")}
+              {t("common:orderTo")}
             </span>
             <span className="text-sm text-gray-500 block min-w-[175px]">
               {name}<br />

@@ -73,7 +73,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
                 width={20}
                 height={10}
               />
-              <span className="font-serif ml-2 font-light mr-1">{t("common:Processing")}</span>
+              <span className="font-serif ml-2 font-light mr-1">{t("common:processing")}</span>
             </button>
           ) : (
             <button

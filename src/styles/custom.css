@@ -439,7 +439,7 @@ p:not(:last-of-type) {
 
 .category-slider button.next:hover,
 .category-slider button.prev {
-  background-color: #10b981;
+  background-color: #3c6d16;
 }
 
 .category-slider button.prev svg,
@@ -451,6 +451,7 @@ p:not(:last-of-type) {
   display: flex;
   align-items: center;
   margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .paginationOrder ul li:first-child {
@@ -483,8 +484,8 @@ p:not(:last-of-type) {
 }
 
 .page-previous-link:hover {
-  border: 1px solid #10b981;
-  background-color: #10b981;
+  border: 1px solid #3c6d16;
+  background-color: #3c6d16;
   color: #fff;
 }
 
@@ -496,8 +497,8 @@ p:not(:last-of-type) {
 }
 
 .page-next-link:hover {
-  border: 1px solid #10b981;
-  background-color: #10b981;
+  border: 1px solid #3c6d16;
+  background-color: #3c6d16;
   color: #fff;
 }
 
@@ -508,8 +509,8 @@ p:not(:last-of-type) {
 .activePagination {
   text-align: center;
   border-radius: 3px;
-  background: #10b981;
-  border: 1px solid #10b981;
+  background: #3c6d16;
+  border: 1px solid #3c6d16;
   color: #fff;
 }
 
@@ -681,7 +682,7 @@ p:not(:last-of-type) {
 }
 
 .carousel .control-dots .dot {
-  background: #10b981 !important;
+  background: #3c6d16 !important;
 }
 
 .invoice-address-width {
@@ -726,8 +727,8 @@ p:not(:last-of-type) {
 }
 
 .page-previous-link:hover {
-  border: 1px solid #10b981;
-  background-color: #10b981;
+  border: 1px solid #3c6d16;
+  background-color: #3c6d16;
   color: #fff;
 }
 
@@ -739,8 +740,8 @@ p:not(:last-of-type) {
 }
 
 .page-next-link:hover {
-  border: 1px solid #10b981;
-  background-color: #10b981;
+  border: 1px solid #3c6d16;
+  background-color: #3c6d16;
   color: #fff;
 }
 
@@ -751,8 +752,8 @@ p:not(:last-of-type) {
 .activePagination {
   text-align: center;
   border-radius: 3px;
-  background: #10b981;
-  border: 1px solid #10b981;
+  background: #3c6d16;
+  border: 1px solid #3c6d16;
   color: #fff;
 }
 
@@ -1735,6 +1736,6 @@ p:not(:last-of-type) {
 }
 
 .nsm7Bb-HzV7m-LgbsSe:hover {
-  background: #10b981 !important;
+  background: #3c6d16 !important;
   color: #e2e8f0;
 }
