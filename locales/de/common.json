@@ -238,7 +238,7 @@
 
   "continueShoppingBtn": "Mit dem Einkaufen fortfahren",
   "confirmOrderBtn": "Bestellung bestätigen",
-  "processing": "wird bearbeitet",
+  "Processing": "wird bearbeitet",
 
   "orderSummary": "Bestellübersicht",
   "applyBtn": "Sichbewerben",
@@ -296,7 +296,7 @@
   "dashboardText": "Dies ist das Benutzer-Dashboard",
   "totalOrder": "Gesamtbestellung",
   "pendingOrder": "Ausstehende Bestellung",
-  "processingOrder": "Bearbeitungsauftrag",
+  "ProcessingOrder": "Bearbeitungsauftrag",
   "completeOrder": "Bestellung abschließen",
 
   "recentOrder": "Letzte Bestellung",

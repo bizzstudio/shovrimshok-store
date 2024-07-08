@@ -168,8 +168,8 @@ const useCheckoutSubmit = () => {
         ApiName: process.env.NEXT_PUBLIC_API_NAME,
         ReturnValue: dbOrder._id,
         Amount: orderInfo.total,
-        SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/user/my-orders",
-        FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN,
+        SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/success",
+        FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/failed",
         // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
         WebHookUrl: "https://kirshner-backend.vercel.app/api" + "/orders/" + dbOrder._id,
         Document: {
@@ -329,7 +329,7 @@ const useCheckoutSubmit = () => {
     const result = data.filter(
       (coupon) => coupon.couponCode === couponRef.current.value
     );
-    console.log('result[0]: ', result[0])
+    // console.log('result[0]: ', result[0])
 
     if (result.length < 1) {
       notifyError(t("common:couponNotValid"));

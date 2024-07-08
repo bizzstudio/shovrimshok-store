@@ -173,10 +173,10 @@ const Dashboard = ({ title, description, children }) => {
                       />
                       <Card
                         title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.processing_order
+                          storeCustomizationSetting?.dashboard?.Processing_order
                         )}
                         Icon={FiTruck}
-                        quantity={data?.processing}
+                        quantity={data?.Processing}
                         className="text-indigo-600 bg-indigo-200"
                       />
                       <Card

@@ -59,7 +59,7 @@ const Order = ({ params }) => {
     default:
       currentLang = false;
       break;
-  }
+  };
 
   return (
     <Layout title="Invoice" description="order confirmation page">

@@ -30,6 +30,9 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
       break;
   }
 
+  const { name } = data?.user_info || {};
+  const { city, street, houseNumber, apartmentNumber } = data?.user_info?.address || {};
+
   return (
     <div ref={printRef}>
       <div className="bg-customBrown-light p-8 rounded-t-xl">
@@ -38,24 +41,23 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
             <h1 className="font-bold font-serif text-2xl uppercase">{t("common:invoice")}</h1>
             <h6 className="text-gray-700">
               <b>{t("common:status")}: </b>
-              {data.status === "Delivered" && (
-                <span className="text-customGreen">{t(`common:${data.status}`)}</span>
-              )}
-              {data.status === "POS-Completed" && (
-                <span className="text-customGreen">{t(`common:${data.status}`)}</span>
-              )}
-              {data.status === "Pending" && (
-                <span className="text-customRed">{t(`common:${data.status}`)}</span>
-              )}
-              {data.status === "Cancel" && (
-                <span className="text-red-500">{t(`common:${data.status}`)}</span>
-              )}
-              {data.status === "Processing" && (
-                <span className="text-customBrown-light0">{t(`common:${data.status}`)}</span>
-              )}
-              {data.status === "Deleted" && (
-                <span className="text-red-700">{t(`common:${data.status}`)}</span>
-              )}
+              {(() => {
+                switch (data.status) {
+                  case "delivered":
+                  case "POS-Completed":
+                    return <span className="text-customGreen">{t(`common:${data.status}`)}</span>;
+                  case "pending":
+                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                  case "cancel":
+                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                  case "processing":
+                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                  case "deleted":
+                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                  default:
+                    return <span className="text-red-500">{data.status}</span>;
+                }
+              })()}
             </h6>
           </div>
           <div className="lg:text-right text-left">
@@ -100,14 +102,11 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
             <span className="font-bold font-serif text-sm uppercase text-gray-600 block">
               {t("common:invoiceTo")}
             </span>
-            <span className="text-sm text-gray-500 block">
-              {data?.user_info?.name} <br />
-              {data?.user_info?.email}{" "}
+            <span className="text-sm text-gray-500 block min-w-[175px]">
+              {name}<br />
+              {city?.city_name_he}, {street}, {houseNumber}{apartmentNumber ? "/" + apartmentNumber : ''}<br />
+              {data?.user_info?.email}<br />
               <span className="ml-2">{data?.user_info?.contact}</span>
-              <br />
-              {data?.user_info?.address}
-              <br />
-              {data?.city} {data?.country} {data?.zipCode}
             </span>
           </div>
         </div>
