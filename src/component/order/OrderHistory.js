@@ -1,27 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useTranslation from "next-translate/useTranslation";
 import Cookies from "js-cookie";
 import 'dayjs/locale/he'; // ייבוא תאריכים בעברית
+import StatusService from "@services/StatusService";
 
 const OrderHistory = ({ order, currency }) => {
 
   const { t } = useTranslation();
+  const [status, setStatus] = useState(null);
 
-  const getStatus = (status) => {
-    if (order.status === "delivered")
-      return <span className="text-customGreen">{t(`common:${order.status}`)}</span>
+  useEffect(() => {
+    const fetchStatus = async () => {
+      if (order.status === "Delivered")
+        setStatus(<span className="text-customGreen">{t(`common:${order.status}`)}</span>);
+      else if (order.status === "Pending" || order.status === "Cancel" || order.status === "Processing" || order.status === "processing")
+        setStatus(<span className="text-red-500">{t(`common:${order.status}`)}</span>);
+      else {
+        const phone = (await StatusService.getStatusByName(order.status)).phone || {};
+        setStatus(<span className="text-red-500">{order.status}{phone ? ' - ' + phone : ''}</span>);
+      }
+    };
 
-    else if (order.status === "pending")
-      return <span className="text-red-500">{t(`common:${order.status}`)}</span>
-
-    else if (order.status === "cancel")
-      return <span className="text-red-500">{t(`common:${order.status}`)}</span>
-    else if (order.status === "processing")
-      return <span className="text-red-500">{t(`common:${order.status}`)}</span>
-    else
-      return <span className="text-red-500">{order.status}</span>
-  }
+    fetchStatus();
+  }, [order.status, t]);
   // console.log("order: ", order);
 
   let currentLang = Cookies.get('_lang');
@@ -55,7 +57,7 @@ const OrderHistory = ({ order, currency }) => {
         <span className="text-sm">{t(`common:${order.paymentMethod}`)}</span>
       </td>
       <td className="px-5 py-3 leading-6 text-center whitespace-nowrap font-medium text-sm">
-        {getStatus(order.status)}
+        {status}
       </td>
       <td className="px-5 py-3 leading-6 text-center whitespace-nowrap">
         <span className="text-sm font-bold">

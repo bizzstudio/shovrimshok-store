@@ -47,6 +47,7 @@ const Dashboard = ({ title, description, children }) => {
       limit: 8,
     })
       .then((res) => {
+        // console.log("res: ", res);
         setData(res);
         setLoading(false);
       })
@@ -173,10 +174,10 @@ const Dashboard = ({ title, description, children }) => {
                       />
                       <Card
                         title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.Processing_order
+                          storeCustomizationSetting?.dashboard?.processing_order
                         )}
                         Icon={FiTruck}
-                        quantity={data?.Processing}
+                        quantity={data?.processing}
                         className="text-indigo-600 bg-indigo-200"
                       />
                       <Card

@@ -294,9 +294,12 @@
     "/=================* Invoice * =================/": "",
   
     "invoice": "קבלה",
+    "order": "הזמנה",
     "date": "תאריך",
     "invoiceNo": "מס' קבלה",
+    "orderNo": "מס' הזמנה",
     "invoiceTo": "קבלה עבור",
+    "orderTo": "הזמנה עבור",
     "sr": "מספר סידורי",
     "productName": "שם",
     "quantity": "כמות",
@@ -307,8 +310,10 @@
     "totalAmount": "סה\"כ לתשלום",
     "downloadInvoice": "Download Invoice",
     "printInvoice": "Print Invoice",
+    "downloadOrder": "Download Order",
+    "printOrder": "Print Order",
     "thankyou": "Thank you",
-    "orderReceivedMsg": "Your order have been received !",
+    "orderReceivedMsg": "Your order have been received!",
   
     "/=================* My account * =================/": "",
   
@@ -333,15 +338,16 @@
     "Credit": "אשראי",
 
     "orderStatus": "סטטוס",
-    "delivered": "נמסר",
-    "pending": "ממתין",
-    "processing": "בטיפול",
-    "cancel": "בוטל",
+    "Delivered": "נמסר",
+    "Pending": "ממתין",
+    "Processing": "בטיפול",
+    "processing": "מעבד",
+    "Cancel": "בוטל",
 
     "fileToBig": "התמונה חורגת מהגודל המותר (3MB)",
   
-    "next": "Next",
-    "previous": "Previous",
+    "next": "הבא",
+    "previous": "הקודם",
   
     "dashboardText": "This is User Dashboard",
     "totalOrder": "Total Order",

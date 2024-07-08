@@ -201,7 +201,7 @@ const UserAddressInitialize = () => {
                         height={10}
                       />
                       <span className="font-serif ml-2 font-light">
-                        {t("common:Processing")}
+                        {t("common:processing")}
                       </span>
                     </button>
                   ) : (

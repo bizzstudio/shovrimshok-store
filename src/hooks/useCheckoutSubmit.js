@@ -145,7 +145,7 @@ const useCheckoutSubmit = () => {
         user_info: userDetails,
         shippingOption: data.shippingOption,
         paymentMethod: "creditCard", // data.paymentMethod,
-        status: "ממתין לתשלום",
+        status: "Pending",
         cart: items,
         subTotal: Number(customCartTotal.toFixed(2)),
         shippingCost: shippingCost,
@@ -153,7 +153,7 @@ const useCheckoutSubmit = () => {
         total: total,
       };
 
-      // יצירת ההזמנה בדטאבייס עם סטטוס ממתין לתשלום
+      // יצירת ההזמנה בדטאבייס עם סטטוס Pending
       const dbOrder = await OrderServices.addOrder(orderInfo);
       // console.log("dbOrder: ", dbOrder)
 
