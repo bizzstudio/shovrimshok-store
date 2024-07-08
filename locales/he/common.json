@@ -262,7 +262,6 @@
   
     "continueShoppingBtn": "Continue Shopping",
     "confirmOrderBtn": "Confirm Order",
-    "processing": "בטיפול",
   
     "orderSummary": "Order Summary",
     "applyBtn": "Apply",
@@ -283,6 +282,14 @@
     "cannotDeliver": "אין משלוחים לכתובת שלך",
 
     "likutMessage": "לשים לב: חלה התייקרות בסך 10% עבור שירות הליקוט",
+
+    "thankYouForPurchase": "תודה שקנית במשק קירשנר!",
+    "orsderInProcess": "הזמנתך בתהליך עיבוד, ניצור איתך קשר לאחר סיום ליקוט המוצרים.",
+    "viewOrder": "צפייה בהזמנה",
+
+    "purchaseFailed": "הרכישה נכשלה!",
+    "orderFaildText": "התשלום נדחה, אנא נסה שוב.",
+    "tryAgain": "נסה שוב",
   
     "/=================* Invoice * =================/": "",
   
@@ -325,11 +332,11 @@
     "Card": "כ.א",
     "Credit": "אשראי",
 
-    "OrderStatus": "סטטוס",
-    "Delivered": "נמסר",
-    "Pending": "ממתין",
-    "Processing": "בעיבוד",
-    "Cancel": "בוטל",
+    "orderStatus": "סטטוס",
+    "delivered": "נמסר",
+    "pending": "ממתין",
+    "processing": "בטיפול",
+    "cancel": "בוטל",
 
     "fileToBig": "התמונה חורגת מהגודל המותר (3MB)",
   
@@ -339,7 +346,7 @@
     "dashboardText": "This is User Dashboard",
     "totalOrder": "Total Order",
     "pendingOrder": "Pending Order",
-    "processingOrder": "Processing Order",
+    "ProcessingOrder": "Processing Order",
     "completeOrder": "Complete Order",
   
     "recentOrder": "Recent Order",

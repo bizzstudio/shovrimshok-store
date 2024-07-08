@@ -262,7 +262,7 @@
 
   "continueShoppingBtn": "Continue Shopping",
   "confirmOrderBtn": "Confirm Order",
-  "processing": "Processing",
+  "Processing": "Processing",
 
   "orderSummary": "Order Summary",
   "applyBtn": "Apply",
@@ -283,6 +283,14 @@
   "cannotDeliver": "There is no deliver to your address",
 
   "likutMessage": "Please note: there is a 10% increase in price for the collection service",
+
+  "thankYouForPurchase": "Thank you for shopping at Meshek Kirchner!",
+  "orsderInProcess": "Your order is being processed, we will contact you after the collection of the products is finished.",
+  "viewOrder": "View Order",
+
+  "purchaseFailed": "Purchase Failed!",
+  "orderFaildText": "Your payment has been declined, please try again.",
+  "tryAgain": "Try Again",
 
   "/=================* Invoice * =================/": "",
 
@@ -339,7 +347,7 @@
   "dashboardText": "This is User Dashboard",
   "totalOrder": "Total Order",
   "pendingOrder": "Pending Order",
-  "processingOrder": "Processing Order",
+  "ProcessingOrder": "Processing Order",
   "completeOrder": "Complete Order",
 
   "recentOrder": "Recent Order",

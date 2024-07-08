@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 const useFilter = (data) => {
   const [pending, setPending] = useState([]);
-  const [processing, setProcessing] = useState([]);
+  const [Processing, setProcessing] = useState([]);
   const [delivered, setDelivered] = useState([]);
   const [sortedField, setSortedField] = useState("");
   const router = useRouter();
@@ -50,7 +50,7 @@ const useFilter = (data) => {
   return {
     productData,
     pending,
-    processing,
+    Processing,
     delivered,
     setSortedField,
   };

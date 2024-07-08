@@ -9,18 +9,18 @@ const OrderHistory = ({ order, currency }) => {
   const { t } = useTranslation();
 
   const getStatus = (status) => {
-    if (order.status === "Delivered")
+    if (order.status === "delivered")
       return <span className="text-customGreen">{t(`common:${order.status}`)}</span>
 
-    else if (order.status === "Pending")
-      return <span className="text-customRed">{t(`common:${order.status}`)}</span>
-
-    else if (order.status === "Cancel")
+    else if (order.status === "pending")
       return <span className="text-red-500">{t(`common:${order.status}`)}</span>
-    else if (order.status === "Processing")
-      return <span className="text-customBrown-light0">{t(`common:${order.status}`)}</span>
+
+    else if (order.status === "cancel")
+      return <span className="text-red-500">{t(`common:${order.status}`)}</span>
+    else if (order.status === "processing")
+      return <span className="text-red-500">{t(`common:${order.status}`)}</span>
     else
-      return <span className=" text-customGreen">{order.status}</span>
+      return <span className="text-red-500">{order.status}</span>
   }
   // console.log("order: ", order);
 

@@ -644,7 +644,7 @@ const storeCustomization = {
         en: "Pending Orders",
         de: "Ausstehende Bestellungen",
       },
-      processing_order: {
+      Processing_order: {
         en: "Processing Order",
         de: "Bearbeitungsauftrag",
       },

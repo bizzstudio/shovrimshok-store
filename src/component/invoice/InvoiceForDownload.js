@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 const InvoiceForDownload = ({
   data,
   currency,
@@ -317,11 +318,11 @@ const InvoiceForDownload = ({
               <Text style={styles.info}>{data?.user_info?.name}</Text>
               <Text style={styles.info}>
                 {" "}
-                {data?.user_info?.address?.substring(0, 25)}
+                {data?.user_info?.address?.city?.city_name_he}
               </Text>
               <Text style={styles.info}>
-                {data?.user_info?.city}, {data?.user_info?.country},{" "}
-                {data?.user_info?.zipCode}
+                {data?.user_info?.address?.city?.city_name_he}, {"ישראל"},{" "}
+                {data?.user_info?.address?.postalCode}
               </Text>
             </View>
           </View>
