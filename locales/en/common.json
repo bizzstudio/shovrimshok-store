@@ -280,6 +280,7 @@
   "noItemAdded": "No Item Added Yet!",
   "selectDeliveryMethod": "Please select a delivery method",
   "cannotDeliver": "There is no deliver to your address",
+  "nextAvailable": "The option to deliver to your address will be available from",
 
   "likutMessage": "Please note: there is a 10% increase in price for the collection service",
 
