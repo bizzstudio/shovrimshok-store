@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Label from "@component/form/Label";
 import Cookies from "js-cookie";
 
@@ -14,7 +14,6 @@ const InputArea = ({
   onChange = () => { },
   isRequired = true,
 }) => {
-
   let currentLang = Cookies.get('_lang');
 
   switch (currentLang) {
@@ -28,6 +27,19 @@ const InputArea = ({
       currentLang = false;
       break;
   }
+
+  useEffect(() => {
+    const input = document.getElementById(name);
+    if (input) {
+      input.addEventListener('animationstart', (e) => {
+        if (e.animationName === 'onAutoFillStart') {
+          // Trigger onChange event with the current value
+          const event = new Event('input', { bubbles: true });
+          input.dispatchEvent(event);
+        }
+      });
+    }
+  }, [name]);
 
   return (
     <>
@@ -51,7 +63,10 @@ const InputArea = ({
           defaultValue={defaultValue}
           placeholder={placeholder}
           autoComplete={autocomplete}
-          onChange={onChange}
+          onChange={(e) => {
+            register(name).onChange(e);
+            onChange(e);
+          }}
           className={
             Icon
               ? "py-2 pl-10 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-customGreen h-11 md:h-12 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"

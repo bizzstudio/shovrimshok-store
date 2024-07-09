@@ -219,6 +219,7 @@
   "recoverPassword":"Recover password",
   "loginBtn": "Login",
   "or": "OR",
+  "orGoogle": "or login with Google",
   "notAccount": "Not have a account",
   "alreadyHaveAccount": "Already have an account?",
   "register": "Register",
@@ -232,7 +233,7 @@
 
   "signingUp": "Signing Up",
   "createAccount": "Create an account",
-  "name": "Name",
+  "name": "Full Name",
   "registerSuccess": "Register Success!",
   "hey": "Hey",
   "initializeAddressDes": "Just before we start, let's check if we have deliveries to you!",
@@ -240,6 +241,8 @@
   "confirmPassword": "Confirm Password",
 
   "items": "Items",
+  "registerMessage": "Please access your email to verify your registration. If you did not receive an email, please check the spam box.",
+  "goToEmail": "Go to Gmail",
 
   "/=================* checkout * =================/": "",
 

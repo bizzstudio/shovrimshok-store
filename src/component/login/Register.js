@@ -40,7 +40,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
-              label={t("common:name")}
+              // label={t("common:name")}
               name="name"
               type="text"
               placeholder={t("common:name")}
@@ -53,7 +53,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
-              label={t("common:email")}
+              // label={t("common:email")}
               name="email"
               type="email"
               placeholder={t("common:email")}
@@ -65,7 +65,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
-              label={t("common:phone")}
+              // label={t("common:phone")}
               name="phone"
               type="text"
               placeholder={t("common:phone")}
@@ -78,7 +78,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             <div className="form-group w-full">
               <InputArea
                 register={register}
-                label={t("common:password")}
+                // label={t("common:password")}
                 name="password"
                 type="password"
                 placeholder={t("common:password")}
@@ -88,11 +88,11 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
               <Error errorName={errors.password} />
             </div>
 
-            {/* אישור סיסמה */}
+            {/* אימות סיסמה */}
             <div className="form-group w-full">
               <InputArea
                 register={register}
-                label={t('common:confirmPassword')}
+                // label={t('common:confirmPassword')}
                 name="confirmPassword"
                 type="password"
                 placeholder={t('common:confirmPassword')}
@@ -103,7 +103,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div className="flex ms-auto">
               <button
                 type="button"
@@ -113,7 +113,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
                 {t("common:forgotPassword")}
               </button>
             </div>
-          </div>
+          </div> */}
           {loading ? (
             <button
               disabled={loading}

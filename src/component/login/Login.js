@@ -29,7 +29,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
-              label={t("common:email")}
+              // label={t("common:email")}
               name="registerEmail"
               type="email"
               placeholder={t("common:email")}
@@ -40,7 +40,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
-              label={t("common:password")}
+              // label={t("common:password")}
               name="password"
               type="password"
               placeholder={t("common:password")}
