@@ -1,7 +1,10 @@
 import DeliveryServices from "@services/DeliveryServices";
+import Cookies from "js-cookie";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import { FiInfo, FiTruck } from "react-icons/fi";
+import dayjs from 'dayjs';
+import 'dayjs/locale/he';
 
 const InputShipping = ({
   register,
@@ -13,9 +16,30 @@ const InputShipping = ({
   icon = <FiTruck />,
   isDeliverable,
   note = '',
+  nextTime = null,
 }) => {
 
   const { t } = useTranslation();
+
+  let currentLang = Cookies.get('_lang');
+
+  switch (currentLang) {
+    case 'he':
+      currentLang = true;
+      break;
+    case 'en':
+      currentLang = false;
+      break;
+    default:
+      currentLang = false;
+      break;
+  }
+
+  const formatDate = (dateString) => {
+    dayjs.locale('he');
+    const date = dayjs(dateString);
+    return date.format('dddd, D בMMMM בשעה HH:mm');
+  };
 
   return (
     <div className={`p-3 card border border-gray-200 ${isDeliverable ? "bg-white" : "opacity-60"} rounded-md h-full flex items-center`}>
@@ -29,8 +53,8 @@ const InputShipping = ({
               <h6 className={`flex items-center gap-1 font-serif font-medium text-base ${isDeliverable ? "text-gray-600" : "text-gray-400"} `}>
                 {value} {note && <span className="text-base text-gray-400" title={note}><FiInfo /></span>}
               </h6>
-              {!isDeliverable && <p className="text-sm text-gray-400 -mt-1">
-                {t("common:cannotDeliver")}
+              {!isDeliverable && <p className={nextTime ? "text-sm text-red-500 -mt-1 pl-3" : "text-sm text-gray-400 -mt-1"}>
+                {nextTime ? `${t("common:nextAvailable")} ${formatDate(nextTime)}` : t("common:cannotDeliver")}
               </p>}
             </div>
           </div>

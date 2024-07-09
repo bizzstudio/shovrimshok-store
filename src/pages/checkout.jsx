@@ -72,6 +72,7 @@ const Checkout = () => {
   const { state: { userInfo } } = useContext(UserContext);
   const [city, setCity] = useState(userInfo && userInfo?.address?.city?.city_name_he)
   const [isDeliverable, setIsDeliverable] = useState(null);
+  const [nextTime, setNextTime] = useState(null);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -94,8 +95,9 @@ const Checkout = () => {
   // פונקציה לבדיקת כתובת
   const isAddressDeliverable = async (address) => {
     const response = await DeliveryServices.getByCityName(address);
+    console.log('response: ', response)
 
-    return response ? response.price : null; // יחזיר את עלות המשלוח או null אם אין משלוח לכתובת זו
+    return response ? response : null; // יחזיר את עלות המשלוח או null אם אין משלוח לכתובת זו
   };
 
   // עדכון פונקציית submitHandler
@@ -107,12 +109,52 @@ const Checkout = () => {
     }
   };
 
+  // פונקציית בדיקה האם יש משלוח היום או מחר ואם לא מתי המשלוח הבא
+  const canOrderToday = (daysArray) => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const todayIndex = now.getDay() + 1; // תרגום ל-1 עד 7 במקום 0 עד 6
+    const nextDayIndex = (todayIndex % 7) + 1; // היום הבא עם תרגום ל-1 עד 7
+
+    let isTodayDeliverable;
+    if (currentHour < 14) {
+      // אם השעה היא לפני 14:00
+      isTodayDeliverable = daysArray.some(day => parseInt(day.value) === todayIndex);
+    } else {
+      // אם השעה היא אחרי 14:00
+      isTodayDeliverable = daysArray.some(day => parseInt(day.value) === nextDayIndex);
+    }
+
+    let nextDeliverableDate = null;
+    if (!isTodayDeliverable) {
+      // חיפוש היום הבא שבו ניתן לבצע משלוח
+      for (let i = 1; i < 7; i++) {
+        const futureDayIndex = ((todayIndex + i - 1) % 7) + 1; // תרגום ל-1 עד 7
+        if (daysArray.some(day => Number(day.value) === futureDayIndex)) {
+          nextDeliverableDate = new Date();
+          nextDeliverableDate.setDate(now.getDate() + i - 1);
+          nextDeliverableDate.setHours(14, 0, 0, 0); // הגדרת השעה ל-14:00
+          break;
+        }
+      }
+    }
+
+    return { isTodayDeliverable, nextDeliverableDate };
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const check = await isAddressDeliverable(city);
-        setIsDeliverable(true);
-        setDeliveryPrice(check);
+        const { isTodayDeliverable, nextDeliverableDate } = canOrderToday(check.days);
+
+        if (isTodayDeliverable) {
+          setIsDeliverable(true);
+        } else {
+          setIsDeliverable(false);
+          setNextTime(nextDeliverableDate);
+        }
+        setDeliveryPrice(check.price);
       } catch (error) {
         if (error.response && error.response.status === 404) {
           setIsDeliverable(false);
@@ -169,7 +211,7 @@ const Checkout = () => {
                   <form onSubmit={handleSubmit(submitHandler)}>
                     <div className="w-full flex flex-col md:flex-row items-center pb-3 gap-3.5">
                       {/* פרטים אישיים */}
-                      <div className="w-full md:w-3/4 h-16 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
+                      <div className="w-full md:w-2/3 h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
                         <CiUser className="text-[41px] text-customGreen group-hover:text-white transition ease-in-out duration-300" />
                         <div className="flex flex-col items-start">
                           <h2 className="text-xl">{userInfo?.name}</h2>
@@ -184,9 +226,9 @@ const Checkout = () => {
                         </button>
                       </div>
                       {/* שיטת משלוח */}
-                      <div className="w-full h-16 flex items-center gap-1.5">
+                      <div className="w-full h-20 flex items-center gap-1.5">
                         <div className="w-full h-full relative">
-                          {isDeliverable && <span className="absolute bottom-0 right-14">
+                          {isDeliverable && <span className="absolute bottom-2.5 right-14">
                             <Error errorName={errors.shippingOption} />
                           </span>}
                           <InputShipping
@@ -195,12 +237,13 @@ const Checkout = () => {
                             register={register}
                             value="משלוח"
                             isDeliverable={isDeliverable}
+                            nextTime={nextTime}
                             note="משלוחים מא’-ה’ שיתקבלו עד השעה 14:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
                           />
                         </div>
 
                         <div className="w-full h-full relative">
-                          <span className="absolute bottom-0 right-14">
+                          <span className="absolute bottom-2.5 right-14">
                             <Error errorName={errors.shippingOption} />
                           </span>
                           <InputShipping
