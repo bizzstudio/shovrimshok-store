@@ -39,7 +39,7 @@ const Cart = () => {
     if (!userInfo) {
       handleOpenLogin(); // Handle login if user is not logged in
     } else {
-      if (!userInfo.address.city) {
+      if (!userInfo?.address?.city) {
         localStorage.setItem("firstTime", true);
       } else {
         router.push("/checkout"); // Redirect to checkout page

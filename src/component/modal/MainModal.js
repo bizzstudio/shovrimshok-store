@@ -46,7 +46,7 @@ const MainModal = ({ modalOpen, setModalOpen, children }) => {
                     ref={cancelButtonRef}
                     onClick={() => setModalOpen(false)}
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-base font-medium text-customGreen border border-transparent rounded-full bg-customGreen-leaf focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 border-none outline-none"
+                    className="inline-flex justify-center px-2 py-2 text-base font-medium text-customGreen border border-transparent rounded-full bg-customGreen-leaf focus:outline-none border-none outline-none"
                   >
                     <IoClose />
                   </button>

@@ -219,6 +219,7 @@
     "recoverPassword":"שחזור סיסמה",
     "loginBtn": "כניסה",
     "or": "או",
+    "orGoogle": "או היכנס/י עם גוגל",
     "notAccount": "אין לך חשבון עדיין?",
     "alreadyHaveAccount": "כבר יש לך חשבון?",
     "register": "הרשמה",
@@ -232,14 +233,17 @@
   
     "signingUp": "הרשמה",
     "createAccount": "יצירת חשבון עם אימייל וסיסמה",
-    "name": "שם",
+    "name": "שם מלא",
     "registerSuccess": "ההרשמה בוצעה בהצלחה!",
     "hey": "היי",
     "initializeAddressDes": "רגע לפני שמתחילים, עליך למלא את כל השדות בכדי שנוכל לספק לך שירותי משלוחים!",
     "passwordsDoNotMatch": "הסיסמאות לא תואמות",
-    "confirmPassword": "אישור סיסמה",
+    "confirmPassword": "אימות סיסמה",
   
     "items": "פריטים",
+    "registerMessage1": "נא לגשת",
+    "registerMessage2": "לתיבת האימייל שלך לבצע אימות הרשמה. במידה ולא קיבלת אימייל נא לבדוק בתיבת הספאם.",
+    "goToEmail": "מעבר ל-Gmail",
   
     "/=================* checkout * =================/": "",
   

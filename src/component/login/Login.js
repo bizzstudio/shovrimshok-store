@@ -29,7 +29,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
-              label={t("common:email")}
+              // label={t("common:email")}
               name="registerEmail"
               type="email"
               placeholder={t("common:email")}
@@ -40,7 +40,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
-              label={t("common:password")}
+              // label={t("common:password")}
               name="password"
               type="password"
               placeholder={t("common:password")}
@@ -65,7 +65,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
             <button
               disabled={loading}
               type="submit"
-              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customGreen text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customGreen-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
+              className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
             >
               <img
                 src="/loader/spinner.gif"

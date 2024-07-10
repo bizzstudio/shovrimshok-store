@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import MainModal from "@component/modal/MainModal";
 import UserAddressInitialize from "@component/userAddressInitialize/UserAddressInitialize";
+import RegisterSuccess from "@component/login/RegisterSuccess";
 
 const Layout = ({ title, description, children }) => {
 
@@ -37,6 +38,35 @@ const Layout = ({ title, description, children }) => {
     }
   }, [localStorage.firstTime]);
 
+  const [showRegisterSuccess, setShowRegisterSuccess] = useState(false);
+  useEffect(() => {
+    const handleStorageChange = () => {
+      if (localStorage.showRegisterSuccess && JSON.parse(localStorage.showRegisterSuccess)) {
+        setShowRegisterSuccess(true);
+        localStorage.removeItem('showRegisterSuccess');
+      }
+    };
+
+    // בדיקה ראשונית
+    handleStorageChange();
+
+    // הוספת מאזין לאירוע מותאם אישית
+    window.addEventListener("customLocalStorageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("customLocalStorageChange", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function(key, value) {
+      const event = new Event('customLocalStorageChange');
+      originalSetItem.apply(this, arguments);
+      window.dispatchEvent(event);
+    };
+  }, []);
+
   return (
     <>
       <ToastContainer rtl={currentLang} />
@@ -45,6 +75,14 @@ const Layout = ({ title, description, children }) => {
         <MainModal modalOpen={addressPopup} setModalOpen={setAddressPopup}>
           <div className="px-3 sm:px-11 py-8 max-w-md">
             <UserAddressInitialize />
+          </div>
+        </MainModal>
+      )}
+
+      {showRegisterSuccess && (
+        <MainModal modalOpen={showRegisterSuccess} setModalOpen={setShowRegisterSuccess}>
+          <div className="px-3 sm:px-11 py-8 max-w-md">
+            <RegisterSuccess />
           </div>
         </MainModal>
       )}

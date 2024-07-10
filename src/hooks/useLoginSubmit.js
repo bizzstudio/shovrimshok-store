@@ -76,7 +76,8 @@ const useLoginSubmit = (setModalOpen) => {
         .then((res) => {
           setLoading(false);
           setModalOpen(false);
-          notifySuccess(res.message);
+          // notifySuccess(res.message);
+          localStorage.setItem("showRegisterSuccess", true); // פופאפ במקום נוטיפיי
         })
         .catch((err) => {
           console.log(err)
