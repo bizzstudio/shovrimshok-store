@@ -38,12 +38,34 @@ const Layout = ({ title, description, children }) => {
     }
   }, [localStorage.firstTime]);
 
-  const [showRegisterSuccess, setShowRegisterSuccess] = useState(true);
+  const [showRegisterSuccess, setShowRegisterSuccess] = useState(false);
   useEffect(() => {
-    if (localStorage.showRegisterSuccess && JSON.parse(localStorage.showRegisterSuccess)) {
-      setShowRegisterSuccess(true);
-    }
-  }, [localStorage.showRegisterSuccess]);
+    const handleStorageChange = () => {
+      if (localStorage.showRegisterSuccess && JSON.parse(localStorage.showRegisterSuccess)) {
+        setShowRegisterSuccess(true);
+        localStorage.removeItem('showRegisterSuccess');
+      }
+    };
+
+    // בדיקה ראשונית
+    handleStorageChange();
+
+    // הוספת מאזין לאירוע מותאם אישית
+    window.addEventListener("customLocalStorageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("customLocalStorageChange", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function(key, value) {
+      const event = new Event('customLocalStorageChange');
+      originalSetItem.apply(this, arguments);
+      window.dispatchEvent(event);
+    };
+  }, []);
 
   return (
     <>
@@ -56,7 +78,7 @@ const Layout = ({ title, description, children }) => {
           </div>
         </MainModal>
       )}
-      
+
       {showRegisterSuccess && (
         <MainModal modalOpen={showRegisterSuccess} setModalOpen={setShowRegisterSuccess}>
           <div className="px-3 sm:px-11 py-8 max-w-md">

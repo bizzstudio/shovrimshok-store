@@ -241,7 +241,8 @@
   "confirmPassword": "Confirm Password",
 
   "items": "Items",
-  "registerMessage": "Please access your email to verify your registration. If you did not receive an email, please check the spam box.",
+  "registerMessage1": "Please access",
+  "registerMessage2": "your email to verify your registration. If you did not receive an email, please check the spam box.",
   "goToEmail": "Go to Gmail",
 
   "/=================* checkout * =================/": "",
