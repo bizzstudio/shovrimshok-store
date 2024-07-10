@@ -36,6 +36,7 @@ import DeliveryServices from "@services/DeliveryServices";
 import MainModal from "@component/modal/MainModal";
 import UserAddressUpdate from "@component/userAddressUpdate/UserAddressUpdate";
 import { notifyError } from "@utils/toast";
+import paymentTitle from 'public/titles/paymentTitle.svg'
 
 const Checkout = () => {
   const {
@@ -192,6 +193,7 @@ const Checkout = () => {
 
   return (
     <>
+    <img src={paymentTitle.src} alt="אמצעי תשלום" />
       {modalOpen && (
         <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <div className="px-11 py-8">
