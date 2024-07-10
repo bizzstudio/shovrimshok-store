@@ -2,10 +2,11 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay, Navigation } from "swiper";
+import { Pagination, Autoplay, Navigation, EffectFade } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/effect-fade";
 
 //internal import
 
@@ -107,10 +108,13 @@ const MainCarousel = () => {
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 2000,
+          delay: 40000,
           disableOnInteraction: false,
         }}
+        speed={1500}
         loop={true}
+        effect="fade" // הוספת אפקט fade
+        fadeEffect={{ crossFade: true }} // הגדרת אפשרויות לאפקט fade
         pagination={
           (storeCustomizationSetting?.slider?.bottom_dots ||
             storeCustomizationSetting?.slider?.both_slider) && {
@@ -123,7 +127,7 @@ const MainCarousel = () => {
             clickable: true,
           }
         }
-        modules={[Autoplay, Pagination, Navigation]}
+        modules={[Autoplay, Pagination, Navigation, EffectFade]} // הוספת EffectFade למודולים
         className="mySwiper"
       >
         {sliderData?.map((item, i) => (
@@ -137,7 +141,7 @@ const MainCarousel = () => {
                 height={400}
                 src={item.image}
                 alt={item.title}
-                className="object-cover"
+                className="object-cover max-h-[300px] w-full"
                 priority
               />
             </div>
