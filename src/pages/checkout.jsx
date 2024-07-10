@@ -207,7 +207,7 @@ const Checkout = () => {
                 <iframe
                   src={paymentSrc}
                   id='cardcomiframe'
-                  className="w-full h-[1000px]"
+                  className="w-full h-[800px]"
                 />
               </div> :
                 <div className="mt-5 md:mt-0 md:col-span-2">
