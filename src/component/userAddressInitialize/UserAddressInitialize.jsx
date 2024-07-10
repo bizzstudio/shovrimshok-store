@@ -94,7 +94,7 @@ const UserAddressInitialize = () => {
       localStorage.removeItem("firstTime");
     }
   }, [localStorage.firstTime])
-  
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -161,7 +161,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.floor} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-6 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:entryCode")}
@@ -173,7 +173,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.entryCode} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-6 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:postalCode")}
@@ -183,6 +183,17 @@ const UserAddressInitialize = () => {
                       isRequired={false}
                     />
                     <Error errorName={errors.postalCode} />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-2">
+                    <InputArea
+                      register={register}
+                      label={t("common:phone")}
+                      name="phone"
+                      type="tel"
+                      placeholder={t("common:phone")}
+                    />
+                    <Error errorName={errors.phone} />
                   </div>
 
 

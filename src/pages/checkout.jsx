@@ -95,8 +95,6 @@ const Checkout = () => {
   // פונקציה לבדיקת כתובת
   const isAddressDeliverable = async (address) => {
     const response = await DeliveryServices.getByCityName(address);
-    console.log('response: ', response)
-
     return response ? response : null; // יחזיר את עלות המשלוח או null אם אין משלוח לכתובת זו
   };
 
@@ -205,7 +203,13 @@ const Checkout = () => {
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
           <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
-              {paymentSrc ? <div className="min-h-screen flex items-center justify-center">{navToPaymentPage()}<Loading loading={true} /></div> :
+              {paymentSrc ? <div className="flex items-center justify-center">
+                <iframe
+                  src={paymentSrc}
+                  id='cardcomiframe'
+                  className="w-full h-[1000px]"
+                />
+              </div> :
                 <div className="mt-5 md:mt-0 md:col-span-2">
                   <h1 className="text-3xl font-bold text-customGreen w-full my-3 text-center bg-white border border-gray-200 p-3 rounded-md">{t("common:likutMessage")}</h1>
                   <form onSubmit={handleSubmit(submitHandler)}>
