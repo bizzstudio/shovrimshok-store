@@ -78,8 +78,15 @@ const Checkout = () => {
   const [deliveryPrice, setDeliveryPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
   const router = useRouter();
 
+  // משיכת ההגדרות של המשלוחים וההזמנות ובדיקה אם זה מאופשר או לא
+  useEffect(() => {
+    setIsDeliveryOpen(storeSetting.delivery_status);
+    setIsCheckoutOpen(storeSetting.optionToOrder_status);
+  }, [storeSetting]);
 
   useEffect(() => {
     if (!userInfo) {
@@ -190,7 +197,7 @@ const Checkout = () => {
     default:
       currentLang = false;
       break;
-  }
+  };
 
   return (
     <>
@@ -245,7 +252,8 @@ const Checkout = () => {
                             value="משלוח עד הבית (בתוספת תשלום)"
                             isDeliverable={isDeliverable}
                             nextTime={nextTime}
-                            // note="משלוחים מא’-ה’ שיתקבלו עד השעה 14:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
+                            isDeliveryOpen={isDeliveryOpen}
+                          // note="משלוחים מא’-ה’ שיתקבלו עד השעה 14:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
                           />
                         </div>
 

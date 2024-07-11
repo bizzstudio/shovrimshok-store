@@ -17,6 +17,7 @@ const InputShipping = ({
   isDeliverable,
   note = '',
   nextTime = null,
+  isDeliveryOpen = true,
 }) => {
 
   const { t } = useTranslation();
@@ -42,20 +43,25 @@ const InputShipping = ({
   };
 
   return (
-    <div className={`p-3 card border border-gray-200 ${isDeliverable ? "bg-white" : "opacity-60"} rounded-md h-full flex items-center`}>
-      <label className={`label w-full px-1.5 ${isDeliverable ? "cursor-pointer" : "cursor-not-allowed"}`}>
+    <div className={`p-3 card border border-gray-200 ${isDeliverable && isDeliveryOpen ? "bg-white" : "opacity-60"} rounded-md h-full flex items-center`}>
+      <label className={`label w-full px-1.5 ${isDeliverable && isDeliveryOpen ? "cursor-pointer" : "cursor-not-allowed"}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-3xl text-gray-400">
               {icon}
             </span>
             <div>
-              <h6 className={`flex items-center gap-1 font-serif font-medium text-base ${isDeliverable ? "text-gray-600" : "text-gray-400"} `}>
+              <h6 className={`flex items-center gap-1 font-serif font-medium text-base ${isDeliverable && isDeliveryOpen ? "text-gray-600" : "text-gray-400"} `}>
                 {value} {note && <span className="text-base text-gray-400" title={note}><FiInfo /></span>}
               </h6>
-              {!isDeliverable && <p className={nextTime ? "text-sm text-red-500 -mt-1 pl-3" : "text-sm text-gray-400 -mt-1"}>
-                {nextTime ? `${t("common:nextAvailable")} ${formatDate(nextTime)}` : t("common:cannotDeliver")}
-              </p>}
+              {!isDeliveryOpen ?
+                <p className={nextTime ? "text-sm text-red-500 -mt-1 pl-3" : "text-sm text-gray-400 -mt-1"}>
+                  {t("common:deliveriesNotAvailable")}
+                </p>
+                :
+                !isDeliverable && <p className={nextTime ? "text-sm text-red-500 -mt-1 pl-3" : "text-sm text-gray-400 -mt-1"}>
+                  {nextTime ? `${t("common:nextAvailable")} ${formatDate(nextTime)}` : t("common:cannotDeliver")}
+                </p>}
             </div>
           </div>
           <input
@@ -67,9 +73,9 @@ const InputShipping = ({
             })}
             name="shippingOption"
             type="radio"
-            disabled={!isDeliverable}
+            disabled={!isDeliveryOpen || !isDeliverable}
             value={value}
-            className={`form-radio outline-none focus:ring-0 text-customGreen bg-transparent cursor-pointer ${!isDeliverable && "cursor-not-allowed"}`}
+            className={`form-radio outline-none focus:ring-0 text-customGreen bg-transparent cursor-pointer ${!isDeliverable || !isDeliveryOpen ? "cursor-not-allowed" : ""}`}
           />
         </div>
       </label>

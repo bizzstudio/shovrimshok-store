@@ -286,6 +286,7 @@
     "selectDeliveryMethod": "יש לבחור שיטת משלוח",
     "cannotDeliver": "אין משלוחים לכתובת שלך",
     "nextAvailable": "האופציה לביצוע משלוח לכתובתך תהיה זמינה מיום",
+    "deliveriesNotAvailable": "המשלוחים אינם זמינים כעת",
 
     "likutMessage": "לשים לב: חלה התייקרות בסך 10% עבור שירות הליקוט",
 
