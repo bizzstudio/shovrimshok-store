@@ -141,7 +141,7 @@ const MainCarousel = () => {
                 height={400}
                 src={item.image}
                 alt={item.title}
-                className="object-cover max-h-[300px] w-full"
+                className="object-cover"
                 priority
               />
             </div>

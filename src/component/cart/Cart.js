@@ -12,11 +12,12 @@ import { UserContext } from "@context/UserContext";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useCart from "@hooks/useCart";
+import { FiInfo } from "react-icons/fi";
 
 const Cart = () => {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
-  const { isEmpty, items, customCartTotal  } = useCart();
+  const { isEmpty, items, customCartTotal } = useCart();
   const { toggleCartDrawer, closeCartDrawer } = useContext(SidebarContext);
   const { currency } = useUtilsFunction();
   const { t } = useTranslation();
@@ -64,9 +65,13 @@ const Cart = () => {
       ref={buttonRef}
       className="w-full py-3 px-3 rounded-lg bg-customGreen flex items-center justify-between bg-heading text-sm sm:text-base text-white focus:outline-none transition duration-300 cursor-auto"
     >
-      <span className="align-middle font-medium font-serif">
-        {currency}
+      <span className="font-medium font-serif text-xl flex flex-col justify-start items-start">
+        <span>
+        <small>{currency}</small>
         {customCartTotal.toFixed(2)}
+        </span>
+        {/* <FiInfo title={t("common:additonalLikut")} className="cursor-pointer mb-0.5"/> */}
+        <small className="text-sm">{t("common:additonalLikut")}</small>
       </span>
       <span
         onClick={handleCheckoutClick}

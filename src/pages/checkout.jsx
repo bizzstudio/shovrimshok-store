@@ -207,11 +207,10 @@ const Checkout = () => {
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
               {paymentSrc ? <div className="flex flex-col gap-3 items-center justify-center">
                 {scrollUp()}
-                {/* <img src={paymentTitle.src} alt={t("common:paymentMethod")} className="h-28 mx-auto -mt-4 -mb-9" /> */}
                 <iframe
                   src={paymentSrc}
                   id='cardcomiframe'
-                  className="w-full h-[800px]"
+                  className="max-w-[600px] w-3/4 h-[550px] flex items-center justify-center"
                 />
               </div> :
                 <div className="mt-5 md:mt-0 md:col-span-2">
@@ -219,7 +218,7 @@ const Checkout = () => {
                   <form onSubmit={handleSubmit(submitHandler)}>
                     <div className="w-full flex flex-col md:flex-row items-center pb-3 gap-3.5">
                       {/* פרטים אישיים */}
-                      <div className="w-full md:w-2/3 h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
+                      <div className="w-full md:w-1/2 h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
                         <CiUser className="text-[41px] text-customGreen group-hover:text-white transition ease-in-out duration-300" />
                         <div className="flex flex-col items-start">
                           <h2 className="text-xl">{userInfo?.name}</h2>
@@ -243,10 +242,10 @@ const Checkout = () => {
                             currency={currency}
                             handleShippingCost={handleSubmitWithAddressCheck}
                             register={register}
-                            value="משלוח"
+                            value="משלוח עד הבית (בתוספת תשלום)"
                             isDeliverable={isDeliverable}
                             nextTime={nextTime}
-                            note="משלוחים מא’-ה’ שיתקבלו עד השעה 14:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
+                            // note="משלוחים מא’-ה’ שיתקבלו עד השעה 14:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
                           />
                         </div>
 

@@ -46,13 +46,13 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
                   case "delivered":
                   case "POS-Completed":
                     return <span className="text-customGreen">{t(`common:${data.status}`)}</span>;
-                  case "pending":
+                  case "Pending":
                     return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
-                  case "cancel":
+                  case "Cancel":
                     return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
-                  case "processing":
+                  case "Processing":
                     return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
-                  case "deleted":
+                  case "Deleted":
                     return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
                   default:
                     return <span className="text-red-500">{data.status}</span>;

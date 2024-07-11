@@ -88,8 +88,8 @@ const Order = ({ params }) => {
               globalSetting={globalSetting}
             />
             <div className="bg-white p-8 rounded-b-xl">
-              <div className="flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between invoice-btn">
-                <PDFDownloadLink
+              <div className="flex lg:flex-row-reverse md:flex-row-reverse sm:flex-row-reverse flex-col justify-between invoice-btn">
+                {/* <PDFDownloadLink
                   document={
                     <InvoiceForDownload
                       data={data}
@@ -114,7 +114,7 @@ const Order = ({ params }) => {
                       </button>
                     )
                   }
-                </PDFDownloadLink>
+                </PDFDownloadLink> */}
 
                 <ReactToPrint
                   trigger={() => (

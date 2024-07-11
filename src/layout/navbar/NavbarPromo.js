@@ -1,20 +1,10 @@
-import { Fragment, useState, useEffect, useContext } from "react";
+import { Fragment, useState, useEffect, useContext, useTransition } from "react";
 import Link from "next/link";
 import { Transition, Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import SettingServices from "@services/SettingServices";
 import Cookies from "js-cookie";
-import {
-  FiGift,
-  FiAlertCircle,
-  FiHelpCircle,
-  FiShoppingBag,
-  FiFileText,
-  FiUsers,
-  FiPocket,
-  FiPhoneIncoming,
-} from "react-icons/fi";
-import { TbTruckDelivery } from "react-icons/tb";
+import useTranslation from "next-translate/useTranslation";
 
 //internal import
 import { notifyError } from "@utils/toast";
@@ -35,6 +25,7 @@ import cycleIcon from 'public/circular-arrows.svg'
 
 // TODO: אמור להגיע מהאדמין
 import offerIcon from 'public/categories icons/gift-color.svg'
+import offerIconNoColor from 'public/categories icons/gift.svg'
 import fruitsIcon from 'public/categories icons/fruits_color.svg'
 import legumesIcon from 'public/categories icons/beans_color.svg'
 import herbsIcon from 'public/categories icons/mortar_color.svg'
@@ -56,6 +47,8 @@ const NavbarPromo = () => {
   const { state: { userInfo } } = useContext(UserContext);
 
   const router = useRouter();
+
+  const { t } = useTranslation();
 
   const handleOpenLogin = () => {
     if (router.push("/?redirect=/user/my-orders")) {
@@ -115,15 +108,15 @@ const NavbarPromo = () => {
   const getColorIcon = (index, defaultIcon) => {
     switch (index) {
       case 0:
-        return offerIcon.src ? offerIcon.src : defaultIcon;
-      case 1:
         return fruitsIcon.src ? fruitsIcon.src : defaultIcon;
-      case 2:
+      case 1:
         return legumesIcon.src ? legumesIcon.src : defaultIcon;
-      case 3:
+      case 2:
         return herbsIcon.src ? herbsIcon.src : defaultIcon;
-      case 4:
+      case 3:
         return vegetablesIcon.src ? vegetablesIcon.src : defaultIcon;
+      case 4:
+        return offerIcon.src ? offerIcon.src : defaultIcon;
       default:
         return defaultIcon;
     }
@@ -135,19 +128,19 @@ const NavbarPromo = () => {
   useEffect(() => {
     if (query?.category) {
       switch (query?.category) {
-        case 'מבצעים':
+        case 'פירות':
           setSelectedCategory(0);
           break;
-        case 'פירות':
+        case 'קטניות':
           setSelectedCategory(1);
           break;
-        case 'קטניות':
+        case 'עלים ועשבי תיבול':
           setSelectedCategory(2);
           break;
-        case 'עלים ועשבי תיבול':
+        case 'ירקות':
           setSelectedCategory(3);
           break;
-        case 'ירקות':
+        case 'מבצעים':
           setSelectedCategory(4);
           break;
         default:
@@ -222,36 +215,49 @@ const NavbarPromo = () => {
                         //     </Popover.Panel>
                         //   </Transition>
                         // </Popover>
-                        !loading && !error && data && data[0]?.children?.map((category, index) => {
-                          const title = showingTranslateValue(category?.name)
-                          return <a
-                            onMouseEnter={() => setIsHover(index)}
-                            onMouseLeave={() => setIsHover(null)}
-                            onClick={() => showCategory(category._id, title)}
-                            className={`p-2 flex items-center gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 
-                              ${selectedCategory == index ? 'scale-105' : ''}`}
-                            role="button"
-                            key={category._id}
-                          >
-                            {/* {console.log('category: ', category)} */}
-                            {category.icon ? (
-                              isHover == index || selectedCategory == index ?
-                                <Image src={getColorIcon(index, category.icon)} width={30} height={30} alt="Category" /> :
-                                <Image src={category.icon} width={30} height={30} alt="Category" />
-                            ) : (
-                              <Image
-                                src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                                width={30}
-                                height={30}
-                                alt="category"
-                              />
-                            )}
+                        <>
+                          {!loading && !error && data && data[0]?.children?.map((category, index) => {
+                            const title = showingTranslateValue(category?.name)
+                            return <a
+                              onMouseEnter={() => setIsHover(index)}
+                              onMouseLeave={() => setIsHover(null)}
+                              onClick={() => showCategory(category._id, title)}
+                              className={`p-2 flex items-center gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
+                              role="button"
+                              key={category._id}
+                            >
+                              {/* {console.log('category: ', category)} */}
+                              {category.icon ? (
+                                isHover == index || selectedCategory == index ?
+                                  <Image src={getColorIcon(index, category.icon)} width={30} height={30} alt="Category" /> :
+                                  <Image src={category.icon} width={30} height={30} alt="Category" />
+                              ) : (
+                                <Image
+                                  src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                                  width={30}
+                                  height={30}
+                                  alt="category"
+                                />
+                              )}
 
+                              <div className="inline-flex items-center justify-between text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
+                                {title}
+                              </div>
+                            </a>
+                          })}
+                          <a onMouseEnter={() => setIsHover(4)}
+                            onMouseLeave={() => setIsHover(null)}
+                            onClick={() => router.push('offers')}
+                            className={`p-2 flex items-center gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == 4 ? 'scale-105' : ''}`}
+                            role="button">
+                            {isHover == 4 || selectedCategory == 4 ?
+                              <Image src={getColorIcon(4, offerIconNoColor.src)} width={30} height={30} alt="Category" /> :
+                              <Image src={offerIconNoColor.src} width={30} height={30} alt="Category" />}
                             <div className="inline-flex items-center justify-between text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
-                              {title}
+                              {t("common:Offers")}
                             </div>
                           </a>
-                        })
+                        </>
                       )}
 
                     {/* {storeCustomizationSetting?.navbar?.about_menu_status && (
@@ -276,9 +282,9 @@ const NavbarPromo = () => {
                           storeCustomizationSetting?.navbar?.contact_us
                         )}
                       </Link>
-                    )} */}
+                    )}
 
-                    {/* <Popover className="relative font-serif">
+                    <Popover className="relative font-serif">
                       <Popover.Button className="group inline-flex items-center py-2 text-sm font-medium hover:text-customGreen-dark focus:outline-none">
                         <span>
                           {showingTranslateValue(
@@ -446,9 +452,9 @@ const NavbarPromo = () => {
                           </div>
                         </Popover.Panel>
                       </Transition>
-                    </Popover> */}
+                    </Popover>
 
-                    {/* {storeCustomizationSetting?.navbar?.offers_menu_status && (
+                    {storeCustomizationSetting?.navbar?.offers_menu_status && (
                       <Link
                         href="/offer"
                         onClick={() => setIsLoading(!isLoading)}
