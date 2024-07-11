@@ -8,7 +8,7 @@
     "Products": "Products",
     "FAQ": "FAQ",
     "Pages": "Pages",
-    "Offers": "Offers",
+    "Offers": "מבצעים",
     "Categories": "קטגוריות",
     "Contact Us": "Contact Us",
     "Privacy Policy": "Privacy Policy",
@@ -205,6 +205,7 @@
     "cartEmptyText": "לא נוספו פריטים לעגלת הקניות שלך. אנא הוסף מוצרים לעגלה שלך.",
     "proceedToCheckoutBtn": "המשך לתשלום",
     "addedToCart!": "נוסף לעגלה!",
+    "additonalLikut": "(המחיר כולל התייקרות 10% עבור ליקוט)",
   
     "/=================* Login Popup * =================/": "",
   
