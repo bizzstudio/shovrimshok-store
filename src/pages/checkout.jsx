@@ -36,6 +36,8 @@ import DeliveryServices from "@services/DeliveryServices";
 import MainModal from "@component/modal/MainModal";
 import UserAddressUpdate from "@component/userAddressUpdate/UserAddressUpdate";
 import { notifyError } from "@utils/toast";
+import paymentTitle from 'public/titles/paymentTitle.svg'
+import scrollUp from "src/functions/scrollUp";
 
 const Checkout = () => {
   const {
@@ -203,7 +205,9 @@ const Checkout = () => {
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
           <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
-              {paymentSrc ? <div className="flex items-center justify-center">
+              {paymentSrc ? <div className="flex flex-col gap-3 items-center justify-center">
+                {scrollUp()}
+                {/* <img src={paymentTitle.src} alt={t("common:paymentMethod")} className="h-28 mx-auto -mt-4 -mb-9" /> */}
                 <iframe
                   src={paymentSrc}
                   id='cardcomiframe'
@@ -380,7 +384,7 @@ const Checkout = () => {
                       </div>
                       <div className="col-span-6 sm:col-span-3">
                         <button
-                          onClick={() => isDeliveryMetod ? {} : notifyError(t("common:selectDeliveryMethod"))}
+                          onClick={() => isDeliveryMetod ? {} : (notifyError(t("common:selectDeliveryMethod")), scrollUp())}
                           type="submit"
                           disabled={isEmpty || isCheckoutSubmit}
                           className="bg-customGreen hover:bg-customGreen-dark border border-customGreen transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"

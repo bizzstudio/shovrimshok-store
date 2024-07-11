@@ -12,6 +12,7 @@ import Loading from "@component/preloader/Loading";
 import { SidebarContext } from "@context/SidebarContext";
 import Cookies from "js-cookie";
 import useCart from "@hooks/useCart";
+import scrollUp from "src/functions/scrollUp";
 
 const Success = () => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
@@ -22,6 +23,7 @@ const Success = () => {
 
   // ריקון העגלה
   useEffect(() => {
+    scrollUp();
     Cookies.remove("couponInfo");
     sessionStorage.removeItem("products");
     emptyCart();
