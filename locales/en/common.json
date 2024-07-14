@@ -298,6 +298,9 @@
   "orderFaildText": "Your payment has been declined, please try again.",
   "tryAgain": "Try Again",
 
+  "storeClose": "Sorry, the store is currently closed.",
+  "storeCloseMessage": "The store is currently closed for orders, please try again later.",
+
   "/=================* Invoice * =================/": "",
 
   "invoice": "Invoice",
