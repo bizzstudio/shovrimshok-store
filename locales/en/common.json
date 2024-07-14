@@ -286,6 +286,7 @@
   "selectDeliveryMethod": "Please select a delivery method",
   "cannotDeliver": "There is no deliver to your address",
   "nextAvailable": "The option to deliver to your address will be available from",
+  "deliveriesNotAvailable": "Deliveries are not available now",
 
   "likutMessage": "Please note: there is a 10% increase in price for the collection service",
 
@@ -296,6 +297,9 @@
   "purchaseFailed": "Purchase Failed!",
   "orderFaildText": "Your payment has been declined, please try again.",
   "tryAgain": "Try Again",
+
+  "storeClose": "Sorry, the store is currently closed.",
+  "storeCloseMessage": "The store is currently closed for orders, please try again later.",
 
   "/=================* Invoice * =================/": "",
 
