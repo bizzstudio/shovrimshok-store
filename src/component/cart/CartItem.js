@@ -1,6 +1,5 @@
 import { use, useContext } from "react";
 import Link from "next/link";
-import { useCart } from "react-use-cart";
 import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -8,6 +7,7 @@ import { useRouter } from "next/router";
 //internal import
 import useAddToCart from "@hooks/useAddToCart";
 import { SidebarContext } from "@context/SidebarContext";
+import useCart from "@hooks/useCart";
 
 const CartItem = ({ item, currency, updateTotalPrice }) => {
   const { updateItemQuantity, removeItem, updateItem  } = useCart();
