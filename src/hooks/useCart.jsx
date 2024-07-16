@@ -1,7 +1,7 @@
 import OfferServices from '@services/OfferServices';
 import { useCart as useOriginalCart } from 'react-use-cart';
 import useAsync from './useAsync';
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
 const useCart = () => {
     const cart = useOriginalCart();
@@ -10,9 +10,9 @@ const useCart = () => {
 
     // Helper function to apply offers to cart items
     const applyOffers = (cartItems, offers) => {
-        if (!offers || offers.length === 0) return 0;
+        if (!offers || offers.length === 0) return { updatedCartItems: cartItems, totalDiscount: 0 };
 
-        let updatedCartItems = [...cartItems];
+        let updatedCartItems = cartItems.map(item => ({ ...item, discountedPrice: null, offerTitle: '' }));
         let totalDiscount = 0;
 
         // Create a map to count the quantity of each product
@@ -41,51 +41,54 @@ const useCart = () => {
 
             // חישוב כמה פעמים המבצע יכול לחול
             const timesOfferCanApply = Math.floor(totalApplicableQuantity / offer.quantity);
+            let remainingQuantityToApply = timesOfferCanApply * offer.quantity;
 
             if (timesOfferCanApply > 0) {
-                // Apply the offer
-                let remainingQuantityToApply = timesOfferCanApply * offer.quantity;
-                let offerDiscount = timesOfferCanApply * (offer.quantity * offer.products[0].prices.price - offer.price);
+                const offerUnitPrice = offer.price / offer.quantity;
 
-                // Calculate the total discount
-                totalDiscount += offerDiscount;
+                updatedCartItems = updatedCartItems.map(item => {
+                    if (offerProducts.includes(item._id)) {
+                        if (remainingQuantityToApply > 0) {
+                            const discountQuantity = Math.min(item.quantity, remainingQuantityToApply);
+                            remainingQuantityToApply -= discountQuantity;
+                            const nonDiscountQuantity = item.quantity - discountQuantity;
 
-                // Update cart items by marking the quantity of products covered by the offer
-                offerProducts.forEach(id => {
-                    while (remainingQuantityToApply > 0 && productCount[id] > 0) {
-                        const itemIndex = updatedCartItems.findIndex(item => item._id === id);
-                        if (itemIndex > -1) {
-                            // כמות המוצרים שיש להפחית משארית המוצרים שנשאר להכניס למבצע
-                            const reduction = Math.min(remainingQuantityToApply, updatedCartItems[itemIndex].quantity);
-
-                            remainingQuantityToApply -= reduction;
-                            productCount[id] -= reduction;
+                            const discountedPrice = (discountQuantity * offerUnitPrice) + (nonDiscountQuantity * item.prices.price);
+                            // console.log(`המוצר ${item.title} התעדכן למחיר מבצע חדש בסך ${discountedPrice}`)
+                            return {
+                                ...item,
+                                discountedPrice: discountedPrice,
+                                offerTitle: offer.name
+                            };
                         }
                     }
+                    return item;
                 });
+
+                totalDiscount += timesOfferCanApply * (offer.quantity * offer.products[0].prices.price - offer.price);
             }
         });
 
-        return totalDiscount;
+        return { updatedCartItems, totalDiscount };
     };
 
-    // חישוב המחיר הכולל של העגלה עם המחירים המחושבים של הפריטים
-    const customCartTotal = useMemo(() => {
-        if (!cart.items || cart.items.length === 0 || loading || error) return cart.cartTotal;
+    const [customCart, setCustomCart] = useState({
+        customCartTotal: cart.totalItems,
+        updatedCartItems: cart.items
+    });
 
-        const discount = applyOffers(cart.items, offers);
-        console.log('discount: ', discount)
-
-        return (cart.cartTotal - discount)
-            // הוספת 10% דמי ליקוט
-            * 1.1;
-    }, [cart.items, offers, loading, error]);
-
-    console.log('customCartTotal: ', customCartTotal)
+    useEffect(() => {
+        const { updatedCartItems, totalDiscount } = applyOffers(cart.items, offers);
+        setCustomCart({
+            customCartTotal: (cart.cartTotal - totalDiscount) * 1.1, // הוספת דמי ליקוט 10%
+            updatedCartItems: updatedCartItems,
+        });
+    }, [cart, offers]);
 
     return {
         ...cart,
-        customCartTotal
+        customCartTotal: customCart.customCartTotal,
+        items: customCart.updatedCartItems
     };
 };
 

@@ -10,107 +10,103 @@ import { SidebarContext } from "@context/SidebarContext";
 import useCart from "@hooks/useCart";
 
 const CartItem = ({ item, currency, updateTotalPrice }) => {
-  const { updateItemQuantity, removeItem, updateItem  } = useCart();
+  const { updateItemQuantity, removeItem, updateItem, items } = useCart();
   const { closeCartDrawer } = useContext(SidebarContext);
   const { handleIncreaseQuantity } = useAddToCart();
   const router = useRouter();
 
   const [appliedOffers, setAppliedOffers] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(item.prices.price * item.quantity);
+  const [offerTitle, setOfferTitle] = useState('');
+
+  // עדכון מחיר המוצר על סמך המבצע שלו
+  useEffect(() => {
+    const thisItem = items.find((i) => i.id === item.id);
+    if (thisItem?.discountedPrice) {
+      setTotalPrice(thisItem?.discountedPrice);
+      setOfferTitle(thisItem?.offerTitle?.he);
+    } else {
+      setTotalPrice(item.prices.price * item.quantity);
+      setOfferTitle('');
+    }
+  }, [items]);
 
   // החלת ההצעות על כמות המוצרים שנלקחו תוך חישוב שמכניס כמה שיותר מוצרים אל תוך ההצעות הקיימות
-  useEffect(() => {
-    // במקרה של מבצע על מוצר רגיל
-    if (item?.prices?.offers && item?.prices?.offers.length > 0) {
-      // Copy the quantity to avoid mutating the original item
-      let remainingQuantity = item.quantity;
-      const sortedOffers = [...item?.prices?.offers].sort((a, b) => b.quantity - a.quantity);
-      const offersToApply = [];
+  // useEffect(() => {
+  //   // במקרה של מבצע על מוצר רגיל
+  //   if (item?.prices?.offers && item?.prices?.offers.length > 0) {
+  //     // Copy the quantity to avoid mutating the original item
+  //     let remainingQuantity = item.quantity;
+  //     const sortedOffers = [...item?.prices?.offers].sort((a, b) => b.quantity - a.quantity);
+  //     const offersToApply = [];
 
-      sortedOffers.forEach((offer) => {
-        if (remainingQuantity >= offer.quantity) {
-          const offerCount = Math.floor(remainingQuantity / offer.quantity);
-          remainingQuantity -= offerCount * offer.quantity;
-          for (let i = 0; i < offerCount; i++) {
-            offersToApply.push({
-              name: offer.name,
-              quantity: offer.quantity,
-              price: offer.price,
-            });
-          }
-        }
-      });
+  //     sortedOffers.forEach((offer) => {
+  //       if (remainingQuantity >= offer.quantity) {
+  //         const offerCount = Math.floor(remainingQuantity / offer.quantity);
+  //         remainingQuantity -= offerCount * offer.quantity;
+  //         for (let i = 0; i < offerCount; i++) {
+  //           offersToApply.push({
+  //             name: offer.name,
+  //             quantity: offer.quantity,
+  //             price: offer.price,
+  //           });
+  //         }
+  //       }
+  //     });
 
-      // את השארית דוחפים אל תוך הצעה שלא עושה כלום
-      if (remainingQuantity > 0) {
-        offersToApply.push({
-          name: "",
-          quantity: remainingQuantity,
-          price: item.prices.price * remainingQuantity,
-        });
-      }
+  //     // את השארית דוחפים אל תוך הצעה שלא עושה כלום
+  //     if (remainingQuantity > 0) {
+  //       offersToApply.push({
+  //         name: "",
+  //         quantity: remainingQuantity,
+  //         price: item.prices.price * remainingQuantity,
+  //       });
+  //     }
 
-      setAppliedOffers(offersToApply);
-    }
-    // במקרה של מבצע על מוצר עם אופציות בתוכו
-    else if (item.isCombination && item?.variant?.offers?.length > 0) {
-      // Copy the quantity to avoid mutating the original item
-      let remainingQuantity = item.quantity;
-      const sortedOffers = [...item?.variant?.offers].sort((a, b) => b.quantity - a.quantity);
-      const offersToApply = [];
+  //     setAppliedOffers(offersToApply);
+  //   }
+  //   // במקרה של מבצע על מוצר עם אופציות בתוכו
+  //   else if (item.isCombination && item?.variant?.offers?.length > 0) {
+  //     // Copy the quantity to avoid mutating the original item
+  //     let remainingQuantity = item.quantity;
+  //     const sortedOffers = [...item?.variant?.offers].sort((a, b) => b.quantity - a.quantity);
+  //     const offersToApply = [];
 
-      sortedOffers.forEach((offer) => {
-        if (remainingQuantity >= offer.quantity) {
-          const offerCount = Math.floor(remainingQuantity / offer.quantity);
-          remainingQuantity -= offerCount * offer.quantity;
-          for (let i = 0; i < offerCount; i++) {
-            offersToApply.push({
-              name: offer.name,
-              quantity: offer.quantity,
-              price: offer.price,
-            });
-          }
-        }
-      });
+  //     sortedOffers.forEach((offer) => {
+  //       if (remainingQuantity >= offer.quantity) {
+  //         const offerCount = Math.floor(remainingQuantity / offer.quantity);
+  //         remainingQuantity -= offerCount * offer.quantity;
+  //         for (let i = 0; i < offerCount; i++) {
+  //           offersToApply.push({
+  //             name: offer.name,
+  //             quantity: offer.quantity,
+  //             price: offer.price,
+  //           });
+  //         }
+  //       }
+  //     });
 
-      // את השארית דוחפים אל תוך הצעה שלא עושה כלום
-      if (remainingQuantity > 0) {
-        offersToApply.push({
-          name: "",
-          quantity: remainingQuantity,
-          price: item?.variant?.price * remainingQuantity,
-        });
-      }
+  //     // את השארית דוחפים אל תוך הצעה שלא עושה כלום
+  //     if (remainingQuantity > 0) {
+  //       offersToApply.push({
+  //         name: "",
+  //         quantity: remainingQuantity,
+  //         price: item?.variant?.price * remainingQuantity,
+  //       });
+  //     }
 
-      setAppliedOffers(offersToApply);
-    }
-    else {
-      setAppliedOffers([
-        {
-          name: "",
-          quantity: item.quantity,
-          price: item.prices.price * item.quantity,
-        },
-      ]);
-    }
-  }, [item.quantity, item?.prices?.offers, item.prices.price]);
-
-  // console.log("item>>", item);
-
-  // חישוב המחיר הכולל בהתאם להצעות שחלו על כמות המוצר
-  const totalPrice = appliedOffers.reduce(
-    (total, offer) => total + Number(offer.price),
-    0
-  );
-
-  useEffect(() => {
-    // Update the item in the cart with the calculated total price
-    updateItem(item.id, { ...item, calculatedTotalPrice: totalPrice });
-  }, [totalPrice]);
-
-  // TODO: לטפל במבצעים של אחוזי הנחה למוצר עם אופציות ולמוצר רגיל
-
-  // console.log(`${item.title} - appliedOffers: `, appliedOffers)
-  // console.log(item.title + ': ', item)
+  //     setAppliedOffers(offersToApply);
+  //   }
+  //   else {
+  //     setAppliedOffers([
+  //       {
+  //         name: "",
+  //         quantity: item.quantity,
+  //         price: item.prices.price * item.quantity,
+  //       },
+  //     ]);
+  //   }
+  // }, [item.quantity, item?.prices?.offers, item.prices.price]);
 
   return (
     <div className="group w-full h-auto flex gap-6 justify-start items-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0">
@@ -147,17 +143,10 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
               {totalPrice.toFixed(2)}
             </span>
             {/* פירוט ההצעות שחלו על המוצר */}
-            <div className="mt-2">
-              {appliedOffers.filter((item, index, self) =>
-                index === self.findIndex((t) => (
-                  t.name === item.name
-                ))
-              ).map((offer, index) => (
-                <div key={index} className="text-xs text-gray-500">
-                  {offer.name}
-                  {appliedOffers.filter((o) => o.name === offer.name).length > 1 && <span className="font-normal"> ×{appliedOffers.filter((o) => o.name === offer.name).length}</span>}
-                </div>
-              ))}
+            <div className="mt-0.5">
+              <div className="text-xs text-gray-500">
+                {offerTitle}
+              </div>
             </div>
           </div>
 
