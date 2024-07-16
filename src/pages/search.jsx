@@ -21,6 +21,8 @@ import leguTitle from "public/titles/leguTitle.svg"
 import ourOffers from "public/titles/ourOffers.svg"
 import vegTitle from "public/titles/vegTitle.svg"
 import sortProducts from "src/functions/sortProducts";
+import OfferServices from "@services/OfferServices";
+import useAsync from "@hooks/useAsync";
 
 
 const Search = ({ products, attributes }) => {
@@ -31,6 +33,7 @@ const Search = ({ products, attributes }) => {
   const [category, setCategory] = useState('');
   const router = useRouter();
   const { query } = router;
+  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   useEffect(() => {
     if (query?.category) {
@@ -131,6 +134,7 @@ const Search = ({ products, attributes }) => {
                         key={i + 1}
                         product={product}
                         attributes={attributes}
+                        offers={offers}
                       />
                     ))}
                   </div>

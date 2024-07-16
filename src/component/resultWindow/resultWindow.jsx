@@ -72,50 +72,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
         setModalOpen(true);
     };
 
-    // delete this before prodaction
-    let example = {
-        "prices": {
-            "price": 15,
-            "originalPrice": 20,
-            "discount": 5
-        },
-        "categories": [
-            "6666fc1b61eead5864aa27b2"
-        ],
-        "image": [
-            "https://res.cloudinary.com/dzxn0xhoy/image/upload/v1716360445/product/%D7%A2%D7%A0%D7%91-%D7%9C%D7%91%D7%9F-%D7%9C%D7%9C%D7%90-e1652005717961.jpg"
-        ],
-        "tag": [
-            "[]"
-        ],
-        "variants": [],
-        "status": "show",
-        "_id": "6678148a5c4c4525b058be3d",
-        "productId": "6678148a5c4c4525b058be3c",
-        "sku": "10018-1",
-        "barcode": "41",
-        "title": {
-            "he": "ענב לבן ללא גרעין (כ-1ק\"ג)"
-        },
-        "description": {
-            "he": "מתיקות טהורה, פריכות מרעננת וחוויה ללא גרעין!\n\nתיהנו מענבים לבנים ללא גרעין באיכות הגבוהה ביותר, ישירות מהחקלאי אליכם הביתה.\n\nלמה לבחור בנו?\n\nטריות מובטחת: הענבים שלנו נקטפים יום לפני המשלוח, כך שתוכלו להיות בטוחים שאתם מקבלים את המוצר הטרי ביותר האפשרי.\nטעם משובח: אנו מגדלים את הענבים שלנו בתנאים אופטימליים, תוך הקפדה על שימוש בשיטות חקלאות ידידותיות לסביבה, מה שמבטיח לכם ענבים מתוקים, עסיסיים וטעימים במיוחד.\nנוחות הזמנה: אנו מציעים משלוח מהיר עד הבית, כך שתוכלו להזמין את הענבים שלכם בקלות ובנוחות מירבית.\nשקיפות מלאה: אנו גאים בחקלאות שלנו, ולכן אנו פתוחים לכל שאלה בנוגע לגידול הענבים שלנו.\nהזמינו עכשיו ותיהנו מחוויית טעם יוצאת דופן!"
-        },
-        "slug": "ענב-לבן-ללא-גרעין-כ-1ק\"ג",
-        "category": {
-            "_id": "6666fc1b61eead5864aa27b2",
-            "name": {
-                "en": "Fruits",
-                "he": "פירות"
-            }
-        },
-        "stock": 1000,
-        "isCombination": false,
-        "createdAt": "2024-06-23T12:26:50.749Z",
-        "updatedAt": "2024-06-23T12:27:48.120Z",
-        "__v": 0
-    }
-
-    console.log('search Product: ', selectedProduct);
+    // console.log('search Product: ', selectedProduct);
 
     return (
         <>

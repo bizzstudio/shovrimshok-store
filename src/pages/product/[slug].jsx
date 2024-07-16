@@ -35,6 +35,8 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import Discount from "@component/common/Discount";
 import ImageCarousel from "@component/carousel/ImageCarousel";
 import relatedTitle from 'public/titles/relatedProducts.svg'
+import OfferServices from "@services/OfferServices";
+import useAsync from "@hooks/useAsync";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   // console.log('ProductScreen product: ', product);
@@ -47,6 +49,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { handleAddItem, item, setItem } = useAddToCart();
+  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   // react hook
 
@@ -548,6 +551,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             key={product._id}
                             product={product}
                             attributes={attributes}
+                            offers={offers}
                           />
                         ))}
                       </div>

@@ -19,7 +19,7 @@ import { handleLogEvent } from "@utils/analytics";
 import { SidebarContext } from "@context/SidebarContext";
 import useTranslation from "next-translate/useTranslation";
 
-const ProductCard = ({ product, attributes }) => {
+const ProductCard = ({ product, attributes, offers = [] }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { toggleCartDrawer, closeCartDrawer } = useContext(SidebarContext)
   const { items, addItem, updateItemQuantity, inCart } = useCart();
@@ -62,23 +62,25 @@ const ProductCard = ({ product, attributes }) => {
     setModalOpen(event);
   };
 
-  const isSpecialOffer = (product) => {
-    if (product.isCombination) {
-      return getFirstOfferName(product?.variants);
-    } else {
-      return product?.prices?.offers[0]?.name;
-    }
-  }
+  const offerName = offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+  // פונקציות מבצעים ישנים
+  // const getOfferName = (product) => {
+  //   if (product.isCombination) {
+  //     return getFirstOfferName(product?.variants);
+  //   } else {
+  //     return product?.prices?.offers[0]?.name;
+  //   }
+  // }
 
-  const getFirstOfferName = (variants) => {
-    for (let variant of variants) {
-      let offer = variant.offers?.find(offer => offer.name);
-      if (offer) {
-        return offer.name;
-      }
-    }
-    return null; // במקרה שאין אף offer עם שם
-  };
+  // const getFirstOfferName = (variants) => {
+  //   for (let variant of variants) {
+  //     let offer = variant.offers?.find(offer => offer.name);
+  //     if (offer) {
+  //       return offer.name;
+  //     }
+  //   }
+  //   return null; // במקרה שאין אף offer עם שם
+  // };
 
   return (
     <>
@@ -89,6 +91,7 @@ const ProductCard = ({ product, attributes }) => {
           product={product}
           currency={currency}
           attributes={attributes}
+          title={offerName}
         />
       )}
 
@@ -96,7 +99,7 @@ const ProductCard = ({ product, attributes }) => {
         <div className="w-full flex justify-between">
           {/* אם אין מלאי למוצר מופיע אזל מהמלאי */}
           {/* {product.stock <= 0 && <Stock product={product} stock={product.stock} card right={"2"} top={"2"} />} */}
-          <Discount product={product} title={isSpecialOffer(product)} />
+          <Discount product={product} title={offerName} />
         </div>
         <div
           onClick={() => {
