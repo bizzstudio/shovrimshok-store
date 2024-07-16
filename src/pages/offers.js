@@ -1,29 +1,22 @@
 import { SidebarContext } from "@context/SidebarContext";
-import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useContext } from "react";
 
 //internal import
 import Layout from "@layout/Layout";
-import Banner from "@component/banner/Banner";
 import useGetSetting from "@hooks/useGetSetting";
-import CardTwo from "@component/cta-card/CardTwo";
-import OfferCard from "@component/offer/OfferCard";
-import StickyCart from "@component/cart/StickyCart";
 import Loading from "@component/preloader/Loading";
 import ProductServices from "@services/ProductServices";
 import ProductCard from "@component/product/ProductCard";
-import MainCarousel from "@component/carousel/MainCarousel";
-import FeatureCategory from "@component/category/FeatureCategory";
 import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg"
-import popolarTitle from "public/titles/popolarTitle.svg"
-import sortProducts from "src/functions/sortProducts";
+import OfferServices from "@services/OfferServices";
+import useAsync from "@hooks/useAsync";
 
 const Offers = ({ discountProducts, attributes }) => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
+  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   return (
     <>
@@ -81,12 +74,13 @@ const Offers = ({ discountProducts, attributes }) => {
                       ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
                           {discountProducts.map((product) => (
-                              <ProductCard
-                                key={product._id}
-                                product={product}
-                                attributes={attributes}
-                              />
-                            ))}
+                            <ProductCard
+                              key={product._id}
+                              product={product}
+                              attributes={attributes}
+                              offers={offers}
+                            />
+                          ))}
                         </div>
                       )}
                     </div>

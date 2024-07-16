@@ -24,7 +24,8 @@ const ProductModal = ({
   product,
   attributes,
   currency,
-  clearInput = () => { }
+  clearInput = () => { },
+  title = ''
 }) => {
   // console.log('ProductModal product: ', product);
   const router = useRouter();
@@ -229,24 +230,29 @@ const ProductModal = ({
                 onClick={() => setModalOpen(false)}
                 className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer p-5 pl-0"
               >
-                <Discount product={product} discount={discount} modal
-                  title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
-                    selectVariant.offers.reduce((title, obj) => (
-                      <>
-                        {title}
-                        {title && <br />}
-                        {obj.name}
-                      </>
-                    ), null)
-                  ) : '') : (product?.prices?.offers?.length > 0 ? (
-                    product?.prices?.offers.reduce((title, obj) => (
-                      <>
-                        {title}
-                        {title && <br />}
-                        {obj.name}
-                      </>
-                    ), null)
-                  ) : '')} />
+                <Discount
+                 product={product}
+                  discount={discount} 
+                  modal
+                  title={title}
+                  // title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
+                  //   selectVariant.offers.reduce((title, obj) => (
+                  //     <>
+                  //       {title}
+                  //       {title && <br />}
+                  //       {obj.name}
+                  //     </>
+                  //   ), null)
+                  // ) : '') : (product?.prices?.offers?.length > 0 ? (
+                  //   product?.prices?.offers.reduce((title, obj) => (
+                  //     <>
+                  //       {title}
+                  //       {title && <br />}
+                  //       {obj.name}
+                  //     </>
+                  //   ), null)
+                  // ) : '')}
+                   />
 
                 {product.image[0] ? (
                   <Image
