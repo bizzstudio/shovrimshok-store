@@ -26,12 +26,13 @@ const Category = () => {
         <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-customGreen text-white border-b border-gray-100">
           <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center">
             <Link href="/" className="mr-10">
-              <Image
+            <h2>משק קירשנר</h2>
+              {/* <Image
                 width={100}
                 height={38}
-                src="/logo/logo-color.svg"
+                src="http://localhost:3000/_next/static/media/newlogo.c452bf06.svg"
                 alt="logo"
-              />
+              /> */}
             </Link>
           </h2>
           <button
@@ -46,7 +47,7 @@ const Category = () => {
       <div className="w-full max-h-full">
         {categoryDrawerOpen && (
           <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center border-b px-8 py-3">
-            All Categories
+            קטגוריות
           </h2>
         )}
         {error ? (
@@ -69,15 +70,14 @@ const Category = () => {
           </div>
         )}
 
-        {categoryDrawerOpen && (
+        {/* {categoryDrawerOpen && (
           <div className="relative grid gap-2 mt-5">
             <h3 className="font-semibold font-serif text-lg m-0 text-heading flex align-center border-b px-8 py-3">
-              Pages
+              עמודים
             </h3>
             <div className="relative grid gap-1 p-6">
               {pages.map((item) => (
                 <a
-                  key={item.title}
                   href={item.href}
                   className="p-2 flex font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark"
                 >
@@ -92,7 +92,7 @@ const Category = () => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
