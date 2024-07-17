@@ -15,7 +15,6 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
   const { handleIncreaseQuantity } = useAddToCart();
   const router = useRouter();
 
-  const [appliedOffers, setAppliedOffers] = useState([]);
   const [totalPrice, setTotalPrice] = useState(item.prices.price * item.quantity);
   const [offerTitle, setOfferTitle] = useState('');
 

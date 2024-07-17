@@ -153,15 +153,11 @@ const useCheckoutSubmit = () => {
         total: total,
       };
 
+      console.log('items: ', items)
+
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
       const dbOrder = await OrderServices.addOrder(orderInfo);
       // console.log("dbOrder: ", dbOrder)
-
-      // שלבים:
-      // 1. לעדכן את האובייקט שנשלח לקארדקום עם כמויות והכל.
-      // 2. ראוט נפרד לוובהוק שיעדכן את ההזמנה הנכנסת לשולמה או לא.
-      // 3. להאזין לIfrme- שינתב את כל האתר לדף הצלחה/כישלון.
-      // 4. לעצב את הIframe-.
 
       const cardcomObj = {
         TerminalNumber: process.env.NEXT_PUBLIC_TERMINAL_NUMBER,
@@ -180,8 +176,8 @@ const useCheckoutSubmit = () => {
               // ProductID: p._id,
               Description: p.title,
               Quantity: p.quantity,
-              UnitCost: p.calculatedTotalPrice / p.quantity,
-              TotalLineCost: p.calculatedTotalPrice,
+              UnitCost: p.discountedPrice ? p.discountedPrice / p.quantity : p.itemTotal / p.quantity,
+              TotalLineCost: p.discountedPrice ? p.discountedPrice : p.itemTotal,
               IsVatFree: true,
             }
           }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)), IsVatFree: true },

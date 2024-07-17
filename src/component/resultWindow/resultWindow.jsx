@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IoAdd, IoBagAddSharp, IoRemove } from 'react-icons/io5';
-import { useCart } from 'react-use-cart';
 import { notifyError } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
 import useGetSetting from "@hooks/useGetSetting";
@@ -10,11 +9,14 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import Link from 'next/link';
 import Price from '@component/common/Price';
 import Image from 'next/image';
+import Discount from '@component/common/Discount';
+import useCart from '@hooks/useCart';
+import useAsync from '@hooks/useAsync';
+import OfferServices from '@services/OfferServices';
 
 export default function ResultWindow({ products = [], attributes, clearInput, closeResultWindow }) {
     // console.log('products: ', products)
     const resultRef = useRef(null);
-    const [bottomPosition, setBottomPosition] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -24,15 +26,10 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
     const { showingTranslateValue } = useUtilsFunction();
     const { t } = useTranslation();
 
-    const currency = globalSetting?.default_currency || "$";
+    const currency = globalSetting?.default_currency || "₪";
 
     // בלחיצה מחוץ לחלון התוצאות הוא נסגר אם הפופאפ מוצר לא פתוח
     useEffect(() => {
-        if (resultRef.current) {
-            const height = resultRef.current.clientHeight;
-            setBottomPosition(-height);
-        }
-
         const handleClickOutside = (event) => {
             if (
                 resultRef.current &&
@@ -74,6 +71,18 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
 
     // console.log('search Product: ', selectedProduct);
 
+    const { data: offers } = useAsync(() => OfferServices.getAllOffers());
+
+    const isProductWithDiscount = (product) => {
+        const offerName = offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+        if (offerName) {
+            return <Discount search product={product} title={offerName} />
+        } else {
+            return <></>
+        }
+    }
+
+
     return (
         <>
             {/* פופאפ מוצר בלחיצה על מוצר עם אפשרויות */}
@@ -90,8 +99,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
 
             <div
                 ref={resultRef}
-                className='absolute bg-white left-0 w-full shadow-xl overflow-hidden rounded-bl-lg rounded-br-lg'
-                style={{ bottom: `${bottomPosition}px` }}
+                className='absolute top-10 bg-white left-0 w-full shadow-xl overflow-hidden rounded-bl-lg rounded-br-lg'
             >
                 <div className="p-1">
                     <h2 className="text-right text-xl p-4">{products.length} {t("common:itemsFound")}</h2>
@@ -129,6 +137,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                                 currency={currency}
                                                 card={true}
                                             />
+                                            {isProductWithDiscount(product)}
                                         </div>
                                     </div>
                                     {/* ProductCard-כפתורים דינאמיים כמו ב */}

@@ -37,6 +37,7 @@ import ImageCarousel from "@component/carousel/ImageCarousel";
 import relatedTitle from 'public/titles/relatedProducts.svg'
 import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
+import useCart from "@hooks/useCart";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   // console.log('ProductScreen product: ', product);
@@ -64,6 +65,19 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const [selectVa, setSelectVa] = useState({});
   const [variantTitle, setVariantTitle] = useState([]);
   const [variants, setVariants] = useState([]);
+
+  const { items } = useCart();
+  const [offerTitle, setOfferTitle] = useState('');
+
+  // עדכון מחיר המוצר על סמך המבצע שלו
+  useEffect(() => {
+    const offerName = offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+    if (offerName) {
+      setOfferTitle(offerName);
+    } else {
+      setOfferTitle('');
+    }
+  }, [offers]);
 
   useEffect(() => {
     // console.log('value', value, product);
@@ -280,24 +294,25 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
               {/* <div className="rounded-lg p-3 lg:p-12 bg-white"> */}
               <div className="w-full flex flex-col items-center justify-center lg:flex-row rounded-lg p-3 lg:p-12 bg-white">
                 <div className="max-w-lg flex-shrink-0 lg:block md:w-6/12">
-                  <Discount slug product={product} discount={discount}
-                    title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
-                      selectVariant.offers.reduce((title, obj) => (
-                        <>
-                          {title}
-                          {title && <br />}
-                          {obj.name}
-                        </>
-                      ), null)
-                    ) : '') : (product?.prices?.offers?.length > 0 ? (
-                      product?.prices?.offers.reduce((title, obj) => (
-                        <>
-                          {title}
-                          {title && <br />}
-                          {obj.name}
-                        </>
-                      ), null)
-                    ) : '')} />
+                  <Discount slug product={product} discount={discount} title={offerTitle}
+                  // title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
+                  //   selectVariant.offers.reduce((title, obj) => (
+                  //     <>
+                  //       {title}
+                  //       {title && <br />}
+                  //       {obj.name}
+                  //     </>
+                  //   ), null)
+                  // ) : '') : (product?.prices?.offers?.length > 0 ? (
+                  //   product?.prices?.offers.reduce((title, obj) => (
+                  //     <>
+                  //       {title}
+                  //       {title && <br />}
+                  //       {obj.name}
+                  //     </>
+                  //   ), null)
+                  // ) : '')}
+                  />
 
                   {product.image[0] ? (
                     <Image
