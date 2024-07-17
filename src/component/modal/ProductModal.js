@@ -23,7 +23,7 @@ const ProductModal = ({
   setModalOpen,
   product,
   attributes,
-  currency,
+  currency = '₪',
   clearInput = () => { },
   title = ''
 }) => {

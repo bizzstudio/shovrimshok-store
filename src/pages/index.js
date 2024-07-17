@@ -73,7 +73,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                     <MainCarousel />
                   </div>
                   <div className="w-full hidden lg:flex">
-                    <OfferCard />
+                    <OfferCard discountProducts={discountProducts} />
                   </div>
                 </div>
                 {storeCustomizationSetting?.home?.promotion_banner_status && (
