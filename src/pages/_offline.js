@@ -5,7 +5,7 @@ const Offline = () => {
   return (
     <>
       <Head>
-        <title>משק קירשנר | React eCommerce Template</title>
+        <title>משק קירשנר</title>
       </Head>
       <div className="px-6 py-10 lg:py-20 bg-customGreen-superLight h-screen flex flex-wrap content-center">
         <div className="block justify-items-stretch mx-auto items-center text-center">
