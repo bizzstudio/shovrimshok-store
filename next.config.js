@@ -1,17 +1,15 @@
-const runtimeCaching = require("next-pwa/cache");
-// const nextTranslate = require("next-translate");
-const nextTranslate = require("next-translate-plugin");
-
 const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
-  runtimeCaching,
+  runtimeCaching: require("next-pwa/cache"),
   buildExcludes: [/middleware-manifest.json$/],
   scope: "/",
   sw: "service-worker.js",
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
 });
+
+const nextTranslate = require("next-translate-plugin");
 
 module.exports = withPWA({
   reactStrictMode: true,
@@ -46,7 +44,6 @@ module.exports = withPWA({
       },
     ],
   },
-
   images: {
     domains: [
       "images.unsplash.com",
@@ -58,11 +55,9 @@ module.exports = withPWA({
       "lh3.googleusercontent.com",
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
-      "",
       "images.dashter.com",
     ],
   },
-
   ...nextTranslate(),
 });
 
