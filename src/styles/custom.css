@@ -3,6 +3,48 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap');
 
+/* כל מה שקשור לגלילה האוטומטית של מוצרים במבצע בעמוד הבית */
+@keyframes scroll {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.scroll-container {
+  height: 327px; /* Adjust according to your container height */
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-content {
+  display: flex;
+  flex-direction: column;
+  animation: scroll 40s linear infinite; /* Adjust duration as needed */
+}
+
+.scroll-content.paused {
+  animation-play-state: paused;
+}
+
+.discount-info {
+  display: flex;
+  align-items: center;
+}
+
+.product-button {
+  display: none;
+}
+
+.scroll-item:hover .discount-info {
+  display: none;
+}
+
+.scroll-item:hover .product-button {
+  display: inline-block;
+}
 
 /* carousel.css */
 .swiper-pagination-bullet-active {

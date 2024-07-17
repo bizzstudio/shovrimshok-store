@@ -1,5 +1,4 @@
-import React from "react";
-import Link from "next/link";
+import React, { useRef } from "react";
 import Router from "next/router";
 
 //internal import
@@ -25,44 +24,78 @@ const OfferCard = ({ discountProducts }) => {
     }
   }
 
+  const scrollContentRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (scrollContentRef.current) {
+      scrollContentRef.current.classList.add('paused');
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (scrollContentRef.current) {
+      scrollContentRef.current.classList.remove('paused');
+    }
+  };
+
   return (
     <div className="w-full group">
       <div className="bg-gray-50 border-2 transition duration-150 ease-linear transform border-customGreen rounded shadow">
-        <div className="bg-customBrown-light text-gray-900 px-6 py-2 rounded-t border-b flex products-center justify-center">
+        <div className="bg-customBrown-light text-gray-900 px-6 py-2 rounded-t border-b flex items-center justify-center">
           <h3 className="text-base font-serif font-medium ">
             {showingTranslateValue(
               storeCustomizationSetting?.home?.discount_title
             )}
           </h3>
         </div>
-        <div className="overflow-hidden">
-          {/* <Coupon couponInHome /> */}
-          <div className="relative h-full w-full">
-            <div className="h-[327px] overflow-hidden flex flex-col products-center justify-center w-full">
-              {discountProducts?.map((product) => {
-                return (
-                  <div onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
-                    <div className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0"
-                    >
-                      <img
-                        key={product.id}
-                        src={product.image}
-                        width={60}
-                        height={60}
-                        alt={product.title?.he}
-                        style={{ aspectRatio: 1, objectFit: 'contain' }}
-                      />
-                    </div>
-                    <div className="flex items-center my-auto w-full h-fit justify-between">
-                      <div className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1">
-                        {product.title?.he}
-                      </div>
-                      {isProductWithDiscount(product)}
-                    </div>
+        <div className="scroll-container">
+          <div className="scroll-content"
+            ref={scrollContentRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {discountProducts?.map((product) => (
+              <div key={product.id} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+                <div className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0"
+                >
+                  <img
+                    key={product.id}
+                    src={product.image}
+                    width={60}
+                    height={60}
+                    alt={product.title?.he}
+                    style={{ aspectRatio: 1, objectFit: 'contain' }}
+                  />
+                </div>
+                <div className="flex items-center my-auto w-full h-fit justify-between">
+                  <div className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1">
+                    {product.title?.he}
                   </div>
-                );
-              })}
-            </div>
+                  {isProductWithDiscount(product)}
+                </div>
+              </div>
+            ))}
+            {discountProducts?.map((product) => (
+              <div key={`${product.id}-clone`} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+                <div className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0"
+                >
+                  <img
+                    key={product.id}
+                    src={product.image}
+                    width={60}
+                    height={60}
+                    alt={product.title?.he}
+                    style={{ aspectRatio: 1, objectFit: 'contain' }}
+                  />
+                </div>
+                <div className="flex items-center my-auto w-full h-fit justify-between">
+                  <div className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1">
+                    {product.title?.he}
+                  </div>
+                  {isProductWithDiscount(product)}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
