@@ -1,7 +1,7 @@
 {
-  "name": "משק קירשנר-store",
+  "name": "משק קירשנר",
   "version": "0.1.0",
-  "description": "this is משק קירשנר-store built with next.js and tailwindcss",
+  "description": "משק קירשנר",
   "homepage": "https://kirshner-store.vercel.app/",
   "private": true,
   "scripts": {
