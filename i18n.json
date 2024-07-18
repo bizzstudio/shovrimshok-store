@@ -1,7 +1,1 @@
-{
-  "locales": ["en", "de", "he"],
-  "defaultLocale": "he",
-  "pages": {
-    "*": ["common"]
-  }
-}
+
