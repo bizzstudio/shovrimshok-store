@@ -153,8 +153,6 @@ const useCheckoutSubmit = () => {
         total: total,
       };
 
-      console.log('items: ', items)
-
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
       const dbOrder = await OrderServices.addOrder(orderInfo);
       // console.log("dbOrder: ", dbOrder)
