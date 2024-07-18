@@ -586,44 +586,37 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
 export const getServerSideProps = async (context) => {
   const { slug } = context.params;
-  console.log('slug', slug);
+  console.log('slug', slug)
 
-  try {
-    const [data, attributes] = await Promise.all([
-      ProductServices.getShowingStoreProducts({
-        category: "",
-        slug: slug,
-      }),
-      AttributeServices.getShowingAttributes({}),
-    ]);
+  const [data, attributes] = await Promise.all([
+    ProductServices.getShowingStoreProducts({
+      category: "",
+      slug: slug,
+    }),
 
-    let product = {};
+    AttributeServices.getShowingAttributes({}),
+  ]);
 
-    if (slug) {
-      product = data?.products?.find((p) => p.slug === slug);
-    }
+  let product = {};
 
-    // מעבר לדף 404 אם המוצר לא נמצא
-    if (!product) {
-      return {
-        notFound: true,
-      };
-    }
+  if (slug) {
+    product = data?.products?.find((p) => p.slug === slug);
+  }
 
-    return {
-      props: {
-        product,
-        relatedProducts: data?.relatedProducts,
-        attributes,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching data:', error);
+  // מעבר לדף 404 אם המוצר לא נמצא
+  if (!product) {
     return {
       notFound: true,
     };
   }
 
+  return {
+    props: {
+      product,
+      relatedProducts: data?.relatedProducts,
+      attributes,
+    },
+  };
   // const { slug } = context.params;
 
   // // Encode the slug to handle special characters
