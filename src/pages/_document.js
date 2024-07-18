@@ -39,7 +39,7 @@ class MyDocument extends Document {
           <meta
             property="og:url"
             content={
-              setting?.meta_url || "https://meshek-kirshner.co.il/"
+              setting?.meta_url || "https://kirshner-store.vercel.app"
             }
           />
           <meta
