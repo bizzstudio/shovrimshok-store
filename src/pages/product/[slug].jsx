@@ -38,7 +38,6 @@ import relatedTitle from 'public/titles/relatedProducts.svg'
 import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
 import useCart from "@hooks/useCart";
-import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   // console.log('ProductScreen product: ', product);
@@ -657,7 +656,5 @@ export const getServerSideProps = async (context) => {
   //   };
   // }
 };
-
-getStaticPaths();
 
 export default ProductScreen;

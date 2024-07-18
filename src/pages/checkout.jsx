@@ -38,7 +38,6 @@ import UserAddressUpdate from "@component/userAddressUpdate/UserAddressUpdate";
 import { notifyError } from "@utils/toast";
 import paymentTitle from 'public/titles/paymentTitle.svg'
 import scrollUp from "src/functions/scrollUp";
-import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const Checkout = () => {
   const {
@@ -617,7 +616,5 @@ const Checkout = () => {
     </>
   );
 };
-
-getStaticPaths();
 
 export default dynamic(() => Promise.resolve(Checkout), { ssr: false });

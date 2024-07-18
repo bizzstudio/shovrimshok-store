@@ -13,9 +13,6 @@ const withPWA = require("next-pwa")({
 });
 
 module.exports = withPWA({
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
   reactStrictMode: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if

@@ -12,7 +12,6 @@ import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg"
 import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
-import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const Offers = ({ discountProducts, attributes }) => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
@@ -121,7 +120,5 @@ export const getServerSideProps = async (context) => {
     },
   };
 };
-
-getStaticPaths();
 
 export default Offers;

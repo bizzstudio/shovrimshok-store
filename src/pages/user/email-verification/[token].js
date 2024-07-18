@@ -9,7 +9,6 @@ import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
 import Loading from "@component/preloader/Loading";
 import useTranslation from "next-translate/useTranslation";
-import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const EmailVerification = ({ params }) => {
   const [success, setSuccess] = useState("");
@@ -63,7 +62,5 @@ export const getServerSideProps = async ({ params }) => {
     props: { params },
   };
 };
-
-getStaticPaths();
 
 export default EmailVerification;
