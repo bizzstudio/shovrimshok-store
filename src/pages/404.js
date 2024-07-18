@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import Link from "next/link";
 import Head from "next/head";
@@ -40,11 +41,5 @@ const NotFound = () => {
   );
 };
 
-export async function getStaticProps() {
-  return {
-    props: { title: "404" },
-  };
-}
-
-export default dynamic(() => Promise.resolve(NotFound), { ssr: false });
+export default NotFound;
 
