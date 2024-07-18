@@ -22,6 +22,7 @@ import popolarTitle from "public/titles/popolarTitle.svg"
 import sortProducts from "src/functions/sortProducts";
 import useAsync from "@hooks/useAsync";
 import OfferServices from "@services/OfferServices";
+import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const router = useRouter();
@@ -301,5 +302,7 @@ export const getServerSideProps = async (context) => {
     },
   };
 };
+
+getStaticPaths();
 
 export default Home;

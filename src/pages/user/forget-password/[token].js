@@ -11,6 +11,7 @@ import InputArea from "@component/form/InputArea";
 import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
 import { notifyError, notifySuccess } from "@utils/toast";
+import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const ForgetPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -176,5 +177,7 @@ const ForgetPassword = () => {
 //     props: { params },
 //   };
 // };
+
+getStaticPaths();
 
 export default ForgetPassword;

@@ -38,6 +38,7 @@ import relatedTitle from 'public/titles/relatedProducts.svg'
 import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
 import useCart from "@hooks/useCart";
+import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   // console.log('ProductScreen product: ', product);
@@ -586,37 +587,44 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
 export const getServerSideProps = async (context) => {
   const { slug } = context.params;
-  console.log('slug', slug)
+  console.log('slug', slug);
 
-  const [data, attributes] = await Promise.all([
-    ProductServices.getShowingStoreProducts({
-      category: "",
-      slug: slug,
-    }),
+  try {
+    const [data, attributes] = await Promise.all([
+      ProductServices.getShowingStoreProducts({
+        category: "",
+        slug: slug,
+      }),
+      AttributeServices.getShowingAttributes({}),
+    ]);
 
-    AttributeServices.getShowingAttributes({}),
-  ]);
+    let product = {};
 
-  let product = {};
+    if (slug) {
+      product = data?.products?.find((p) => p.slug === slug);
+    }
 
-  if (slug) {
-    product = data?.products?.find((p) => p.slug === slug);
-  }
+    // מעבר לדף 404 אם המוצר לא נמצא
+    if (!product) {
+      return {
+        notFound: true,
+      };
+    }
 
-  // מעבר לדף 404 אם המוצר לא נמצא
-  if (!product) {
+    return {
+      props: {
+        product,
+        relatedProducts: data?.relatedProducts,
+        attributes,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
     return {
       notFound: true,
     };
   }
 
-  return {
-    props: {
-      product,
-      relatedProducts: data?.relatedProducts,
-      attributes,
-    },
-  };
   // const { slug } = context.params;
 
   // // Encode the slug to handle special characters
@@ -649,5 +657,7 @@ export const getServerSideProps = async (context) => {
   //   };
   // }
 };
+
+getStaticPaths();
 
 export default ProductScreen;
