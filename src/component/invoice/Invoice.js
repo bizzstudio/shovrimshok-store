@@ -42,20 +42,20 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
             <h6 className="text-gray-700">
               <b>{t("common:status")}: </b>
               {(() => {
-                switch (data.status) {
+                switch (data?.status?.name) {
                   case "delivered":
                   case "POS-Completed":
-                    return <span className="text-customGreen">{t(`common:${data.status}`)}</span>;
+                    return <span className="text-customGreen">{data?.status?.heName}</span>;
                   case "Pending":
-                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                    return <span className="text-red-500">{data?.status?.heName}</span>;
                   case "Cancel":
-                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                    return <span className="text-red-500">{data?.status?.heName}</span>;
                   case "Processing":
-                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                    return <span className="text-red-500">{data?.status?.heName}</span>;
                   case "Deleted":
-                    return <span className="text-red-500">{t(`common:${data.status}`)}</span>;
+                    return <span className="text-red-500">{data?.status?.heName}</span>;
                   default:
-                    return <span className="text-red-500">{data.status}</span>;
+                    return <span className="text-red-500">{data?.status?.heName}</span>;
                 }
               })()}
             </h6>

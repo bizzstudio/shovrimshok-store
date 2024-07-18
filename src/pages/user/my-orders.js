@@ -129,7 +129,7 @@ const MyOrders = () => {
                             </th>
                             <th
                               scope="col"
-                              className="text-right text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
                             >
                               {t("common:action")}
                             </th>
@@ -139,13 +139,23 @@ const MyOrders = () => {
                           {data?.orders?.map((order) => (
                             <tr key={order._id}>
                               <OrderHistory order={order} />
-                              <td className="px-5 py-3 whitespace-nowrap text-right text-sm">
+                              <td className="px-5 py-3 whitespace-nowrap text-center text-sm">
+                                {order?.status?.name === "Pending" ? 
+                                  <Link
+                                  className="px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                  href={`#`}
+                                  // TODO: להשלים את הפונקציונליות של השלמת הזמנה
+                                  >
+                                    {t("common:payNow")}
+                                  </Link>
+                                :
                                 <Link
-                                  className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
-                                  href={`/order/${order._id}`}
+                                className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                href={`/order/${order._id}`}
                                 >
                                   {t("common:details")}
                                 </Link>
+                                }
                               </td>
                             </tr>
                           ))}
