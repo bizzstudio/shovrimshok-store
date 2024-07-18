@@ -9,7 +9,6 @@ import ReactGA from "react-ga4";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
-import { Suspense } from "react";
 
 //internal import
 import store from "@redux/store";
@@ -60,30 +59,28 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <Suspense fallback={<>Loading...</>}>
-        {!loading && !error && storeSetting?.tawk_chat_status && (
-          <TawkMessengerReact
-            propertyId={storeSetting?.tawk_chat_property_id || ""}
-            widgetId={storeSetting?.tawk_chat_widget_id || ""}
-          />
-        )}
-        <GoogleOAuthProvider clientId={storeSetting?.google_client_id || ""}>
-          <UserProvider>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <SidebarProvider>
-                  {/* <Elements stripe={stripePromise}> */}
+      {!loading && !error && storeSetting?.tawk_chat_status && (
+        <TawkMessengerReact
+          propertyId={storeSetting?.tawk_chat_property_id || ""}
+          widgetId={storeSetting?.tawk_chat_widget_id || ""}
+        />
+      )}
+      <GoogleOAuthProvider clientId={storeSetting?.google_client_id || ""}>
+        <UserProvider>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <SidebarProvider>
+                {/* <Elements stripe={stripePromise}> */}
                   <CartProvider>
                     <DefaultSeo />
                     <Component {...pageProps} />
                   </CartProvider>
-                  {/* </Elements> */}
-                </SidebarProvider>
-              </PersistGate>
-            </Provider>
-          </UserProvider>
-        </GoogleOAuthProvider>
-      </Suspense>
+                {/* </Elements> */}
+              </SidebarProvider>
+            </PersistGate>
+          </Provider>
+        </UserProvider>
+      </GoogleOAuthProvider>
     </>
   );
 }
