@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import useTranslation from "next-translate/useTranslation";
 import Cookies from "js-cookie";
 import 'dayjs/locale/he'; // ייבוא תאריכים בעברית
-import StatusService from "@services/StatusService";
 
 const OrderHistory = ({ order, currency }) => {
 
@@ -12,18 +11,18 @@ const OrderHistory = ({ order, currency }) => {
 
   useEffect(() => {
     const fetchStatus = async () => {
-      if (order.status === "Delivered")
-        setStatus(<span className="text-customGreen">{t(`common:${order.status}`)}</span>);
-      else if (order.status === "Pending" || order.status === "Cancel" || order.status === "Processing" || order.status === "processing")
-        setStatus(<span className="text-red-500">{t(`common:${order.status}`)}</span>);
+      if (order?.status?.name === "Delivered")
+        setStatus(<span className="text-customGreen">{order?.status?.heName}</span>);
+      else if (order?.status?.name === "Pending" || order?.status?.name === "Cancel" || order?.status?.name === "Processing")
+        setStatus(<span className="text-red-500">{order?.status?.heName}</span>);
       else {
-        const phone = (await StatusService.getStatusByName(order.status)).phone || {};
-        setStatus(<span className="text-red-500">{order.status}{phone ? ' - ' + phone : ''}</span>);
+        const phone = order?.status?.phone;
+        setStatus(<span className="text-red-500">{order?.status?.name}{phone ? ' - ' + phone : ''}</span>);
       }
     };
 
     fetchStatus();
-  }, [order.status, t]);
+  }, [order.status]);
   // console.log("order: ", order);
 
   let currentLang = Cookies.get('_lang');
