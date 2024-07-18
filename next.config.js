@@ -1,5 +1,5 @@
 const runtimeCaching = require("next-pwa/cache");
-const nextTranslate = require("next-translate");
+const nextTranslate = require('next-translate-plugin')
 
 const withPWA = require("next-pwa")({
   dest: "public",
