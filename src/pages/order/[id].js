@@ -66,7 +66,7 @@ const Order = ({ params }) => {
   console.log('data', data)
 
   return (
-    <Layout title={t("common:order")} description="order confirmation page">
+    <Layout title={t("common:order") + " " + data?.invoice} description="order confirmation page">
       {loading && !data ? (
         <Loading loading={loading} />
       ) : (
