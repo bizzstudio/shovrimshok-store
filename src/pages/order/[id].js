@@ -3,7 +3,9 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
 import { IoCloudDownloadOutline, IoPrintOutline } from "react-icons/io5";
+import useTranslation from "next-translate/useTranslation";
 import ReactToPrint from "react-to-print";
+import Cookies from "js-cookie";
 
 //internal import
 
@@ -15,7 +17,6 @@ import { UserContext } from "@context/UserContext";
 import OrderServices from "@services/OrderServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import InvoiceForDownload from "@component/invoice/InvoiceForDownload";
-import Cookies from "js-cookie";
 
 const Order = ({ params }) => {
   const printRef = useRef();
@@ -29,6 +30,7 @@ const Order = ({ params }) => {
   } = useContext(UserContext);
   const { showingTranslateValue, getNumberTwo, currency } = useUtilsFunction();
   const { storeCustomizationSetting, globalSetting } = useGetSetting();
+  const { t } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -61,8 +63,10 @@ const Order = ({ params }) => {
       break;
   };
 
+  console.log('data', data)
+
   return (
-    <Layout title="Invoice" description="order confirmation page">
+    <Layout title={t("common:order")} description="order confirmation page">
       {loading && !data ? (
         <Loading loading={loading} />
       ) : (
