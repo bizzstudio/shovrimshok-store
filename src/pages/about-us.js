@@ -341,3 +341,5 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
