@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import useTranslation from "next-translate/useTranslation";
 
 const Offline = () => {
   return (
