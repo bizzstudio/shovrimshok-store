@@ -270,9 +270,9 @@ const NavbarPromo = () => {
                           storeCustomizationSetting?.navbar?.about_us
                         )}
                       </Link>
-                    )}
+                    )} */}
 
-                    {storeCustomizationSetting?.navbar?.contact_menu_status && (
+                    {/* {storeCustomizationSetting?.navbar?.contact_menu_status && (
                       <Link
                         onClick={() => setIsLoading(!isLoading)}
                         href="/contact-us"
@@ -282,9 +282,9 @@ const NavbarPromo = () => {
                           storeCustomizationSetting?.navbar?.contact_us
                         )}
                       </Link>
-                    )}
+                    )} */}
 
-                    <Popover className="relative font-serif">
+                    {/* <Popover className="relative font-serif">
                       <Popover.Button className="group inline-flex items-center py-2 text-sm font-medium hover:text-customGreen-dark focus:outline-none">
                         <span>
                           {showingTranslateValue(
@@ -452,9 +452,9 @@ const NavbarPromo = () => {
                           </div>
                         </Popover.Panel>
                       </Transition>
-                    </Popover>
+                    </Popover> */}
 
-                    {storeCustomizationSetting?.navbar?.offers_menu_status && (
+                    {/* {storeCustomizationSetting?.navbar?.offers_menu_status && (
                       <Link
                         href="/offer"
                         onClick={() => setIsLoading(!isLoading)}
