@@ -9,7 +9,7 @@ const withPWA = require("next-pwa")({
   scope: "/",
   sw: "service-worker.js",
   skipWaiting: true,
-  disable: process.env.NODE_ENV === "development",
+  disable: process.env.NODE_ENV === "production",
 });
 
 module.exports = withPWA({
