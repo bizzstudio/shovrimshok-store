@@ -15,16 +15,18 @@ import useTranslation from "next-translate/useTranslation";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { LiaTruckPickupSolid } from "react-icons/lia";
-import Image from "next/image";
-import { notifyError } from "@utils/toast";
+
 
 //internal import
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
+import Label from "@component/form/Label";
 import Error from "@component/form/Error";
 import CartItem from "@component/cart/CartItem";
+import InputArea from "@component/form/InputArea";
 import useGetSetting from "@hooks/useGetSetting";
 import InputShipping from "@component/form/InputShipping";
+import InputPayment from "@component/form/InputPayment";
 import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import SettingServices from "@services/SettingServices";
@@ -33,8 +35,9 @@ import Loading from "@component/preloader/Loading";
 import DeliveryServices from "@services/DeliveryServices";
 import MainModal from "@component/modal/MainModal";
 import UserAddressUpdate from "@component/userAddressUpdate/UserAddressUpdate";
+import { notifyError } from "@utils/toast";
+import paymentTitle from 'public/titles/paymentTitle.svg'
 import scrollUp from "src/functions/scrollUp";
-import websiteClose from 'public/websiteClose2.svg'
 
 const Checkout = () => {
   const {
@@ -81,12 +84,8 @@ const Checkout = () => {
 
   // משיכת ההגדרות של המשלוחים וההזמנות ובדיקה אם זה מאופשר או לא
   useEffect(() => {
-    if (storeSetting.delivery_status !== undefined) {
-      setIsDeliveryOpen(storeSetting.delivery_status);
-    }
-    if (storeSetting.optionToOrder_status !== undefined) {
-      setIsCheckoutOpen(storeSetting.optionToOrder_status);
-    }
+    setIsDeliveryOpen(storeSetting.delivery_status);
+    setIsCheckoutOpen(storeSetting.optionToOrder_status);
   }, [storeSetting]);
 
   useEffect(() => {
@@ -213,8 +212,7 @@ const Checkout = () => {
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
           <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
-              {isCheckoutOpen ?
-               (paymentSrc ? <div className="flex flex-col gap-3 items-center justify-center">
+              {paymentSrc ? <div className="flex flex-col gap-3 items-center justify-center">
                 {scrollUp()}
                 <iframe
                   src={paymentSrc}
@@ -430,18 +428,6 @@ const Checkout = () => {
                     </div>
                   </form>
                 </div>
-                ) : (
-                  <div className="mx-auto my-11 flex flex-col items-center justify-center gap-2">
-                  <Image
-                  // style={{filter: "hue-rotate(260deg)"}}
-                    src={websiteClose.src}
-                    width={400}
-                    height={400}
-                    />
-                    <h2 className="text-4xl font-bold mt-5">{t("common:storeClose")}</h2>
-                    <p className="text-gray-400">{t("common:storeCloseMessage")}</p>
-                    </div>
-                )
               }
             </div>
 
