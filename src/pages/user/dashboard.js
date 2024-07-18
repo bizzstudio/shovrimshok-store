@@ -25,6 +25,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const Dashboard = ({ title, description, children }) => {
   const router = useRouter();
@@ -201,5 +202,7 @@ const Dashboard = ({ title, description, children }) => {
     </>
   );
 };
+
+getStaticPaths();
 
 export default dynamic(() => Promise.resolve(Dashboard), { ssr: false });
