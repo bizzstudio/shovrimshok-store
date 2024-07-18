@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import image from "../../public/400 Error Bad Request-rafiki.svg";
+import dynamic from "next/dynamic";
 
 const NotFound = () => {
   const { t } = useTranslation();
@@ -38,6 +39,12 @@ const NotFound = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  return {
+    props: { title: "404" },
+  };
+}
 
 export default dynamic(() => Promise.resolve(NotFound), { ssr: false });
 
