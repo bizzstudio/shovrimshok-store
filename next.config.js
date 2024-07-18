@@ -1,5 +1,5 @@
 const runtimeCaching = require("next-pwa/cache");
-// const nextTranslate = require('next-translate-plugin');
+const nextTranslate = require('next-translate-plugin');
 
 const withPWA = require("next-pwa")({
   dest: "public",
@@ -63,7 +63,7 @@ module.exports = withPWA({
     ],
   },
 
-  // ...nextTranslate(),
+  ...nextTranslate(),
 });
 
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
