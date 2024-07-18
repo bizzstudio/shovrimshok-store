@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import MainModal from "@component/modal/MainModal";
 import UserAddressInitialize from "@component/userAddressInitialize/UserAddressInitialize";
 import RegisterSuccess from "@component/login/RegisterSuccess";
+import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const Layout = ({ title, description, children }) => {
 
@@ -115,5 +116,7 @@ const Layout = ({ title, description, children }) => {
     </>
   );
 };
+
+getStaticPaths();
 
 export default Layout;
