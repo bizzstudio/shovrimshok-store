@@ -16,7 +16,6 @@ import { notifySuccess, notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import City from "@component/select/City";
-import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const UpdateProfile = () => {
   const [imageUrl, setImageUrl] = useState("");
@@ -279,7 +278,5 @@ const UpdateProfile = () => {
     </Dashboard>
   );
 };
-
-getStaticPaths();
 
 export default dynamic(() => Promise.resolve(UpdateProfile), { ssr: false });

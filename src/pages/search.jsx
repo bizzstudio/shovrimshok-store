@@ -23,8 +23,6 @@ import vegTitle from "public/titles/vegTitle.svg"
 import sortProducts from "src/functions/sortProducts";
 import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
-import { getStaticPaths } from "src/functions/getStaticPaths";
-
 
 const Search = ({ products, attributes }) => {
   const { t } = useTranslation();
@@ -179,8 +177,6 @@ export const getServerSideProps = async (context) => {
     },
   };
 };
-
-getStaticPaths();
 
 // export const getServerSideProps = async (context) => {
 //   const { query } = context.query;

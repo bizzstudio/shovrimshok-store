@@ -17,7 +17,6 @@ import { UserContext } from "@context/UserContext";
 import OrderServices from "@services/OrderServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import InvoiceForDownload from "@component/invoice/InvoiceForDownload";
-import { getStaticPaths } from "src/functions/getStaticPaths";
 
 const Order = ({ params }) => {
   const printRef = useRef();
@@ -149,7 +148,5 @@ export const getServerSideProps = ({ params }) => {
     props: { params },
   };
 };
-
-getStaticPaths();
 
 export default dynamic(() => Promise.resolve(Order), { ssr: false });
