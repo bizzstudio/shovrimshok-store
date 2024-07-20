@@ -1,5 +1,5 @@
 import { SidebarContext } from "@context/SidebarContext";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 
@@ -17,14 +17,17 @@ import MainCarousel from "@component/carousel/MainCarousel";
 import FeatureCategory from "@component/category/FeatureCategory";
 import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@component/preloader/CMSkeleton";
-import ourOffers from "public/titles/ourOffers.svg"
-import popolarTitle from "public/titles/popolarTitle.svg"
+import ourOffers from "public/titles/ourOffers.svg";
+import popolarTitle from "public/titles/popolarTitle.svg";
 import sortProducts from "src/functions/sortProducts";
+import useAsync from "@hooks/useAsync";
+import OfferServices from "@services/OfferServices";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const router = useRouter();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
+  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   // רעיון לעתיד כותרות קופצות
   // const [showTitles, setShowTitles] = useState(false);
@@ -64,13 +67,13 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
           <div className="min-h-screen">
             <StickyCart />
             <div className="bg-white">
-            <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
+              <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
                 <div className="flex w-full">
                   <div className="flex-shrink-0 lg:block w-full lg:w-3/5">
                     <MainCarousel />
                   </div>
                   <div className="w-full hidden lg:flex">
-                    <OfferCard />
+                    <OfferCard discountProducts={discountProducts} />
                   </div>
                 </div>
                 {storeCustomizationSetting?.home?.promotion_banner_status && (
@@ -168,6 +171,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                               key={product._id}
                               product={product}
                               attributes={attributes}
+                              offers={offers}
                             />
                           ))}
                       </div>
@@ -247,6 +251,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                                 key={product._id}
                                 product={product}
                                 attributes={attributes}
+                                offers={offers}
                               />
                             ))}
                         </div>
@@ -277,10 +282,8 @@ export const getServerSideProps = async (context) => {
 
   // console.log('data: ', data)
 
-
   // const sortedPopularProducts = sortProducts(data.popularProducts);
   const sortedPopularProducts = data.popularProducts;
-
 
   // שינוי המוצרים במבצע למוצרים עם מבצעי הצעות במקום מבצעים של סתם מחיר זול יותר
   const sortedDiscountProducts = data.productsWithOffers;
