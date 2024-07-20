@@ -2,7 +2,7 @@
   "name": "משק קירשנר",
   "version": "0.1.0",
   "description": "משק קירשנר",
-  "homepage": "https://kirshner-store.vercel.app/",
+  "homepage": "https://site.meshek-kirshner.co.il/",
   "private": true,
   "scripts": {
     "dev": "next dev",
