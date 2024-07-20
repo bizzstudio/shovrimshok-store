@@ -26,6 +26,7 @@
     "@tailwindcss/line-clamp": "^0.2.2",
     "@tawk.to/tawk-messenger-react": "^2.0.2",
     "@windmill/react-ui": "^0.6.0",
+    "autoprefixer": "^10.4.19",
     "axios": "^0.24.0",
     "browser-image-compression": "^2.0.2",
     "currency-symbol-map": "^5.0.1",
@@ -71,7 +72,6 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/typography": "^0.5.1",
-    "autoprefixer": "10.4.5",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",
     "eslint-config-prettier": "^8.3.0",
