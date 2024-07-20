@@ -5,7 +5,6 @@ class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
 
-    
     // Fetch general metadata from backend API
     const setting = await SettingServices.getStoreSeoSetting();
 
@@ -40,7 +39,7 @@ class MyDocument extends Document {
           <meta
             property="og:url"
             content={
-              setting?.meta_url || "https://kirshner-store.vercel.app"
+              setting?.meta_url || "https://meshek-kirshner.co.il/"
             }
           />
           <meta
