@@ -65,6 +65,7 @@
     "socket.io-client": "^4.4.0",
     "swiper": "^8.4.7",
     "tailwind-scrollbar-hide": "^1.0.4",
+    "next-translate-plugin": "^2.6.2",
     "use-local-storage-state": "^13.0.0"
   },
   "devDependencies": {
@@ -74,7 +75,6 @@
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",
     "eslint-config-prettier": "^8.3.0",
-    "next-translate-plugin": "^2.6.2",
     "postcss": "^8.4.6",
     "tailwindcss": "^3.0.24"
   }
