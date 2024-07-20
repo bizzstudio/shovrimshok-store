@@ -5,6 +5,7 @@ class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
 
+    
     // Fetch general metadata from backend API
     const setting = await SettingServices.getStoreSeoSetting();
 
