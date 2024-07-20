@@ -17,8 +17,8 @@ import MainCarousel from "@component/carousel/MainCarousel";
 import FeatureCategory from "@component/category/FeatureCategory";
 import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@component/preloader/CMSkeleton";
-import ourOffers from "public/titles/ourOffers.svg"
-import popolarTitle from "public/titles/popolarTitle.svg"
+import ourOffers from "public/titles/ourOffers.svg";
+import popolarTitle from "public/titles/popolarTitle.svg";
 import sortProducts from "src/functions/sortProducts";
 import useAsync from "@hooks/useAsync";
 import OfferServices from "@services/OfferServices";
@@ -59,71 +59,34 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   }, [router]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<Loading loading={isLoading} />}>
       <>
-        {isLoading ? (
-          <Loading loading={isLoading} />
-        ) : (
-          <Layout>
-            <div className="min-h-screen">
-              <StickyCart />
-              <div className="bg-white">
-                <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
-                  <div className="flex w-full">
-                    <div className="flex-shrink-0 lg:block w-full lg:w-3/5">
-                      <MainCarousel />
-                    </div>
-                    <div className="w-full hidden lg:flex">
-                      <OfferCard discountProducts={discountProducts} />
-                    </div>
+        <Layout>
+          <div className="min-h-screen">
+            <StickyCart />
+            <div className="bg-white">
+              <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
+                <div className="flex w-full">
+                  <div className="flex-shrink-0 lg:block w-full lg:w-3/5">
+                    <MainCarousel />
                   </div>
-                  {storeCustomizationSetting?.home?.promotion_banner_status && (
-                    <div className="bg-gray-100 px-10 py-6 rounded-lg mt-6">
-                      <Banner />
-                    </div>
-                  )}
+                  <div className="w-full hidden lg:flex">
+                    <OfferCard discountProducts={discountProducts} />
+                  </div>
                 </div>
+                {storeCustomizationSetting?.home?.promotion_banner_status && (
+                  <div className="bg-gray-100 px-10 py-6 rounded-lg mt-6">
+                    <Banner />
+                  </div>
+                )}
               </div>
+            </div>
 
-              {/* feature category's */}
-              {storeCustomizationSetting?.home?.featured_status && (
-                <div className="bg-gray-100 lg:py-16 py-10">
-                  <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                    <div className="mb-10 flex justify-center">
-                      <div className="text-center w-full lg:w-2/5">
-                        <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
-                          <CMSkeleton
-                            count={1}
-                            height={30}
-                            // error={error}
-                            loading={loading}
-                            data={storeCustomizationSetting?.home?.feature_title}
-                          />
-                        </h2>
-                        <p className="text-base font-sans text-gray-600 leading-6">
-                          <CMSkeleton
-                            count={4}
-                            height={10}
-                            error={error}
-                            loading={loading}
-                            data={
-                              storeCustomizationSetting?.home?.feature_description
-                            }
-                          />
-                        </p>
-                      </div>
-                    </div>
-
-                    <FeatureCategory />
-                  </div>
-                </div>
-              )}
-
-              {/* popular products */}
-              {storeCustomizationSetting?.home?.popular_products_status && (
-                <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
-                  {/* {showTitles && ( */}
-                  <div className="mb-10 flex justify-center animate-fadeIn">
+            {/* feature category's */}
+            {storeCustomizationSetting?.home?.featured_status && (
+              <div className="bg-gray-100 lg:py-16 py-10">
+                <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+                  <div className="mb-10 flex justify-center">
                     <div className="text-center w-full lg:w-2/5">
                       <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
                         <CMSkeleton
@@ -131,25 +94,139 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                           height={30}
                           // error={error}
                           loading={loading}
-                          // data={storeCustomizationSetting?.home?.popular_title}
-                          data={popolarTitle.src}
+                          data={storeCustomizationSetting?.home?.feature_title}
+                        />
+                      </h2>
+                      <p className="text-base font-sans text-gray-600 leading-6">
+                        <CMSkeleton
+                          count={4}
+                          height={10}
+                          error={error}
+                          loading={loading}
+                          data={
+                            storeCustomizationSetting?.home?.feature_description
+                          }
+                        />
+                      </p>
+                    </div>
+                  </div>
+
+                  <FeatureCategory />
+                </div>
+              </div>
+            )}
+
+            {/* popular products */}
+            {storeCustomizationSetting?.home?.popular_products_status && (
+              <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+                {/* {showTitles && ( */}
+                <div className="mb-10 flex justify-center animate-fadeIn">
+                  <div className="text-center w-full lg:w-2/5">
+                    <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
+                      <CMSkeleton
+                        count={1}
+                        height={30}
+                        // error={error}
+                        loading={loading}
+                        // data={storeCustomizationSetting?.home?.popular_title}
+                        data={popolarTitle.src}
+                        isIimage={true}
+                      />
+                    </h2>
+                    <p className="text-base font-sans text-gray-600 leading-6">
+                      <CMSkeleton
+                        count={5}
+                        height={10}
+                        error={error}
+                        loading={loading}
+                        data={
+                          storeCustomizationSetting?.home?.popular_description
+                        }
+                      />
+                    </p>
+                  </div>
+                </div>
+                {/* )} */}
+                <div className="flex">
+                  <div className="w-full">
+                    {loading ? (
+                      <CMSkeleton
+                        count={20}
+                        height={20}
+                        error={error}
+                        loading={loading}
+                      />
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
+                        {popularProducts
+                          ?.slice(
+                            0,
+                            storeCustomizationSetting?.home
+                              ?.popular_product_limit
+                          )
+                          .map((product) => (
+                            <ProductCard
+                              key={product._id}
+                              product={product}
+                              attributes={attributes}
+                              offers={offers}
+                            />
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* promotional banner card */}
+            {storeCustomizationSetting?.home?.delivery_status && (
+              // <div className="block mx-auto max-w-screen-2xl">
+              <div className="w-full">
+                {/* <div className="lg:p-16 p-6 bg-customGreen shadow-sm border rounded-lg"> */}
+                <CardTwo />
+                {/* </div> */}
+              </div>
+              // </div>
+            )}
+
+            {/* discounted products */}
+            {storeCustomizationSetting?.home?.discount_product_status &&
+              discountProducts?.length > 0 && (
+                <div
+                  id="discount"
+                  className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
+                >
+                  <div className="mb-10 flex justify-center">
+                    <div className="text-center w-full lg:w-2/5">
+                      <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
+                        <CMSkeleton
+                          count={1}
+                          height={30}
+                          // error={error}
+                          loading={loading}
+                          // data={
+                          //   storeCustomizationSetting?.home
+                          //     ?.latest_discount_title
+                          // }
+                          data={ourOffers.src}
                           isIimage={true}
                         />
                       </h2>
                       <p className="text-base font-sans text-gray-600 leading-6">
                         <CMSkeleton
                           count={5}
-                          height={10}
-                          error={error}
+                          height={20}
+                          // error={error}
                           loading={loading}
                           data={
-                            storeCustomizationSetting?.home?.popular_description
+                            storeCustomizationSetting?.home
+                              ?.latest_discount_description
                           }
                         />
                       </p>
                     </div>
                   </div>
-                  {/* )} */}
                   <div className="flex">
                     <div className="w-full">
                       {loading ? (
@@ -161,11 +238,11 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                         />
                       ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
-                          {popularProducts
+                          {discountProducts
                             ?.slice(
                               0,
                               storeCustomizationSetting?.home
-                                ?.popular_product_limit
+                                ?.latest_discount_product_limit
                             )
                             .map((product) => (
                               <ProductCard
@@ -181,89 +258,8 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                   </div>
                 </div>
               )}
-
-              {/* promotional banner card */}
-              {storeCustomizationSetting?.home?.delivery_status && (
-                // <div className="block mx-auto max-w-screen-2xl">
-                <div className="w-full">
-                  {/* <div className="lg:p-16 p-6 bg-customGreen shadow-sm border rounded-lg"> */}
-                  <CardTwo />
-                  {/* </div> */}
-                </div>
-                // </div>
-              )}
-
-              {/* discounted products */}
-              {storeCustomizationSetting?.home?.discount_product_status &&
-                discountProducts?.length > 0 && (
-                  <div
-                    id="discount"
-                    className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
-                  >
-                    <div className="mb-10 flex justify-center">
-                      <div className="text-center w-full lg:w-2/5">
-                        <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
-                          <CMSkeleton
-                            count={1}
-                            height={30}
-                            // error={error}
-                            loading={loading}
-                            // data={
-                            //   storeCustomizationSetting?.home
-                            //     ?.latest_discount_title
-                            // }
-                            data={ourOffers.src}
-                            isIimage={true}
-                          />
-                        </h2>
-                        <p className="text-base font-sans text-gray-600 leading-6">
-                          <CMSkeleton
-                            count={5}
-                            height={20}
-                            // error={error}
-                            loading={loading}
-                            data={
-                              storeCustomizationSetting?.home
-                                ?.latest_discount_description
-                            }
-                          />
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="w-full">
-                        {loading ? (
-                          <CMSkeleton
-                            count={20}
-                            height={20}
-                            error={error}
-                            loading={loading}
-                          />
-                        ) : (
-                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
-                            {discountProducts
-                              ?.slice(
-                                0,
-                                storeCustomizationSetting?.home
-                                  ?.latest_discount_product_limit
-                              )
-                              .map((product) => (
-                                <ProductCard
-                                  key={product._id}
-                                  product={product}
-                                  attributes={attributes}
-                                  offers={offers}
-                                />
-                              ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-            </div>
-          </Layout>
-        )}
+          </div>
+        </Layout>
       </>
     </Suspense>
   );
@@ -284,10 +280,8 @@ export const getServerSideProps = async (context) => {
 
   // console.log('data: ', data)
 
-
   // const sortedPopularProducts = sortProducts(data.popularProducts);
   const sortedPopularProducts = data.popularProducts;
-
 
   // שינוי המוצרים במבצע למוצרים עם מבצעי הצעות במקום מבצעים של סתם מחיר זול יותר
   const sortedDiscountProducts = data.productsWithOffers;
