@@ -19,9 +19,6 @@ module.exports = withPWA({
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
   i18n: {
     // These are all the locales you want to support in
     // your application
