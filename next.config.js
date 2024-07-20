@@ -1,5 +1,5 @@
 const runtimeCaching = require("next-pwa/cache");
-const nextTranslate = require('next-translate-plugin');
+const nextTranslate = require('next-translate');
 
 const withPWA = require("next-pwa")({
   dest: "public",
@@ -24,7 +24,7 @@ module.exports = withPWA({
   i18n: {
     // These are all the locales you want to support in
     // your application
-    locales: ["en-US", "es", "fr", "nl-NL", "he"],
+    locales: ["he"],
     // locales: ["he"],
     // This is the default locale you want to be used when visiting
     // a non-locale prefixed path e.g. `/hello`
@@ -51,17 +51,17 @@ module.exports = withPWA({
 
   images: {
     domains: [
-      "images.unsplash.com",
-      "img.icons8.com",
-      "i.ibb.co",
-      "i.postimg.cc",
-      "fakestoreapi.com",
+      // "images.unsplash.com",
+      // "img.icons8.com",
+      // "i.ibb.co",
+      // "i.postimg.cc",
+      // "fakestoreapi.com",
       "res.cloudinary.com",
-      "lh3.googleusercontent.com",
-      "res.cloudinary.com",
-      "lh3.googleusercontent.com",
-      "",
-      "images.dashter.com",
+      // "lh3.googleusercontent.com",
+      // "res.cloudinary.com",
+      // "lh3.googleusercontent.com",
+      // "",
+      // "images.dashter.com",
     ],
   },
 
