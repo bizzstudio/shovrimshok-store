@@ -165,7 +165,7 @@ const useCheckoutSubmit = () => {
         SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/success",
         FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/failed",
         // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
-        WebHookUrl: "https://kirshner-backend.vercel.app/api" + "/orders/" + dbOrder._id,
+        WebHookUrl: "https://backend.meshek-kirshner.co.il/api" + "/orders/" + dbOrder._id,
         Document: {
           To: userInfo.name,
           Email: userInfo.email,
