@@ -1,5 +1,7 @@
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 //internal import
 
@@ -96,6 +98,7 @@ const Layout = ({ title, description, children }) => {
           </title>
           {description && <meta name="description" content={description} />}
           <link ref="icon" href="/favicon.png" />
+          <SpeedInsights/>
         </Head>
         {/* <NavBarTop /> */}
         <Navbar />
