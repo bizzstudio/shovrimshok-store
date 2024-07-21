@@ -72,6 +72,7 @@ const Layout = ({ title, description, children }) => {
   return (
     <>
       <ToastContainer rtl={currentLang} />
+      <SpeedInsights/>
 
       {addressPopup && (
         <MainModal modalOpen={addressPopup} setModalOpen={setAddressPopup}>
@@ -98,7 +99,6 @@ const Layout = ({ title, description, children }) => {
           </title>
           {description && <meta name="description" content={description} />}
           <link ref="icon" href="/favicon.png" />
-          <SpeedInsights/>
         </Head>
         {/* <NavBarTop /> */}
         <Navbar />
