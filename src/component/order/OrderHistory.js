@@ -17,7 +17,7 @@ const OrderHistory = ({ order, currency }) => {
         setStatus(<span className="text-red-500">{order?.status?.heName}</span>);
       else {
         const phone = order?.status?.phone;
-        setStatus(<span className="text-red-500">{order?.status?.name}{phone ? ' - ' + phone : ''}</span>);
+        setStatus(<span className="text-red-500">{order?.status?.heName}{phone ? ' - ' + phone : ''}</span>);
       }
     };
 
