@@ -1,10 +1,7 @@
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-
 
 //internal import
-
 import Navbar from "@layout/navbar/Navbar";
 import Footer from "@layout/footer/Footer";
 import NavBarTop from "./navbar/NavBarTop";
@@ -72,7 +69,6 @@ const Layout = ({ title, description, children }) => {
   return (
     <>
       <ToastContainer rtl={currentLang} />
-      <SpeedInsights/>
 
       {addressPopup && (
         <MainModal modalOpen={addressPopup} setModalOpen={setAddressPopup}>
