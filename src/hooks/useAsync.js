@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
 const useAsync = (asyncFunction) => {
@@ -21,6 +22,7 @@ const useAsync = (asyncFunction) => {
           setLoading(false);
         }
       } catch (err) {
+        console.log(err)
         setErrCode(err?.response?.status);
         if (!unmounted) {
           console.log(err.message);
@@ -50,8 +52,6 @@ const useAsync = (asyncFunction) => {
   useEffect(() => {
     if (errCode === 401) {
       Cookies.remove("userInfo");
-
-      console.log("status 401", errCode);
       window.location.replace(`${process.env.NEXT_PUBLIC_STORE_DOMAIN}`);
     }
   }, [errCode]);

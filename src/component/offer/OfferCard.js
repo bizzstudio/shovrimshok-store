@@ -55,7 +55,7 @@ const OfferCard = ({ discountProducts }) => {
             onMouseLeave={handleMouseLeave}
           >
             {discountProducts?.map((product) => (
-              <div key={product.id} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+              <div key={product._id} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
                 <div className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0"
                 >
                   <img
@@ -76,7 +76,7 @@ const OfferCard = ({ discountProducts }) => {
               </div>
             ))}
             {discountProducts?.map((product) => (
-              <div key={`${product.id}-clone`} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+              <div key={`${product._id}-clone`} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
                 <div className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0"
                 >
                   <img
