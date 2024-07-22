@@ -165,7 +165,7 @@ const useCheckoutSubmit = () => {
         SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/success",
         FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/failed",
         // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
-        WebHookUrl: "https://backend.meshek-kirshner.co.il/api" + "/orders/" + dbOrder._id,
+        WebHookUrl: "https://backend.meshek-kirshner.co.il/api" + "/orders/" + dbOrder._id + `?key=${process.env.NEXT_PUBLIC_CARDCOM_KEY}&secret=${process.env.NEXT_PUBLIC_CARDCOM_SECRET}`,
         Document: {
           To: userInfo.name,
           Email: userInfo.email,
