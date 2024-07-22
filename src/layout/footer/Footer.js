@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import useTranslation from "next-translate/useTranslation";
+
 import {
   FacebookIcon,
   LinkedinIcon,
@@ -474,6 +475,11 @@ const Footer = () => {
             className="text-customGreen"
           >Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
         </p>
+      </div>
+      <div className="whatsapWid">
+        <a href="https://wa.link/xngmmq">
+        <img src="https://res.cloudinary.com/dzxn0xhoy/image/upload/v1721628197/undefined/whatsapp-icon-design.png"  width="100" height="98" />
+        </a>
       </div>
     </div>
   );

@@ -12,7 +12,18 @@
     transform: translateY(-50%);
   }
 }
-
+.whatsapWid {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
+.whatsapWid img:hover {
+  width: 110px;
+  height: 105px;
+}
+{
+  transition: width 2s, height 2s;
+}
 .scroll-container {
   height: 327px; /* Adjust according to your container height */
   overflow: hidden;
