@@ -11,7 +11,7 @@ import Discount from "@component/common/Discount";
 
 const OfferCard = ({ discountProducts }) => {
   const { storeCustomizationSetting } = useGetSetting();
-  const { showingTranslateValue } = useUtilsFunction();
+  // const { showingTranslateValue } = useUtilsFunction();
 
   const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
