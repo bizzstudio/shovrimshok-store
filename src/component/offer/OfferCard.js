@@ -45,8 +45,8 @@ const OfferCard = ({ discountProducts }) => {
           <h3 className="text-base font-serif font-medium ">               
                   <img
                     src="/222.svg"
-                    width={327}
-                    height={112}
+                    width={220}
+                    height={75}
                   />
     
           </h3>
