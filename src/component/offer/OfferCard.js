@@ -44,7 +44,7 @@ const OfferCard = ({ discountProducts }) => {
         <div className="bg-customBrown-light text-gray-900 px-6 py-2 rounded-t border-b flex items-center justify-center">
           <h3 className="text-base font-serif font-medium ">               
                   <img
-                    src="_next/static/media/popolarTitle.5256804c.svg"
+                    src="/222.svg"
                     width={327}
                     height={112}
                   />
