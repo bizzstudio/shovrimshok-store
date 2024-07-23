@@ -480,6 +480,7 @@ const Footer = () => {
         <a href="https://wa.link/xngmmq">
         <img src="https://res.cloudinary.com/dzxn0xhoy/image/upload/v1721628197/undefined/whatsapp-icon-design.png"  width="100" height="98" />
         </a>
+              <script src="https://cdn.enable.co.il/licenses/enable-L669sin2yb9r7u-1017-61528/init.js"></script>
       </div>
     </div>
   );
