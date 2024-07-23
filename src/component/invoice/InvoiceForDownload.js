@@ -8,6 +8,7 @@ import {
   View,
 } from "@react-pdf/renderer";
 import dayjs from "dayjs";
+import Cookies from "js-cookie";
 
 Font.register({
   family: "Assistant",
@@ -270,6 +271,21 @@ const InvoiceForDownload = ({
   globalSetting,
   getNumberTwo,
 }) => {
+
+  let currentLang = Cookies.get('_lang');
+
+  switch (currentLang) {
+    case 'he':
+      currentLang = true;
+      break;
+    case 'en':
+      currentLang = false;
+      break;
+    default:
+      currentLang = false;
+      break;
+  }
+
   return (
     <>
       <Document>
@@ -362,7 +378,7 @@ const InvoiceForDownload = ({
                   <Text style={styles.tableCell}>{i + 1} </Text>
                 </View>
                 <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{item.title} </Text>
+                  <Text style={styles.tableCell}>{currentLang ? item.title?.he : item.title?.en}</Text>
                 </View>
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>

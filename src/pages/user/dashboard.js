@@ -117,7 +117,7 @@ const Dashboard = ({ title, description, children }) => {
                 <div className="bg-white p-4 sm:p-5 lg:p-8 rounded-md sticky top-32">
                   {userSidebar?.map((item) => (
                     <span
-                      key={item.title}
+                      key={item?.title}
                       className="p-2 my-2 flex gap-1 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark"
                     >
                       <item.icon
