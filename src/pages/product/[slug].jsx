@@ -214,18 +214,28 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
             .join("-")
           }`,
 
-        title: `${p.variants.length <= 1
-          ? showingTranslateValue(product?.title)
-          : showingTranslateValue(product?.title) +
-          "-" +
-          variantTitle
-            ?.map(
-              // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
-              (att) =>
-                att.variants?.find((v) => v._id === selectVariant[att._id])
-            )
-            .map((el) => showingTranslateValue(el?.name))
-          }`,
+        title: p.variants.length <= 1
+          ? product.title
+          : {
+            he: product.title.he +
+              "-" +
+              variantTitle
+                ?.map(
+                  // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                  (att) =>
+                    att.variants?.find((v) => v._id === selectVariant[att._id])
+                )
+                .map((el) => el?.name),
+            en: product.title.en +
+              "-" +
+              variantTitle
+                ?.map(
+                  // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                  (att) =>
+                    att.variants?.find((v) => v._id === selectVariant[att._id])
+                )
+                .map((el) => el?.name)
+          },
         image: img,
         variant: selectVariant,
         price: price,

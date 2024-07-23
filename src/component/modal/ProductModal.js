@@ -176,16 +176,24 @@ const ProductModal = ({
           "-" +
           variantTitle?.map((att) => selectVariant[att._id]).join("-")
           }`,
-        title: `${p?.variants.length <= 0
-          ? showingTranslateValue(p.title)
-          : showingTranslateValue(p.title) +
-          "-" +
-          variantTitle
-            ?.map((att) =>
-              att.variants?.find((v) => v._id === selectVariant[att._id])
-            )
-            .map((el) => showingTranslateValue(el?.name))
-          }`,
+        title: p?.variants.length <= 0
+          ? p.title
+          : {
+            he: p.title.he +
+              "-" +
+              variantTitle
+                ?.map((att) =>
+                  att.variants?.find((v) => v._id === selectVariant[att._id])
+                )
+                .map((el) => el?.name),
+            en: p.title.en +
+              "-" +
+              variantTitle
+                ?.map((att) =>
+                  att.variants?.find((v) => v._id === selectVariant[att._id])
+                )
+                .map((el) => el?.name),
+          },
         image: img,
         variant: selectVariant || {},
         price:
@@ -231,28 +239,28 @@ const ProductModal = ({
                 className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer p-5 pl-0"
               >
                 <Discount
-                 product={product}
-                  discount={discount} 
+                  product={product}
+                  discount={discount}
                   modal
                   title={title}
-                  // title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
-                  //   selectVariant.offers.reduce((title, obj) => (
-                  //     <>
-                  //       {title}
-                  //       {title && <br />}
-                  //       {obj.name}
-                  //     </>
-                  //   ), null)
-                  // ) : '') : (product?.prices?.offers?.length > 0 ? (
-                  //   product?.prices?.offers.reduce((title, obj) => (
-                  //     <>
-                  //       {title}
-                  //       {title && <br />}
-                  //       {obj.name}
-                  //     </>
-                  //   ), null)
-                  // ) : '')}
-                   />
+                // title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
+                //   selectVariant.offers.reduce((title, obj) => (
+                //     <>
+                //       {title}
+                //       {title && <br />}
+                //       {obj.name}
+                //     </>
+                //   ), null)
+                // ) : '') : (product?.prices?.offers?.length > 0 ? (
+                //   product?.prices?.offers.reduce((title, obj) => (
+                //     <>
+                //       {title}
+                //       {title && <br />}
+                //       {obj.name}
+                //     </>
+                //   ), null)
+                // ) : '')}
+                />
 
                 {product.image[0] ? (
                   <Image

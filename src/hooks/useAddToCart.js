@@ -1,10 +1,24 @@
 import { useState } from "react";
 import { useCart } from "react-use-cart";
+import Cookies from "js-cookie";
 
 import { notifyError, notifySuccess } from "@utils/toast";
 import useTranslation from "next-translate/useTranslation";
 
 const useAddToCart = () => {
+  let currentLang = Cookies.get('_lang');
+
+  switch (currentLang) {
+    case 'he':
+      currentLang = true;
+      break;
+    case 'en':
+      currentLang = false;
+      break;
+    default:
+      currentLang = false;
+      break;
+  }
   const { t } = useTranslation();
 
   const [item, setItem] = useState(1);
@@ -35,7 +49,7 @@ const useAddToCart = () => {
           : product?.stock)
       ) {
         addItem(updatedProduct, item);
-        notifySuccess(`${item} ${product.title} ${t("common:addedToCart!")}`);
+        notifySuccess(`${item} ${currentLang ? product.title?.he : product.title?.en} ${t("common:addedToCart!")}`);
       } else {
         notifyError(t("common:productStockOut"));
       }
@@ -47,7 +61,7 @@ const useAddToCart = () => {
           : product?.stock)
       ) {
         addItem(updatedProduct, item);
-        notifySuccess(`${item} ${product.title} ${t("common:addedToCart!")}`);
+        notifySuccess(`${item} ${currentLang ? product.title?.he : product.title?.en} ${t("common:addedToCart!")}`);
       } else {
         notifyError(t("common:productStockOut"));
       }

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import useAddToCart from "@hooks/useAddToCart";
 import { SidebarContext } from "@context/SidebarContext";
 import useCart from "@hooks/useCart";
+import Cookies from "js-cookie";
 
 const CartItem = ({ item, currency, updateTotalPrice }) => {
   const { updateItemQuantity, removeItem, updateItem, items } = useCart();
@@ -17,6 +18,20 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
 
   const [totalPrice, setTotalPrice] = useState(item.prices.price * item.quantity);
   const [offerTitle, setOfferTitle] = useState('');
+
+  let currentLang = Cookies.get('_lang');
+
+  switch (currentLang) {
+    case 'he':
+      currentLang = true;
+      break;
+    case 'en':
+      currentLang = false;
+      break;
+    default:
+      currentLang = false;
+      break;
+  }
 
   // עדכון מחיר המוצר על סמך המבצע שלו
   useEffect(() => {
@@ -126,7 +141,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
           onClick={closeCartDrawer}
           className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1"
         >
-          {item.title}
+          {currentLang ? item.title?.he : item.title?.en}
         </Link>
         {/* <span className="text-xs text-gray-400 mb-1">
           Item Price ${item.price}

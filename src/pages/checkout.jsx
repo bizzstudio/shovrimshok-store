@@ -65,6 +65,7 @@ const Checkout = () => {
     paymentSrc,
     setPaymentSrc,
   } = useCheckoutSubmit();
+  console.log(items)
 
   const { t } = useTranslation();
   const { storeCustomizationSetting } = useGetSetting();
