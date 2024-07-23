@@ -11,7 +11,7 @@ import Discount from "@component/common/Discount";
 
 const OfferCard = ({ discountProducts }) => {
   const { storeCustomizationSetting } = useGetSetting();
-  const { showingTranslateValue } = useUtilsFunction();
+  // const { showingTranslateValue } = useUtilsFunction();
 
   const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
@@ -40,12 +40,12 @@ const OfferCard = ({ discountProducts }) => {
 
   return (
     <div className="w-full group">
-      <div className="bg-gray-50 border-2 transition duration-150 ease-linear transform border-customGreen rounded shadow">
+      <div className="bg-gray-50 transition duration-150 ease-linear transform border-customGreen">
         <div className="bg-customBrown-light text-gray-900 px-6 py-2 rounded-t border-b flex items-center justify-center">
           <h3 className="text-base font-serif font-medium ">
-            {showingTranslateValue(
-              storeCustomizationSetting?.home?.discount_title
-            )}
+            // {showingTranslateValue(
+            //   storeCustomizationSetting?.home?.discount_title
+            // )}
           </h3>
         </div>
         <div className="scroll-container">
