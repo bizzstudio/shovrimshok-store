@@ -120,7 +120,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
 
             {/* popular products */}
             {storeCustomizationSetting?.home?.popular_products_status && (
-              <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-3x2 px-3 sm:px-10">
+              <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
                 {/* {showTitles && ( */}
                 <div className="mb-10 flex justify-center animate-fadeIn">
                   <div className="text-center w-full lg:w-2/5">
