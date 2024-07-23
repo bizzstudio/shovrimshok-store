@@ -132,7 +132,7 @@ const MainCarousel = () => {
       >
         {sliderData?.map((item, i) => (
           <SwiperSlide
-            className="h-full relative rounded-lg overflow-hidden"
+            className="h-full relative  overflow-hidden"
             key={i + 1}
           >
             <div className="text-sm text-gray-600 hover:text-emerald-dark">
@@ -155,7 +155,7 @@ const MainCarousel = () => {
                 </p>
                 <Link
                   href={item.url}
-                  className="hidden w-fit sm:inline-block lg:inline-block mt-6 items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-10 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                  className="hidden w-fit sm:inline-block lg:inline-block mt-6 items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-10  border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                 >
                   {item.buttonName}
                 </Link>
