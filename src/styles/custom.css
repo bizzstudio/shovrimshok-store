@@ -61,7 +61,7 @@
 
 /* carousel.css */
 .swiper-pagination-bullet-active {
-  background-color: #3c6d16 !important; /* הצבע של הכדור הפעיל */
+  background-color: #FFF !important; /* הצבע של הכדור הפעיל */
 }
 
 .custom-select {
