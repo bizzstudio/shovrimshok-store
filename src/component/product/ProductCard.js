@@ -43,7 +43,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
       product;
     const newItem = {
       ...updatedProduct,
-      title: showingTranslateValue(p?.title),
+      title: p.title,
       id: p._id,
       variant: p.prices,
       price: p.prices.price,

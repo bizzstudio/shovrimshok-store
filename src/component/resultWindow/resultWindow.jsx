@@ -54,7 +54,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
         const newItem = {
             ...updatedProduct,
             id: product._id,
-            title: showingTranslateValue(product?.title),
+            title: product.title,
             price: product.prices.price,
             originalPrice: product.prices?.originalPrice,
             image: product.image[0],

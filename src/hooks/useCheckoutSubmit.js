@@ -172,7 +172,7 @@ const useCheckoutSubmit = () => {
           Products: [...orderInfo.cart.map(p => {
             return {
               // ProductID: p._id,
-              Description: p.title,
+              Description: p.title.he,
               Quantity: p.quantity,
               UnitCost: p.discountedPrice ? p.discountedPrice / p.quantity : p.itemTotal / p.quantity,
               TotalLineCost: p.discountedPrice ? p.discountedPrice : p.itemTotal,
