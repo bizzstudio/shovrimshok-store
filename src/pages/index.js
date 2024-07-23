@@ -67,7 +67,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
           <div className="min-h-screen">
             <StickyCart />
             <div className="bg-white">
-              <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
+              <div className="mx-auto py-5 max-w-screen-2x1 px-3 sm:px-10">
                 <div className="flex w-full">
                   <div className="flex-shrink-0 lg:block w-full lg:w-3/5">
                     <MainCarousel />
@@ -87,7 +87,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             {/* feature category's */}
             {storeCustomizationSetting?.home?.featured_status && (
               <div className="bg-gray-100 lg:py-16 py-10">
-                <div className="mx-auto max-w-screen-3x2 px-3 sm:px-10">
+                <div className="mx-auto max-w-screen-2x1 px-3 sm:px-10">
                   <div className="mb-10 flex justify-center">
                     <div className="text-center w-full lg:w-2/5">
                       <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
@@ -120,7 +120,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
 
             {/* popular products */}
             {storeCustomizationSetting?.home?.popular_products_status && (
-              <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+              <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-3x2 px-3 sm:px-10">
                 {/* {showTitles && ( */}
                 <div className="mb-10 flex justify-center animate-fadeIn">
                   <div className="text-center w-full lg:w-2/5">
