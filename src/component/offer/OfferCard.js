@@ -92,7 +92,7 @@ const OfferCard = ({ discountProducts }) => {
                   />
                 </div>
                 <div className="flex items-center my-auto w-full h-fit justify-between">
-                  <div className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1">
+                  <div className="truncate  bg-customGreen  text-sm font-medium text-gray-700 text-heading line-clamp-1">
                     {product.title?.he}
                   </div>
                   {isProductWithDiscount(product)}
