@@ -47,7 +47,7 @@ const OfferCard = ({ discountProducts }) => {
               storeCustomizationSetting?.home?.discount_title
             )}
           </h3>
-    <h2 class="text-xl lg:text-2xl mb-2 font-serif font-semibold"><img src="https://site.meshek-kirshner.co.il/_next/static/media/popolarTitle.5256804c.svg" alt="skeleton" class="h-28 mx-auto -mb-10 -mt-4"></h2>
+    // <h2 class="text-xl lg:text-2xl mb-2 font-serif font-semibold"><img src="https://site.meshek-kirshner.co.il/_next/static/media/popolarTitle.5256804c.svg" alt="skeleton" class="h-28 mx-auto -mb-10 -mt-4"></h2>
         </div>
         <div className="scroll-container">
           <div className="scroll-content"
