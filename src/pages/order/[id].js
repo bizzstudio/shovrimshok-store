@@ -132,7 +132,8 @@ const Order = ({ params }) => {
                     </button>
                   )}
                   content={() => printRef.current}
-                  documentTitle="Invoice"
+                  documentTitle="Order"
+                  pageStyle="@media print { body { direction: rtl; } }"
                 />
               </div>
             </div>

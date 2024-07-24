@@ -298,6 +298,8 @@
     "purchaseFailed": "הרכישה נכשלה!",
     "orderFaildText": "התשלום נדחה, אנא נסה שוב.",
     "tryAgain": "נסה שוב",
+    "customerNote": "הערות להזמנה (אופציונלי)",
+    "typeHere": "הקלד/י כאן...",
   
     "/=================* Invoice * =================/": "",
   
@@ -365,6 +367,7 @@
     "completeOrder": "Complete Order",
   
     "recentOrder": "Recent Order",
+    "notes": "הערות",
   
     "photo": "Photo",
     "fullName": "שם מלא",

@@ -8,6 +8,7 @@ import {
   IoBagHandle,
   IoWalletSharp,
 } from "react-icons/io5";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { CiUser } from "react-icons/ci";
 import deliveryIcon from 'public/shippedGreen.svg'
 import { ImCreditCard } from "react-icons/im";
@@ -80,6 +81,8 @@ const Checkout = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
+  const [isNoteOpen, setIsNoteOpen] = useState(false);
+
   const router = useRouter();
 
   // משיכת ההגדרות של המשלוחים וההזמנות ובדיקה אם זה מאופשר או לא
@@ -368,6 +371,30 @@ const Checkout = () => {
                               {parseFloat(total).toFixed(2)}
                             </span>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* הערות לקוח להזמנה */}
+                    <div className="w-full flex flex-col h-full md:order-2 lg:order-2 my-3">
+                      <div className="border px-5 lg:px-8 py-3 rounded-lg bg-white order-1 sm:order-2">
+                        <div className={`flex justify-between items-center`}
+                          onClick={() => setIsNoteOpen(!isNoteOpen)}>
+                          <h2 className="font-semibold font-serif text-lg">
+                            {t("common:customerNote")}
+                          </h2>
+                          <button type="button" className="text-customGreen">
+                            <MdKeyboardArrowDown size={30} className={`transform ${isNoteOpen ? 'rotate-180' : ''}`} />
+                          </button>
+                        </div>
+                        <div className={`overflow-hidden duration-500 ease-in-out ${isNoteOpen ? 'max-h-96 p-1 pt-3' : 'max-h-0'}`}>
+                          <textarea
+                            rows={4}
+                            maxLength={800}
+                            className="textareaCheckout w-full border border-gray-200 rounded-md px-4 py-3 text-sm font-sans focus-visible:outline-none focus:outline-none " 
+                            placeholder={t("common:typeHere")}
+                            {...register("customer_note")}
+                          />
                         </div>
                       </div>
                     </div>

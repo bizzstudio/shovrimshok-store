@@ -59,6 +59,12 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
                 }
               })()}
             </h6>
+            {/* הערות הלקוח להזמנה */}
+            {data?.customer_note && (
+              <div>
+                <h6 className="text-gray-700"><b>{t("common:notes")}: </b>{data?.customer_note}</h6>
+              </div>
+            )}
           </div>
           <div className="lg:text-right text-left">
             <h2 className="text-lg font-serif font-semibold mt-4 lg:mt-0 md:mt-0">
