@@ -107,7 +107,7 @@ const UserAddressInitialize = () => {
               <div className="lg:mt-6 mt-4 bg-white">
                 <div className="grid grid-cols-6 gap-6">
 
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-3 sm:col-span-3">
                     <Label label={t("common:city")} />
                     <City
                       setValue={setChosenCity}
@@ -115,7 +115,7 @@ const UserAddressInitialize = () => {
                     />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-3 sm:col-span-3">
                     <InputArea
                       register={register}
 
@@ -127,7 +127,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.street} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:houseNumber")}
@@ -138,7 +138,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.houseNumber} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:apartmentNumber")}
@@ -149,7 +149,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.apartmentNumber} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:floor")}
@@ -161,7 +161,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.floor} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:entryCode")}
@@ -173,7 +173,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.entryCode} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:postalCode") + " " + t("common:optional")}
@@ -185,7 +185,7 @@ const UserAddressInitialize = () => {
                     <Error errorName={errors.postalCode} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:phone")}

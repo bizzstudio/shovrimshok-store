@@ -98,7 +98,7 @@ const UserAddressUpdate = () => {
             <div className="mt-5 md:mt-0 md:col-span-2">
               <div className="lg:mt-6 mt-4 bg-white">
                 <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-3 sm:col-span-3">
                     <InputArea
                       register={register}
                       label={showingTranslateValue(
@@ -113,7 +113,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.name} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-3 sm:col-span-3">
                     <InputArea
                       register={register}
                       label={showingTranslateValue(
@@ -128,7 +128,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.phone} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-3 sm:col-span-3">
                     <InputArea
                       register={register}
                       label={showingTranslateValue(
@@ -143,7 +143,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.email} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-3">
+                  <div className="col-span-3 sm:col-span-3">
                     <Label label={t("common:city")} />
                     <City
                       setValue={setChosenCity}
@@ -151,7 +151,7 @@ const UserAddressUpdate = () => {
                     />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
 
@@ -163,7 +163,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.street} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:houseNumber")}
@@ -174,7 +174,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.houseNumber} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:apartmentNumber")}
@@ -185,7 +185,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.apartmentNumber} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:floor")}
@@ -197,7 +197,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.floor} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:entryCode")}
@@ -209,7 +209,7 @@ const UserAddressUpdate = () => {
                     <Error errorName={errors.entryCode} />
                   </div>
 
-                  <div className="col-span-6 sm:col-span-2">
+                  <div className="col-span-3 sm:col-span-2">
                     <InputArea
                       register={register}
                       label={t("common:postalCode")}
