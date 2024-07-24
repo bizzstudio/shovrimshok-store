@@ -146,7 +146,7 @@ const useCheckoutSubmit = () => {
         shippingOption: data.shippingOption,
         paymentMethod: "creditCard", // data.paymentMethod,
         status: "Pending",
-        cart: items,
+        cart: items.sort((a, b) => a.barcode - b.barcode) || items,
         subTotal: Number(customCartTotal.toFixed(2)),
         shippingCost: shippingCost,
         discount: discountAmount,
