@@ -21,8 +21,7 @@ import { useRouter } from "next/router";
 import DeliveriesPopup from "@component/deliveriesPopup/DeliveriesPopup";
 import MainModal from "@component/modal/MainModal";
 import deliveryIcon from 'public/shipped.svg'
-import cycleIcon from 'public/circular-arrows.svg'
-import whatsapp from 'public/whatsapp.svg'
+import whatsapp from 'public/22.svg'
 
 // TODO: אמור להגיע מהאדמין
 import offerIcon from 'public/categories icons/gift-color.svg'
