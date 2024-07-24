@@ -22,6 +22,7 @@ import DeliveriesPopup from "@component/deliveriesPopup/DeliveriesPopup";
 import MainModal from "@component/modal/MainModal";
 import deliveryIcon from 'public/shipped.svg'
 import cycleIcon from 'public/circular-arrows.svg'
+import whatsapp from 'public/whatsapp.svg'
 
 // TODO: אמור להגיע מהאדמין
 import offerIcon from 'public/categories icons/gift-color.svg'
@@ -481,8 +482,8 @@ const NavbarPromo = () => {
             <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               onClick={handleDeliveryRecover}>
               {/* <TbTruckDelivery size={21} className="mt-0.5" /> */}
-              <img src={cycleIcon.src} className="h-3/4 mt-0.5" />
-              <span>שחזור הזמנה</span>
+              <img src={whatsapp.src} className="h-3/4 mt-0.5" />
+              <span>שירות לקוחות</span>
             </button>
             <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               onClick={() => setDeliveriesPopup(true)}>
