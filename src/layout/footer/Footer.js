@@ -476,12 +476,6 @@ const Footer = () => {
           >Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
         </p>
       </div>
-      <div className="whatsapWid">
-        <a href="https://wa.link/xngmmq">
-        <img src="https://res.cloudinary.com/dzxn0xhoy/image/upload/v1721628197/undefined/whatsapp-icon-design.png"  width="100" height="98" />
-        </a>
-      </div>
-    </div>
   );
 };
 
