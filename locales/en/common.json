@@ -297,6 +297,8 @@
   "purchaseFailed": "Purchase Failed!",
   "orderFaildText": "Your payment has been declined, please try again.",
   "tryAgain": "Try Again",
+  "customerNote": "Order notes (optional)",
+  "typeHere": "Type here...",
 
   "/=================* Invoice * =================/": "",
 
@@ -364,6 +366,7 @@
   "completeOrder": "Complete Order",
 
   "recentOrder": "Recent Order",
+  "notes": "Notes",
 
   "photo": "Photo",
   "fullName": "Full Name",
