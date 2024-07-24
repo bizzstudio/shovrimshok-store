@@ -466,9 +466,7 @@ const Footer = () => {
             className="text-customGreen"
           >
             למשק קירשנר
-          </Link>
-           | האתר נבנה על ידי 
-           <Link
+             <Link
             href="https://bizzstudio.co.il/"
             target="_blank"
             rel="noopener noreferrer"
@@ -476,6 +474,7 @@ const Footer = () => {
           >Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
         </p>
       </div>
+    </div>
   );
 };
 
