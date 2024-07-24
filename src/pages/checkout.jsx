@@ -65,7 +65,6 @@ const Checkout = () => {
     paymentSrc,
     setPaymentSrc,
   } = useCheckoutSubmit();
-  console.log(items)
 
   const { t } = useTranslation();
   const { storeCustomizationSetting } = useGetSetting();
@@ -211,7 +210,7 @@ const Checkout = () => {
       )}
       <Layout title="Checkout" description="this is checkout page">
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-          <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
+          <div className="py-0 sm:py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
               {paymentSrc ? <div className="flex flex-col gap-3 items-center justify-center">
                 {scrollUp()}
@@ -226,7 +225,7 @@ const Checkout = () => {
                   <form onSubmit={handleSubmit(submitHandler)}>
                     <div className="w-full flex flex-col md:flex-row items-center pb-3 gap-3.5">
                       {/* פרטים אישיים */}
-                      <div className="w-full md:w-1/2 h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
+                      <div className="w-full md:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
                         <CiUser className="text-[41px] text-customGreen group-hover:text-white transition ease-in-out duration-300" />
                         <div className="flex flex-col items-start">
                           <h2 className="text-xl">{userInfo?.name}</h2>
@@ -241,7 +240,7 @@ const Checkout = () => {
                         </button>
                       </div>
                       {/* שיטת משלוח */}
-                      <div className="w-full h-20 flex items-center gap-1.5">
+                      <div className="w-full h-auto flex flex-col items-center gap-1.5 sm:h-20 sm:flex-row">
                         <div className="w-full h-full relative">
                           {isDeliverable && <span className="absolute bottom-2.5 right-14">
                             <Error errorName={errors.shippingOption} />
