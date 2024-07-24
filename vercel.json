@@ -1,8 +1,0 @@
-{
-  "functions": {
-    "api/*.js": {
-      "memory": 6000,
-      "maxDuration": 600
-    }
-  }
-}
