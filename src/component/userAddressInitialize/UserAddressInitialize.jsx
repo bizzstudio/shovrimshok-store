@@ -176,7 +176,7 @@ const UserAddressInitialize = () => {
                   <div className="col-span-6 sm:col-span-2">
                     <InputArea
                       register={register}
-                      label={t("common:postalCode")}
+                      label={t("common:postalCode") + " " + t("common:optional")}
                       name="postalCode"
                       type="text"
                       placeholder={t("common:postalCode")}
@@ -220,6 +220,7 @@ const UserAddressInitialize = () => {
                       disabled={loading}
                       type="submit"
                       className="w-full flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+                      onClick={() => localStorage.removeItem("firstTime")}
                     >
                       {showingTranslateValue(
                         storeCustomizationSetting?.dashboard?.update_button
