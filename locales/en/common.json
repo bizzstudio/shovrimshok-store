@@ -390,6 +390,9 @@
   "postalCode": "Postal Code",
   "optional": "(Optional)",
 
+  "noOptions": "No Options",
+  "selectCity": "Select a city",
+
   "/=================* Search * =================/": "",
 
   "loadMoreBtn": "Load More",

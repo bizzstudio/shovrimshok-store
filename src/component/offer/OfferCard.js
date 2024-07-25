@@ -9,9 +9,9 @@ import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
 import Discount from "@component/common/Discount";
 
-const OfferCard = ({ discountProducts }) => {
+const OfferCard = ({ discountProducts, height }) => {
   const { storeCustomizationSetting } = useGetSetting();
-
+  const headerRef = useRef(null);
 
   const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
@@ -41,17 +41,16 @@ const OfferCard = ({ discountProducts }) => {
   return (
     <div className="w-full group">
       <div className="transition duration-150 ease-linear transform border-customGreen">
-        <div className="text-gray-900 px-6 py-2 rounded-t border-b flex items-center justify-center">
-          <h3 className="text-base font-serif font-medium ">               
-                  <img
-                    src="/222.svg"
-                    width={220}
-                    height={75}
-                  />
-    
+        <div className="text-gray-900 px-6 py-2 rounded-t border-b flex items-center justify-center" ref={headerRef}>
+          <h3 className="text-base font-serif font-medium">
+            <img
+              src="/222.svg"
+              width={220}
+              height={75}
+            />
           </h3>
         </div>
-        <div className="scroll-container">
+        <div className="scroll-container" style={{ height: height - headerRef.current?.offsetHeight || 0}}>
           <div className="scroll-content"
             ref={scrollContentRef}
             onMouseEnter={handleMouseEnter}

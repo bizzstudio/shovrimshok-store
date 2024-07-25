@@ -1,5 +1,5 @@
 import { SidebarContext } from "@context/SidebarContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 //internal import
 import Layout from "@layout/Layout";
@@ -17,6 +17,10 @@ const Offers = ({ discountProducts, attributes }) => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
   const { data: offers } = useAsync(() => OfferServices.getAllOffers());
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [discountProducts]);
 
   return (
     <>

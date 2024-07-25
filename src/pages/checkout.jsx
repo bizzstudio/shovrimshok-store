@@ -245,7 +245,7 @@ const Checkout = () => {
                       {/* שיטת משלוח */}
                       <div className="w-full h-auto flex flex-col items-center gap-1.5 sm:h-20 sm:flex-row">
                         <div className="w-full h-full relative">
-                          {isDeliverable && <span className="absolute bottom-2.5 right-14">
+                          {isDeliverable && <span className="absolute bottom-0 sm:bottom-2.5 right-14">
                             <Error errorName={errors.shippingOption} />
                           </span>}
                           <InputShipping
@@ -261,7 +261,7 @@ const Checkout = () => {
                         </div>
 
                         <div className="w-full h-full relative">
-                          <span className="absolute bottom-2.5 right-14">
+                          <span className="absolute bottom-0 sm:bottom-2.5 right-14">
                             <Error errorName={errors.shippingOption} />
                           </span>
                           <InputShipping

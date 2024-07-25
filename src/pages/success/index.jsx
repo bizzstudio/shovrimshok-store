@@ -50,6 +50,13 @@ const Success = () => {
           </div>
         </div>
       )}
+      <style>
+        {`
+          #enable-toolbar-trigger {
+            display: none;
+          }
+        `}
+      </style>
     </>
   );
 };
