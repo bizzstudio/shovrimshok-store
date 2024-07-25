@@ -478,12 +478,14 @@ const NavbarPromo = () => {
             {/* <button className="hidden sm:inline-block lg:inline-block text-sm leading-6 font-serif font-medium px-6 py-2 bg-customGreen text-center rounded-md text-white hover:bg-customGreen-dark">
               משלוחים ואיזורי חלוקה
             </button> */}
+              <a href="https://api.whatsapp.com/send/?phone=972525123003">
             <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
-              onClick={handleDeliveryRecover}>
+             >
               {/* <TbTruckDelivery size={21} className="mt-0.5" /> */}
-              <img src={whatsapp.src} className="h-3/4 mt-0.5" />
+                  <img src={whatsapp.src} className="h-3/4 mt-0.5" />
               <span>שירות לקוחות</span>
             </button>
+            </a>
             <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               onClick={() => setDeliveriesPopup(true)}>
               {/* <TbTruckDelivery size={21} className="mt-0.5" /> */}
