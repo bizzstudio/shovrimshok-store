@@ -1,5 +1,5 @@
 import { SidebarContext } from "@context/SidebarContext";
-import { Suspense, useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 
@@ -58,6 +58,33 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     }
   }, [router]);
 
+  // האזנה לגודל הקרוסלה וקביעת גובה הקונטיינר של המבצעים לאחר מכן
+  const carouselRef = useRef();
+  const [carouselHeight, setCarouselHeight] = useState(0);
+  useEffect(() => {
+    const updateCarouselHeight = () => {
+      if (carouselRef.current) {
+        setCarouselHeight(carouselRef.current.offsetHeight);
+      }
+    };
+
+    updateCarouselHeight();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateCarouselHeight();
+    });
+
+    if (carouselRef.current) {
+      resizeObserver.observe(carouselRef.current);
+    }
+
+    return () => {
+      if (carouselRef.current) {
+        resizeObserver.unobserve(carouselRef.current);
+      }
+    };
+  }, [carouselRef]);
+
   return (
     <>
       {isLoading ? (
@@ -68,16 +95,20 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
             <StickyCart />
             <div className="bg-white">
               <div className="mx-auto py-5 max-w-screen-2x1 px-3 sm:px-10">
-                <div className="flex w-full">
-                  <div className="flex-shrink-0 lg:block w-full lg:w-3/5">
+                <div className="flex gap-2 mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
+                  <div ref={carouselRef} className="flex-shrink-0 lg:block w-full lg:w-3/5 h-fit">
                     <MainCarousel />
                   </div>
                   <div className="w-full hidden lg:flex">
-                    <OfferCard discountProducts={discountProducts} />
+                    <OfferCard
+                      discountProducts={discountProducts}
+                      // קבלת הגובה של הבאנר המתחלף (קרוסלה)
+                      height={carouselHeight}
+                    />
                   </div>
                 </div>
                 {storeCustomizationSetting?.home?.promotion_banner_status && (
-                  <div className="bg-gray-100 px-10 py-6  mt-6">
+                  <div className="bg-gray-100 px-10 py-6 mt-6">
                     <Banner />
                   </div>
                 )}

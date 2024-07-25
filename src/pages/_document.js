@@ -53,7 +53,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-                          <script src="https://cdn.enable.co.il/licenses/enable-L669sin2yb9r7u-1017-61528/init.js"></script>
+          <script src="https://cdn.enable.co.il/licenses/enable-L669sin2yb9r7u-1017-61528/init.js"></script>
         </body>
       </Html>
     );
