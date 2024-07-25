@@ -30,6 +30,7 @@ import fruitsIcon from 'public/categories icons/fruits_color.svg'
 import legumesIcon from 'public/categories icons/beans_color.svg'
 import herbsIcon from 'public/categories icons/mortar_color.svg'
 import vegetablesIcon from 'public/categories icons/carrot_color.svg'
+
 import { UserContext } from "@context/UserContext";
 import LoginModal from "@component/modal/LoginModal";
 import { BsWhatsapp } from "react-icons/bs";

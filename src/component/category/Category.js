@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
+import useTranslation from "next-translate/useTranslation";
 
 //internal import
 import { pages } from "@utils/data";
@@ -11,6 +12,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import CategoryServices from "@services/CategoryServices";
 import CategoryCard from "@component/category/CategoryCard";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import logo from "public/newlogo.svg";
 
 const Category = () => {
   const { categoryDrawerOpen, closeCategoryDrawer } =
@@ -20,24 +22,24 @@ const Category = () => {
     CategoryServices.getShowingCategory()
   );
 
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col w-full h-full bg-white cursor-pointer scrollbar-hide">
       {categoryDrawerOpen && (
-        <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-customGreen text-white border-b border-gray-100">
+        <div className="w-full flex justify-between items-center px-6 py-1 text-white border-b-2 border-gray-100">
           <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center">
-            <Link href="/" className="mr-10">
-            <h2>משק קירשנר</h2>
-              {/* <Image
-                width={100}
-                height={38}
-                src="http://localhost:3000/_next/static/media/newlogo.c452bf06.svg"
+            <Link href="/" className="bg-white rounded-xl">
+              <img
+                src={logo.src}
                 alt="logo"
-              /> */}
+                className="h-[72px]"
+              />
             </Link>
           </h2>
           <button
             onClick={closeCategoryDrawer}
-            className="flex text-xl items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-red-500 p-2 focus:outline-none transition-opacity hover:text-red-600"
+            className="inline-flex justify-center px-2 py-2 text-base font-medium text-customGreen border border-transparent rounded-full bg-customGreen-leaf focus:outline-none border-none outline-none"
             aria-label="close"
           >
             <IoClose />
@@ -46,7 +48,7 @@ const Category = () => {
       )}
       <div className="w-full max-h-full">
         {categoryDrawerOpen && (
-          <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center border-b px-8 py-3">
+          <h2 className="flex justify-between font-semibold font-serif text-lg m-0 text-heading items-center border-b-2 border-t-2 border-customGreen px-8 py-3">
             קטגוריות
           </h2>
         )}
@@ -58,8 +60,9 @@ const Category = () => {
           <Loading loading={loading} />
         ) : (
           <div className="relative grid gap-2 p-6">
-            {data[0]?.children?.map((category) => (
+            {data[0]?.children?.map((category, index) => (
               <CategoryCard
+                index={index}
                 key={category._id}
                 id={category._id}
                 icon={category.icon}
@@ -67,6 +70,13 @@ const Category = () => {
                 title={showingTranslateValue(category?.name)}
               />
             ))}
+            {/* מבצעים */}
+            <CategoryCard
+                index={4}
+                key={"offers"}
+                id={"offers"}
+                title={t("common:Offers")}
+              />
           </div>
         )}
 

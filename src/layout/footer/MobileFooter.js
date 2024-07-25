@@ -57,7 +57,7 @@ const MobileFooter = () => {
         <button
           aria-label="User"
           type="button"
-          className="text-xl text-white indicator justify-center"
+          className="flex items-center text-xl text-customGreen bg-white indicator justify-center p-2 aspect-1 h-2/5 rounded-full outline outline-2 outline-white outline-offset-2"
         >
           {userInfo?.image ? (
             <Link href="/user/dashboard" className="relative top-1 w-6 h-6">
@@ -72,7 +72,7 @@ const MobileFooter = () => {
           ) : userInfo?.name ? (
             <Link
               href="/user/dashboard"
-              className="leading-none font-bold font-serif block"
+              className="leading-none font-bold font-serif block mb-0.5"
             >
               {userInfo?.name[0]}
             </Link>
