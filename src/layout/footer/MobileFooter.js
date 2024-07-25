@@ -4,6 +4,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useCart } from "react-use-cart";
 import { FiHome, FiUser, FiShoppingCart, FiAlignLeft } from "react-icons/fi";
+import { BsWhatsapp } from "react-icons/bs";
 
 import { UserContext } from "@context/UserContext";
 import LoginModal from "@component/modal/LoginModal";
@@ -80,6 +81,23 @@ const MobileFooter = () => {
               <FiUser className="w-6 h-6 drop-shadow-xl" />
             </span>
           )}
+        </button>
+        <button
+          aria-label="User"
+          type="button"
+          className="text-xl text-white indicator justify-center"
+        >
+   
+            <a
+              href="https://api.whatsapp.com/send/?phone=972525123003"
+              className="leading-none font-bold font-serif block"
+            >
+       
+            <span>
+              <BsWhatsapp className="w-6 h-6 drop-shadow-xl" />
+            </span>
+            </a>
+        
         </button>
       </footer>
     </>
