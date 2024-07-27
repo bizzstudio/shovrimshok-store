@@ -18,6 +18,7 @@
 .scroll-container {
 /*   overflow: hidden; */
   position: relative;
+   height: 327px;
 }
 
 .scroll-content {
