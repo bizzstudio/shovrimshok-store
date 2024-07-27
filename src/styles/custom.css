@@ -16,9 +16,9 @@
 }
 
 .scroll-container {
-/*   overflow: hidden; */
-  position: relative;
-   height: 327px;
+    position: relative;
+    height: 327px !important;
+    overflow: hidden;
 }
 
 .scroll-content {
