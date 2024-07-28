@@ -13,6 +13,7 @@ import CategoryServices from "@services/CategoryServices";
 import CategoryCard from "@component/category/CategoryCard";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import logo from "public/newlogo.svg";
+import categoryTitle from "public/titles/categoryTitle.svg";
 import deliveryIcon from 'public/shipped.svg'
 import MainModal from "@component/modal/MainModal";
 import DeliveriesPopup from "@component/deliveriesPopup/DeliveriesPopup";
@@ -37,15 +38,20 @@ const Category = () => {
       )}
       <div className="flex flex-col w-full h-full bg-white cursor-pointer scrollbar-hide">
         {categoryDrawerOpen && (
-          <div className="w-full flex justify-between items-center px-6 py-1 text-white border-b-2 border-gray-100">
+          <div className="w-full flex justify-between items-center px-6 py-1 text-white border-b-2 border-customGreen">
             <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center">
-              <Link href="/" className="bg-white rounded-xl">
+              {/* <Link href="/" className="bg-white rounded-xl">
                 <img
                   src={logo.src}
                   alt="logo"
                   className="h-[72px]"
                 />
-              </Link>
+              </Link> */}
+                <img
+                  src={categoryTitle.src}
+                  alt="logo"
+                  className="h-[82px]"
+                />
             </h2>
             <button
               onClick={closeCategoryDrawer}
@@ -57,11 +63,11 @@ const Category = () => {
           </div>
         )}
         <div className="w-full max-h-full">
-          {categoryDrawerOpen && (
+          {/* {categoryDrawerOpen && (
             <h2 className="flex justify-between font-semibold font-serif text-lg m-0 text-heading items-center border-b-2 border-t-2 border-customGreen px-8 py-3">
               קטגוריות
             </h2>
-          )}
+          )} */}
           {error ? (
             <p className="flex justify-center align-middle items-center m-auto text-xl text-red-500">
               <span>{error}</span>
