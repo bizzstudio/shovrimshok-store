@@ -67,7 +67,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
               register={register}
               // label={t("common:phone")}
               name="phone"
-              type="text"
+              type="tel"
               placeholder={t("common:phone")}
               Icon={FiPhone}
             />

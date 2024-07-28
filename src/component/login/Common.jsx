@@ -12,7 +12,7 @@ import SettingServices from "@services/SettingServices";
 import useTranslation from "next-translate/useTranslation";
 
 const Common = ({ setModalOpen }) => {
-  const [showRegister, setShowRegister] = useState(true);
+  const [showRegister, setShowRegister] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
 
   const { handleGoogleSignIn, GoogleLogin } = useLoginSubmit(setModalOpen);
