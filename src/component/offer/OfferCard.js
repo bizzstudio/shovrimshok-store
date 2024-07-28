@@ -53,7 +53,7 @@ const OfferCard = ({ discountProducts, height, attributes }) => {
             />
           </h3>
         </div>
-        <div className="scroll-container" style={{ height: height - headerRef.current?.offsetHeight || 0}}>
+        <div className="scroll-container" style={{ height: height - headerRef.current?.offsetHeight || 0 }}>
           <div className="scroll-content"
             ref={scrollContentRef}
             onMouseEnter={handleMouseEnter}
@@ -61,45 +61,12 @@ const OfferCard = ({ discountProducts, height, attributes }) => {
           >
             {discountProducts?.map((product) => (
               <div key={product._id} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
-                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id}/>
-                {/* <div className="relative flex justify-between overflow-hidden flex-shrink-0"
-                >
-                  <img
-                    key={product.id}
-                    src={product.image}
-                    width={60}
-                    height={60}
-                    alt={product.title?.he}
-                    style={{ aspectRatio: 1, objectFit: 'contain' }}
-                  />
-                </div>
-                <div className="flex items-center my-auto w-full h-fit justify-between">
-                  <div className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1">
-                    {product.title?.he}
-                  </div>
-                  {isProductWithDiscount(product)}
-                </div> */}
+                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id} />
               </div>
             ))}
             {discountProducts?.map((product) => (
-              <div key={`${product._id}-clone`} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
-                <div className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0"
-                >
-                  <img
-                    key={product.id}
-                    src={product.image}
-                    width={60}
-                    height={60}
-                    alt={product.title?.he}
-                    style={{ aspectRatio: 1, objectFit: 'contain' }}
-                  />
-                </div>
-                <div className="flex items-center my-auto w-full h-fit justify-between">
-                  <div className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1">
-                    {product.title?.he}
-                  </div>
-                  {isProductWithDiscount(product)}
-                </div>
+              <div key={`${product._id}-clone`} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id} />
               </div>
             ))}
           </div>
