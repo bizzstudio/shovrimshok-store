@@ -13,11 +13,15 @@ const OrderHistory = ({ order, currency }) => {
     const fetchStatus = async () => {
       if (order?.status?.name === "Delivered")
         setStatus(<span className="text-customGreen">{order?.status?.heName}</span>);
-      else if (order?.status?.name === "Pending" || order?.status?.name === "Cancel" || order?.status?.name === "Processing")
+      else if (order?.status?.name === "Pending")
+        setStatus(<span className="text-gray-400">{order?.status?.heName}</span>);
+      else if (order?.status?.name === "Cancel")
         setStatus(<span className="text-red-500">{order?.status?.heName}</span>);
+      else if (order?.status?.name === "Processing")
+        setStatus(<span className="text-green-600">{order?.status?.heName}</span>);
       else {
         const phone = order?.status?.phone;
-        setStatus(<span className="text-red-500">{order?.status?.heName}{phone ? ' - ' + phone : ''}</span>);
+        setStatus(<span className="text-blue-700">{order?.status?.heName}{phone ? ' - ' + phone : ''}</span>);
       }
     };
 
