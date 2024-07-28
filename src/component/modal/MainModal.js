@@ -2,7 +2,7 @@ import React, { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 
-const MainModal = ({ modalOpen, setModalOpen, children }) => {
+const MainModal = ({ modalOpen, setModalOpen, children, z = null }) => {
   const cancelButtonRef = useRef();
 
   return (
@@ -10,9 +10,10 @@ const MainModal = ({ modalOpen, setModalOpen, children }) => {
       <Transition appear show={modalOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-30 overflow-y-auto text-center"
+          className={`fixed inset-0 z-30 overflow-y-auto text-center`}
           onClose={() => setModalOpen(false)}
           initialFocus={cancelButtonRef}
+          style={{ zIndex: z ? z : 30 }}
         >
           <div className="min-h-screen p-4">
             <Transition.Child

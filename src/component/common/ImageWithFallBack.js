@@ -9,6 +9,7 @@ const ImageWithFallback = ({
   alt,
   src,
   outOfStock,
+  noPadding = false,
   ...props
 }) => {
   const [error, setError] = useState(null);
@@ -28,7 +29,7 @@ const ImageWithFallback = ({
         objectFit: "contain",
       }}
       sizes="100%"
-      className={`object-contain transition duration-150 ease-linear transform group-hover:scale-105 p-4 ${outOfStock ? 'grayscale' : ''}`}
+      className={`object-contain transition duration-150 ease-linear transform group-hover:scale-105 ${noPadding ? "p-1" : "p-4"} ${outOfStock ? 'grayscale' : ''}`}
     />
   );
 };

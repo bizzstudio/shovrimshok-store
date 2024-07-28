@@ -9,7 +9,7 @@ const useCart = () => {
     const { data: offers, loading, error } = useAsync(() => OfferServices.getAllOffers());
 
     // Helper function to apply offers to cart items
-    const applyOffers = (cartItems, offers) => {
+    const applyOffers = (cartItems, offers = []) => {
         if (!offers || offers.length === 0) return { updatedCartItems: cartItems, totalDiscount: 0 };
 
         let updatedCartItems = cartItems.map(item => ({ ...item, discountedPrice: null, offerTitle: '' }));

@@ -17,14 +17,13 @@
 
 .scroll-container {
     position: relative;
-    height: 327px !important;
     overflow: hidden;
 }
 
 .scroll-content {
   display: flex;
   flex-direction: column;
-  animation: scroll 40s linear infinite;
+  animation: scroll 80s linear infinite;
   /* Adjust duration as needed */
 }
 
