@@ -32,11 +32,17 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   const [fakeLoading, setFakeLoading] = useState(false)
 
   useEffect(() => {
-    // 3 שניות של טעינה מזוייפת
-    setTimeout(() => {
+    const fakeLoadingSession = sessionStorage.getItem('fakeLoading');
+    if (fakeLoadingSession === 'true') {
       setFakeLoading(true);
-    }, 2000);
-  }, [])
+    } else {
+      // שתי שניות של טעינה מזויפת בפעם הראשונה
+      setTimeout(() => {
+        setFakeLoading(true);
+        sessionStorage.setItem('fakeLoading', 'true');
+      }, 2000);
+    }
+  }, []);
   
 
   // רעיון לעתיד כותרות קופצות
@@ -69,7 +75,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   }, [router]);
 
   // האזנה לגודל הקרוסלה וקביעת גובה הקונטיינר של המבצעים לאחר מכן
-  const carouselRef = useRef();
+  const carouselRef = useRef(null);
   const [carouselHeight, setCarouselHeight] = useState(0);
   useEffect(() => {
     const updateCarouselHeight = () => {
@@ -78,22 +84,24 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
       }
     };
 
-    updateCarouselHeight();
-
-    const resizeObserver = new ResizeObserver(() => {
+    if (fakeLoading) {
       updateCarouselHeight();
-    });
 
-    if (carouselRef.current) {
-      resizeObserver.observe(carouselRef.current);
-    }
+      const resizeObserver = new ResizeObserver(() => {
+        updateCarouselHeight();
+      });
 
-    return () => {
       if (carouselRef.current) {
-        resizeObserver.unobserve(carouselRef.current);
+        resizeObserver.observe(carouselRef.current);
       }
-    };
-  }, [carouselRef]);
+
+      return () => {
+        if (carouselRef.current) {
+          resizeObserver.unobserve(carouselRef.current);
+        }
+      };
+    }
+  }, [fakeLoading, carouselRef.current]);
 
   if (storeCustomizationSetting?.home?.popular_products_status && storeCustomizationSetting?.home?.delivery_status && popularProducts && discountProducts && attributes && offers && fakeLoading) {
     return (
@@ -115,6 +123,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                         discountProducts={discountProducts}
                         // קבלת הגובה של הבאנר המתחלף (קרוסלה)
                         height={carouselHeight}
+                        attributes={attributes}
                       />
                     </div>
                   </div>

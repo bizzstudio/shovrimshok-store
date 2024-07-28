@@ -8,8 +8,9 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
 import Discount from "@component/common/Discount";
+import ScrollOfferCard from "@component/product/ScrollOfferCard";
 
-const OfferCard = ({ discountProducts, height }) => {
+const OfferCard = ({ discountProducts, height, attributes }) => {
   const { storeCustomizationSetting } = useGetSetting();
   const headerRef = useRef(null);
 
@@ -37,6 +38,8 @@ const OfferCard = ({ discountProducts, height }) => {
       scrollContentRef.current.classList.remove('paused');
     }
   };
+  console.log('height: ', height)
+  console.log('headerRef.current?.offsetHeight: ', headerRef.current?.offsetHeight)
 
   return (
     <div className="w-full group">
@@ -57,8 +60,9 @@ const OfferCard = ({ discountProducts, height }) => {
             onMouseLeave={handleMouseLeave}
           >
             {discountProducts?.map((product) => (
-              <div key={product._id} onClick={() => Router.push(`/product/${product?.slug}`)} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
-                <div className="relative flex justify-between overflow-hidden flex-shrink-0"
+              <div key={product._id} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id}/>
+                {/* <div className="relative flex justify-between overflow-hidden flex-shrink-0"
                 >
                   <img
                     key={product.id}
@@ -74,7 +78,7 @@ const OfferCard = ({ discountProducts, height }) => {
                     {product.title?.he}
                   </div>
                   {isProductWithDiscount(product)}
-                </div>
+                </div> */}
               </div>
             ))}
             {discountProducts?.map((product) => (
