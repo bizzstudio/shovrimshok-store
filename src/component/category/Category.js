@@ -64,12 +64,12 @@ const Category = () => {
           )}
           {error ? (
             <p className="flex justify-center align-middle items-center m-auto text-xl text-red-500">
-              <span> {error}</span>
+              <span>{error}</span>
             </p>
           ) : data.length === 0 ? (
             <Loading loading={loading} />
           ) : (
-            <div className="relative grid gap-2 p-6">
+            <div className="relative grid grid-cols-2 gap-2 p-6">
               {data[0]?.children?.map((category, index) => (
                 <CategoryCard
                   index={index}
@@ -86,6 +86,7 @@ const Category = () => {
                 key={"offers"}
                 id={"offers"}
                 title={t("common:Offers")}
+                isOdd={data[0]?.children?.length % 2 !== 0}
               />
             </div>
           )}

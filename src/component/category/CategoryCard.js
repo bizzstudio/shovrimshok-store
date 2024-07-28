@@ -19,7 +19,7 @@ import legumesIcon from 'public/categories icons/beans_color.svg'
 import herbsIcon from 'public/categories icons/mortar_color.svg'
 import vegetablesIcon from 'public/categories icons/carrot_color.svg'
 
-const CategoryCard = ({ title, icon, nested, id, index }) => {
+const CategoryCard = ({ title, icon, nested, id, index, isOdd }) => {
   const router = useRouter();
   const { closeCategoryDrawer, isLoading, setIsLoading } =
     useContext(SidebarContext);
@@ -82,12 +82,12 @@ const CategoryCard = ({ title, icon, nested, id, index }) => {
     <>
       {id == "offers" ? <a
         onClick={() => showCategory(id, title)}
-        className="p-2 flex items-center gap-2 rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark"
+        className={`${isOdd ? '' : 'col-span-2'} border-2 border-gray-100 p-2 flex flex-col justify-center items-center rounded-md hover:bg-gray-50 hover:text-customGreen-dark`}
         role="button"
       >
-        <Image src={offerIconNoColor.src} width={25} height={25} alt="Category" />
-        {/* <Image src={getColorIcon(index, icon)} width={25} height={25} alt="Category" /> */}
-        <div className="inline-flex items-center justify-between font-medium w-full hover:text-customGreen-dark">
+        <Image src={offerIconNoColor.src} width={60} height={60} alt="Category" />
+        {/* <Image src={getColorIcon(index, icon)} width={60} height={60} alt="Category" /> */}
+        <div className="text-2xl text-center inline-flex items-center justify-between hover:text-customGreen-dark">
           {title}
           {nested?.length > 0 && (
             <span className="transition duration-700 ease-in-out inline-flex loading-none items-end text-gray-400">
@@ -98,22 +98,22 @@ const CategoryCard = ({ title, icon, nested, id, index }) => {
       </a> : <>
         <a
           onClick={() => showCategory(id, title)}
-          className="p-2 flex items-center gap-2 rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark"
+          className="border-2 border-gray-100 p-2 flex flex-col justify-center items-center rounded-md hover:bg-gray-50 hover:text-customGreen-dark"
           role="button"
         >
           {icon ? (
-            <Image src={icon} width={25} height={25} alt="Category" />
-            // <Image src={getColorIcon(index, icon)} width={25} height={25} alt="Category" />
+            <Image src={icon} width={60} height={60} alt="Category" />
+            // <Image src={getColorIcon(index, icon)} width={60} height={60} alt="Category" /> 
           ) : (
             <Image
               src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-              width={25}
-              height={25}
+              width={60}
+              height={60}
               alt="category"
             />
           )}
 
-          <div className="inline-flex items-center justify-between font-medium w-full hover:text-customGreen-dark">
+          <div className="text-2xl text-center inline-flex items-center justify-between hover:text-customGreen-dark">
             {title}
             {nested?.length > 0 && (
               <span className="transition duration-700 ease-in-out inline-flex loading-none items-end text-gray-400">
