@@ -1790,13 +1790,11 @@ p:not(:last-of-type) {
   color: #e2e8f0;
 }
 .text-customGreen-darker {
-    background: #fff  !important;
-    border-top: 1px dotted  !important;
-    border-bottom: 1px dotted  !important;
-    border-radius: 0  !important;
-    animation-range: 30  !important;
-    rotate: -9deg  !important;
-    top: 11px  !important;
-    position: relative  !important;
-    font-size: 22px  !important;
+    background: #dde3ee;
+    animation-range: 30 !important;
+    font-size: 16px !important;
+    text-align: left;
+    border-radius: 2px 9px 2px 14px;
+    width: 69%;
+    color: #845333;
 }
