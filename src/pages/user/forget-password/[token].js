@@ -75,12 +75,12 @@ const ForgetPassword = () => {
         <div className="bg-white rounded-lg shadow max-w-md w-full space-y-8 py-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold font-serif">
-              {showLogin ? "Login" : "Forget Password"}
+              {showLogin ? "Login" : "איפוס סיסמה"}
             </h2>
             <p className="text-sm md:text-base text-gray-500 mt-2 mb-8 sm:mb-10">
               {showLogin
                 ? "Login with your email and new password"
-                : "Reset Your Password"}
+                : "איפוס של הסיסמה שלך"}
             </p>
           </div>
           <form
@@ -125,7 +125,7 @@ const ForgetPassword = () => {
                     <input
                       name="newPassword"
                       type="password"
-                      placeholder="New password"
+                      placeholder="סיסמה חדשה"
                       {...register("newPassword", {
                         required: "You must specify a password",
                         minLength: {
@@ -140,7 +140,7 @@ const ForgetPassword = () => {
                   </div>
                   <div className="form-group">
                     <input
-                      name="confirm_password"
+                      name="אימות סיסמה"
                       type="password"
                       placeholder="Confirm password"
                       {...register("confirm_password", {
