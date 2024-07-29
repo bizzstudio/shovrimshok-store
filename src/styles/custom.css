@@ -1790,7 +1790,7 @@ p:not(:last-of-type) {
   color: #e2e8f0;
 }
 .text-customGreen-darker {
-    background: #845333;
+    background: #845333ba;
     animation-range: 30 !important;
     font-size: 16px !important;
     border-radius: 2px 9px 2px 14px !important;
