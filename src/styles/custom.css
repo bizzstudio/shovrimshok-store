@@ -1798,3 +1798,7 @@ p:not(:last-of-type) {
     width: 69%;
     color: #845333;
 }
+
+.cursor .text-customGreen-darker {
+    width: 100%;
+}
