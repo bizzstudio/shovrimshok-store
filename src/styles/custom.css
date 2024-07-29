@@ -1790,15 +1790,14 @@ p:not(:last-of-type) {
   color: #e2e8f0;
 }
 .text-customGreen-darker {
-    background: #dde3ee;
+    background: #845333;
     animation-range: 30 !important;
     font-size: 16px !important;
-    text-align: left;
-    border-radius: 2px 9px 2px 14px;
-    width: 69%;
-    color: #845333;
+    border-radius: 2px 9px 2px 14px !important;
+    width: 69% !important;
+    color: #FFF !important;
 }
 
 .cursor .text-customGreen-darker {
-    width: 100%;
+    width: 100% !important;
 }
