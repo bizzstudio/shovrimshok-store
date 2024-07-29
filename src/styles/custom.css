@@ -1789,3 +1789,14 @@ p:not(:last-of-type) {
   background: #3c6d16 !important;
   color: #e2e8f0;
 }
+.text-customGreen-darker {
+    background: #fff  !important;
+    border-top: 1px dotted  !important;
+    border-bottom: 1px dotted  !important;
+    border-radius: 0  !important;
+    animation-range: 30  !important;
+    rotate: -9deg  !important;
+    top: 11px  !important;
+    position: relative  !important;
+    font-size: 22px  !important;
+}
