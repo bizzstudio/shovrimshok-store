@@ -9,6 +9,8 @@ import ReactGA from "react-ga4";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 //internal import
 import store from "@redux/store";
@@ -23,6 +25,18 @@ import { handlePageView } from "@utils/analytics";
 let persistor = persistStore(store);
 
 // let stripePromise = getStripe();
+
+function RedirectPage() {
+  const navigate = useNavigate(); // React Router v6
+
+  useEffect(() => {
+    // בוצע הפניה לכתובת החדשה
+    navigate('/new-page', { replace: true });
+  }, [navigate]);
+
+  return null; // רכיב זה לא מציג שום דבר
+}
+
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -59,6 +73,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+
+    <Router>
+      <Routes>
+        <Route path="/product-category/מבצעים" element={<Navigate to="/offers" replace />} />
+      </Routes>
+    </Router>
+
+
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
