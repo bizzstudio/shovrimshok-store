@@ -1796,6 +1796,7 @@ p:not(:last-of-type) {
     width: 69% !important;
     color: #fff !important;
     font-weight: bold;
+  box-shadow: 2px 2px #afdc34 !important;
 }
 
 .cursor .text-customGreen-darker {
