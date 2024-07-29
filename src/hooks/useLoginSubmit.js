@@ -72,6 +72,13 @@ const useLoginSubmit = (setModalOpen) => {
         });
     }
     if (name && email && password) {
+      // ווידוא שהשם משתמש הוא 2 מילים לפחות
+      const usernameWords = name.trim().split(" ");
+      if (usernameWords.length < 2) {
+        setLoading(false);
+        notifyError(t("common:username_at_least_two_words"));
+        return;
+      }
       CustomerServices.verifyEmailAddress({ name, email, password, phone })
         .then((res) => {
           setLoading(false);

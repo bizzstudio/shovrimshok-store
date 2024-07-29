@@ -38,6 +38,14 @@ const UpdateProfile = () => {
   const onSubmit = (data) => {
     setLoading(true);
 
+    // ווידוא שהשם משתמש הוא 2 מילים לפחות
+    const usernameWords = data.name.trim().split(" ");
+    if (usernameWords.length < 2) {
+      setLoading(false);
+      notifyError(t("common:username_at_least_two_words"));
+      return;
+    }
+
     const userData = {
       name: data.name,
       email: data.email,
