@@ -79,7 +79,7 @@ const ForgetPassword = () => {
             </h2>
             <p className="text-sm md:text-base text-gray-500 mt-2 mb-8 sm:mb-10">
               {showLogin
-                ? "Login with your email and new password"
+                ? "נא להיכנס עם הסיסמה החדשה"
                 : "איפוס של הסיסמה שלך"}
             </p>
           </div>
