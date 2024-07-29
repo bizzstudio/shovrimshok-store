@@ -39,6 +39,7 @@ import UserAddressUpdate from "@component/userAddressUpdate/UserAddressUpdate";
 import { notifyError } from "@utils/toast";
 import paymentTitle from 'public/titles/paymentTitle.svg'
 import scrollUp from "src/functions/scrollUp";
+import DeliveryMsgModal from "@component/modal/deliveryMsgModal";
 
 const Checkout = () => {
   const {
@@ -79,6 +80,7 @@ const Checkout = () => {
   const [deliveryPrice, setDeliveryPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deliveryMsg, setDeliveryMsg] = useState(false);
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
@@ -114,6 +116,7 @@ const Checkout = () => {
   const handleSubmitWithAddressCheck = async () => {
     if (city) {
       handleShippingCost(deliveryPrice); // עדכון עלות המשלוח
+      setDeliveryMsg(true);
     } else {
       alert("Please enter a city.");
     }
@@ -204,6 +207,13 @@ const Checkout = () => {
 
   return (
     <>
+      {deliveryMsg && (
+        <MainModal modalOpen={deliveryMsg} setModalOpen={setDeliveryMsg}>
+          <div className="px-11 py-8">
+            <DeliveryMsgModal closeModal={() => setDeliveryMsg(false)} />
+          </div>
+        </MainModal>
+      )}
       {modalOpen && (
         <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <div className="px-11 py-8">
@@ -457,186 +467,6 @@ const Checkout = () => {
                 </div>
               }
             </div>
-
-            {/* <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
-              <div className="mt-5 md:mt-0 md:col-span-2">
-                <form onSubmit={handleSubmit(submitHandler)}>
-                  <div className="form-group">
-                    <h2 className="font-semibold font-serif text-lg text-gray-700 pb-3">
-                      1.{" "}
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.checkout?.personal_details
-                      )}
-                    </h2>
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.first_name
-                          )}
-                          name="name"
-                          type="text"
-                          placeholder={t("common:fullName")}
-                          defaultValue={userInfo?.name} // Default value from user data
-                        />
-                        <Error errorName={errors.name} />
-                      </div>
-
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.email_address
-                          )}
-                          name="email"
-                          type="email"
-                          placeholder="youremail@gmail.com"
-                          defaultValue={userInfo?.email} // Default value from user data
-                        />
-                        <Error errorName={errors.email} />
-                      </div>
-
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.checkout_phone
-                          )}
-                          name="phone"
-                          type="tel"
-                          placeholder={t("common:phoneMobile")}
-                          defaultValue={userInfo?.phone} // Default value from user data
-                        />
-
-                        <Error errorName={errors.phone} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="form-group mt-14">
-                    <h2 className="font-semibold font-serif text-lg text-gray-700 pb-3">
-                      2.{" "}
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.checkout?.shipping_details
-                      )}
-                    </h2>
-
-                    <div className="grid grid-cols-6 gap-6 mb-8">
-                      <div className="lg:col-span-3 col-span-6">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.street_address
-                          )}
-                          name="address"
-                          type="text"
-                          placeholder={t("common:yourAddress")}
-                          defaultValue={userInfo?.address?.street} // Default value from user data
-                        />
-                        <Error errorName={errors.address} />
-                      </div>
-
-                      <div className="lg:col-span-3 col-span-6">
-                        <InputArea
-                          register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.city
-                          )}
-                          name="city"
-                          type="text"
-                          onChange={(e) => setCity(e.target.value)}
-                          placeholder={t("common:city")}
-                          defaultValue={city}
-                        />
-                        <Error errorName={errors.city} />
-                      </div>
-                    </div>
-
-                    <Label
-                      label={showingTranslateValue(
-                        storeCustomizationSetting?.checkout?.shipping_cost
-                      )}
-                    />
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputShipping
-                          currency={currency}
-                          handleShippingCost={handleSubmitWithAddressCheck}
-                          register={register}
-                          value="משלוח"
-                        />
-                        <Error errorName={errors.shippingOption} />
-                      </div>
-
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputShipping
-                          currency={currency}
-                          handleShippingCost={handleShippingCost}
-                          register={register}
-                          value="איסוף עצמי"
-                          icon={<LiaTruckPickupSolid />}
-                        />
-                        <Error errorName={errors.shippingOption} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
-                    <div className="col-span-6 sm:col-span-3">
-                      <Link
-                        href="/"
-                        className={currentLang ? "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center gap-2 font-serif w-full" : "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex flex-row-reverse justify-center gap-2 font-serif w-full"}
-                      >
-                        <span className="text-xl">
-                          <IoReturnUpBackOutline
-                            className={currentLang ? "transform scale-x-[-1]" : ""}
-                          />
-                        </span>
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.continue_button
-                        )}
-                      </Link>
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <button
-                        type="submit"
-                        disabled={isEmpty || isCheckoutSubmit}
-                        className="bg-customGreen hover:bg-customGreen-dark border border-customGreen transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
-                      >
-                        {isCheckoutSubmit ? (
-                          <span className="flex flex-row-reverse justify-center text-center">
-                            {" "}
-                            <img
-                              src="/loader/spinner.gif"
-                              alt="Loading"
-                              width={20}
-                              height={10}
-                            />{" "}
-                            <span className="ml-2">
-                              {t("common:processing")}
-                            </span>
-                          </span>
-                        ) : (
-                          <span className={currentLang ? "flex justify-center gap-2 text-center" : "flex flex-row-reverse justify-center gap-2 text-center"}>
-                            {showingTranslateValue(
-                              storeCustomizationSetting?.checkout
-                                ?.confirm_button
-                            )}
-                            <span className="text-xl">
-                              {" "}
-                              <IoArrowForward
-                                className={currentLang ? "transform scale-x-[-1]" : ""}
-                              />
-                            </span>
-                          </span>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div> */}
           </div>
         </div>
       </Layout>

@@ -15,7 +15,7 @@ const StickyCart = () => {
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
   const { t } = useTranslation();
 
-  const currency = globalSetting?.default_currency || "$";
+  const currency = globalSetting?.default_currency || "₪";
 
   return (
     <button aria-label="Cart" onClick={toggleCartDrawer} className="absolute">

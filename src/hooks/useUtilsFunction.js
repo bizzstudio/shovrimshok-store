@@ -7,7 +7,7 @@ const useUtilsFunction = () => {
 
   const { globalSetting } = useGetSetting();
 
-  const currency = globalSetting?.default_currency || "$";
+  const currency = globalSetting?.default_currency || "₪";
 
   //for date and time format
   const showTimeFormat = (data, timeFormat) => {

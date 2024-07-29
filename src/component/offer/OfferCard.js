@@ -38,8 +38,6 @@ const OfferCard = ({ discountProducts, height, attributes }) => {
       scrollContentRef.current.classList.remove('paused');
     }
   };
-  console.log('height: ', height)
-  console.log('headerRef.current?.offsetHeight: ', headerRef.current?.offsetHeight)
 
   return (
     <div className="w-full group">

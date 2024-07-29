@@ -28,7 +28,7 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
   const { showingTranslateValue } = useUtilsFunction();
   const { t } = useTranslation();
 
-  const currency = globalSetting?.default_currency || "$";
+  const currency = globalSetting?.default_currency || "₪";
 
   // console.log('attributes in product cart',attributes)
 
