@@ -65,12 +65,6 @@ function MyApp({ Component, pageProps }) {
           widgetId={storeSetting?.tawk_chat_widget_id || ""}
         />
       )}
-
-    <Router>
-      <Routes>
-        <Route path="/product-category/מבצעים" element={<Navigate to="/offers" replace />} />
-      </Routes>
-    </Router
         
       <GoogleOAuthProvider clientId={storeSetting?.google_client_id || ""}>
         <UserProvider>
