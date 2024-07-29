@@ -1,0 +1,5 @@
+// vercel.json
+{
+  "source": "/product-category/מבצעים",
+  "destination": "/offers"
+}
