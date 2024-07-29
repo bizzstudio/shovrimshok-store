@@ -355,6 +355,7 @@
   "payNow": "Pay Now",
   
   "fileToBig": "The image size exceeds 3MB.",
+  "username_at_least_two_words": "First name and last name must be entered!",
 
   "next": "Next",
   "previous": "Previous",
