@@ -161,7 +161,7 @@ const ForgetPassword = () => {
                 type="submit"
                 className="w-full text-center py-3 rounded bg-customGreen font-medium text-sm text-white hover:bg-customGreen-dark transition-all focus:outline-none my-1"
               >
-                {showLogin ? "Login" : "Reset Password"}
+                {showLogin ? "Login" : "איפוס סיסמה"}
               </button>
             </div>
           </form>
