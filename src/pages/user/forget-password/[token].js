@@ -75,7 +75,7 @@ const ForgetPassword = () => {
         <div className="bg-white rounded-lg shadow max-w-md w-full space-y-8 py-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold font-serif">
-              {showLogin ? "Login" : "איפוס סיסמה"}
+              {showLogin ? "כניסה" : "איפוס סיסמה"}
             </h2>
             <p className="text-sm md:text-base text-gray-500 mt-2 mb-8 sm:mb-10">
               {showLogin
@@ -94,10 +94,10 @@ const ForgetPassword = () => {
                   <div className="form-group">
                     <InputArea
                       register={register}
-                      label="Email"
+                      label="אימייל"
                       name="registerEmail"
                       type="email"
-                      placeholder="Email"
+                      placeholder="אימייל"
                       Icon={FiMail}
                     />
                     <Error errorName={errors.registerEmail} />
@@ -105,11 +105,11 @@ const ForgetPassword = () => {
                   <div className="form-group">
                     <InputArea
                       register={register}
-                      label="Password"
+                      label="סיסמה"
                       name="password"
                       type="password"
                       autocomplete="new-password"
-                      placeholder="Password"
+                      placeholder="סיסמה"
                       Icon={FiLock}
                     />
 
@@ -161,7 +161,7 @@ const ForgetPassword = () => {
                 type="submit"
                 className="w-full text-center py-3 rounded bg-customGreen font-medium text-sm text-white hover:bg-customGreen-dark transition-all focus:outline-none my-1"
               >
-                {showLogin ? "Login" : "איפוס סיסמה"}
+                {showLogin ? "כניסה למערכת" : "איפוס סיסמה"}
               </button>
             </div>
           </form>
