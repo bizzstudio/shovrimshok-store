@@ -78,17 +78,5 @@ module.exports = withPWA({
 //   enabled: process.env.ANALYZE === 'true',
 // });
 
-module.exports = {
-  async redirects() {
-    return [
-      {
-        source: '/product-category/מבצעים',
-        destination: '/offers',
-        permanent: true,
-      },
-    ];
-  },
-};
-
 
 // module.exports = withBundleAnalyzer({});
