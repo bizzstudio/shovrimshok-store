@@ -140,9 +140,9 @@ const ForgetPassword = () => {
                   </div>
                   <div className="form-group">
                     <input
-                      name="אימות סיסמה"
+                      name="confirm_password"
                       type="password"
-                      placeholder="Confirm password"
+                      placeholder="אימות סיסמה"
                       {...register("confirm_password", {
                         validate: (value) =>
                           value === password.current ||
