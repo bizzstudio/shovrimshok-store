@@ -46,7 +46,7 @@ class MyDocument extends Document {
             property="og:image"
             content={
               setting?.meta_img ||
-              "https://res.cloudinary.com/ahossain/image/upload/v1636729752/facebook-page_j7alju.png"
+              "https://meshek-kirshner.co.il/_next/static/media/newlogo.c452bf06.svg"
             }
           />
         </Head>
