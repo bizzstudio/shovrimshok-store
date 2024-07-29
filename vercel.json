@@ -4,6 +4,11 @@
             "source": "/product-category/מבצעים/",
             "destination": "/offers/",
             "permanent": true
+        },
+                {
+            "source": "/111",
+            "destination": "/offers/",
+            "permanent": true
         }
     ]
 }
