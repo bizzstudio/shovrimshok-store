@@ -310,14 +310,14 @@ const Footer = () => {
                 />
               </Link>
               <p className="leading-7 font-sans text-sm text-gray-600 mt-3">
-                {showingTranslateValue(
-                  storeCustomizationSetting?.footer?.block4_address
-                )}
+              
                 <CMSkeleton
                   count={1}
                   height={10}
                   // error={error}
                   loading={loading}
+                   data={storeCustomizationSetting?.footer?.block4_address}
+
                 />
                 <br />
                 <span>
