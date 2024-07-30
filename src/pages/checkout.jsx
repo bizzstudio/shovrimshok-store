@@ -39,7 +39,7 @@ import UserAddressUpdate from "@component/userAddressUpdate/UserAddressUpdate";
 import { notifyError } from "@utils/toast";
 import paymentTitle from 'public/titles/paymentTitle.svg'
 import scrollUp from "src/functions/scrollUp";
-import DeliveryMsgModal from "@component/modal/deliveryMsgModal";
+import DeliveryMsgModal from "@component/modal/DeliveryMsgModal";
 
 const Checkout = () => {
   const {
