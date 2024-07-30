@@ -47,7 +47,7 @@ const OrderHistory = ({ order, currency }) => {
     <>
       <td className="px-5 py-3 leading-6 whitespace-nowrap flex justify-center">
         <span className="uppercase text-sm font-medium">
-          {order?._id?.substring(20, 24)}
+          {order?.invoice?.substring(20, 24)}
         </span>
       </td>
       <td className="px-5 py-3 leading-6 text-center whitespace-nowrap">
