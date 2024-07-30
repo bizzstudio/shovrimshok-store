@@ -141,7 +141,7 @@ const Checkout = () => {
     let nextDeliverableDate = null;
     if (!isTodayDeliverable) {
       // חיפוש היום הבא שבו ניתן לבצע משלוח
-      for (let i = 1; i < 7; i++) {
+      for (let i = 1; i < 8; i++) {
         const futureDayIndex = ((todayIndex + i - 1) % 7) + 1; // תרגום ל-1 עד 7
         if (daysArray.some(day => Number(day.value) === futureDayIndex)) {
           nextDeliverableDate = new Date();
@@ -223,7 +223,7 @@ const Checkout = () => {
       )}
       <Layout title="Checkout" description="this is checkout page">
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-          <div className="py-0 sm:py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
+          <div className="py-0 md:py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
               {paymentSrc ? <div className="flex flex-col gap-3 items-center justify-center">
                 {scrollUp()}
@@ -236,9 +236,9 @@ const Checkout = () => {
                 <div className="mt-5 md:mt-0 md:col-span-2">
                   <h1 className="text-3xl font-bold text-customGreen w-full my-3 text-center bg-white border border-gray-200 p-3 rounded-md">{t("common:likutMessage")}</h1>
                   <form onSubmit={handleSubmit(submitHandler)}>
-                    <div className="w-full flex flex-col md:flex-row items-center pb-3 gap-3.5">
+                    <div className="w-full flex flex-col 2xl:flex-row items-center pb-3 gap-3.5">
                       {/* פרטים אישיים */}
-                      <div className="w-full md:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
+                      <div className="w-full 2xl:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
                         <CiUser className="text-[41px] text-customGreen group-hover:text-white transition ease-in-out duration-300" />
                         <div className="flex flex-col items-start">
                           <h2 className="text-xl">{userInfo?.name}</h2>
@@ -253,9 +253,9 @@ const Checkout = () => {
                         </button>
                       </div>
                       {/* שיטת משלוח */}
-                      <div className="w-full h-auto flex flex-col items-center gap-1.5 sm:h-20 sm:flex-row">
+                      <div className="w-full h-auto flex flex-col items-center gap-1.5 md:h-20 md:flex-row">
                         <div className="w-full h-full relative">
-                          {isDeliverable && <span className="absolute bottom-0 sm:bottom-2.5 right-14">
+                          {isDeliverable && <span className="absolute bottom-0 md:bottom-2.5 right-14">
                             <Error errorName={errors.shippingOption} />
                           </span>}
                           <InputShipping
@@ -271,7 +271,7 @@ const Checkout = () => {
                         </div>
 
                         <div className="w-full h-full relative">
-                          <span className="absolute bottom-0 sm:bottom-2.5 right-14">
+                          <span className="absolute bottom-0 md:bottom-2.5 right-14">
                             <Error errorName={errors.shippingOption} />
                           </span>
                           <InputShipping

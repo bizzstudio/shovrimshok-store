@@ -35,6 +35,7 @@ const useCheckoutSubmit = () => {
   const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [paymentSrc, setPaymentSrc] = useState(null);
+  const [isPaymentPageOpen, setIsPaymentPageOpen] = useState(false);
 
   const router = useRouter();
   // const stripe = useStripe();
@@ -207,6 +208,7 @@ const useCheckoutSubmit = () => {
 
       const result = await response.json();
       setPaymentSrc(result.Url);
+      setIsPaymentPageOpen(true);
 
       // if (data.paymentMethod === "Card") {
       //   // if (!elements) {
@@ -384,6 +386,7 @@ const useCheckoutSubmit = () => {
     isDeliveryMetod,
     paymentSrc,
     setPaymentSrc,
+    isPaymentPageOpen,
   };
 };
 

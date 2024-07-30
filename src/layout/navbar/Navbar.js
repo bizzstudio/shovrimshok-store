@@ -22,6 +22,7 @@ import logo from "public/newlogo.svg";
 import ProductServices from "@services/ProductServices";
 import ResultWindow from "@component/resultWindow/resultWindow";
 import AttributeServices from "@services/AttributeServices";
+import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -30,12 +31,23 @@ const Navbar = () => {
   const [searchResults, setSearchResults] = useState();
   const [attributes, setAttributes] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+  const [isPaymentPageOpen, setIsPaymentPageOpen] = useState(false);
   const { toggleCartDrawer } = useContext(SidebarContext);
   const { totalItems } = useCart();
   const router = useRouter();
 
   const { storeCustomizationSetting } = useGetSetting();
   // console.log("storeCustomizationSetting", storeCustomizationSetting);
+
+  // אם דף התשלום פתוח החיפוש נעלם
+  useEffect(() => {
+    if (location.pathname == "/checkout") {
+      setIsPaymentPageOpen(true);
+    } else {
+      setIsPaymentPageOpen(false);
+    }
+  }, [location.pathname])
+
 
   const {
     state: { userInfo },
@@ -143,8 +155,10 @@ const Navbar = () => {
                       </svg>
                     </button>
                     <input
+                      disabled={isPaymentPageOpen}
+                      title={isPaymentPageOpen ? t("common:noOptionToSearchInCheckoutPage") : ''}
                       onChange={(e) => setSearchText(e.target.value)}
-                      className="peer text-sm bg-transparent w-full h-full px-2 py-[0.7em] border-none focus:outline-none focus:ring-0"
+                      className={`${isPaymentPageOpen ? "cursor-not-allowed" : ""} peer text-sm bg-transparent w-full h-full px-2 py-[0.7em] border-none focus:outline-none focus:ring-0`}
                       placeholder={t(`common:search-placeholder`)}
                       required
                       type="text"

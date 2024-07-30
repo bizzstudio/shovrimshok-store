@@ -300,6 +300,8 @@
   "customerNote": "Order notes (optional)",
   "typeHere": "Type here...",
 
+  "noOptionToSearchInCheckoutPage": "It is not possible to add products on the payment page",
+
   "/=================* Invoice * =================/": "",
 
   "invoice": "Invoice",
