@@ -162,7 +162,7 @@ const UserAddressInitialize = () => {
                       register={register}
                       label={t("common:floor")}
                       name="floor"
-                      type="text"
+                      type="number"
                       placeholder={t("common:floor")}
                       isRequired={false}
                     />
