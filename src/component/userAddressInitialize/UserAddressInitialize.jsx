@@ -16,7 +16,7 @@ import { notifySuccess, notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import City from "@component/select/City";
-import initializeAddressTitle from "public/titles/initializeAddressTitle.svg"
+import initializeAddressTitle from "public/titles/finishRgisterTitle.svg"
 
 const UserAddressInitialize = () => {
   const [imageUrl, setImageUrl] = useState("");
