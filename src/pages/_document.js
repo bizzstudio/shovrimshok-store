@@ -49,7 +49,6 @@ class MyDocument extends Document {
               "https://meshek-kirshner.co.il/_next/static/media/newlogo.c452bf06.svg"
             }
           />
-            <!-- Hotjar Tracking Code for Site 5076708 (name missing) -->
 <script>
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
