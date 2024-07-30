@@ -302,9 +302,11 @@
     "typeHere": "הקלד/י כאן...",
 
     "ok": "אישור",
-    "deliveryMessagePart1": "נשתדל לספק את המשלוח שלך היום, ",
+    "deliveryMessagePart1": "נשתדל לספק את המשלוח שלך היום ",
     "deliveryMessagePart2": " עד השעה 22:00, או לכל המאוחר יום למחרת במקרי עומס.",
-    "deliveryMessagePart3": "נשתדל לספק את המשלוח שלך עד ",
+    "deliveryMessagePart3": "נשתדל לספק את המשלוח שלך למחר ",
+
+    "noOptionToSearchInCheckoutPage": "אין אפשרות להוסיף מוצרים בדף התשלום.",
   
     "/=================* Invoice * =================/": "",
   
