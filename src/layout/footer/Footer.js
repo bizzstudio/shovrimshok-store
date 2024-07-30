@@ -318,7 +318,6 @@ const Footer = () => {
                   height={10}
                   // error={error}
                   loading={loading}
-                  data={storeCustomizationSetting?.footer?.block4_address}
                 />
                 <br />
                 <span>
