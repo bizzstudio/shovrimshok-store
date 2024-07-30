@@ -16,15 +16,15 @@ const DefaultSeo = () => {
     <NextSeo
       title={
         globalSetting?.meta_title ||
-        "משק קירשנר - React Grocery & Organic Food Store e-commerce Template"
+        "משק קירשנר - חנות ירקות און ליין"
       }
       openGraph={{
         type: "website",
         locale: "en_IE",
-        url: globalSetting?.meta_url || "https://משק קירשנר-store.vercel.app/",
+        url: globalSetting?.meta_url || "https://meshek-kirshner.co.il",
         site_name:
           globalSetting?.meta_title ||
-          "משק קירשנר - React Grocery & Organic Food Store e-commerce Template",
+          "משק קירשנר - חנות ירקות און ליין",
       }}
       twitter={{
         handle: "@handle",
