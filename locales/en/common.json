@@ -245,6 +245,8 @@
   "registerMessage1": "Please access",
   "registerMessage2": "your email to verify your registration. If you did not receive an email, please check the spam box.",
   "goToEmail": "Go to Gmail",
+  "waiting_for_verification": "Email is awaiting verification, please check your inbox.",
+  "pls_register_again": "The verification email has expired, please register again",
 
   "/=================* checkout * =================/": "",
 
@@ -299,6 +301,15 @@
   "tryAgain": "Try Again",
   "customerNote": "Order notes (optional)",
   "typeHere": "Type here...",
+
+  "ok": "OK",
+  "deliveryMessagePart1": "We'll try to deliver your shipment today ",
+  "deliveryMessagePart2": "by 22:00, or at the latest the next day in cases of overload.",
+  "deliveryMessagePart3": "We will try to deliver your shipment tomorrow ",
+  "PickupMessagePart1": "We will try to collect your order today ",
+  "PickupMessagePart2": "by 16:00, or at the latest the next day in cases of overload.",
+  "PickupMessagePart3": "We will try to collect your order tomorrow ",
+  
 
   "noOptionToSearchInCheckoutPage": "It is not possible to add products on the payment page",
 

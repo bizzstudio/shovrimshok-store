@@ -33,6 +33,8 @@ const Layout = ({ title, description, children }) => {
   const [addressPopup, setAddressPopup] = useState(false);
   useEffect(() => {
     if (localStorage.firstTime && JSON.parse(localStorage.firstTime)) {
+      localStorage.removeItem("plsRegisterAgain");
+      localStorage.removeItem("waitingForVerification");
       setAddressPopup(true);
     }
   }, [localStorage.firstTime]);
