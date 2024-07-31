@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 //internal import
 import useGetSetting from "@hooks/useGetSetting";
 import CMSkeleton from "@component/preloader/CMSkeleton";
+import { SidebarContext } from "@context/SidebarContext";
 
 const FooterTop = () => {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
+  const { toggleCategoryDrawer } = useContext(SidebarContext);
 
   return (
     <div
@@ -65,9 +67,9 @@ const FooterTop = () => {
                   alt="app store"
                 />
               </Link>
-              <Link
+              {/* <Link
                 href={`${storeCustomizationSetting?.home?.daily_need_google_link}`}
-                target="_blank"
+                // target="_blank"
                 rel="noreferrer"
               >
                 <Image
@@ -79,7 +81,22 @@ const FooterTop = () => {
                   }
                   alt="play store"
                 />
-              </Link>
+              </Link> */}
+              <button
+                // הצגת הכפתור רק במובייל
+                className="block md:hidden"
+                onClick={toggleCategoryDrawer}
+              >
+                <Image
+                  width={170}
+                  height={50}
+                  src={
+                    storeCustomizationSetting?.home?.button2_img ||
+                    "/app/play-store.svg"
+                  }
+                  alt="play store"
+                />
+              </button>
             </div>
           </div>
           <div className="md:hidden lg:block">
