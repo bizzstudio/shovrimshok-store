@@ -305,7 +305,10 @@
     "deliveryMessagePart1": "נשתדל לספק את המשלוח שלך היום ",
     "deliveryMessagePart2": " עד השעה 22:00, או לכל המאוחר יום למחרת במקרי עומס.",
     "deliveryMessagePart3": "נשתדל לספק את המשלוח שלך למחר ",
-
+    "PickupMessagePart1": "נשתדל ללקט את ההזמנה שלך היום ",
+    "PickupMessagePart2": "עד השעה 16:00, או לכל המאוחר יום למחרת במקרי עומס.",
+    "PickupMessagePart3": "נשתדל ללקט את ההזמנה שלך מחר ",
+    
     "noOptionToSearchInCheckoutPage": "אין אפשרות להוסיף מוצרים בדף התשלום.",
   
     "/=================* Invoice * =================/": "",
