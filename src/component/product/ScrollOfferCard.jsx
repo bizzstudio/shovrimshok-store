@@ -161,10 +161,10 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
                 }
               />
 
-              <div className="w-full flex justify-between">
+              <div className="w-full mb-2">
                 {/* אם אין מלאי למוצר מופיע אזל מהמלאי */}
                 {/* {product.stock <= 0 && <Stock product={product} stock={product.stock} card right={"2"} top={"2"} />} */}
-                <Discount product={product} title={offerName} noMargin={true} />
+                <Discount product={product} title={offerName} noMargin={true} search />
               </div>
             </div>
 
