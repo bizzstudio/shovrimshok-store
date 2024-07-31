@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useCart } from "react-use-cart";
-import { FiHome, FiUser, FiShoppingCart, FiAlignLeft } from "react-icons/fi";
+import { FiHome, FiUser, FiShoppingCart, FiAlignLeft,FiUserCheck } from "react-icons/fi";
 import { BsWhatsapp } from "react-icons/bs";
 
 import { UserContext } from "@context/UserContext";
@@ -74,7 +74,7 @@ const MobileFooter = () => {
               href="/user/dashboard"
               className="leading-none font-bold font-serif block mb-0.5"
             >
-              {userInfo?.name[0]}
+               <FiUserCheck className="w-6 h-6 drop-shadow-xl" />
             </Link>
           ) : (
             <span onClick={() => setModalOpen(!modalOpen)}>
