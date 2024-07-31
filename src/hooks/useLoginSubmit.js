@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { GoogleLogin } from "@react-oauth/google";
 
 //internal import
@@ -47,29 +47,42 @@ const useLoginSubmit = (setModalOpen) => {
     // })
 
     if (registerEmail && password) {
-      CustomerServices.customerLogin({
-        registerEmail,
-        password,
-      })
-        .then((res) => {
-          setLoading(false);
-          setModalOpen(false);
-          console.log('res', res)
-          // גרימה לפופאפ הזנת כתובת לקפוץ אם אין לו כתובת
-          if (!res.address.city) {
-            localStorage.setItem("firstTime", true);
-          }
-          router.push(redirect || "/");
-          notifySuccess(t("common:loginSuccess"));
-          dispatch({ type: "USER_LOGIN", payload: res });
-          Cookies.set("userInfo", JSON.stringify(res), {
-            expires: cookieTimeOut,
-          });
+      // בדיקה אם המשתמש כבר נרשם וממתין לאימות
+      if (localStorage.getItem("waitingForVerification") == registerEmail) {
+        setLoading(false);
+        notifyError(t("common:waiting_for_verification"));
+        return;
+      } else if (localStorage.getItem("plsRegisterAgain")) {
+        setLoading(false);
+        notifyError(t("common:pls_register_again"));
+        return;
+      } else {
+        CustomerServices.customerLogin({
+          registerEmail,
+          password,
         })
-        .catch((err) => {
-          notifyError(err ? err.response.data.message : err.message);
-          setLoading(false);
-        });
+          .then((res) => {
+            // console.log(res);
+            setLoading(false);
+            setModalOpen(false);
+            localStorage.removeItem("plsRegisterAgain");
+            localStorage.removeItem("waitingForVerification");
+            // גרימה לפופאפ הזנת כתובת לקפוץ אם אין לו כתובת
+            if (!res.address.city) {
+              localStorage.setItem("firstTime", true);
+            }
+            router.push(redirect || "/");
+            notifySuccess(t("common:loginSuccess"));
+            dispatch({ type: "USER_LOGIN", payload: res });
+            Cookies.set("userInfo", JSON.stringify(res), {
+              expires: cookieTimeOut,
+            });
+          })
+          .catch((err) => {
+            notifyError(err ? err.response.data.message : err.message);
+            setLoading(false);
+          });
+      }
     }
     if (name && email && password) {
       // ווידוא שהשם משתמש הוא 2 מילים לפחות
@@ -81,6 +94,15 @@ const useLoginSubmit = (setModalOpen) => {
       }
       CustomerServices.verifyEmailAddress({ name, email, password, phone })
         .then((res) => {
+          if (res.waitingForVerification) {
+            localStorage.setItem("waitingForVerification", res.waitingForVerification);
+            // מחיקת האימייל מהלוקל סטורג' תוך רבע שעה
+            setTimeout(() => {
+              localStorage.removeItem("waitingForVerification");
+              // אחרי רבע שעה החלפת ההודעה לנא להרשם מחדש
+              localStorage.setItem("plsRegisterAgain", true);
+            }, 1000 * 60 * 15);
+          }
           setLoading(false);
           setModalOpen(false);
           // notifySuccess(res.message);

@@ -40,6 +40,7 @@ import { notifyError } from "@utils/toast";
 import paymentTitle from 'public/titles/paymentTitle.svg'
 import scrollUp from "src/functions/scrollUp";
 import DeliveryMsgModal from "@component/modal/DeliveryMsgModal";
+import PickupMsgModal from "@component/modal/PickupMsgModal";
 
 const Checkout = () => {
   const {
@@ -81,6 +82,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [deliveryMsg, setDeliveryMsg] = useState(false);
+  const [pickupMsg, setPickupMsg] = useState(false);
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
@@ -120,6 +122,11 @@ const Checkout = () => {
     } else {
       alert("Please enter a city.");
     }
+  };
+  
+  const handleSubmitWithPickup = () => {
+    setPickupMsg(true)
+    handleShippingCost(0);
   };
 
   // פונקציית בדיקה האם יש משלוח היום או מחר ואם לא מתי המשלוח הבא
@@ -214,6 +221,13 @@ const Checkout = () => {
           </div>
         </MainModal>
       )}
+      {pickupMsg && (
+        <MainModal modalOpen={pickupMsg} setModalOpen={setPickupMsg}>
+          <div className="px-11 py-8">
+            <PickupMsgModal closeModal={() => setPickupMsg(false)} />
+          </div>
+        </MainModal>
+      )}
       {modalOpen && (
         <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <div className="px-11 py-8">
@@ -276,7 +290,7 @@ const Checkout = () => {
                           </span>
                           <InputShipping
                             currency={currency}
-                            handleShippingCost={handleShippingCost}
+                            handleShippingCost={handleSubmitWithPickup}
                             register={register}
                             value="איסוף עצמי"
                             isDeliverable={true}

@@ -27,8 +27,8 @@ const Discount = ({ discount, product, slug, modal, title = '', search, noMargin
           : slug
             ? "text-dark text-sm bg-customGreen text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
             : search 
-            ? "text-customGreen-darker text-sm text-center font-medium"
-            : `w-full flex items-center justify-center text-center text-customGreen-dark text-xs bg-customGreen-light text-customGreen-darker py-2 px-2 ${noMargin ? "" : "m-2"} rounded font-medium`
+            ? "text-customGreen-darker text-sm text-center font-medium py-0.5 px-2"
+            : `text-center text-customGreen-dark text-xs bg-customGreen-light text-customGreen-darker py-2 px-3 ${noMargin ? "" : "m-2"} rounded font-medium`
       }  >
         {title}
       </span> :
