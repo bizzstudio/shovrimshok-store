@@ -12,7 +12,7 @@ const CardTwo = () => {
   const { showingTranslateValue } = useUtilsFunction();
 
   return (
-    <div className="w-full bg-white lg:px-32 lg:py-10 p-6 rounded-lg bgship">
+    <div className="w-full bg-white lg:px-32 lg:py-10 p-6 rounded-lg">
       <div className="flex justify-center items-center">
         <div 
         // className="lg:w-3/5"
@@ -59,7 +59,7 @@ const CardTwo = () => {
             )}
           </Link> */}
         </div>
-        {/* <div className="w-1/5 flex-grow hidden lg:flex md:flex md:justify-items-center lg:justify-end">
+        <div className="h-full hidden lg:flex md:flex lg:justify-end">
           <Image
             width={300}
             height={300}
@@ -70,7 +70,7 @@ const CardTwo = () => {
               "/cta/delivery-boy.png"
             }
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
