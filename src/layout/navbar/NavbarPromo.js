@@ -149,6 +149,8 @@ const NavbarPromo = () => {
           setSelectedCategory(null);
           break;
       }
+    } else if (location.pathname == "/offers") {
+      setSelectedCategory(4);
     } else {
       setSelectedCategory(null);
     }
@@ -164,8 +166,8 @@ const NavbarPromo = () => {
       {LoginModalOpen && (
         <LoginModal modalOpen={LoginModalOpen} setModalOpen={setLoginModalOpen} />
       )}
-      <div className="hidden lg:block xl:block bg-white border-b">
-        <div className="w-full px-5 pb-3 pt-1.5 sm:px-4 flex justify-between items-center">
+      <div className="lg:block xl:block bg-white border-b">
+        <div className="w-full px-5 pb-1 lg:pb-3 pt-1.5 sm:px-4 flex justify-center lg:justify-between items-center">
           <div className="inline-flex">
             <Popover className="relative">
               <div className="max-w-7xl mx-auto">
@@ -183,7 +185,7 @@ const NavbarPromo = () => {
                 <div className="flex justify-between items-center md:justify-start md:space-x-10">
                   <Popover.Group
                     as="nav"
-                    className="md:flex items-center justify-center gap-4"
+                    className="flex items-center justify-center sm:gap-4"
                   >
                     {storeCustomizationSetting?.navbar
                       ?.categories_menu_status && (
@@ -224,25 +226,28 @@ const NavbarPromo = () => {
                               onMouseEnter={() => setIsHover(index)}
                               onMouseLeave={() => setIsHover(null)}
                               onClick={() => showCategory(category._id, title)}
-                              className={`p-2 flex items-center gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
+                              className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
                               role="button"
                               key={category._id}
                             >
                               {/* {console.log('category: ', category)} */}
                               {category.icon ? (
                                 isHover == index || selectedCategory == index ?
-                                  <Image src={getColorIcon(index, category.icon)} width={30} height={30} alt="Category" /> :
-                                  <Image src={category.icon} width={30} height={30} alt="Category" />
+                                  <Image src={getColorIcon(index, category.icon)} width={30} height={30} alt="Category"
+                                    className="sm:w-[30px] w-[6vw]" /> :
+                                  <Image src={category.icon} width={30} height={30} alt="Category"
+                                    className="sm:w-[30px] w-[6vw]" />
                               ) : (
                                 <Image
                                   src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
                                   width={30}
                                   height={30}
                                   alt="category"
+                                  className="sm:w-[30px] w-[6vw]"
                                 />
                               )}
 
-                              <div className="inline-flex items-center justify-between text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
+                              <div className="inline-flex items-center justify-center text-center text-[2vw] sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
                                 {title}
                               </div>
                             </a>
@@ -250,12 +255,14 @@ const NavbarPromo = () => {
                           <a onMouseEnter={() => setIsHover(4)}
                             onMouseLeave={() => setIsHover(null)}
                             onClick={() => router.push('offers')}
-                            className={`p-2 flex items-center gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == 4 ? 'scale-105' : ''}`}
+                            className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == 4 ? 'scale-105' : ''}`}
                             role="button">
                             {isHover == 4 || selectedCategory == 4 ?
-                              <Image src={getColorIcon(4, offerIconNoColor.src)} width={30} height={30} alt="Category" /> :
-                              <Image src={offerIconNoColor.src} width={30} height={30} alt="Category" />}
-                            <div className="inline-flex items-center justify-between text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
+                              <Image src={getColorIcon(4, offerIconNoColor.src)} width={30} height={30} alt="Category"
+                                className="sm:w-[30px] w-[6vw]" /> :
+                              <Image src={offerIconNoColor.src} width={30} height={30} alt="Category"
+                                className="sm:w-[30px] w-[6vw]" />}
+                            <div className="inline-flex items-center justify-center text-center text-[2vw] sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
                               {t("common:Offers")}
                             </div>
                           </a>
@@ -476,17 +483,17 @@ const NavbarPromo = () => {
               </div>
             </Popover>
           </div>
-          <div className="flex gap-3">
+          <div className="xl:flex gap-3 hidden">
             {/* <button className="hidden sm:inline-block lg:inline-block text-sm leading-6 font-serif font-medium px-6 py-2 bg-customGreen text-center rounded-md text-white hover:bg-customGreen-dark">
               משלוחים ואיזורי חלוקה
             </button> */}
-              <a href="https://api.whatsapp.com/send/?phone=972525123003" target="_blank">
-            <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
-             >
-              {/* <TbTruckDelivery size={21} className="mt-0.5" /> */}
-              <BsWhatsapp className="w-6 h-6 drop-shadow-xl" />
-              <span>שירות לקוחות</span>
-            </button>
+            <a href="https://api.whatsapp.com/send/?phone=972525123003" target="_blank">
+              <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+              >
+                {/* <TbTruckDelivery size={21} className="mt-0.5" /> */}
+                <BsWhatsapp className="w-6 h-6 drop-shadow-xl" />
+                <span>שירות לקוחות</span>
+              </button>
             </a>
             <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               onClick={() => setDeliveriesPopup(true)}>

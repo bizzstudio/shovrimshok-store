@@ -59,6 +59,7 @@ const InputArea = ({
             required: isRequired ? `${label} is required!` : false,
           })}
           type={type}
+          pattern={type === 'tel' ? '[0-9]*' : undefined} // אפשור של מספרים בלבד
           name={name}
           defaultValue={defaultValue}
           placeholder={placeholder}

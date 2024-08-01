@@ -106,7 +106,7 @@ const Navbar = () => {
         <LoginModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       )}
 
-      <div className="bg-white sticky top-0 z-20">
+      <div className="bg-white sticky lg:top-0 -top-16 z-20">
         <div className="w-full px-3 sm:px-10">
           <div className="top-bar h-16 lg:h-auto flex items-center justify-between pt-4 mx-auto">
             <Link
@@ -127,28 +127,8 @@ const Navbar = () => {
             <div className="w-full transition-all duration-200 dnone ease-in-out lg:flex lg:max-w-[520px] xl:max-w-[750px] 2xl:max-w-[900px] md:mx-12 lg:mx-4 xl:mx-0">
               <div className="w-full flex flex-col justify-center flex-shrink-0 relative z-30">
                 <div className="flex flex-col mx-auto w-full">
-                  {/* <form
-                    onSubmit={handleSubmit}
-                    className="relative pr-12 md:pr-14 bg-gray-100 overflow-hidden rounded-md w-full border-2 border-gray-100 focus-within:border-customGreen"
-                  >
-                    <label className="flex items-center py-0.5">
-                      <input
-                        onChange={(e) => setSearchText(e.target.value)}
-                        value={searchText}
-                        className="form-input w-full pl-5 appearance-none transition ease-in-out border text-input text-sm font-sans rounded-md min-h-10 h-10 duration-200 bg-transparent focus:ring-0 outline-none border-none focus:outline-none placeholder-gray-500 placeholder-opacity-75"
-                        placeholder={t(`common:search-placeholder`)}
-                      />
-                    </label>
-                    <button
-                      aria-label="Search"
-                      type="submit"
-                      className="outline-none text-xl text-gray-400 absolute top-0 right-0 end-0 w-12 md:w-14 h-full flex items-center justify-center transition duration-200 ease-in-out hover:text-heading focus:outline-none"
-                    >
-                      <IoSearchOutline />
-                    </button>
-                  </form> */}
                   <form onSubmit={handleSubmit}
-                    className="relative w-full h-[40px] flex items-center px-3.5 rounded-[10px] transition-[border-radius] duration-500 ease-in-out bg-gray-100 focus-within:rounded-[1px] before:content-[''] before:absolute before:bg-customGreen before:transform before:scale-x-0 before:origin-center before:w-full before:h-[2px] before:left-0 before:bottom-0 before:rounded-[1px] before:transition-transform before:duration-300 before:ease-in-out focus-within:before:scale-100">
+                    className={`${isPaymentPageOpen ? "hidden" : "flex"} relative w-full h-[40px] items-center px-3.5 rounded-[10px] transition-[border-radius] duration-500 ease-in-out bg-gray-100 focus-within:rounded-[1px] before:content-[''] before:absolute before:bg-customGreen before:transform before:scale-x-0 before:origin-center before:w-full before:h-[2px] before:left-0 before:bottom-0 before:rounded-[1px] before:transition-transform before:duration-300 before:ease-in-out focus-within:before:scale-100`}>
                     <button type="submit" className="border-none bg-none text-[#8b8ba7] focus:text-customGreen">
                       <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
                         <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -215,7 +195,7 @@ const Navbar = () => {
                       className="min-w-full min-h-full object-cover"
                     /> :
                     <span className="flex items-center justify-center leading-none font-bold font-serif mb-0.5">
-                     <FiUserCheck className="w-6 h-6 drop-shadow-xl" />
+                      <FiUserCheck className="w-6 h-6 drop-shadow-xl" />
                     </span>}
                 </Link> :
                 <button className="flex items-center justify-center text-white bg-customGreen text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customGreen outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"

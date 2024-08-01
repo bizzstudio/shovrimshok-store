@@ -1810,7 +1810,7 @@ p:not(:last-of-type) {
     background-image: url(/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fahossain%2Fimage%2Fupload%2Fv1697688032%2Fsettings%2Fdelivery-boy_rluuoq.webp&w=384&q=75);
     background-position: left;
     background-repeat: no-repeat;
-    min-height: 300px;;
+    min-height: 300px;
   }
 }
 
