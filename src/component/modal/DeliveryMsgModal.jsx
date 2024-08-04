@@ -6,7 +6,7 @@ import 'dayjs/locale/he';
 // הגדרת השפה לעברית
 dayjs.locale('he');
 
-//internal  import
+//internal import
 import Error from "@component/form/Error";
 import useLoginSubmit from "@hooks/useLoginSubmit";
 import InputArea from "@component/form/InputArea";
@@ -16,12 +16,24 @@ import { useEffect } from "react";
 const DeliveryMsgModal = ({ closeModal = () => { } }) => {
   const { t } = useTranslation();
 
-  // התאמת ההודעה בהתאם לשעה (אם לפני או אחרי 14:00)
+  // התאמת ההודעה בהתאם ליום והשעה
   let now = dayjs();
   const currentHour = now.hour();
+  const currentDay = now.day();
 
-  if (currentHour >= 14) {
+  let messagePart;
+  let messagePart2;
+
+  if (currentDay === 4 && currentHour >= 14) {
+    messagePart = t("common:deliveryMessageAfter14");
+    messagePart2 = t("common:deliveryMessageThursdayAfter14Part2")
+  } else if (currentHour >= 14) {
     now = now.add(1, 'day');
+    messagePart = t("common:deliveryMessageAfter14");
+    messagePart2 = t("common:deliveryMessagePart2")
+  } else {
+    messagePart = t("common:deliveryMessageBefore14");
+    messagePart2 = t("common:deliveryMessagePart2")
   }
 
   const formattedDate = now.format('DD/MM');
@@ -33,7 +45,7 @@ const DeliveryMsgModal = ({ closeModal = () => { } }) => {
       </div>
       <div className="flex flex-col justify-center gap-3">
         <p className="text-center text-lg">
-          {currentHour < 14 ? t("common:deliveryMessagePart1") + formattedDate + ", " + t("common:deliveryMessagePart2") : t("common:deliveryMessagePart3") + formattedDate + ", " + t("common:deliveryMessagePart2")}
+          {messagePart + formattedDate + messagePart2}
         </p>
         <button onClick={closeModal}
           className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap">

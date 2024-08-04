@@ -134,7 +134,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
             <span className="text-gray-400 font-medium text-xs d-block mb-1">
               {product.unit}
             </span>
-            <h2 className="text-heading truncate mb-0 block text-sm font-medium text-gray-600">
+            <h2 className="text-heading truncate mb-0 block text-base font-medium text-gray-600">
               {/* <span className="line-clamp-2"> */}
               {showingTranslateValue(product?.title)}
               {/* </span> */}

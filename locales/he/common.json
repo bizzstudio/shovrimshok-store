@@ -311,11 +311,13 @@
     "typeHere": "הקלד/י כאן...",
 
     "ok": "אישור",
-    "deliveryMessagePart1": "אנו נספק את המשלוח שלך היום, בתאריך ",
-    "deliveryMessagePart2": "לא יאוחר מהשעה 22:00. הנהג יצור קשר לפני ההגעה. בימים חריגים ובהודעה מראש נספק את המשלוח ביום שלמחרת.",
-    "deliveryMessagePart3": "אנו נספק את המשלוח שלך מחר, בתאריך ",
+    "deliveryMessageBefore14": "אנו נספק את המשלוח שלך היום, בתאריך ",
+    "deliveryMessageAfter14": "אנו נספק את המשלוח שלך מחר, בתאריך ",
+    "deliveryMessagePart2": ", לא יאוחר מהשעה 22:00. הנהג יצור קשר לפני ההגעה. בימים חריגים ובהודעה מראש נספק את המשלוח ביום שלמחרת.",
+    "deliveryMessageThursdayAfter14Part2": ", לא יאוחר מהשעה 14:00. הנהג יצור קשר לפני ההגעה.",
     "PickupMessagePart1": "נשתדל ללקט את ההזמנה שלך היום ",
     "PickupMessagePart2": "עד השעה 16:00, או לכל המאוחר יום למחרת במקרי עומס.",
+    "PickupMessageThursdayAfter14Part2": "עד השעה 14:00.",
     "PickupMessagePart3": "נשתדל ללקט את ההזמנה שלך מחר ",
     
     "noOptionToSearchInCheckoutPage": "אין אפשרות להוסיף מוצרים בדף התשלום.",

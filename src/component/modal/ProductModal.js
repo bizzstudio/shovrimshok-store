@@ -209,6 +209,7 @@ const ProductModal = ({
       // console.log("newItem", newItem);
 
       handleAddItem(newItem);
+      setModalOpen(false);
     } else {
       return notifyError("Please select all variant first!");
     }
