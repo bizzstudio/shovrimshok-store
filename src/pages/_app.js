@@ -9,6 +9,7 @@ import ReactGA from "react-ga4";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
+import Hotjar from '@hotjar/browser';
 
 //internal import
 import store from "@redux/store";
@@ -21,6 +22,9 @@ import SettingServices from "@services/SettingServices";
 import { handlePageView } from "@utils/analytics";
 
 let persistor = persistStore(store);
+
+const siteId = 5076708;
+const hotjarVersion = 6;
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -59,6 +63,12 @@ function MyApp({ Component, pageProps }) {
       router.push("/offers");
     }
   }, [router.pathname]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      Hotjar.init(siteId, hotjarVersion);
+    }
+  }, []);
 
   return (
     <>
