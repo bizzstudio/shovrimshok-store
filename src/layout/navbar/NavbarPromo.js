@@ -168,9 +168,9 @@ const NavbarPromo = () => {
       )}
       <div className="lg:block xl:block bg-white border-b">
         <div className="w-full px-5 pb-1 lg:pb-3 pt-1.5 sm:px-4 flex justify-center lg:justify-between items-center">
-          <div className="inline-flex">
-            <Popover className="relative">
-              <div className="max-w-7xl mx-auto">
+          <div className="inline-flex sm:w-fit w-full">
+            <Popover className="relative sm:w-fit w-full">
+              <div className="max-w-7xl mx-auto sm:w-fit w-full">
                 {/* <div className="relative grid gap-2 p-6">
                   {data[0]?.children?.map((category) => (
                     <CategoryCard
@@ -182,10 +182,10 @@ const NavbarPromo = () => {
                     />
                   ))}
                 </div> */}
-                <div className="flex justify-between items-center md:justify-start md:space-x-10">
+                <div className="flex justify-between items-center md:justify-start md:space-x-10 sm:w-fit w-full">
                   <Popover.Group
                     as="nav"
-                    className="flex items-center justify-center sm:gap-4"
+                    className="flex items-center justify-between sm:justify-center sm:gap-4 sm:w-fit w-full"
                   >
                     {storeCustomizationSetting?.navbar
                       ?.categories_menu_status && (
