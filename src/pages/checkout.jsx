@@ -123,7 +123,7 @@ const Checkout = () => {
       alert("Please enter a city.");
     }
   };
-  
+
   const handleSubmitWithPickup = () => {
     setPickupMsg(true)
     handleShippingCost(0);
@@ -239,15 +239,21 @@ const Checkout = () => {
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
           <div className="py-0 md:py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
-              {paymentSrc ? <div className="flex flex-col gap-3 items-center justify-center">
-                {scrollUp()}
-                <iframe
-                  src={paymentSrc}
-                  id='cardcomiframe'
-                  className="max-w-[800px] w-3/4 h-[550px] flex items-center justify-center"
-                />
-              </div> :
-                <div className="mt-5 md:mt-0 md:col-span-2">
+              {paymentSrc ?
+
+                // redirect option
+                navToPaymentPage()
+
+                // iframe option
+                // <div className="flex flex-col gap-3 items-center justify-center">
+                //   {scrollUp()}
+                //   <iframe
+                //     src={paymentSrc}
+                //     id='cardcomiframe'
+                //     className="max-w-[800px] w-3/4 h-[550px] flex items-center justify-center"
+                //   />
+                // </div>
+                : <div className="mt-5 md:mt-0 md:col-span-2">
                   <h1 className="text-3xl font-bold text-customGreen w-full my-3 text-center bg-white border border-gray-200 p-3 rounded-md">{t("common:likutMessage")}</h1>
                   <form onSubmit={handleSubmit(submitHandler)}>
                     <div className="w-full flex flex-col 2xl:flex-row items-center pb-3 gap-3.5">
@@ -415,7 +421,7 @@ const Checkout = () => {
                           <textarea
                             rows={4}
                             maxLength={800}
-                            className="textareaCheckout w-full border border-gray-200 rounded-md px-4 py-3 text-sm font-sans focus-visible:outline-none focus:outline-none " 
+                            className="textareaCheckout w-full border border-gray-200 rounded-md px-4 py-3 text-sm font-sans focus-visible:outline-none focus:outline-none "
                             placeholder={t("common:typeHere")}
                             {...register("customer_note")}
                           />
