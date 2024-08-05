@@ -47,7 +47,7 @@ const Common = ({ setModalOpen }) => {
 
 
         <div>
-          {storeSetting?.google_login_status && (
+          {storeSetting?.google_login_status && !showRegister && (
             <>
               <div className="mt-7 mb-6 after:bg-gray-100 before:bg-gray-100 fo10t-sans text-center font-medium">
                 {t("common:orGoogle")}
