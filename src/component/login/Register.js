@@ -36,8 +36,8 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
         onSubmit={handleSubmit(submitHandler)}
         className="flex flex-col justify-center w-full"
       >
-        <div className="grid grid-cols-1 gap-5">
-          <div className="form-group">
+        <div className="grid grid-cols-2 gap-5">
+          <div className="col-span-1">
             <InputArea
               register={register}
               // label={t("common:name")}
@@ -50,7 +50,20 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             <Error errorName={errors.name} />
           </div>
 
-          <div className="form-group">
+          <div className="col-span-1">
+            <InputArea
+              register={register}
+              // label={t("common:lastName")}
+              name="lastName"
+              type="text"
+              placeholder={t("common:lastName")}
+              Icon={FiUser}
+            />
+
+            <Error errorName={errors.lastName} />
+          </div>
+
+          <div className="col-span-2 sm:col-span-1">
             <InputArea
               register={register}
               // label={t("common:email")}
@@ -62,7 +75,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             <Error errorName={errors.email} />
           </div>
 
-          <div className="form-group">
+          <div className="col-span-2 sm:col-span-1">
             <InputArea
               register={register}
               // label={t("common:phone")}
@@ -74,7 +87,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             <Error errorName={errors.phone} />
           </div>
 
-          <div className="flex gap-3 flex-col sm:flex-row">
+          <div className="col-span-2 flex gap-3 flex-col sm:flex-row">
             <div className="form-group w-full">
               <InputArea
                 register={register}
@@ -118,7 +131,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             <button
               disabled={loading}
               type="submit"
-              className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+              className="col-span-2 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
             >
               <img
                 src="/loader/spinner.gif"
@@ -132,7 +145,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             <button
               disabled={loading || notMatch}
               type="submit"
-              className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+              className="col-span-2 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
             >
               {t("common:signingUp")}
             </button>

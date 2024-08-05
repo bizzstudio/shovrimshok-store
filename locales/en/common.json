@@ -241,7 +241,8 @@
 
   "signingUp": "Signing Up",
   "createAccount": "Create an account",
-  "name": "Full Name",
+  "name": "First Name",
+  "lastName": "Last Name",
   "registerSuccess": "Register Success!",
   "hey": "Hey",
   "initializeAddressDes": "Just before we start, let's check if we have deliveries to you!",
@@ -259,7 +260,6 @@
 
   "personalDetails": "Personal Details",
   "firstName": "First Name",
-  "lastName": "Last Name",
   "emailAddress": "Email address",
   "phoneNumber": "Phone Number",
 

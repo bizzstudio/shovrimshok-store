@@ -205,7 +205,7 @@ const ContactUs = () => {
                       />
                       <Error errorName={errors.name} />
                     </div>
-                    <div className="w-full md:w-1/2 md:ml-2.5 lg:ml-5 mt-2 md:mt-0">
+                    <div className="w-full md:w-1/2 md:mr-2.5 lg:mr-5 mt-2 md:mt-0">
                       <InputArea
                         register={register}
                         label={t("common:contact-page-form-input-email")}

@@ -242,7 +242,8 @@
   
     "signingUp": "הרשמה",
     "createAccount": "יצירת חשבון עם אימייל וסיסמה",
-    "name": "שם מלא",
+    "name": "שם פרטי",
+    "lastName":"שם משפחה",
     "registerSuccess": "ההרשמה בוצעה בהצלחה!",
     "hey": "היי",
     "initializeAddressDes": "רגע לפני ההזמנה, עליך למלא את כל השדות כדי לסיים את תהליך ההרשמה. (בין אם אתם רוצים איסוף עצמי או משלוח).",
@@ -260,7 +261,6 @@
   
     "personalDetails": "Personal Details",
     "firstName": "First Name",
-    "lastName": "Last Name",
     "emailAddress": "Email address",
     "phoneNumber": "Phone Number",
   

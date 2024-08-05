@@ -74,7 +74,7 @@ const Layout = ({ title, description, children }) => {
 
       {addressPopup && (
         <MainModal modalOpen={addressPopup} setModalOpen={setAddressPopup}>
-          <div className="px-3 sm:px-11 py-8 max-w-md">
+          <div className="px-3 sm:px-11 py-8 max-w-xl">
             <UserAddressInitialize />
           </div>
         </MainModal>

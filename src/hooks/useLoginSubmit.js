@@ -29,6 +29,7 @@ const useLoginSubmit = (setModalOpen) => {
 
   const submitHandler = ({
     name,
+    lastName,
     email,
     registerEmail,
     verifyEmail,
@@ -38,7 +39,9 @@ const useLoginSubmit = (setModalOpen) => {
     setLoading(true);
     const cookieTimeOut = 0.5;
 
-    // console.log({name,
+    // console.log({
+    //   name,
+    //   lastName,
     //   email,
     //   registerEmail,
     //   verifyEmail,
@@ -86,13 +89,13 @@ const useLoginSubmit = (setModalOpen) => {
     }
     if (name && email && password) {
       // ווידוא שהשם משתמש הוא 2 מילים לפחות
-      const usernameWords = name.trim().split(" ");
-      if (usernameWords.length < 2) {
-        setLoading(false);
-        notifyError(t("common:username_at_least_two_words"));
-        return;
-      }
-      CustomerServices.verifyEmailAddress({ name, email, password, phone })
+      // const usernameWords = name.trim().split(" ");
+      // if (usernameWords.length < 2) {
+      //   setLoading(false);
+      //   notifyError(t("common:username_at_least_two_words"));
+      //   return;
+      // }
+      CustomerServices.verifyEmailAddress({ name, lastName, email, password, phone })
         .then((res) => {
           if (res.waitingForVerification) {
             localStorage.setItem("waitingForVerification", res.waitingForVerification);
