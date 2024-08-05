@@ -135,6 +135,7 @@ const useCheckoutSubmit = () => {
 
       const userDetails = {
         name: userInfo.name,
+        lastName: userInfo.lastName || '',
         contact: userInfo.phone,
         email: userInfo.email,
         address: userInfo.address,
