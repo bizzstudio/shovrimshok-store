@@ -40,15 +40,16 @@ const UserAddressUpdate = () => {
     setLoading(true);
 
     // ווידוא שהשם משתמש הוא 2 מילים לפחות
-    const usernameWords = data.name.trim().split(" ");
-    if (usernameWords.length < 2) {
-      setLoading(false);
-      notifyError(t("common:username_at_least_two_words"));
-      return;
-    }
+    // const usernameWords = data.name.trim().split(" ");
+    // if (usernameWords.length < 2) {
+    //   setLoading(false);
+    //   notifyError(t("common:username_at_least_two_words"));
+    //   return;
+    // }
 
     const userData = {
       name: data.name,
+      lastName: data.lastName,
       email: data.email,
       address: {
         city: chosenCity,
@@ -82,6 +83,7 @@ const UserAddressUpdate = () => {
     if (Cookies.get("userInfo")) {
       const user = JSON.parse(Cookies.get("userInfo"));
       setValue("name", user.name);
+      setValue("lastName", user.lastName);
       setValue("email", user.email);
       if (user.address) {
         setValue("street", user.address.street);
@@ -106,19 +108,36 @@ const UserAddressUpdate = () => {
             <div className="mt-5 md:mt-0 md:col-span-2">
               <div className="lg:mt-6 mt-4 bg-white">
                 <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-3 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label={showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.full_name
-                      )}
-                      name="name"
-                      type="text"
-                      placeholder={showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.full_name
-                      )}
-                    />
-                    <Error errorName={errors.name} />
+                  {/* name and last name */}
+                  <div className="flex gap-4 col-span-3">
+                    <div className="w-full">
+                      <InputArea
+                        register={register}
+                        label={showingTranslateValue(
+                          storeCustomizationSetting?.dashboard?.full_name
+                        )}
+                        name="name"
+                        type="text"
+                        placeholder={showingTranslateValue(
+                          storeCustomizationSetting?.dashboard?.full_name
+                        )}
+                      />
+                      <Error errorName={errors.name} />
+                    </div>
+                    <div className="w-full">
+                      <InputArea
+                        register={register}
+                        label={showingTranslateValue(
+                          storeCustomizationSetting?.dashboard?.last_name
+                        )}
+                        name="lastName"
+                        type="text"
+                        placeholder={showingTranslateValue(
+                          storeCustomizationSetting?.dashboard?.last_name
+                        )}
+                      />
+                      <Error errorName={errors.lastName} />
+                    </div>
                   </div>
 
                   <div className="col-span-3 sm:col-span-3">

@@ -230,7 +230,7 @@ const Checkout = () => {
       )}
       {modalOpen && (
         <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-          <div className="px-11 py-8">
+          <div className="px-11 py-8 max-w-xl">
             <UserAddressUpdate />
           </div>
         </MainModal>
