@@ -54,14 +54,14 @@ const Common = ({ setModalOpen }) => {
               </div>
               <div className="flex items-center justify-center">
                 <GoogleLogin
-                  // render={(renderProps) => (
-                  //   <button
-                  //     onClick={renderProps.onClick}
-                  //     disabled={renderProps.disabled}
-                  //   >
-                  //     <ImGoogle /> <span className="ml-2">{t("common:googleLogin")}</span>
-                  //   </button>
-                  // )}
+                  text="continue_with"
+                  theme="outline"
+                  width="100%"
+                  containerProps={{
+                    style: {
+                      width: "100% !important",
+                    },
+                  }}
                   onSuccess={handleGoogleSignIn}
                   onFailure={(err) =>
                     notifyError(
@@ -69,6 +69,8 @@ const Common = ({ setModalOpen }) => {
                     )
                   }
                   cookiePolicy={"single_host_origin"}
+                  shape="circle"
+                  type="icon"
                 />
               </div>
             </>
