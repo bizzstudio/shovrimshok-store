@@ -28,11 +28,15 @@ const Cart = () => {
   } = useContext(UserContext);
 
   const handleOpenLogin = () => {
-    if (router.push("/?redirect=/checkout")) {
-      toggleCartDrawer();
-      setModalOpen(!modalOpen);
-    }
+    router.push(
+      { pathname: router.pathname, query: { redirect: '/checkout' } },
+      router.asPath,
+      { shallow: true }
+    );
+    toggleCartDrawer();
+    setModalOpen(!modalOpen);
   };
+
 
   const handleCheckoutClick = (e) => {
     e.stopPropagation(); // Prevent event propagation
@@ -67,8 +71,8 @@ const Cart = () => {
     >
       <span className="font-medium font-serif text-xl flex flex-col justify-start items-start">
         <span>
-        <small>{currency}</small>
-        {customCartTotal.toFixed(2)}
+          <small>{currency}</small>
+          {customCartTotal.toFixed(2)}
         </span>
         {/* <FiInfo title={t("common:additonalLikut")} className="cursor-pointer mb-0.5"/> */}
         <small className="text-sm">{t("common:additonalLikut")}</small>
