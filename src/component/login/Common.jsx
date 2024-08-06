@@ -54,14 +54,6 @@ const Common = ({ setModalOpen }) => {
               </div>
               <div className="flex items-center justify-center">
                 <GoogleLogin
-                  text="continue_with"
-                  theme="outline"
-                  width="100%"
-                  containerProps={{
-                    style: {
-                      width: "100% !important",
-                    },
-                  }}
                   onSuccess={handleGoogleSignIn}
                   onFailure={(err) =>
                     notifyError(
