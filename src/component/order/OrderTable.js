@@ -34,12 +34,12 @@ const OrderTable = ({ data, currency }) => {
           </td>
           <td className="px-6 py-1 whitespace-nowrap font-bold text-center font-DejaVu">
             {currency}
-            {getNumberTwo(item.price)}
+            {getNumberTwo(item.discountedPrice ? item.discountedPrice / item.quantity : item.itemTotal / item.quantity)}
           </td>
 
           <td className="px-6 py-1 whitespace-nowrap text-right font-bold font-DejaVu k-grid text-red-500">
             {currency}
-            {getNumberTwo(item.itemTotal)}
+            {getNumberTwo(item.discountedPrice ? item.discountedPrice : item.itemTotal)}         
           </td>
         </tr>
       ))}
