@@ -179,7 +179,7 @@ const useCheckoutSubmit = () => {
               Quantity: p.quantity,
               UnitCost: p.discountedPrice ? p.discountedPrice / p.quantity : p.itemTotal / p.quantity,
               TotalLineCost: p.discountedPrice ? p.discountedPrice : p.itemTotal,
-              IsVatFree: true,
+              IsVatFree: p.isVatFree !== undefined ? p.isVatFree : true,
             }
           }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)), IsVatFree: true },
           shippingCost > 0 ? {

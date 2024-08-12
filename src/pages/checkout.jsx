@@ -87,7 +87,7 @@ const Checkout = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
 
-  console.log('items: ', items)
+  // console.log('items: ', items)
 
   const router = useRouter();
 
