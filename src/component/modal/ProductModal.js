@@ -49,6 +49,16 @@ const ProductModal = ({
   const [variants, setVariants] = useState([]);
   const [isReadMore, setIsReadMore] = useState(true);
 
+  // סגירת הפופאפ באנימצייה
+  const [isClosing, setIsClosing] = useState(false);
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      setModalOpen(false);
+    }, 300); // תואם למשך זמן האנימציה (duration-200)
+  };
+
   useEffect(() => {
     // console.log('value', value, product);
     if (value) {
@@ -209,14 +219,14 @@ const ProductModal = ({
       // console.log("newItem", newItem);
 
       handleAddItem(newItem);
-      setModalOpen(false);
+      handleClose();
     } else {
       return notifyError("Please select all variant first!");
     }
   };
 
   const handleMoreInfo = (slug) => {
-    setModalOpen(false);
+    handleClose();
 
     router.push(`/product/${slug}`);
     setIsLoading(!isLoading);
@@ -231,12 +241,12 @@ const ProductModal = ({
 
   return (
     <>
-      <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+      <MainModal modalOpen={modalOpen && !isClosing} setModalOpen={setModalOpen}>
         <div className="inline-block overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl">
           <div className="flex flex-col items-center justify-center lg:flex-row md:flex-row w-full max-w-4xl overflow-hidden">
             <Link href={`/product/${product.slug}`} passHref className="border-none outline-none">
               <div
-                onClick={() => setModalOpen(false)}
+                onClick={() => handleClose()}
                 className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer p-5 pl-0"
               >
                 <Discount
@@ -286,7 +296,7 @@ const ProductModal = ({
               <div className="flex flex-col gap-0.5 mb-1 -mt-1.5">
                 <Link href={`/product/${product.slug}`} passHref>
                   <h1
-                    onClick={() => setModalOpen(false)}
+                    onClick={() => handleClose()}
                     className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif hover:text-black cursor-pointer text-right mb-1"
                   >
                     {showingTranslateValue(product?.title)}
@@ -414,7 +424,7 @@ const ProductModal = ({
                           className="text-gray-600 font-serif font-medium underline ml-2 hover:text-teal-600"
                           onClick={() => {
                             setIsLoading(!isLoading);
-                            setModalOpen(false);
+                            handleClose();
                             clearInput();
                           }}
                         >
