@@ -30,8 +30,8 @@ const MainModal = ({ modalOpen, setModalOpen, children, z = null, onClose }) => 
               enterFrom="opacity-0"
               enterTo="opacity-100"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-80"
+              // leaveFrom="opacity-100 scale-100"
+              // leaveTo="opacity-80"
             >
               <Dialog.Overlay className="fixed inset-0 bg-black opacity-60" />
             </Transition.Child>
