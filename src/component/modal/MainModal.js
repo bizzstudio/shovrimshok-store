@@ -2,8 +2,16 @@ import React, { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose } from "react-icons/io5";
 
-const MainModal = ({ modalOpen, setModalOpen, children, z = null }) => {
+const MainModal = ({ modalOpen, setModalOpen, children, z = null, onClose }) => {
   const cancelButtonRef = useRef();
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose(); // השתמש בפונקציה שהועברה ב-onClose
+    } else {
+      setModalOpen(false); // התנהגות ברירת מחדל
+    }
+  };
 
   return (
     <>
@@ -11,7 +19,7 @@ const MainModal = ({ modalOpen, setModalOpen, children, z = null }) => {
         <Dialog
           as="div"
           className={`fixed inset-0 z-30 overflow-y-auto text-center`}
-          onClose={() => setModalOpen(false)}
+          onClose={handleClose}
           initialFocus={cancelButtonRef}
           style={{ zIndex: z ? z : 30 }}
         >
@@ -22,8 +30,8 @@ const MainModal = ({ modalOpen, setModalOpen, children, z = null }) => {
               enterFrom="opacity-0"
               enterTo="opacity-100"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0"
+              // leaveFrom="opacity-100 scale-100"
+              // leaveTo="opacity-80"
             >
               <Dialog.Overlay className="fixed inset-0 bg-black opacity-60" />
             </Transition.Child>
@@ -45,7 +53,7 @@ const MainModal = ({ modalOpen, setModalOpen, children, z = null }) => {
                 <div className="absolute right-5 top-5">
                   <button
                     ref={cancelButtonRef}
-                    onClick={() => setModalOpen(false)}
+                    onClick={handleClose}
                     type="button"
                     className="inline-flex justify-center px-2 py-2 text-base font-medium text-customGreen border border-transparent rounded-full bg-customGreen-leaf focus:outline-none border-none outline-none"
                   >
