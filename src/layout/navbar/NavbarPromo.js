@@ -103,58 +103,26 @@ const NavbarPromo = () => {
   };
 
   const [isHover, setIsHover] = useState(null);
+  const categoriesLength = data[0]?.children?.length;
   useEffect(() => {
-    setIsHover(data[0]?.children?.length + 1)
+    setIsHover(categoriesLength + 1)
   }, [data])
-
-  const getColorIcon = (index, defaultIcon) => {
-    switch (index) {
-      case 0:
-        return fruitsIcon.src ? fruitsIcon.src : defaultIcon;
-      case 1:
-        return legumesIcon.src ? legumesIcon.src : defaultIcon;
-      case 2:
-        return herbsIcon.src ? herbsIcon.src : defaultIcon;
-      case 3:
-        return vegetablesIcon.src ? vegetablesIcon.src : defaultIcon;
-      case 4:
-        return offerIcon.src ? offerIcon.src : defaultIcon;
-      default:
-        return defaultIcon;
-    }
-  }
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const { query } = router;
 
   useEffect(() => {
     if (query?.category) {
-      switch (query?.category) {
-        case 'פירות':
-          setSelectedCategory(0);
-          break;
-        case 'קטניות':
-          setSelectedCategory(1);
-          break;
-        case 'עלים ועשבי תיבול':
-          setSelectedCategory(2);
-          break;
-        case 'ירקות':
-          setSelectedCategory(3);
-          break;
-        case 'מבצעים':
-          setSelectedCategory(4);
-          break;
-        default:
-          setSelectedCategory(null);
-          break;
-      }
+      const index = data[0]?.children?.findIndex(
+        category => category.name.he === query.category
+      );
+      setSelectedCategory(index !== -1 ? index : null);
     } else if (location.pathname == "/offers") {
-      setSelectedCategory(4);
+      setSelectedCategory(categoriesLength);
     } else {
       setSelectedCategory(null);
     }
-  }, [query]);
+  }, [query, data]);
 
   return (
     <>
@@ -167,7 +135,7 @@ const NavbarPromo = () => {
         <LoginModal modalOpen={LoginModalOpen} setModalOpen={setLoginModalOpen} />
       )}
       <div className="lg:block xl:block bg-white border-b">
-        <div className="w-full px-5 pb-1 lg:pb-3 pt-1.5 sm:px-4 flex justify-center lg:justify-between items-center">
+        <div className="w-full px-5 pb-1 lg:pb-3 pt-1.5 sm:px-4 flex justify-center lg:justify-between items-center overflow-x-auto noScroller">
           <div className="inline-flex sm:w-fit w-full">
             <Popover className="relative sm:w-fit w-full">
               <div className="max-w-7xl mx-auto sm:w-fit w-full">
@@ -230,10 +198,9 @@ const NavbarPromo = () => {
                               role="button"
                               key={category._id}
                             >
-                              {/* {console.log('category: ', category)} */}
                               {category.icon ? (
                                 isHover == index || selectedCategory == index ?
-                                  <Image src={getColorIcon(index, category.icon)} width={30} height={30} alt="Category"
+                                  <Image src={category.coloredIcon} width={30} height={30} alt="Category"
                                     className="sm:w-[30px] w-[6vw]" /> :
                                   <Image src={category.icon} width={30} height={30} alt="Category"
                                     className="sm:w-[30px] w-[6vw]" />
@@ -252,13 +219,14 @@ const NavbarPromo = () => {
                               </div>
                             </a>
                           })}
-                          <a onMouseEnter={() => setIsHover(4)}
+
+                          <a onMouseEnter={() => setIsHover(categoriesLength)}
                             onMouseLeave={() => setIsHover(null)}
                             onClick={() => router.push('offers')}
-                            className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == 4 ? 'scale-105' : ''}`}
+                            className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
                             role="button">
-                            {isHover == 4 || selectedCategory == 4 ?
-                              <Image src={getColorIcon(4, offerIconNoColor.src)} width={30} height={30} alt="Category"
+                            {isHover == categoriesLength || selectedCategory == categoriesLength ?
+                              <Image src={offerIcon.src} width={30} height={30} alt="Category"
                                 className="sm:w-[30px] w-[6vw]" /> :
                               <Image src={offerIconNoColor.src} width={30} height={30} alt="Category"
                                 className="sm:w-[30px] w-[6vw]" />}
@@ -266,6 +234,7 @@ const NavbarPromo = () => {
                               {t("common:Offers")}
                             </div>
                           </a>
+
                         </>
                       )}
 

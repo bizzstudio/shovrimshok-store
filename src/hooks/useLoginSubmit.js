@@ -37,7 +37,7 @@ const useLoginSubmit = (setModalOpen) => {
     phone
   }) => {
     setLoading(true);
-    const cookieTimeOut = 0.5;
+    const cookieTimeOut = 14;
 
     // console.log({
     //   name,
@@ -78,7 +78,7 @@ const useLoginSubmit = (setModalOpen) => {
             notifySuccess(t("common:loginSuccess"));
             dispatch({ type: "USER_LOGIN", payload: res });
             Cookies.set("userInfo", JSON.stringify(res), {
-              // expires: cookieTimeOut,
+              expires: cookieTimeOut,
             });
           })
           .catch((err) => {
