@@ -269,6 +269,7 @@ const ProductModal = ({
                     width={420}
                     height={420}
                     alt="product"
+                    className="max-h-[400px] object-contain"
                   />
                 ) : (
                   <Image

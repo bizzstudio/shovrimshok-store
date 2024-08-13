@@ -331,6 +331,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                       width={650}
                       height={650}
                       priority
+                      className="max-h-[400px] object-contain"
                     />
                   ) : (
                     <Image
