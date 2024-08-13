@@ -20,6 +20,7 @@ import herbsTitle from "public/titles/herbsTitle.svg"
 import leguTitle from "public/titles/leguTitle.svg"
 import ourOffers from "public/titles/ourOffers.svg"
 import vegTitle from "public/titles/vegTitle.svg"
+import honeyTitle from "public/titles/honeyTitle.svg"
 import sortProducts from "src/functions/sortProducts";
 import OfferServices from "@services/OfferServices";
 import useAsync from "@hooks/useAsync";
@@ -49,6 +50,9 @@ const Search = ({ products, attributes }) => {
           break;
         case 'ירקות':
           setCategory(vegTitle.src);
+          break;
+        case 'דבש':
+          setCategory(honeyTitle.src);
           break;
         case 'מבצעים':
           setCategory(ourOffers.src);
@@ -127,7 +131,20 @@ const Search = ({ products, attributes }) => {
                 <Loading loading={isLoading} />
               ) : (
                 <>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
+                  <div 
+                  // className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3"
+                  className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3 ${
+                    productData?.length < 6 ? 'justify-center' : ''
+                  }`}
+                  style={{
+                    gridTemplateColumns: window.innerWidth < 640
+                      ? `repeat(2, minmax(150px, 1fr))` // למסכים קטנים תמיד יהיה repeat של 2
+                      : productData?.length < 6
+                      ? `repeat(${Math.min(productData?.length, 6)}, minmax(150px, 235px))`
+                      : '',
+                  }}
+                  >
+                    
                     {productData?.slice(0, visibleProduct).map((product, i) => (
                       <ProductCard
                         key={i + 1}

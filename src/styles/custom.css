@@ -3,6 +3,17 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap');
 
+.noScroller {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.noScroller::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
 
 /* כל מה שקשור לגלילה האוטומטית של מוצרים במבצע בעמוד הבית */
 @keyframes scroll {
@@ -16,8 +27,8 @@
 }
 
 .scroll-container {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .scroll-content {
@@ -1789,23 +1800,24 @@ p:not(:last-of-type) {
   background: #3c6d16 !important;
   color: #e2e8f0;
 }
+
 .text-customGreen-darker {
-    background: #3c6d16a3  !important;
-    font-size: 16px !important;
-    border-radius: 2px 9px 2px 14px !important;
-    width: 69% !important;
-    color: #fff !important;
-    font-weight: bold;
+  background: #3c6d16a3 !important;
+  font-size: 16px !important;
+  border-radius: 2px 9px 2px 14px !important;
+  width: 69% !important;
+  color: #fff !important;
+  font-weight: bold;
   box-shadow: 2px 2px #afdc34 !important;
 }
 
 .cursor .text-customGreen-darker {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 
 
-@media only screen and (min-width: 600px) { 
+@media only screen and (min-width: 600px) {
   .bgship {
     background-image: url(/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fahossain%2Fimage%2Fupload%2Fv1697688032%2Fsettings%2Fdelivery-boy_rluuoq.webp&w=384&q=75);
     background-position: left;
@@ -1814,7 +1826,7 @@ p:not(:last-of-type) {
   }
 }
 
-@media only screen and (max-width: 600px) { 
+@media only screen and (max-width: 600px) {
   .bgship {
     background-image: none;
   }
