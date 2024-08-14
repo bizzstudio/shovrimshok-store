@@ -125,14 +125,14 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
   return (
     <div className="group w-full h-auto flex gap-4 justify-start items-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0">
       <div onClick={() => router.push(`/product/${item?.slug}`)} className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0 cursor-pointer"
-          >
+      >
         <img
           key={item.id}
           src={item.image}
           width={60}
           height={60}
           alt={item.title}
-          style={{aspectRatio: 1, objectFit: 'contain'}}
+          style={{ aspectRatio: 1, objectFit: 'contain' }}
         />
       </div>
       <div className="flex flex-col w-full overflow-hidden">
@@ -169,6 +169,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
           <div className="flex gap-2 flex-row-reverse mt-auto">
             <div className="h-8 flex items-center p-1 border border-gray-100 bg-white text-gray-600 rounded-md">
               <button
+                type="button"
                 className="px-1"
                 onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
               >
@@ -179,7 +180,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
               <p className="text-sm font-semibold text-dark px-2">
                 {item.quantity}
               </p>
-              <button onClick={() => handleIncreaseQuantity(item)} className="px-1">
+              <button type="button" onClick={() => handleIncreaseQuantity(item)} className="px-1">
                 <span className="text-dark text-base">
                   <FiPlus />
                 </span>

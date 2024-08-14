@@ -31,7 +31,7 @@ const useCheckoutSubmit = () => {
   const [shippingCost, setShippingCost] = useState(0);
   const [isDeliveryMetod, setIsDeliveryMetod] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
-  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [discountPercentage, setDiscountPercentage] = useState({});
   const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [paymentSrc, setPaymentSrc] = useState(null);
@@ -81,24 +81,31 @@ const useCheckoutSubmit = () => {
   useEffect(() => {
     if (minimumAmount - discountAmount > total || isEmpty) {
       setDiscountPercentage(0);
+      setDiscountAmount(0);
+      setCouponInfo({});
       Cookies.remove("couponInfo");
     }
   }, [minimumAmount, total]);
 
-  //calculate total and discount value
-  //calculate total and discount value
+  // remove coupon if discount amount is greater than total value
   useEffect(() => {
-    const discountProductTotal = items?.reduce(
-      (preValue, currentValue) => preValue + currentValue.itemTotal,
-      0
-    );
+    if (discountAmount >= customCartTotal && discountPercentage?.type === "fixed") {
+      setDiscountPercentage(0); // מאפסים את ההנחה
+      setDiscountAmount(0); // מאפסים את סכום ההנחה
+      setCouponInfo({});
+      Cookies.remove("couponInfo"); // מסירים את המידע על הקופון מ-Cookies
+      dispatch({ type: "SAVE_COUPON", payload: {} }); // מסירים את המידע על הקופון מ-Context
 
+      notifyError(t("common:couponRemovedDueToHighDiscount"));
+    }
+  }, [customCartTotal, discountAmount]);
+
+  // calculate total and discount value
+  useEffect(() => {
     let totalValue = "";
     let subTotal = parseFloat(customCartTotal + Number(shippingCost)).toFixed(2);
-    const discountAmount =
-      discountPercentage?.type === "fixed"
-        ? discountPercentage?.value
-        : discountProductTotal * (discountPercentage?.value / 100);
+    const discountAmount = discountPercentage?.type === "fixed" ?
+      discountPercentage?.value : customCartTotal * (discountPercentage?.value / 100);
 
     const discountAmountTotal = discountAmount ? discountAmount : 0;
 
@@ -109,7 +116,7 @@ const useCheckoutSubmit = () => {
     setTotal(totalValue);
   }, [customCartTotal, shippingCost, discountPercentage]);
 
-  //if not login then push user to home page
+  // if not login then push user to home page
   useEffect(() => {
     if (!userInfo) {
       router.push("/");
@@ -153,6 +160,7 @@ const useCheckoutSubmit = () => {
         shippingCost: shippingCost,
         discount: discountAmount,
         total: total,
+        coupon: couponInfo._id || null,
       };
 
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
@@ -189,6 +197,7 @@ const useCheckoutSubmit = () => {
           discountAmount > 0 ? {
             Description: "הנחה",
             UnitCost: -discountAmount,
+            IsVatFree: true,
           } : null,
           ].filter(Boolean)
         }
@@ -318,33 +327,39 @@ const useCheckoutSubmit = () => {
 
   const handleCouponCode = async (e) => {
     e.preventDefault();
-  
+
     const value = couponRef.current.value ? couponRef.current.value.trim() : '';
-  
+
     if (!value) {
       notifyError(t("common:enterCouponCode"));
       return;
     }
-  
+
     try {
       const { data } = await CouponServices.useCoupon({ couponCode: value });
-      console.log('data: ', data)
-  
+
+      // בדיקה אם ההנחה היא סכום קבוע וגבוהה מהסכום הכולל של העגלה
+      if (data.discountType.type === "fixed" && data.discountType.value >= customCartTotal) {
+        notifyError(t("common:couponTooHighForTotal"));
+        return; // מסיימים את הפונקציה מבלי להחיל את הקופון
+      }
+
       notifySuccess(
         currentLang
-          ? `הקופון מומש בהצלחה`
-          : `Your Coupon ${data.couponCode} is Applied on ${data.productType}!`
+          ? `הקופון ${data.couponCode} הוחל בהצלחה`
+          : `Your Coupon ${data.couponCode} is applied successfully!`
       );
-  
-      setIsCouponApplied(true);
-      // setMinimumAmount(data?.minimumAmount);
-      setMinimumAmount(0);
+
+      setIsCouponApplied(!isCouponApplied);
+      setMinimumAmount(0); // עדכון ערך מינימום אם יש צורך
       setDiscountPercentage(data.discountType.value);
+
+      // שמירת המידע על הקופון ב-Context וב-Cookies
       dispatch({ type: "SAVE_COUPON", payload: data });
       Cookies.set("couponInfo", JSON.stringify(data));
 
     } catch (error) {
-      console.log('error: ', error)
+      console.log('error: ', error);
       notifyError(error?.response?.data?.message || t("common:errorOccurred"));
     }
   };

@@ -337,35 +337,41 @@ const Checkout = () => {
 
                         {/* קוד קופון */}
                         <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
-                          <form className="w-full">
-                            {couponInfo.couponCode ? (
-                              <span className="bg-customGreen-superLight px-4 py-3 leading-tight w-full rounded-md flex justify-between">
-                                {" "}
-                                <p className="text-customGreen-dark">{t("common:couponApplied")} </p>{" "}
-                                <span className="text-red-500 text-right">
-                                  {couponInfo.couponCode}
-                                </span>
+                          {/* <form className="w-full"> */}
+                          {couponInfo.couponCode ? (
+                            <span className="bg-customGreen-superLight px-4 py-3 leading-tight w-full rounded-md flex justify-between">
+                              {" "}
+                              <p className="text-customGreen-dark">{t("common:couponApplied")} </p>{" "}
+                              <span className="text-red-500 text-right">
+                                {couponInfo.couponCode}
                               </span>
-                            ) : (
-                              <div className="flex flex-col sm:flex-row items-start justify-end gap-2">
-                                <input
-                                  ref={couponRef}
-                                  type="text"
-                                  placeholder={t("common:couponCode")}
-                                  className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-md h-12 duration-200 bg-white border-gray-200 focus:ring-0 focus:outline-none focus:border-customGreen placeholder-gray-500 placeholder-opacity-75"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={handleCouponCode}
-                                  className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-customGreen h-12 text-sm lg:text-base w-full sm:w-auto"
-                                >
-                                  {showingTranslateValue(
-                                    storeCustomizationSetting?.checkout?.apply_button
-                                  )}
-                                </button>
-                              </div>
-                            )}
-                          </form>
+                            </span>
+                          ) : (
+                            <div className="w-full flex flex-col sm:flex-row items-start justify-end gap-2">
+                              <input
+                                ref={couponRef}
+                                type="text"
+                                placeholder={t("common:couponCode")}
+                                className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-md h-12 duration-200 bg-white border-gray-200 focus:ring-0 focus:outline-none focus:border-customGreen placeholder-gray-500 placeholder-opacity-75"
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault(); // מונע את שליחת הטופס הכללי
+                                    handleCouponCode(e); // מפעיל את פונקציית החלת הקופון
+                                  }
+                                }}
+                              />
+                              <button
+                                type="button"
+                                onClick={handleCouponCode}
+                                className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-customGreen h-12 text-sm lg:text-base w-full sm:w-auto"
+                              >
+                                {showingTranslateValue(
+                                  storeCustomizationSetting?.checkout?.apply_button
+                                )}
+                              </button>
+                            </div>
+                          )}
+                          {/* </form> */}
                         </div>
 
                         <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
