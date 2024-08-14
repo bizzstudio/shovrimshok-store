@@ -283,6 +283,8 @@
   "couponError": "Please Input a Coupon Code!",
   "couponNotValid": "Please Input a Valid Coupon!",
   "couponNotValid2": "This coupon is not valid!",
+  "couponNotFound": "Coupon not found!",
+  "errorOccurred": "An error occurred! Please try again later.",
   "couponApplied": "Coupon Applied",
   "subtotal": "Subtotal",
 

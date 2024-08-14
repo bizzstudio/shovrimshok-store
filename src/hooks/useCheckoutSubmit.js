@@ -50,7 +50,6 @@ const useCheckoutSubmit = () => {
     formState: { errors },
   } = useForm();
 
-  const { data } = useAsync(CouponServices.getAllCoupons);
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
   const currency = globalSetting?.default_currency || "₪";
 
@@ -317,47 +316,36 @@ const useCheckoutSubmit = () => {
     setIsDeliveryMetod(true);
   };
 
-  const handleCouponCode = (e) => {
+  const handleCouponCode = async (e) => {
     e.preventDefault();
-
-    if (!couponRef.current.value) {
-      notifyError(t("common:couponCode"));
+  
+    const value = couponRef.current.value ? couponRef.current.value.trim() : '';
+  
+    if (!value) {
+      notifyError(t("common:enterCouponCode"));
       return;
     }
-    const result = data.filter(
-      (coupon) => coupon.couponCode === couponRef.current.value
-    );
-    // console.log('result[0]: ', result[0])
-
-    if (result.length < 1) {
-      notifyError(t("common:couponNotValid"));
-      return;
-    }
-
-    if (dayjs().isAfter(dayjs(result[0]?.endTime))) {
-      notifyError(t("common:couponNotValid2"));
-      return;
-    }
-
-    if (total < result[0]?.minimumAmount) {
-      notifyError(
-        currentLang ? `קופון זה ניתן למימוש רק בקנייה מעל ${result[0].minimumAmount}₪` :
-          `Minimum ${result[0].minimumAmount}₪ required for Apply this coupon!`
-      );
-      return;
-    } else {
+  
+    try {
+      const { data } = await CouponServices.useCoupon({ couponCode: value });
+      console.log('data: ', data)
+  
       notifySuccess(
-        currentLang ?
-          // `הקופון ${result[0].couponCode} ממומש על ${result[0].productType}`
-          `הקופון מומש בהצלחה`
-          :
-          `Your Coupon ${result[0].couponCode} is Applied on ${result[0].productType}!`
+        currentLang
+          ? `הקופון מומש בהצלחה`
+          : `Your Coupon ${data.couponCode} is Applied on ${data.productType}!`
       );
+  
       setIsCouponApplied(true);
-      setMinimumAmount(result[0]?.minimumAmount);
-      setDiscountPercentage(result[0].discountType);
-      dispatch({ type: "SAVE_COUPON", payload: result[0] });
-      Cookies.set("couponInfo", JSON.stringify(result[0]));
+      // setMinimumAmount(data?.minimumAmount);
+      setMinimumAmount(0);
+      setDiscountPercentage(data.discountType.value);
+      dispatch({ type: "SAVE_COUPON", payload: data });
+      Cookies.set("couponInfo", JSON.stringify(data));
+
+    } catch (error) {
+      console.log('error: ', error)
+      notifyError(error?.response?.data?.message || t("common:errorOccurred"));
     }
   };
 

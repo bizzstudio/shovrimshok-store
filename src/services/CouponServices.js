@@ -7,6 +7,9 @@ const CouponServices = {
   getShowingCoupons: async () => {
     return requests.get("/coupon/show");
   },
+  useCoupon: async ({ couponCode }) => {
+    return requests.put(`/coupon/use/${couponCode}`);
+  },
 };
 
 export default CouponServices;
