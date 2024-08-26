@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useCart } from "react-use-cart";
 import Cookies from "js-cookie";
 
 import { notifyError, notifySuccess } from "@utils/toast";
 import useTranslation from "next-translate/useTranslation";
+import useCart from "./useCart";
 
 const useAddToCart = () => {
   let currentLang = Cookies.get('_lang');

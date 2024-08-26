@@ -14,6 +14,10 @@ import { SidebarContext } from "@context/SidebarContext";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useTranslation from "next-translate/useTranslation";
+import useCart from "@hooks/useCart";
+import ProductServices from "@services/ProductServices";
+import { notifyError, notifySuccess } from "@utils/toast";
+import useAddToCart from "@hooks/useAddToCart";
 
 const MyOrders = () => {
   const router = useRouter();
@@ -22,6 +26,9 @@ const MyOrders = () => {
   } = useContext(UserContext);
   const { currentPage, handleChangePage, isLoading, setIsLoading } =
     useContext(SidebarContext);
+  const { emptyCart } = useCart();
+  const { handleAddItem } = useAddToCart();
+
 
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
@@ -55,8 +62,91 @@ const MyOrders = () => {
     }
   }, [userInfo]);
 
-  // console.log("data?.orders?.length", data?.totalDoc);
-  
+  const restoreOrder = async (order) => {
+    try {
+      console.log('order: ', order.cart)
+      // ריקון העגלה הנוכחית
+      emptyCart();
+
+      // מעבר על כל מוצר בעגלה של ההזמנה הישנה
+      for (const item of order.cart) {
+        const productSlug = item.slug;
+
+        // משיכת פרטי המוצר המעודכנים מהדטאבייס
+        const product = await ProductServices.getProductBySlug(productSlug);
+
+        if (!product?.slug) {
+          notifyError("Failed to fetch product details. Please try again later.");
+          continue;
+        }
+
+        let selectVariant = null;
+        let stock = product.stock;
+        let price = product.prices.price;
+        let originalPrice = product.prices.originalPrice;
+        let img = product.image[0];
+
+        if (
+          product?.variants.map(
+            (variant) =>
+              Object.entries(variant).sort().toString() ===
+              Object.entries(selectVariant).sort().toString()
+          )
+        ) {
+          const { variants, categories, description, ...updatedProduct } = product;
+          const newItem = {
+            ...updatedProduct,
+            id: `${product.variants.length <= 1
+              ? product._id
+              : product._id +
+              variantTitle
+                ?.map(
+                  // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                  (att) => selectVariant[att._id]
+                )
+                .join("-")
+              }`,
+
+            title: product.variants.length <= 1
+              ? product.title
+              : {
+                he: product.title.he +
+                  "-" +
+                  variantTitle
+                    ?.map(
+                      // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                      (att) =>
+                        att.variants?.find((v) => v._id === selectVariant[att._id])
+                    )
+                    .map((el) => el?.name),
+                en: product.title.en +
+                  "-" +
+                  variantTitle
+                    ?.map(
+                      // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                      (att) =>
+                        att.variants?.find((v) => v._id === selectVariant[att._id])
+                    )
+                    .map((el) => el?.name)
+              },
+            image: img,
+            variant: selectVariant,
+            price: price,
+            originalPrice: originalPrice,
+            quantity: item.quantity,
+          };
+          handleAddItem(newItem);
+        }
+      }
+
+      // ניתוב לעמוד הצ'קאאוט
+      // router.push("/checkout");
+    } catch (error) {
+      console.error("Failed to restore order:", error);
+      notifyError("Failed to restore order. Please try again later.");
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -140,21 +230,20 @@ const MyOrders = () => {
                             <tr key={order._id}>
                               <OrderHistory order={order} />
                               <td className="px-5 py-3 whitespace-nowrap text-center text-sm">
-                                {order?.status?.name === "Pending" ? 
-                                  <Link
-                                  className="px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
-                                  href={`#`}
-                                  // TODO: להשלים את הפונקציונליות של השלמת הזמנה
+                                {order?.status?.name === "Pending" ?
+                                  <button
+                                    className="px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                    onClick={() => restoreOrder(order)}
                                   >
                                     {t("common:payNow")}
+                                  </button>
+                                  :
+                                  <Link
+                                    className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                    href={`/order/${order._id}`}
+                                  >
+                                    {t("common:details")}
                                   </Link>
-                                :
-                                <Link
-                                className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
-                                href={`/order/${order._id}`}
-                                >
-                                  {t("common:details")}
-                                </Link>
                                 }
                               </td>
                             </tr>
