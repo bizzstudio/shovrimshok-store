@@ -26,7 +26,7 @@ const MyOrders = () => {
   } = useContext(UserContext);
   const { currentPage, handleChangePage, isLoading, setIsLoading } =
     useContext(SidebarContext);
-  const { emptyCart } = useCart();
+  const { emptyCart, items } = useCart();
   const { handleAddItem } = useAddToCart();
 
 
@@ -37,6 +37,7 @@ const MyOrders = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingRestore, setLoadingRestore] = useState(false);
 
   useEffect(() => {
     OrderServices.getOrderCustomer({
@@ -64,19 +65,25 @@ const MyOrders = () => {
 
   const restoreOrder = async (order) => {
     try {
-      console.log('order: ', order.cart)
-      // ריקון העגלה הנוכחית
-      emptyCart();
+      setLoadingRestore(true);
+      const missingProducts = [];
 
       // מעבר על כל מוצר בעגלה של ההזמנה הישנה
       for (const item of order.cart) {
         const productSlug = item.slug;
 
         // משיכת פרטי המוצר המעודכנים מהדטאבייס
-        const product = await ProductServices.getProductBySlug(productSlug);
+        const [data] = await Promise.all([
+          ProductServices.getShowingStoreProducts({
+            category: "",
+            slug: productSlug,
+          }),
+        ]);
 
-        if (!product?.slug) {
-          notifyError("Failed to fetch product details. Please try again later.");
+        const product = data?.products?.find((p) => p.slug === productSlug);
+
+        if (!product) {
+          missingProducts.push(item);
           continue;
         }
 
@@ -133,14 +140,28 @@ const MyOrders = () => {
             variant: selectVariant,
             price: price,
             originalPrice: originalPrice,
-            quantity: item.quantity,
           };
-          handleAddItem(newItem);
+
+          // בדיקה אם המוצר כבר קיים בעגלה
+          const existingItem = items.find(i => i.id === newItem.id);
+          if (existingItem) {
+            console.log(`Product ${newItem.title.he || newItem.title.en} is already in the cart, skipping...`);
+            continue;
+          }
+
+          if (stock >= item.quantity) {
+            handleAddItem(newItem, item.quantity);
+          } else {
+            notifyError(`Not enough stock for ${showingTranslateValue(product.title)}.`);
+          }
         }
       }
 
+      // שמירת המוצרים החסרים בלוקל סטורג'
+      localStorage.setItem("missingProducts", JSON.stringify(missingProducts));
+
       // ניתוב לעמוד הצ'קאאוט
-      // router.push("/checkout");
+      router.push("/checkout");
     } catch (error) {
       console.error("Failed to restore order:", error);
       notifyError("Failed to restore order. Please try again later.");
@@ -230,13 +251,29 @@ const MyOrders = () => {
                             <tr key={order._id}>
                               <OrderHistory order={order} />
                               <td className="px-5 py-3 whitespace-nowrap text-center text-sm">
-                                {order?.status?.name === "Pending" ?
-                                  <button
-                                    className="px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
-                                    onClick={() => restoreOrder(order)}
-                                  >
-                                    {t("common:payNow")}
-                                  </button>
+                                {order?.status?.name === "Pending" ? (
+                                  loadingRestore ?
+                                    <button
+                                      disabled
+                                      className="h-6 w-[168px] mx-auto flex gap-1 items-center justify-center opacity-60 px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                    >
+                                      <img
+                                        src="/loader/spinner.gif"
+                                        alt="Loading"
+                                        width={20}
+                                        height={10}
+                                      />
+                                      <span className="font-serif ml-2 font-light">
+                                        {t("common:restoreOrder")}
+                                      </span>
+                                    </button>
+                                    :
+                                    <button
+                                      className="h-6 w-[168px] px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                      onClick={() => restoreOrder(order)}
+                                    >
+                                      {t("common:payNow")}
+                                    </button>)
                                   :
                                   <Link
                                     className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"

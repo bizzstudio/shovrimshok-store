@@ -41,6 +41,7 @@ import paymentTitle from 'public/titles/paymentTitle.svg'
 import scrollUp from "src/functions/scrollUp";
 import DeliveryMsgModal from "@component/modal/DeliveryMsgModal";
 import PickupMsgModal from "@component/modal/PickupMsgModal";
+import MissingProductsModal from "@component/modal/MissingProductsModal";
 
 const Checkout = () => {
   const {
@@ -68,6 +69,7 @@ const Checkout = () => {
     paymentSrc,
     setPaymentSrc,
   } = useCheckoutSubmit();
+  const router = useRouter();
 
   const { t } = useTranslation();
   const { storeCustomizationSetting } = useGetSetting();
@@ -86,10 +88,27 @@ const Checkout = () => {
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
+  const [missingProductsModal, setMissingProductsModal] = useState(false);
+  const [missingProductsState, setMissingProductsState] = useState([]);
 
-  // console.log('items: ', items)
+  useEffect(() => {
+    const missingProducts = localStorage.getItem("missingProducts");
+    if (missingProducts) {
+      try {
+        const missingProductsArray = JSON.parse(missingProducts);
 
-  const router = useRouter();
+        if (missingProductsArray.length > 0) {
+          setMissingProductsModal(true);
+          setMissingProductsState(missingProductsArray);
+        }
+
+        // מחיקת הנתונים מה-localStorage לאחר הצגת ההודעה
+        localStorage.removeItem("missingProducts");
+      } catch (error) {
+        console.error("Failed to parse missing products:", error);
+      }
+    }
+  }, []);
 
   // משיכת ההגדרות של המשלוחים וההזמנות ובדיקה אם זה מאופשר או לא
   useEffect(() => {
@@ -216,6 +235,14 @@ const Checkout = () => {
 
   return (
     <>
+      {/* modals */}
+      {missingProductsModal && (
+        <MainModal modalOpen={missingProductsModal} setModalOpen={setMissingProductsModal}>
+          <div className="px-11 py-8">
+            <MissingProductsModal missingProducts={missingProductsState} />
+          </div>
+        </MainModal>
+      )}
       {deliveryMsg && (
         <MainModal modalOpen={deliveryMsg} setModalOpen={setDeliveryMsg}>
           <div className="px-11 py-8">

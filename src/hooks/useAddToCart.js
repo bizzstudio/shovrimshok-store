@@ -26,7 +26,7 @@ const useAddToCart = () => {
   // console.log('products',products)
   // console.log("items", items);
 
-  const handleAddItem = (product) => {
+  const handleAddItem = (product, quantity) => {
 
     const result = items.find((i) => i.id === product.id);
     // console.log(
@@ -60,8 +60,9 @@ const useAddToCart = () => {
           ? product?.variant?.quantity
           : product?.stock)
       ) {
-        addItem(updatedProduct, item);
-        notifySuccess(`${item} ${currentLang ? product.title?.he : product.title?.en} ${t("common:addedToCart!")}`);
+        const itemToPass = quantity ? quantity : item;
+        addItem(updatedProduct, itemToPass);
+        quantity ? '' : notifySuccess(`${item} ${currentLang ? product.title?.he : product.title?.en} ${t("common:addedToCart!")}`);
       } else {
         notifyError(t("common:productStockOut"));
       }
