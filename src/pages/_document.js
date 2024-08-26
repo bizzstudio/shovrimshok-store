@@ -4,15 +4,38 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
+    let setting = null;
+    let error = null;
 
-    // Fetch general metadata from backend API
-    const setting = await SettingServices.getStoreSeoSetting();
+    try {
+      // Fetch general metadata from backend API
+      setting = await SettingServices.getStoreSeoSetting();
+    } catch (err) {
+      error = true; // Mark error
+      console.error("Failed to fetch settings:", err);
+    }
 
-    return { ...initialProps, setting };
+    return { ...initialProps, setting, error };
   }
 
   render() {
-    const setting = this.props.setting;
+    const { setting, error } = this.props;
+    
+    // Check if there was an error during data fetching
+    if (error) {
+      return (
+        <Html lang="he" dir="rtl">
+          <head>
+            <title>שגיאה - האתר אינו זמין</title>
+          </head>
+          <body>
+            <h1>שגיאה</h1>
+            <p>מצטערים, האתר אינו זמין כרגע. נסה שוב מאוחר יותר.</p>
+          </body>
+        </Html>
+      );
+    }
+
     return (
       <Html lang="he" dir="rtl">
         <Head>
@@ -49,16 +72,6 @@ class MyDocument extends Document {
               "https://meshek-kirshner.co.il/_next/static/media/newlogo.c452bf06.svg"
             }
           />
-          {/* <script>
-            {(function (h, o, t, j, a, r) {
-              h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
-              h._hjSettings = { hjid: 5076708, hjsv: 6 };
-              a = o.getElementsByTagName('head')[0];
-              r = o.createElement('script'); r.async = 1;
-              r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-              a.appendChild(r);
-            })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')};
-          </script> */}
         </Head>
         <body>
           <Main />

@@ -259,6 +259,8 @@
   
     "/=================* checkout * =================/": "",
   
+    "missingProductsAre": "נמצאו {{count}} מוצרים שלא זמינים יותר.",
+    "restoreOrder": "משחזר הזמנה",
     "personalDetails": "Personal Details",
     "firstName": "First Name",
     "emailAddress": "Email address",

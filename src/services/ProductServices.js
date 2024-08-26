@@ -28,8 +28,7 @@ const ProductServices = {
 
   getProductBySlug: async (slug) => {
     const encodedSlug = encodeURIComponent(slug);
-    return requests.get(`/products/${encodedSlug}`);
-    // return requests.get(`/products/${slug}`);
+    return requests.get(`/products/product/${encodedSlug}`);
   },
 };
 

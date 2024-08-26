@@ -14,6 +14,10 @@ import { SidebarContext } from "@context/SidebarContext";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useTranslation from "next-translate/useTranslation";
+import useCart from "@hooks/useCart";
+import ProductServices from "@services/ProductServices";
+import { notifyError, notifySuccess } from "@utils/toast";
+import useAddToCart from "@hooks/useAddToCart";
 
 const MyOrders = () => {
   const router = useRouter();
@@ -22,6 +26,9 @@ const MyOrders = () => {
   } = useContext(UserContext);
   const { currentPage, handleChangePage, isLoading, setIsLoading } =
     useContext(SidebarContext);
+  const { emptyCart, items } = useCart();
+  const { handleAddItem } = useAddToCart();
+
 
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
@@ -30,6 +37,7 @@ const MyOrders = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingRestore, setLoadingRestore] = useState(false);
 
   useEffect(() => {
     OrderServices.getOrderCustomer({
@@ -55,8 +63,111 @@ const MyOrders = () => {
     }
   }, [userInfo]);
 
-  // console.log("data?.orders?.length", data?.totalDoc);
-  
+  const restoreOrder = async (order) => {
+    try {
+      setLoadingRestore(true);
+      const missingProducts = [];
+
+      // מעבר על כל מוצר בעגלה של ההזמנה הישנה
+      for (const item of order.cart) {
+        const productSlug = item.slug;
+
+        // משיכת פרטי המוצר המעודכנים מהדטאבייס
+        const [data] = await Promise.all([
+          ProductServices.getShowingStoreProducts({
+            category: "",
+            slug: productSlug,
+          }),
+        ]);
+
+        const product = data?.products?.find((p) => p.slug === productSlug);
+
+        if (!product) {
+          missingProducts.push(item);
+          continue;
+        }
+
+        let selectVariant = null;
+        let stock = product.stock;
+        let price = product.prices.price;
+        let originalPrice = product.prices.originalPrice;
+        let img = product.image[0];
+
+        if (
+          product?.variants.map(
+            (variant) =>
+              Object.entries(variant).sort().toString() ===
+              Object.entries(selectVariant).sort().toString()
+          )
+        ) {
+          const { variants, categories, description, ...updatedProduct } = product;
+          const newItem = {
+            ...updatedProduct,
+            id: `${product.variants.length <= 1
+              ? product._id
+              : product._id +
+              variantTitle
+                ?.map(
+                  // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                  (att) => selectVariant[att._id]
+                )
+                .join("-")
+              }`,
+
+            title: product.variants.length <= 1
+              ? product.title
+              : {
+                he: product.title.he +
+                  "-" +
+                  variantTitle
+                    ?.map(
+                      // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                      (att) =>
+                        att.variants?.find((v) => v._id === selectVariant[att._id])
+                    )
+                    .map((el) => el?.name),
+                en: product.title.en +
+                  "-" +
+                  variantTitle
+                    ?.map(
+                      // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                      (att) =>
+                        att.variants?.find((v) => v._id === selectVariant[att._id])
+                    )
+                    .map((el) => el?.name)
+              },
+            image: img,
+            variant: selectVariant,
+            price: price,
+            originalPrice: originalPrice,
+          };
+
+          // בדיקה אם המוצר כבר קיים בעגלה
+          const existingItem = items.find(i => i.id === newItem.id);
+          if (existingItem) {
+            console.log(`Product ${newItem.title.he || newItem.title.en} is already in the cart, skipping...`);
+            continue;
+          }
+
+          if (stock >= item.quantity) {
+            handleAddItem(newItem, item.quantity);
+          } else {
+            notifyError(`Not enough stock for ${showingTranslateValue(product.title)}.`);
+          }
+        }
+      }
+
+      // שמירת המוצרים החסרים בלוקל סטורג'
+      localStorage.setItem("missingProducts", JSON.stringify(missingProducts));
+
+      // ניתוב לעמוד הצ'קאאוט
+      router.push("/checkout");
+    } catch (error) {
+      console.error("Failed to restore order:", error);
+      notifyError("Failed to restore order. Please try again later.");
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -140,21 +251,36 @@ const MyOrders = () => {
                             <tr key={order._id}>
                               <OrderHistory order={order} />
                               <td className="px-5 py-3 whitespace-nowrap text-center text-sm">
-                                {order?.status?.name === "Pending" ? 
+                                {order?.status?.name === "Pending" ? (
+                                  loadingRestore ?
+                                    <button
+                                      disabled
+                                      className="h-6 w-[168px] mx-auto flex gap-1 items-center justify-center opacity-60 px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                    >
+                                      <img
+                                        src="/loader/spinner.gif"
+                                        alt="Loading"
+                                        width={20}
+                                        height={10}
+                                      />
+                                      <span className="font-serif ml-2 font-light">
+                                        {t("common:restoreOrder")}
+                                      </span>
+                                    </button>
+                                    :
+                                    <button
+                                      className="h-6 w-[168px] px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                      onClick={() => restoreOrder(order)}
+                                    >
+                                      {t("common:payNow")}
+                                    </button>)
+                                  :
                                   <Link
-                                  className="px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
-                                  href={`#`}
-                                  // TODO: להשלים את הפונקציונליות של השלמת הזמנה
+                                    className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                    href={`/order/${order._id}`}
                                   >
-                                    {t("common:payNow")}
+                                    {t("common:details")}
                                   </Link>
-                                :
-                                <Link
-                                className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
-                                href={`/order/${order._id}`}
-                                >
-                                  {t("common:details")}
-                                </Link>
                                 }
                               </td>
                             </tr>
