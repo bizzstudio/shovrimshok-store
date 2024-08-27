@@ -74,7 +74,9 @@ const MyOrders = () => {
   const restoreOrder = async (order) => {
     try {
       setLoadingRestore(true);
-      setTotalItems(addedItems + order?.cart?.filter(oldItem => !items.some(item => item.slug === oldItem.slug)).length)
+      const itemsNotInCartYet = order?.cart?.filter(oldItem => !items.some(item => item.slug === oldItem.slug))
+        .reduce((acc, item) => acc + item.quantity, 0);
+      setTotalItems(addedItems + itemsNotInCartYet);
       const missingProducts = [];
 
       // מעבר על כל מוצר בעגלה של ההזמנה הישנה (חוץ מאלו שכבר נמצאים בעגלה הנוכחית)
