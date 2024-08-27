@@ -193,7 +193,7 @@ const useCheckoutSubmit = () => {
           shippingCost > 0 ? {
             Description: "משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
             UnitCost: shippingCost,
-            IsVatFree: false,
+            IsVatFree: true,
           } : null,
           discountAmount > 0 ? {
             Description: "הנחה",
