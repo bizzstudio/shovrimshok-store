@@ -3,6 +3,20 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap');
 
+@keyframes upAndDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px); /* ניתן לשנות את הערך בהתאם לכמות התזוזה הרצויה */
+  }
+}
+
+.up-down-animation {
+  animation: upAndDown 2s ease-in-out infinite; /* משך האנימציה ואופציה לאינסופיות */
+}
+
+
 .noScroller {
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */

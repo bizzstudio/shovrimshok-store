@@ -187,6 +187,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
               </button>
             </div>
             <button
+              type="button"
               onClick={() => removeItem(item.id)}
               className="hover:text-red-600 text-red-400 text-lg cursor-pointer"
             >
