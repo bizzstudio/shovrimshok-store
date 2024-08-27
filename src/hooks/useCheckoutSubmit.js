@@ -36,6 +36,7 @@ const useCheckoutSubmit = () => {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [paymentSrc, setPaymentSrc] = useState(null);
   const [isPaymentPageOpen, setIsPaymentPageOpen] = useState(false);
+  const [shippingPercentageIncrease, setShippingPercentageIncrease] = useState(0);
 
   const router = useRouter();
   // const stripe = useStripe();
@@ -325,6 +326,22 @@ const useCheckoutSubmit = () => {
     setIsDeliveryMetod(true);
   };
 
+  // ווידוא שהאחוזים מתעדכנים כל פעם שהמחיר משתנה
+  useEffect(() => {
+    if (shippingCost != 0) {
+      const originalValue = ((customCartTotal / 11) * 10);
+      if (originalValue > 0) {
+        setShippingPercentageIncrease(shippingCost / originalValue * 100);
+      } else {
+        setShippingPercentageIncrease(0);
+        setShippingCost(0);
+        setIsDeliveryMetod(false);
+      }
+    } else {
+      setShippingPercentageIncrease(0);
+    }
+  }, [customCartTotal, shippingCost, isDeliveryMetod]);
+
   const handleCouponCode = async (e) => {
     e.preventDefault();
 
@@ -391,6 +408,7 @@ const useCheckoutSubmit = () => {
     paymentSrc,
     setPaymentSrc,
     isPaymentPageOpen,
+    shippingPercentageIncrease,
   };
 };
 
