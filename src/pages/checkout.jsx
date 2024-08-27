@@ -87,7 +87,7 @@ const Checkout = () => {
   const [pickupMsg, setPickupMsg] = useState(false);
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
-  const [isNoteOpen, setIsNoteOpen] = useState(false);
+  const [isNoteOpen, setIsNoteOpen] = useState(true);
   const [missingProductsModal, setMissingProductsModal] = useState(false);
   const [missingProductsState, setMissingProductsState] = useState([]);
 

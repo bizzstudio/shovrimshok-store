@@ -63,7 +63,7 @@ const Order = ({ params }) => {
       break;
   };
 
-  console.log('data', data)
+  // console.log('data', data)
 
   return (
     <Layout title={t("common:order") + " " + data?.invoice} description="order confirmation page">

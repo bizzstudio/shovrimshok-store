@@ -258,8 +258,10 @@
 
   "/=================* checkout * =================/": "",
 
-  "missingProductsAre": "There are {{count}} products that are no longer available.",
+  "missingProductsAre": "There are {{count}} products that are no longer available",
   "restoreOrder": "Restoring Order",
+  "Reorder": "Reorder",
+  "addingItemsToCart": "Adding {{x}}/{{y}} items to your cart...",
   "personalDetails": "Personal Details",
   "firstName": "First Name",
   "emailAddress": "Email address",

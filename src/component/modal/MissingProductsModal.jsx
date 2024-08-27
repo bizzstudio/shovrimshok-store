@@ -16,7 +16,6 @@ const MissingProductsModal = ({ missingProducts = [] }) => {
       <ul className="text-right">
         {missingProducts.map((product, index) => (
           <CartItemPreview key={index} item={product} />
-          // <li key={index}>{product}</li>
         ))}
       </ul>
     </div>

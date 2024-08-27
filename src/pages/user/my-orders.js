@@ -3,6 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { IoBagHandle } from "react-icons/io5";
 import ReactPaginate from "react-paginate";
+import { FiZoomIn } from "react-icons/fi";
+import { MdRestore } from "react-icons/md";
+import { MdPayment } from "react-icons/md";
 
 //internal import
 import Dashboard from "@pages/user/dashboard";
@@ -18,6 +21,8 @@ import useCart from "@hooks/useCart";
 import ProductServices from "@services/ProductServices";
 import { notifyError, notifySuccess } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
+import SubModal from "@component/modal/SubModal";
+import addingToCart from 'public/addingToCart.svg'
 
 const MyOrders = () => {
   const router = useRouter();
@@ -38,6 +43,9 @@ const MyOrders = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadingRestore, setLoadingRestore] = useState(false);
+  const [totalItems, setTotalItems] = useState(0); // המספר הכולל של הפריטים
+  const { totalItems: addedItems } = useCart(); // מספר הפריטים שנוספו כבר לעגלה
+
 
   useEffect(() => {
     OrderServices.getOrderCustomer({
@@ -66,10 +74,13 @@ const MyOrders = () => {
   const restoreOrder = async (order) => {
     try {
       setLoadingRestore(true);
+      const itemsNotInCartYet = order?.cart?.filter(oldItem => !items.some(item => item.slug === oldItem.slug))
+        .reduce((acc, item) => acc + item.quantity, 0);
+      setTotalItems(addedItems + itemsNotInCartYet);
       const missingProducts = [];
 
-      // מעבר על כל מוצר בעגלה של ההזמנה הישנה
-      for (const item of order.cart) {
+      // מעבר על כל מוצר בעגלה של ההזמנה הישנה (חוץ מאלו שכבר נמצאים בעגלה הנוכחית)
+      for (const item of order?.cart?.filter(oldItem => !items.some(item => item.slug === oldItem.slug))) {
         const productSlug = item.slug;
 
         // משיכת פרטי המוצר המעודכנים מהדטאבייס
@@ -143,11 +154,11 @@ const MyOrders = () => {
           };
 
           // בדיקה אם המוצר כבר קיים בעגלה
-          const existingItem = items.find(i => i.id === newItem.id);
-          if (existingItem) {
-            console.log(`Product ${newItem.title.he || newItem.title.en} is already in the cart, skipping...`);
-            continue;
-          }
+          // const existingItem = items.find(i => i.id === newItem.id);
+          // if (existingItem) {
+          //   console.log(`Product ${newItem.title.he || newItem.title.en} is already in the cart, skipping...`);
+          //   continue;
+          // }
 
           if (stock >= item.quantity) {
             handleAddItem(newItem, item.quantity);
@@ -170,6 +181,16 @@ const MyOrders = () => {
 
   return (
     <>
+      {loadingRestore && (
+        <SubModal modalOpen={loadingRestore}>
+          <div className="px-9 pb-10 pt-7 flex flex-col gap-4">
+            <img src={addingToCart.src} alt="Adding to cart image" className="h-56 mr-[13%] up-down-animation" />
+            <h2 className="text-xl font-serif font-semibold text-center">
+              {t("common:addingItemsToCart", { x: addedItems, y: totalItems })}
+            </h2>
+          </div>
+        </SubModal>
+      )}
       {isLoading ? (
         <Loading loading={isLoading} />
       ) : (
@@ -251,36 +272,33 @@ const MyOrders = () => {
                             <tr key={order._id}>
                               <OrderHistory order={order} />
                               <td className="px-5 py-3 whitespace-nowrap text-center text-sm">
-                                {order?.status?.name === "Pending" ? (
-                                  loadingRestore ?
-                                    <button
-                                      disabled
-                                      className="h-6 w-[168px] mx-auto flex gap-1 items-center justify-center opacity-60 px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                {order?.status?.name === "Pending" ?
+                                  <button
+                                    disabled={loadingRestore}
+                                    className="flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                    onClick={() => restoreOrder(order)}
+                                  >
+                                    <MdPayment size={17} />
+                                    {t("common:payNow")}
+                                  </button>
+                                  :
+                                  <div className="flex gap-2 items-center justify-center">
+                                    <Link
+                                      className="flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      href={`/order/${order._id}`}
                                     >
-                                      <img
-                                        src="/loader/spinner.gif"
-                                        alt="Loading"
-                                        width={20}
-                                        height={10}
-                                      />
-                                      <span className="font-serif ml-2 font-light">
-                                        {t("common:restoreOrder")}
-                                      </span>
-                                    </button>
-                                    :
+                                      <FiZoomIn size={17} />
+                                      {t("common:details")}
+                                    </Link>
                                     <button
-                                      className="h-6 w-[168px] px-3 py-1 bg-customGreen text-xs text-white hover:bg-customGreen-dark transition-all font-semibold rounded-full"
+                                      disabled={loadingRestore}
+                                      className="flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
                                       onClick={() => restoreOrder(order)}
                                     >
-                                      {t("common:payNow")}
-                                    </button>)
-                                  :
-                                  <Link
-                                    className="px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
-                                    href={`/order/${order._id}`}
-                                  >
-                                    {t("common:details")}
-                                  </Link>
+                                      <MdRestore size={17} />
+                                      {t("common:Reorder")}
+                                    </button>
+                                  </div>
                                 }
                               </td>
                             </tr>
