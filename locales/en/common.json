@@ -328,6 +328,9 @@
   
 
   "noOptionToSearchInCheckoutPage": "It is not possible to add products on the payment page",
+  
+  "storeClose": "Sorry, the store is currently closed.",
+  "storeCloseMessage": "The store is currently closed for orders, please try again later.",
 
   "/=================* Invoice * =================/": "",
 
