@@ -74,24 +74,23 @@ const MyOrders = () => {
   const restoreOrder = async (order) => {
     try {
       setLoadingRestore(true);
-      const itemsNotInCartYet = order?.cart?.filter(oldItem => !items.some(item => item.slug === oldItem.slug))
-        .reduce((acc, item) => acc + item.quantity, 0);
-      setTotalItems(addedItems + itemsNotInCartYet);
+      const itemsNotInCartYet = order?.cart?.filter(oldItem => !items.some(item => item.sku === oldItem.sku));
+      setTotalItems(addedItems + itemsNotInCartYet.reduce((acc, item) => acc + item.quantity, 0));
       const missingProducts = [];
 
       // מעבר על כל מוצר בעגלה של ההזמנה הישנה (חוץ מאלו שכבר נמצאים בעגלה הנוכחית)
-      for (const item of order?.cart?.filter(oldItem => !items.some(item => item.slug === oldItem.slug))) {
-        const productSlug = item.slug;
+      for (const item of itemsNotInCartYet) {
+        const productSku = item.sku;
 
         // משיכת פרטי המוצר המעודכנים מהדטאבייס
         const [data] = await Promise.all([
           ProductServices.getShowingStoreProducts({
             category: "",
-            slug: productSlug,
+            sku: productSku,
           }),
         ]);
 
-        const product = data?.products?.find((p) => p.slug === productSlug);
+        const product = data?.products?.find((p) => p.sku === productSku);
 
         if (!product) {
           missingProducts.push(item);
@@ -152,14 +151,7 @@ const MyOrders = () => {
             price: price,
             originalPrice: originalPrice,
           };
-
-          // בדיקה אם המוצר כבר קיים בעגלה
-          // const existingItem = items.find(i => i.id === newItem.id);
-          // if (existingItem) {
-          //   console.log(`Product ${newItem.title.he || newItem.title.en} is already in the cart, skipping...`);
-          //   continue;
-          // }
-
+          
           if (stock >= item.quantity) {
             handleAddItem(newItem, item.quantity);
           } else {
