@@ -47,9 +47,20 @@ const Layout = ({ title, description, children }) => {
       const matchedPopup = popupData.find(
         (popup) => popup.pageToShow === pathname && popup.isActive
       );
-      setCurrentPopup(matchedPopup || null);
+
+      // בדיקה אם הפופאפ כבר הוצג
+      if (matchedPopup && !sessionStorage.getItem(`popupShown_${matchedPopup._id}`)) {
+        setCurrentPopup(matchedPopup || null);
+      }
     }
   }, [pathname, popupData]);
+
+  // הצגת הפופאפ ושמירת המידע ב-sessionStorage
+  useEffect(() => {
+    if (currentPopup) {
+      sessionStorage.setItem(`popupShown_${currentPopup._id}`, 'true');
+    }
+  }, [currentPopup]);
 
   const [addressPopup, setAddressPopup] = useState(false);
   useEffect(() => {
@@ -69,10 +80,7 @@ const Layout = ({ title, description, children }) => {
       }
     };
 
-    // בדיקה ראשונית
     handleStorageChange();
-
-    // הוספת מאזין לאירוע מותאם אישית
     window.addEventListener("customLocalStorageChange", handleStorageChange);
 
     return () => {
