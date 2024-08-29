@@ -25,6 +25,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import MyOrders from "./my-orders";
 
 const Dashboard = ({ title, description, children }) => {
   const router = useRouter();

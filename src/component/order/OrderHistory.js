@@ -8,17 +8,18 @@ const OrderHistory = ({ order, currency }) => {
 
   const { t } = useTranslation();
   const [status, setStatus] = useState(null);
+  const [dateFormat, setDateFormat] = useState("D/MM/YYYY"); // פורמט ברירת מחדל
 
   useEffect(() => {
     const fetchStatus = async () => {
       if (order?.status?.name === "Delivered")
-        setStatus(<span className="text-customGreen">{order?.status?.heName}</span>);
+        setStatus(<span className="text-customGreen max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
       else if (order?.status?.name === "Pending")
-        setStatus(<span className="text-gray-400">{order?.status?.heName}</span>);
+        setStatus(<span className="text-gray-400 max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
       else if (order?.status?.name === "Cancel")
-        setStatus(<span className="text-red-500">{order?.status?.heName}</span>);
+        setStatus(<span className="text-red-500 max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
       else if (order?.status?.name === "Processing")
-        setStatus(<span className="text-green-600">{order?.status?.heName}</span>);
+        setStatus(<span className="text-green-600 max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
       else {
         const phone = order?.status?.phone;
         setStatus(<span className="text-blue-700">{order?.status?.heName}{phone ? ' - ' + phone : ''}</span>);
@@ -43,26 +44,44 @@ const OrderHistory = ({ order, currency }) => {
       break;
   }
 
+  // שינוי פורמט הזמן בהתאם לגודל המסך
+  useEffect(() => {
+    const updateDateFormat = () => {
+      if (window.innerWidth <= 768) {
+        setDateFormat("D/MM/YY"); // פורמט לשנה בשתי ספרות למסכים קטנים
+      } else {
+        setDateFormat("D/MM/YYYY"); // פורמט רגיל למסכים גדולים
+      }
+    };
+
+    updateDateFormat(); // קריאה ראשונית בעת הטעינה
+    window.addEventListener("resize", updateDateFormat); // האזנה לשינוי גודל מסך
+
+    return () => {
+      window.removeEventListener("resize", updateDateFormat);
+    };
+  }, []);
+
   return (
     <>
-      <td className="px-5 py-3 leading-6 whitespace-nowrap flex justify-center">
+      <td className="px-1 md:px-5 py-3 leading-6 whitespace-nowrap justify-center md:flex hidden">
         <span className="uppercase text-sm font-medium">
-          {order?.invoice} 
+          {order?.invoice}
         </span>
       </td>
-      <td className="px-5 py-3 leading-6 text-center whitespace-nowrap">
+      <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap">
         <span className="text-sm">
-          {dayjs(order.createdAt).format("MMMM D, YYYY")}
+          {dayjs(order.createdAt).format(dateFormat)}
         </span>
       </td>
 
-      <td className="px-5 py-3 leading-6 text-center whitespace-nowrap">
+      <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap md:block hidden">
         <span className="text-sm">{t(`common:${order.paymentMethod}`)}</span>
       </td>
-      <td className="px-5 py-3 leading-6 text-center whitespace-nowrap font-medium text-sm">
+      <td className="px-1 md:px-5 py-3 leading-6 text-center md:whitespace-nowrap font-medium text-sm max-md:w-min">
         {status}
       </td>
-      <td className="px-5 py-3 leading-6 text-center whitespace-nowrap">
+      <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap">
         <span className="text-sm font-bold">
           {currency}
           {parseFloat(order?.total).toFixed(2)} ₪

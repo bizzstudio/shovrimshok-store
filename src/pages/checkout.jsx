@@ -530,14 +530,15 @@ const Checkout = () => {
                     </form>
                   </div>
                 ) : (
-                  <div className="mx-auto my-11 flex flex-col items-center justify-center gap-2">
+                  <div className="mx-auto my-11 flex flex-col items-center justify-center gap-2 p-5">
                     <Image
                       src={websiteClose.src}
-                      width={400}
-                      height={400}
+                      width={440}
+                      height={440}
+                      alt="websiteClose"
                     />
-                    <h2 className="text-4xl font-bold mt-5">{t("common:storeClose")}</h2>
-                    <p className="text-gray-400">{t("common:storeCloseMessage")}</p>
+                    <h2 className="text-4xl font-bold mt-5 text-center">{t("common:storeClose")}</h2>
+                    <p className="text-gray-400 text-center">{t("common:storeCloseMessage")}</p>
                   </div>
                 )}
             </div>

@@ -371,6 +371,7 @@
   "orderId": "ORDER ID",
   "method": "METHOD",
   "status": "STATUS",
+  "Status": "Status/Collector name",
   "total": "TOTAL",
   "details": "Details",
 

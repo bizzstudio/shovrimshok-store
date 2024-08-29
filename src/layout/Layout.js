@@ -13,6 +13,10 @@ import { useEffect, useState } from "react";
 import MainModal from "@component/modal/MainModal";
 import UserAddressInitialize from "@component/userAddressInitialize/UserAddressInitialize";
 import RegisterSuccess from "@component/login/RegisterSuccess";
+import { useRouter } from "next/router";
+import PopupServices from "@services/PopupServices";
+import useAsync from "@hooks/useAsync";
+import DynamicPopup from "@component/modal/DynamicPopup";
 
 const Layout = ({ title, description, children }) => {
 
@@ -29,6 +33,34 @@ const Layout = ({ title, description, children }) => {
       currentLang = false;
       break;
   }
+
+  const router = useRouter();
+  const { pathname } = router;
+
+  // משיכת פופאפים דינאמיים
+  const [currentPopup, setCurrentPopup] = useState(null);
+  const { data: popupData, loading, error } = useAsync(() => PopupServices.getAllPopups());
+
+  // בדיקה האם להציג פופאפ בעמוד הנוכחי
+  useEffect(() => {
+    if (popupData && popupData.length > 0) {
+      const matchedPopup = popupData.find(
+        (popup) => popup.pageToShow === pathname && popup.isActive
+      );
+
+      // בדיקה אם הפופאפ כבר הוצג
+      if (matchedPopup && !sessionStorage.getItem(`popupShown_${matchedPopup._id}`)) {
+        setCurrentPopup(matchedPopup || null);
+      }
+    }
+  }, [pathname, popupData]);
+
+  // הצגת הפופאפ ושמירת המידע ב-sessionStorage
+  useEffect(() => {
+    if (currentPopup) {
+      sessionStorage.setItem(`popupShown_${currentPopup._id}`, 'true');
+    }
+  }, [currentPopup]);
 
   const [addressPopup, setAddressPopup] = useState(false);
   useEffect(() => {
@@ -48,10 +80,7 @@ const Layout = ({ title, description, children }) => {
       }
     };
 
-    // בדיקה ראשונית
     handleStorageChange();
-
-    // הוספת מאזין לאירוע מותאם אישית
     window.addEventListener("customLocalStorageChange", handleStorageChange);
 
     return () => {
@@ -61,7 +90,7 @@ const Layout = ({ title, description, children }) => {
 
   useEffect(() => {
     const originalSetItem = localStorage.setItem;
-    localStorage.setItem = function(key, value) {
+    localStorage.setItem = function (key, value) {
       const event = new Event('customLocalStorageChange');
       originalSetItem.apply(this, arguments);
       window.dispatchEvent(event);
@@ -84,6 +113,15 @@ const Layout = ({ title, description, children }) => {
         <MainModal modalOpen={showRegisterSuccess} setModalOpen={setShowRegisterSuccess}>
           <div className="px-3 sm:px-11 py-8 max-w-md">
             <RegisterSuccess />
+          </div>
+        </MainModal>
+      )}
+
+      {/* פופאפ דינאמי */}
+      {!loading && !error && currentPopup && (
+        <MainModal modalOpen={true} setModalOpen={() => setCurrentPopup(null)}>
+          <div className="px-3 sm:px-11 py-7 max-w-md">
+            <DynamicPopup popup={currentPopup} />
           </div>
         </MainModal>
       )}
