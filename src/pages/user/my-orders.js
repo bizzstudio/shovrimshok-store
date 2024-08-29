@@ -26,14 +26,10 @@ import addingToCart from 'public/addingToCart.svg'
 
 const MyOrders = () => {
   const router = useRouter();
-  const {
-    state: { userInfo },
-  } = useContext(UserContext);
-  const { currentPage, handleChangePage, isLoading, setIsLoading } =
-    useContext(SidebarContext);
+  const { state: { userInfo } } = useContext(UserContext);
+  const { currentPage, handleChangePage, isLoading, setIsLoading } = useContext(SidebarContext);
   const { emptyCart, items } = useCart();
   const { handleAddItem } = useAddToCart();
-
 
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
@@ -151,7 +147,7 @@ const MyOrders = () => {
             price: price,
             originalPrice: originalPrice,
           };
-          
+
           if (stock >= item.quantity) {
             handleAddItem(newItem, item.quantity);
           } else {
@@ -171,6 +167,10 @@ const MyOrders = () => {
     }
   };
 
+  const handleRowClick = (orderId) => {
+    router.push(`/order/${orderId}`);
+  };
+
   return (
     <>
       {loadingRestore && (
@@ -187,9 +187,7 @@ const MyOrders = () => {
         <Loading loading={isLoading} />
       ) : (
         <Dashboard
-          title={showingTranslateValue(
-            storeCustomizationSetting?.dashboard?.my_order
-          )}
+          title={showingTranslateValue(storeCustomizationSetting?.dashboard?.my_order)}
           description="This is user order history page"
         >
           <div className="overflow-hidden rounded-md font-serif">
@@ -213,6 +211,20 @@ const MyOrders = () => {
                 <h2 className="text-xl font-serif font-semibold mb-5">
                   {t("common:footer-my-account-myOrders")}
                 </h2>
+                <div className="flex md:hidden gap-2 justify-between w-full mb-5">
+                  <div
+                    className="flex flex-grow gap-1 items-center justify-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark font-semibold rounded-full cursor-auto text-center"
+                  >
+                    <MdPayment size={17} /> <span>=</span>
+                    {t("common:payNow")}
+                  </div>
+                  <div
+                    className="flex flex-grow gap-1 items-center justify-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark font-semibold rounded-full cursor-auto text-center"
+                  >
+                    <MdRestore size={17} /> <span>=</span>
+                    {t("common:Reorder")}
+                  </div>
+                </div>
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="align-middle inline-block border border-gray-100 rounded-md min-w-full pb-2 sm:px-6 lg:px-8">
                     <div className="overflow-hidden border-b last:border-b-0 border-gray-100 rounded-md">
@@ -221,38 +233,37 @@ const MyOrders = () => {
                           <tr className="bg-gray-100">
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
                             >
                               {t("common:orderId")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
                               {t("common:orderTime")}
                             </th>
-
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
                             >
                               {t("common:method")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
                               {t("common:Status")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
                               {t("common:total")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
                               {t("common:action")}
                             </th>
@@ -260,37 +271,46 @@ const MyOrders = () => {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                           {data?.orders?.map((order) => (
-                            <tr key={order._id}>
+                            <tr key={order._id} onClick={() => handleRowClick(order._id)} className="cursor-pointer hover:bg-gray-50">
                               <OrderHistory order={order} />
-                              <td className="px-5 py-3 whitespace-nowrap text-center text-sm">
-                                {order?.status?.name === "Pending" ?
-                                  <button
-                                    disabled={loadingRestore}
-                                    className="flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
-                                    onClick={() => restoreOrder(order)}
-                                  >
-                                    <MdPayment size={17} />
-                                    {t("common:payNow")}
-                                  </button>
-                                  :
-                                  <div className="flex gap-2 items-center justify-center">
-                                    <Link
-                                      className="flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
-                                      href={`/order/${order._id}`}
-                                    >
-                                      <FiZoomIn size={17} />
-                                      {t("common:details")}
-                                    </Link>
+                              <td className="px-1 md:px-5 py-3 whitespace-nowrap text-center text-sm">
+                                {order?.status?.name === "Pending" ? (
+                                  <>
                                     <button
                                       disabled={loadingRestore}
-                                      className="flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
-                                      onClick={() => restoreOrder(order)}
+                                      className="hidden md:flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
+                                    >
+                                      <MdPayment size={17} />
+                                      {t("common:payNow")}
+                                    </button>
+                                    <button
+                                      disabled={loadingRestore}
+                                      className="flex md:hidden gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
+                                    >
+                                      <MdPayment size={17} />
+                                    </button>
+                                  </>
+                                ) : (
+                                  <div className="flex gap-2 items-center justify-center">
+                                    <button
+                                      disabled={loadingRestore}
+                                      className="hidden md:flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdRestore size={17} />
                                       {t("common:Reorder")}
                                     </button>
+                                    <button
+                                      disabled={loadingRestore}
+                                      className="flex md:hidden gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
+                                    >
+                                      <MdRestore size={17} />
+                                    </button>
                                   </div>
-                                }
+                                )}
                               </td>
                             </tr>
                           ))}
@@ -301,9 +321,7 @@ const MyOrders = () => {
                           <ReactPaginate
                             breakLabel="..."
                             nextLabel={t("common:next")}
-                            onPageChange={(e) =>
-                              handleChangePage(e.selected + 1)
-                            }
+                            onPageChange={(e) => handleChangePage(e.selected + 1)}
                             pageRangeDisplayed={3}
                             pageCount={pageCount}
                             previousLabel={t("common:previous")}

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { IoBagHandle } from "react-icons/io5";
 import ReactPaginate from "react-paginate";
 import { SidebarContext } from "@context/SidebarContext";
+import { useRouter } from "next/router";
 
 //internal import
 import Loading from "@component/preloader/Loading";
@@ -11,6 +12,7 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import useTranslation from "next-translate/useTranslation";
 
 const RecentOrder = ({ data, loading, error }) => {
+  const router = useRouter();
   const { handleChangePage } = useContext(SidebarContext);
 
   const { storeCustomizationSetting } = useGetSetting();
@@ -18,6 +20,10 @@ const RecentOrder = ({ data, loading, error }) => {
   const { t } = useTranslation();
 
   const pageCount = Math.ceil(data?.totalDoc / 8);
+
+  const handleRowClick = (orderId) => {
+    router.push(`/order/${orderId}`);
+  };
 
   return (
     <>
@@ -53,32 +59,32 @@ const RecentOrder = ({ data, loading, error }) => {
                         <tr className="bg-gray-100">
                           <th
                             scope="col"
-                            className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                            className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
                           >
                             {t("common:orderId")}
                           </th>
                           <th
                             scope="col"
-                            className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                            className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                           >
                             {t("common:orderTime")}
                           </th>
 
                           <th
                             scope="col"
-                            className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                            className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
                           >
                             {t("common:method")}
                           </th>
                           <th
                             scope="col"
-                            className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                            className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                           >
                             {t("common:Status")}
                           </th>
                           <th
                             scope="col"
-                            className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
+                            className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                           >
                             {t("common:total")}
                           </th>
@@ -86,7 +92,7 @@ const RecentOrder = ({ data, loading, error }) => {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {data?.orders?.map((order) => (
-                          <tr key={order._id}>
+                          <tr key={order._id} onClick={() => handleRowClick(order._id)} className="cursor-pointer hover:bg-gray-50">
                             <OrderHistory order={order} />
                           </tr>
                         ))}
