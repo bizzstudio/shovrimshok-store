@@ -52,7 +52,7 @@ const OrderHistory = ({ order, currency }) => {
       </td>
       <td className="px-5 py-3 leading-6 text-center whitespace-nowrap">
         <span className="text-sm">
-          {dayjs(order.createdAt).format("MMMM D, YYYY")}
+          {dayjs(order.createdAt).format("D/MM/YYYY")}
         </span>
       </td>
 

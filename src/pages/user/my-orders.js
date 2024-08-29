@@ -242,8 +242,7 @@ const MyOrders = () => {
                               scope="col"
                               className="text-center text-xs font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider"
                             >
-                              {/* {t("common:status")} */}
-                              סטטוס/שם מלקט
+                              {t("common:Status")}
                             </th>
                             <th
                               scope="col"
