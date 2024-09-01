@@ -74,7 +74,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
     const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
     const isProductWithDiscount = (product) => {
-        const offerName = offers && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+        const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
         if (offerName) {
             return <Discount search product={product} title={offerName} />
         } else {

@@ -17,7 +17,7 @@ const OfferCard = ({ discountProducts, height, attributes }) => {
   const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   const isProductWithDiscount = (product) => {
-    const offerName = offers && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+    const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
     if (offerName) {
       return <Discount slug product={product} title={offerName} />
     } else {
