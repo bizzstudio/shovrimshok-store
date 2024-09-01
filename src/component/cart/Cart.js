@@ -13,7 +13,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useCart from "@hooks/useCart";
 import { FiInfo } from "react-icons/fi";
-import Calculating from "./calculating";
+import Calculating from "./Calculating";
 
 const Cart = () => {
   const router = useRouter();
