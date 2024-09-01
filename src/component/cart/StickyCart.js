@@ -8,7 +8,7 @@ import useAsync from "@hooks/useAsync";
 import SettingServices from "@services/SettingServices";
 import useTranslation from "next-translate/useTranslation";
 import useCart from "@hooks/useCart";
-import Calculating from "./calculating";
+import Calculating from "./Calculating";
 
 const StickyCart = () => {
   const { totalItems, customCartTotal } = useCart();
