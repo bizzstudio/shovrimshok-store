@@ -7,7 +7,7 @@ export default function DynamicPopup({ popup = {} }) {
             {popup.image && <img src={popup.image} alt={popup.title} style={{ height: popup.imageHeight }} />}
             <h2 className="text-2xl font-bold mt-4 text-center">{popup.title}</h2>
             {popup.subTitle && <h3 className="text-lg mt-1 font-medium text-neutral-600 text-center">{popup.subTitle}</h3>}
-            <p className="mt-2 text-center">{popup.description}</p>
+            <div className="mt-2 text-center" dangerouslySetInnerHTML={{ __html: popup.description }} />
             {popup.link && (
                 <Link
                     href={popup.link}
