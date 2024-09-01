@@ -6,11 +6,12 @@ import { useEffect, useState } from 'react';
 const useCart = () => {
     const cart = useOriginalCart();
 
-    const { data: offers, loading, error } = useAsync(() => OfferServices.getAllOffers());
+    const { data: offers, loading: loadingOffers, error } = useAsync(() => OfferServices.getAllOffers());
+    const [calculating, setCalculating] = useState(false); // מצב העוקב אחרי חישוב המבצעים
 
     // Helper function to apply offers to cart items
     const applyOffers = (cartItems, offers = []) => {
-        if (!offers || offers.length === 0) return { updatedCartItems: cartItems, totalDiscount: 0 };
+        if (!Array.isArray(offers) || offers.length === 0) return { updatedCartItems: cartItems, totalDiscount: 0 };
 
         let updatedCartItems = cartItems.map(item => ({ ...item, discountedPrice: null, offerTitle: '' }));
         let totalDiscount = 0;
@@ -78,17 +79,38 @@ const useCart = () => {
     });
 
     useEffect(() => {
-        const { updatedCartItems, totalDiscount } = applyOffers(cart.items, offers);
-        setCustomCart({
-            customCartTotal: (cart.cartTotal - totalDiscount) * 1.1, // הוספת דמי ליקוט 10%
-            updatedCartItems: updatedCartItems,
-        });
-    }, [cart, offers]);
+        if (cart.totalItems === 0) {
+            // אם אין פריטים בעגלה, אין צורך לבצע חישוב
+            setCustomCart({
+                customCartTotal: 0,
+                updatedCartItems: cart.items,
+            });
+            return;
+        }
+
+        if (!error) {
+            setCalculating(true); // התחלת חישוב
+            const { updatedCartItems, totalDiscount } = applyOffers(cart.items, offers);
+            setCustomCart({
+                customCartTotal: (cart.cartTotal - totalDiscount) * 1.1, // הוספת דמי ליקוט 10%
+                updatedCartItems: updatedCartItems,
+            });
+            setCalculating(false); // סיום חישוב
+        } else {
+            console.error('Error fetching offers:', error);
+            setCustomCart({
+                customCartTotal: cart.cartTotal * 1.1, // במידה ויש שגיאה, לא נחשב הנחה ונשאיר את המחיר המקורי עם דמי ליקוט
+                updatedCartItems: cart.items,
+            });
+            setCalculating(false); // סיום חישוב גם במקרה של שגיאה
+        }
+    }, [cart, offers, error]);
 
     return {
         ...cart,
-        customCartTotal: customCart.customCartTotal,
-        items: customCart.updatedCartItems
+        customCartTotal: calculating || loadingOffers ? 'מחשב פריטים...' : customCart.customCartTotal,
+        items: customCart.updatedCartItems,
+        isLoading: calculating || loadingOffers
     };
 };
 

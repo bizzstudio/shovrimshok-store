@@ -71,7 +71,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   // עדכון מחיר המוצר על סמך המבצע שלו
   useEffect(() => {
-    const offerName = offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+    const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
     if (offerName) {
       setOfferTitle(offerName);
     } else {

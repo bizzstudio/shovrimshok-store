@@ -103,7 +103,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     }
   }, [fakeLoading, carouselRef.current]);
 
-  if (storeCustomizationSetting?.home?.popular_products_status && storeCustomizationSetting?.home?.delivery_status && popularProducts && discountProducts && attributes && offers && fakeLoading) {
+  if (storeCustomizationSetting?.home?.popular_products_status && storeCustomizationSetting?.home?.delivery_status && popularProducts && discountProducts && attributes && Array.isArray(offers) && fakeLoading) {
     return (
       <>
         {isLoading ? (

@@ -44,6 +44,7 @@ import PickupMsgModal from "@component/modal/PickupMsgModal";
 import MissingProductsModal from "@component/modal/MissingProductsModal";
 import websiteClose from 'public/websiteClose2.svg'
 import Image from "next/image";
+import Calculating from "@component/cart/calculating";
 
 const Checkout = () => {
   const {
@@ -413,8 +414,12 @@ const Checkout = () => {
                               storeCustomizationSetting?.checkout?.sub_total
                             )}
                             <span className="ml-auto flex-shrink-0 text-gray-800 font-bold">
-                              {currency}
-                              {customCartTotal?.toFixed(2)}
+                              {typeof customCartTotal === 'number' ?
+                                <>
+                                  <small>{currency}</small>
+                                  {customCartTotal.toFixed(2)}
+                                </>
+                                : <Calculating />}
                             </span>
                           </div>
                           <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
@@ -441,8 +446,12 @@ const Checkout = () => {
                                 storeCustomizationSetting?.checkout?.total_cost
                               )}
                               <span className="font-serif font-extrabold text-lg">
-                                {currency}
-                                {parseFloat(total).toFixed(2)}
+                                {typeof customCartTotal === 'number' ?
+                                  <>
+                                    {currency}
+                                    {parseFloat(total).toFixed(2)}
+                                  </>
+                                  : <Calculating />}
                               </span>
                             </div>
                           </div>
@@ -494,10 +503,12 @@ const Checkout = () => {
                           <button
                             onClick={() => isDeliveryMetod ? {} : (notifyError(t("common:selectDeliveryMethod")), scrollUp())}
                             type="submit"
-                            disabled={isEmpty || isCheckoutSubmit}
+                            disabled={isEmpty || isCheckoutSubmit || typeof customCartTotal !== 'number'}
                             className="bg-customGreen hover:bg-customGreen-dark border border-customGreen transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
                           >
-                            {isCheckoutSubmit ? (
+                            {typeof customCartTotal !== 'number' ? (
+                              <Calculating />
+                            ) : isCheckoutSubmit ? (
                               <span className="flex flex-row-reverse justify-center text-center">
                                 {" "}
                                 <img

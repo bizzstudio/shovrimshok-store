@@ -13,6 +13,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useCart from "@hooks/useCart";
 import { FiInfo } from "react-icons/fi";
+import Calculating from "./calculating";
 
 const Cart = () => {
   const router = useRouter();
@@ -71,8 +72,12 @@ const Cart = () => {
     >
       <span className="font-medium font-serif text-xl flex flex-col justify-start items-start">
         <span>
-          <small>{currency}</small>
-          {customCartTotal.toFixed(2)}
+          {typeof customCartTotal === 'number' ?
+            <>
+              <small>{currency}</small>
+              {customCartTotal.toFixed(2)}
+            </>
+            : <Calculating />}
         </span>
         {/* <FiInfo title={t("common:additonalLikut")} className="cursor-pointer mb-0.5"/> */}
         <small className="text-sm">{t("common:additonalLikut")}</small>

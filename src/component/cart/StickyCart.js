@@ -8,6 +8,7 @@ import useAsync from "@hooks/useAsync";
 import SettingServices from "@services/SettingServices";
 import useTranslation from "next-translate/useTranslation";
 import useCart from "@hooks/useCart";
+import Calculating from "./calculating";
 
 const StickyCart = () => {
   const { totalItems, customCartTotal } = useCart();
@@ -28,9 +29,13 @@ const StickyCart = () => {
             {totalItems} {t("common:items")}
           </span>
         </div>
-        <div className="flex flex-col items-center justify-center bg-customGreen-dark p-2 text-white text-base font-serif font-medium rounded-br-lg mx-auto">
-          {currency}
-          {customCartTotal.toFixed(2)}
+        <div className="flex flex-row items-center justify-center bg-customGreen-dark p-2 text-white text-base font-serif font-medium rounded-br-lg mx-auto">
+        {typeof customCartTotal === 'number' ?
+            <>
+              {customCartTotal.toFixed(2)}
+              <small>{currency}</small>
+            </>
+            : <Calculating showText={false} />}
         </div>
       </div>
     </button>
