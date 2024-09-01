@@ -62,7 +62,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
     setModalOpen(event);
   };
 
-  const offerName = offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+  const offerName = offers && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
   // פונקציות מבצעים ישנים
   // const getOfferName = (product) => {
   //   if (product.isCombination) {

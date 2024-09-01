@@ -10,7 +10,7 @@ const useCart = () => {
 
     // Helper function to apply offers to cart items
     const applyOffers = (cartItems, offers = []) => {
-        if (!offers || offers.length === 0) return { updatedCartItems: cartItems, totalDiscount: 0 };
+        if (!Array.isArray(offers) || offers.length === 0) return { updatedCartItems: cartItems, totalDiscount: 0 };
 
         let updatedCartItems = cartItems.map(item => ({ ...item, discountedPrice: null, offerTitle: '' }));
         let totalDiscount = 0;
@@ -78,12 +78,20 @@ const useCart = () => {
     });
 
     useEffect(() => {
-        const { updatedCartItems, totalDiscount } = applyOffers(cart.items, offers);
-        setCustomCart({
-            customCartTotal: (cart.cartTotal - totalDiscount) * 1.1, // הוספת דמי ליקוט 10%
-            updatedCartItems: updatedCartItems,
-        });
-    }, [cart, offers]);
+        if (!error) {
+            const { updatedCartItems, totalDiscount } = applyOffers(cart.items, offers);
+            setCustomCart({
+                customCartTotal: (cart.cartTotal - totalDiscount) * 1.1, // הוספת דמי ליקוט 10%
+                updatedCartItems: updatedCartItems,
+            });
+        } else {
+            console.error('Error fetching offers:', error);
+            setCustomCart({
+                customCartTotal: cart.cartTotal * 1.1, // במידה ויש שגיאה, לא נחשב הנחה ונשאיר את המחיר המקורי עם דמי ליקוט
+                updatedCartItems: cart.items,
+            });
+        }
+    }, [cart, offers, error]);
 
     return {
         ...cart,
