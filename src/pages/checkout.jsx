@@ -44,7 +44,7 @@ import PickupMsgModal from "@component/modal/PickupMsgModal";
 import MissingProductsModal from "@component/modal/MissingProductsModal";
 import websiteClose from 'public/websiteClose2.svg'
 import Image from "next/image";
-import Calculating from "@component/cart/calculating";
+import Calculating from "@component/cart/Calculating";
 
 const Checkout = () => {
   const {
