@@ -118,7 +118,7 @@ const Layout = ({ title, description, children }) => {
       )}
 
       {/* פופאפ דינאמי */}
-      {!loading && !error && currentPopup && (
+      {!loading && !error && currentPopup && !addressPopup && !showRegisterSuccess && (
         <MainModal modalOpen={true} setModalOpen={() => setCurrentPopup(null)}>
           <div className="px-3 sm:px-11 py-7 max-w-md">
             <DynamicPopup popup={currentPopup} />
