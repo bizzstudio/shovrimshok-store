@@ -33,18 +33,61 @@ const UpdateProfile = () => {
     handleSubmit,
     setValue,
     formState: { errors },
+    setError,
   } = useForm();
+
+  const validateInput = (data) => {
+    const { name, lastName, phone, street, houseNumber, apartmentNumber } = data;
+
+    // בדיקת רווחים בשדות שם פרטי ושם משפחה
+    if (!name.trim()) {
+      setError('name', { type: 'manual', message: t('common:invalidName') });
+      return false;
+    }
+
+    if (!lastName.trim()) {
+      setError('lastName', { type: 'manual', message: t('common:invalidLastName') });
+      return false;
+    }
+
+    // בדיקת רווחים בשדות כתובת
+    if (!street.trim()) {
+      setError('street', { type: 'manual', message: t('common:invalidStreet') });
+      return false;
+    }
+
+    if (!houseNumber.trim()) {
+      setError('houseNumber', { type: 'manual', message: t('common:invalidHouseNumber') });
+      return false;
+    }
+
+    if (!chosenCity) {
+      setError('city', { type: 'manual', message: t('common:invalidCity') });
+      return false;
+    }
+
+    if (!apartmentNumber.trim()) {
+      setError('apartmentNumber', { type: 'manual', message: t('common:invalidApartmentNumber') });
+      return false;
+    }
+
+    // בדיקת מספר טלפון - מתחיל ב־05 וכולל 10 ספרות בדיוק
+    const phoneRegex = /^05\d{8}$/;
+    if (!phoneRegex.test(phone)) {
+      setError('phone', { type: 'manual', message: t('common:invalidPhone') });
+      return false;
+    }
+
+    return true;
+  };
 
   const onSubmit = (data) => {
     setLoading(true);
-
-    // ווידוא שהשם משתמש הוא 2 מילים לפחות
-    // const usernameWords = data.name.trim().split(" ");
-    // if (usernameWords.length < 2) {
-    //   setLoading(false);
-    //   notifyError(t("common:username_at_least_two_words"));
-    //   return;
-    // }
+    
+    if (!validateInput(data)) {
+      setLoading(false);
+      return;
+    }
 
     const userData = {
       name: data.name,
