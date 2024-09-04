@@ -24,7 +24,8 @@ const useLoginSubmit = (setModalOpen) => {
     handleSubmit,
     setValue,
     formState: { errors },
-    watch
+    watch,
+    setError,
   } = useForm();
 
   const submitHandler = ({
@@ -163,6 +164,7 @@ const useLoginSubmit = (setModalOpen) => {
     GoogleLogin,
     loading,
     watch,
+    setError
   };
 };
 

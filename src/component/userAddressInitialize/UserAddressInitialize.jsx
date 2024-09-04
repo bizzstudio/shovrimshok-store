@@ -16,7 +16,7 @@ import { notifySuccess, notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import City from "@component/select/City";
-import initializeAddressTitle from "public/titles/finishRgisterTitle.svg"
+import initializeAddressTitle from "public/titles/finishRgisterTitle.svg";
 
 const UserAddressInitialize = () => {
   const [imageUrl, setImageUrl] = useState("");
@@ -33,19 +33,62 @@ const UserAddressInitialize = () => {
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm();
+
+  const validateInput = (data) => {
+    const { name, lastName, phone, street, houseNumber, apartmentNumber } = data;
+
+    // בדיקת רווחים בשדות שם פרטי ושם משפחה
+    if (!name.trim()) {
+      setError('name', { type: 'manual', message: t('common:invalidName') });
+      return false;
+    }
+
+    if (!lastName.trim()) {
+      setError('lastName', { type: 'manual', message: t('common:invalidLastName') });
+      return false;
+    }
+
+    // בדיקת רווחים בשדות כתובת
+    if (!street.trim()) {
+      setError('street', { type: 'manual', message: t('common:invalidStreet') });
+      return false;
+    }
+
+    if (!houseNumber.trim()) {
+      setError('houseNumber', { type: 'manual', message: t('common:invalidHouseNumber') });
+      return false;
+    }
+
+    if (!chosenCity) {
+      setError('city', { type: 'manual', message: t('common:invalidCity') });
+      return false;
+    }
+
+    if (!apartmentNumber.trim()) {
+      setError('apartmentNumber', { type: 'manual', message: t('common:invalidApartmentNumber') });
+      return false;
+    }
+
+    // בדיקת מספר טלפון - מתחיל ב־05 וכולל 10 ספרות בדיוק
+    const phoneRegex = /^05\d{8}$/;
+    if (!phoneRegex.test(phone)) {
+      setError('phone', { type: 'manual', message: t('common:invalidPhone') });
+      return false;
+    }
+
+    return true;
+  };
 
   const onSubmit = (data) => {
     setLoading(true);
 
-    // ווידוא שהשם משתמש הוא 2 מילים לפחות
-    // const usernameWords = data.name.trim().split(" ");
-    // if (usernameWords.length < 2) {
-    //   setLoading(false);
-    //   notifyError(t("common:username_at_least_two_words"));
-    //   return;
-    // }
+    if (!validateInput(data)) {
+      setLoading(false);
+      return;
+    }
 
     const userData = {
       name: data.name,
@@ -109,7 +152,9 @@ const UserAddressInitialize = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <img src={initializeAddressTitle.src} alt="login" className="h-28 mx-auto -mt-4 -mb-6" />
-      <p className="text-center text-lg font-semibold">{t("common:hey")} {userInfo?.name.split(' ')[0]}! {t("common:initializeAddressDes")}</p>
+      <p className="text-center text-lg font-semibold">
+        {t("common:hey")} {userInfo?.name.split(' ')[0]}! {t("common:initializeAddressDes")}
+      </p>
       <div className="mt-5 md:mt-0 md:col-span-2">
         <div className="mt-10 sm:mt-0">
           <div className="md:grid-cols-6 md:gap-6">
@@ -275,7 +320,6 @@ const UserAddressInitialize = () => {
         </div>
       </div>
     </form>
-    // <></>
   );
 };
 
