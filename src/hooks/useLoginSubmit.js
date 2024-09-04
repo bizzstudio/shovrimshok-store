@@ -37,7 +37,7 @@ const useLoginSubmit = (setModalOpen) => {
     phone
   }) => {
     setLoading(true);
-    const cookieTimeOut = 12;
+    const cookieTimeOut = 10;
 
     // console.log({
     //   name,

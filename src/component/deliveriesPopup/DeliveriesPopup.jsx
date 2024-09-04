@@ -52,7 +52,7 @@ const DeliveriesPopup = ({ closeCategoryDrawer = () => { } }) => {
               html={true}
             />
           </h2>
-          <p className={currentLang ? "text-sm font-sans leading-6 text-right" : "text-sm font-sans leading-6"}>
+          <div className={currentLang ? "text-sm font-sans leading-6 text-right" : "text-sm font-sans leading-6"}>
             <CMSkeleton
               count={4}
               height={20}
@@ -63,18 +63,18 @@ const DeliveriesPopup = ({ closeCategoryDrawer = () => { } }) => {
               }
               html={true}
             />
-          </p>
+          </div>
           <Link
             onClick={closeCategoryDrawer}
             href={`${storeCustomizationSetting?.home?.quick_delivery_link}`}
-            className="lg:w-1/3 flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+            className="md:hidden flex lg:w-1/3 items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
           >
             {showingTranslateValue(
               storeCustomizationSetting?.home?.quick_delivery_button
             )}
           </Link>
         </div>
-        <div className="w-1/5 min-w-fit flex-grow hidden lg:flex md:flex md:justify-items-center lg:justify-end">
+        <div className="w-1/5 min-w-fit flex-grow hidden lg:flex md:flex flex-col md:justify-items-center lg:justify-end">
           <Image
             width={300}
             height={300}
@@ -85,6 +85,15 @@ const DeliveriesPopup = ({ closeCategoryDrawer = () => { } }) => {
               "/cta/delivery-boy.png"
             }
           />
+          <Link
+            onClick={closeCategoryDrawer}
+            href={`${storeCustomizationSetting?.home?.quick_delivery_link}`}
+            className="w-full flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+          >
+            {showingTranslateValue(
+              storeCustomizationSetting?.home?.quick_delivery_button
+            )}
+          </Link>
         </div>
       </div>
     </div>
