@@ -260,6 +260,7 @@
   
     "/=================* checkout * =================/": "",
   
+    "noProductsInCart": "העגלה שלך ריקה!",
     "missingProductsAre": "נמצאו {{count}} מוצרים שלא זמינים יותר",
     "restoreOrder": "משחזר הזמנה",
     "Reorder": "הזמנה חוזרת",
