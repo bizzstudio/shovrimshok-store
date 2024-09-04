@@ -257,9 +257,17 @@
     "goToEmail": "מעבר ל-Gmail",
     "waiting_for_verification": "אימייל ממתין לאימות, נא לבדוק בתיבת הדוא\"ל",
     "pls_register_again": "תוקף אימייל האימות פג, נא להרשם מחדש",
+    "invalidName": "שם לא תקין",
+    "invalidLastName": "שם משפחה לא תקין",
+    "invalidPhone": "מספר טלפון לא תקין",
+    "invalidStreet": "רחוב לא תקין",
+    "invalidHouseNumber": "מספר בית לא תקין",
+    "invalidCity": "יש להזין עיר",
+    "invalidApartmentNumber": "מספר דירה לא תקין",
   
     "/=================* checkout * =================/": "",
   
+    "noProductsInCart": "העגלה שלך ריקה!",
     "missingProductsAre": "נמצאו {{count}} מוצרים שלא זמינים יותר",
     "restoreOrder": "משחזר הזמנה",
     "Reorder": "הזמנה חוזרת",
@@ -332,8 +340,8 @@
     
     "noOptionToSearchInCheckoutPage": "אין אפשרות להוסיף מוצרים בדף התשלום.",
 
-    "storeClose": "מצטערים, החנות סגורה כעת.",
-    "storeCloseMessage": "החנות סגורה כעת להזמנות, אנא נסו שוב במועד מאוחר יותר.",
+    "storeClose": "מצטערים, האתר סגור כעת.",
+    "storeCloseMessage": "האתר סגור כעת להזמנות עקב עומס. אנא נסו שנית בעוד כמה שעות.",
   
     "/=================* Invoice * =================/": "",
   

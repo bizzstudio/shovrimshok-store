@@ -24,7 +24,8 @@ const useLoginSubmit = (setModalOpen) => {
     handleSubmit,
     setValue,
     formState: { errors },
-    watch
+    watch,
+    setError,
   } = useForm();
 
   const submitHandler = ({
@@ -37,7 +38,7 @@ const useLoginSubmit = (setModalOpen) => {
     phone
   }) => {
     setLoading(true);
-    const cookieTimeOut = 12;
+    const cookieTimeOut = 10;
 
     // console.log({
     //   name,
@@ -163,6 +164,7 @@ const useLoginSubmit = (setModalOpen) => {
     GoogleLogin,
     loading,
     watch,
+    setError
   };
 };
 

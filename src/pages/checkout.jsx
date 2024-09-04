@@ -70,7 +70,7 @@ const Checkout = () => {
     isCheckoutSubmit,
     isDeliveryMetod,
     paymentSrc,
-    setPaymentSrc,
+    shippingPercentageIncrease,
   } = useCheckoutSubmit();
   const router = useRouter();
 
@@ -80,7 +80,7 @@ const Checkout = () => {
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
 
   const { state: { userInfo } } = useContext(UserContext);
-  const [city, setCity] = useState(userInfo && userInfo?.address?.city?.city_name_he)
+  const city = userInfo?.address?.city?.city_name_he;
   const [isDeliverable, setIsDeliverable] = useState(null);
   const [nextTime, setNextTime] = useState(null);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
@@ -94,6 +94,7 @@ const Checkout = () => {
   const [missingProductsModal, setMissingProductsModal] = useState(false);
   const [missingProductsState, setMissingProductsState] = useState([]);
 
+  // בעת שחזור הזמנה הודעה על מוצרים לא זמינים
   useEffect(() => {
     const missingProducts = localStorage.getItem("missingProducts");
     if (missingProducts) {
@@ -123,6 +124,7 @@ const Checkout = () => {
     }
   }, [storeSetting]);
 
+  // ללא פרטי משתמש ניווט ללוגאין
   useEffect(() => {
     if (!userInfo) {
       router.push("/login");
@@ -144,15 +146,17 @@ const Checkout = () => {
 
   // עדכון פונקציית submitHandler
   const handleSubmitWithAddressCheck = async () => {
+    if (items <= 0) return notifyError(t("common:noProductsInCart"));
     if (city) {
       handleShippingCost(deliveryPrice); // עדכון עלות המשלוח
       setDeliveryMsg(true);
     } else {
-      alert("Please enter a city.");
+      notifyError("יש להזין כתובת");
     }
   };
 
   const handleSubmitWithPickup = () => {
+    if (items <= 0) return notifyError(t("common:noProductsInCart"));
     setPickupMsg(true)
     handleShippingCost(0);
   };
@@ -353,6 +357,7 @@ const Checkout = () => {
                             )}
                           </h2>
 
+                          {/* רשימת מוצרים */}
                           <div className="overflow-y-auto flex-grow scrollbar-hide w-full max-h-64 bg-gray-50 block">
                             {items.map((item) => (
                               <CartItem key={item.id} item={item} currency={currency} />
@@ -398,7 +403,7 @@ const Checkout = () => {
                                 <button
                                   type="button"
                                   onClick={handleCouponCode}
-                                  className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-customGreen h-12 text-sm lg:text-base w-full sm:w-auto"
+                                  className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 text-white bg-customGreen hover:bg-customGreen-dark h-12 text-sm lg:text-base w-full sm:w-auto"
                                 >
                                   {showingTranslateValue(
                                     storeCustomizationSetting?.checkout?.apply_button
@@ -409,6 +414,7 @@ const Checkout = () => {
                             {/* </form> */}
                           </div>
 
+                          {/* עלות ההזמנה */}
                           <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.sub_total
@@ -422,15 +428,22 @@ const Checkout = () => {
                                 : <Calculating />}
                             </span>
                           </div>
+
+                          {/* מחיר משלוח */}
                           <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.shipping_cost
                             )}
-                            <span className="ml-auto flex-shrink-0 text-gray-800 font-bold">
+                            <span className="flex-shrink-0 text-gray-800 font-bold">
                               {currency}
                               {shippingCost?.toFixed(2)}
                             </span>
+                            <span className="ml-auto flex-shrink-0 text-customGreen font-bold">
+                              {typeof customCartTotal === 'number' && <>({shippingPercentageIncrease?.toFixed(2)}%)</>}
+                            </span>
                           </div>
+
+                          {/* הנחה */}
                           <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.discount
@@ -440,6 +453,8 @@ const Checkout = () => {
                               {discountAmount?.toFixed(2)}
                             </span>
                           </div>
+
+                          {/* סה"כ */}
                           <div className="border-t mt-4">
                             <div className="flex items-center font-bold font-serif justify-between pt-5 text-sm uppercase">
                               {showingTranslateValue(

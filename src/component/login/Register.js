@@ -6,20 +6,50 @@ import { useState } from "react";
 import Error from "@component/form/Error";
 import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";
-import registerTitle from 'public/titles/registerTitle.svg'
+import registerTitle from 'public/titles/registerTitle.svg';
 
 const Register = ({ setShowResetPassword, setModalOpen }) => {
-  const { handleSubmit, submitHandler, register, errors, loading, watch } =
+  const { handleSubmit, submitHandler, register, errors, loading, watch, setError } =
     useLoginSubmit(setModalOpen);
   const { t } = useTranslation();
 
-  const [notMatch, setNotMatch] = useState({ message: '' })
+  const [notMatch, setNotMatch] = useState({ message: '' });
 
   const comparePasswords = (value) => {
     if (value !== watch("password")) {
       setNotMatch({ message: t('common:passwordsDoNotMatch') });
     } else {
       setNotMatch('');
+    }
+  };
+
+  const validateInput = (data) => {
+    const { name, lastName, phone } = data;
+
+    // בדיקת רווחים בשדות שם ושם משפחה
+    if (!name.trim()) {
+      setError('name', { type: 'manual', message: t('common:invalidName') });
+      return false;
+    }
+
+    if (!lastName.trim()) {
+      setError('lastName', { type: 'manual', message: t('common:invalidLastName') });
+      return false;
+    }
+
+    // בדיקת מספר טלפון - מתחיל ב־05 וכולל 10 ספרות בדיוק
+    const phoneRegex = /^05\d{8}$/;
+    if (!phoneRegex.test(phone)) {
+      setError('phone', { type: 'manual', message: t('common:invalidPhone') });
+      return false;
+    }
+
+    return true;
+  };
+
+  const customSubmitHandler = (data) => {
+    if (validateInput(data)) {
+      submitHandler(data);
     }
   };
 
@@ -33,7 +63,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
         </p> */}
       </div>
       <form
-        onSubmit={handleSubmit(submitHandler)}
+        onSubmit={handleSubmit(customSubmitHandler)}
         className="flex flex-col justify-center w-full"
       >
         <div className="grid grid-cols-2 gap-5">
@@ -46,7 +76,6 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
               placeholder={t("common:name")}
               Icon={FiUser}
             />
-
             <Error errorName={errors.name} />
           </div>
 
@@ -59,7 +88,6 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
               placeholder={t("common:lastName")}
               Icon={FiUser}
             />
-
             <Error errorName={errors.lastName} />
           </div>
 
@@ -97,7 +125,6 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
                 placeholder={t("common:password")}
                 Icon={FiLock}
               />
-
               <Error errorName={errors.password} />
             </div>
 

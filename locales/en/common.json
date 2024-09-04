@@ -256,9 +256,17 @@
   "goToEmail": "Go to Gmail",
   "waiting_for_verification": "Email is awaiting verification, please check your inbox.",
   "pls_register_again": "The verification email has expired, please register again",
+  "invalidName": "Invalid name",
+  "invalidLastName": "Invalid last name",
+  "invalidPhone": "Invalid phone number",
+  "invalidStreet": "Invalid street",
+  "invalidHouseNumber": "Invalid house number",
+  "invalidCity": "Please enter a city",
+  "invalidApartmentNumber": "Invalid apartment number",
 
   "/=================* checkout * =================/": "",
 
+  "noProductsInCart": "Your cart is empty",
   "missingProductsAre": "There are {{count}} products that are no longer available",
   "restoreOrder": "Restoring Order",
   "Reorder": "Reorder",
@@ -330,8 +338,8 @@
 
   "noOptionToSearchInCheckoutPage": "It is not possible to add products on the payment page",
   
-  "storeClose": "Sorry, the store is currently closed.",
-  "storeCloseMessage": "The store is currently closed for orders, please try again later.",
+  "storeClose": "Sorry, the website is closed now.",
+  "storeCloseMessage": "The site is currently closed for orders due to load. Please try again in a few hours.",
 
   "/=================* Invoice * =================/": "",
 
