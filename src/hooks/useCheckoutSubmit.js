@@ -36,6 +36,7 @@ const useCheckoutSubmit = () => {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [paymentSrc, setPaymentSrc] = useState(null);
   const [isPaymentPageOpen, setIsPaymentPageOpen] = useState(false);
+  const [shippingPercentageIncrease, setShippingPercentageIncrease] = useState(0);
 
   const router = useRouter();
   // const stripe = useStripe();
@@ -190,9 +191,9 @@ const useCheckoutSubmit = () => {
             }
           }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)), IsVatFree: true },
           shippingCost > 0 ? {
-            Description: "משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
+            Description: "התייקרות בגין משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
             UnitCost: shippingCost,
-            IsVatFree: false,
+            IsVatFree: true,
           } : null,
           discountAmount > 0 ? {
             Description: "הנחה",
@@ -325,6 +326,24 @@ const useCheckoutSubmit = () => {
     setIsDeliveryMetod(true);
   };
 
+  // ווידוא שהאחוזים מתעדכנים כל פעם שהמחיר משתנה
+  useEffect(() => {
+    if (shippingCost != 0) {
+      const originalValue = ((customCartTotal / 11) * 10);
+      if (originalValue) {
+        if (originalValue > 0) {
+          setShippingPercentageIncrease(shippingCost / originalValue * 100);
+        } else {
+          setShippingPercentageIncrease(0);
+          setShippingCost(0);
+          setIsDeliveryMetod(false);
+        }
+      }
+    } else {
+      setShippingPercentageIncrease(0);
+    }
+  }, [customCartTotal, shippingCost, isDeliveryMetod]);
+
   const handleCouponCode = async (e) => {
     e.preventDefault();
 
@@ -391,6 +410,7 @@ const useCheckoutSubmit = () => {
     paymentSrc,
     setPaymentSrc,
     isPaymentPageOpen,
+    shippingPercentageIncrease,
   };
 };
 

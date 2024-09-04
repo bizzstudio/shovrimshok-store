@@ -259,6 +259,7 @@
 
   "/=================* checkout * =================/": "",
 
+  "noProductsInCart": "Your cart is empty",
   "missingProductsAre": "There are {{count}} products that are no longer available",
   "restoreOrder": "Restoring Order",
   "Reorder": "Reorder",
@@ -330,8 +331,8 @@
 
   "noOptionToSearchInCheckoutPage": "It is not possible to add products on the payment page",
   
-  "storeClose": "Sorry, the store is currently closed.",
-  "storeCloseMessage": "The store is currently closed for orders, please try again later.",
+  "storeClose": "Sorry, the website is closed now.",
+  "storeCloseMessage": "The site is currently closed for orders due to load. Please try again in a few hours.",
 
   "/=================* Invoice * =================/": "",
 
