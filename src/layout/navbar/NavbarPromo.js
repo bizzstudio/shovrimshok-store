@@ -109,20 +109,28 @@ const NavbarPromo = () => {
   }, [data])
 
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const { query } = router;
+  const { asPath } = router; // כאן נשתמש ב-asPath כדי לגשת לנתיב המלא
 
   useEffect(() => {
-    if (query?.category) {
-      const index = data[0]?.children?.findIndex(
-        category => category.name.he === query.category
+    if (asPath.startsWith("/category/")) {
+      const categoryName = decodeURIComponent(asPath.split("/category/")[1]);
+
+      // חיפוש הקטגוריה לפי שם בעברית או באנגלית
+      const foundCategory = data[0]?.children?.find(
+        (category) =>
+          category.name.he === categoryName || category.name.en === categoryName
       );
-      setSelectedCategory(index !== -1 ? index : null);
-    } else if (location.pathname == "/offers") {
+
+      if (foundCategory) {
+        const index = data[0]?.children?.indexOf(foundCategory);
+        setSelectedCategory(index !== -1 ? index : null);
+      }
+    } else if (asPath === "/offers") {
       setSelectedCategory(categoriesLength);
     } else {
       setSelectedCategory(null);
     }
-  }, [query, data]);
+  }, [asPath, data]);
 
   return (
     <>
@@ -190,10 +198,11 @@ const NavbarPromo = () => {
                         <>
                           {!loading && !error && data && data[0]?.children?.map((category, index) => {
                             const title = showingTranslateValue(category?.name)
-                            return <a
+                            return <Link
                               onMouseEnter={() => setIsHover(index)}
                               onMouseLeave={() => setIsHover(null)}
-                              onClick={() => showCategory(category._id, title)}
+                              // onClick={() => showCategory(category._id, title)}
+                              href={'/category/' + category?.name?.he}
                               className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
                               role="button"
                               key={category._id}
@@ -217,12 +226,12 @@ const NavbarPromo = () => {
                               <div className="inline-flex items-center justify-center text-center text-[2vw] sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
                                 {title}
                               </div>
-                            </a>
+                            </Link>
                           })}
 
-                          <a onMouseEnter={() => setIsHover(categoriesLength)}
+                          <Link onMouseEnter={() => setIsHover(categoriesLength)}
                             onMouseLeave={() => setIsHover(null)}
-                            onClick={() => router.push('offers')}
+                            href="/offers"
                             className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
                             role="button">
                             {isHover == categoriesLength || selectedCategory == categoriesLength ?
@@ -233,7 +242,7 @@ const NavbarPromo = () => {
                             <div className="inline-flex items-center justify-center text-center text-[2vw] sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
                               {t("common:Offers")}
                             </div>
-                          </a>
+                          </Link>
 
                         </>
                       )}
