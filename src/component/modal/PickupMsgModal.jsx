@@ -23,7 +23,7 @@ const PickupMsgModal = ({ closeModal = () => { } }) => {
 
   let messagePart;
 
-  if (currentDay === 4 && currentHour >= 14) {
+  if (currentDay === 5 && currentHour >= 14) {
     messagePart = t("common:PickupMessageThursdayAfter14Part2");
   } else {
     messagePart = t("common:PickupMessagePart2");
