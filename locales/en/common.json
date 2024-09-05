@@ -256,6 +256,13 @@
   "goToEmail": "Go to Gmail",
   "waiting_for_verification": "Email is awaiting verification, please check your inbox.",
   "pls_register_again": "The verification email has expired, please register again",
+  "invalidName": "Invalid name",
+  "invalidLastName": "Invalid last name",
+  "invalidPhone": "Invalid phone number",
+  "invalidStreet": "Invalid street",
+  "invalidHouseNumber": "Invalid house number",
+  "invalidCity": "Please enter a city",
+  "invalidApartmentNumber": "Invalid apartment number",
 
   "/=================* checkout * =================/": "",
 
