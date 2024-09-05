@@ -51,12 +51,7 @@ const useLoginSubmit = (setModalOpen) => {
     // })
 
     if (registerEmail && password) {
-      // בדיקה אם המשתמש כבר נרשם וממתין לאימות
-      if (localStorage.getItem("waitingForVerification") == registerEmail) {
-        setLoading(false);
-        notifyError(t("common:waiting_for_verification"));
-        return;
-      } else if (localStorage.getItem("plsRegisterAgain")) {
+      if (localStorage.getItem("plsRegisterAgain")) {
         setLoading(false);
         notifyError(t("common:pls_register_again"));
         return;
@@ -83,8 +78,15 @@ const useLoginSubmit = (setModalOpen) => {
             });
           })
           .catch((err) => {
-            notifyError(err ? err.response.data.message : err.message);
-            setLoading(false);
+            // בדיקה אם המשתמש כבר נרשם וממתין לאימות
+            if (localStorage.getItem("waitingForVerification") == registerEmail) {
+              setLoading(false);
+              notifyError(t("common:waiting_for_verification"));
+              return;
+            } else {
+              notifyError(err ? err.response.data.message : err.message);
+              setLoading(false);
+            }
           });
       }
     }

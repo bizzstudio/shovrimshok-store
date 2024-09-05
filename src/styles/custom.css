@@ -3,17 +3,34 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap');
 
+.dynamicPopup h1 {
+  font-size: xx-large;
+}
+
+.dynamicPopup h2 {
+  font-size: x-large;
+}
+
+.dynamicPopup h3 {
+  font-size: large;
+}
+
 @keyframes upAndDown {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
-    transform: translateY(10px); /* ניתן לשנות את הערך בהתאם לכמות התזוזה הרצויה */
+    transform: translateY(10px);
+    /* ניתן לשנות את הערך בהתאם לכמות התזוזה הרצויה */
   }
 }
 
 .up-down-animation {
-  animation: upAndDown 2s ease-in-out infinite; /* משך האנימציה ואופציה לאינסופיות */
+  animation: upAndDown 2s ease-in-out infinite;
+  /* משך האנימציה ואופציה לאינסופיות */
 }
 
 
