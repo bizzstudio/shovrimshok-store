@@ -27,13 +27,17 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
         return true;
       });
 
-      setFiles(
-        filteredFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
-      );
+      if (filteredFiles.length > 0) {
+        // מחיקת תמונה ישנה מידית כאשר מתקבלת חדשה
+        removeImage();
+        setFiles(
+          filteredFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          )
+        );
+      }
     },
   });
 
@@ -47,8 +51,8 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
       <img
         src="/loader/spinner.gif"
         alt="Loading"
-        width={50}
-        height={50}
+        width={40}
+        height={40}
         className='absolute'
       />
       <button
