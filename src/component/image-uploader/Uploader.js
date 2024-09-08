@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 import { FiUploadCloud } from 'react-icons/fi';
 import { AiOutlineClose } from 'react-icons/ai';
 import useTranslation from 'next-translate/useTranslation';
+import requests from '@services/httpServices';
+import Image from 'next/image';
 
 const Uploader = ({ setImageUrl, imageUrl }) => {
   const { t } = useTranslation();
   const [files, setFiles] = useState([]);
-  const uploadUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-  const upload_Preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   const removeImage = () => {
     setFiles([]);
@@ -19,11 +18,10 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: false,
-    // maxSize: 1024 * 1024 * 3, //the size of image,
     onDrop: (acceptedFiles) => {
-      const filteredFiles = acceptedFiles.filter(file => {
-        if (file.size > 3 * 1024 * 1024) { // 3MB in bytes
-          alert(t("common:fileToBig"));
+      const filteredFiles = acceptedFiles.filter((file) => {
+        if (file.size > 3 * 1024 * 1024) {
+          alert(t('common:fileToBig'));
           return false;
         }
         return true;
@@ -40,11 +38,18 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
   });
 
   const thumbs = files.map((file) => (
-    <div key={file.name} className="relative inline-block">
+    <div key={file.name} className="relative flex items-center justify-center">
       <img
-        className="border-2 border-gray-100 w-24 max-h-24"
+        className="border-2 border-gray-100 w-24 max-h-24 brightness-50 object-cover"
         src={file.preview}
         alt={file.name}
+      />
+      <img
+        src="/loader/spinner.gif"
+        alt="Loading"
+        width={50}
+        height={50}
+        className='absolute'
       />
       <button
         className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full"
@@ -56,37 +61,29 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
   ));
 
   useEffect(() => {
-    const uploadURL = uploadUrl;
-    const uploadPreset = upload_Preset;
-    if (files) {
+    if (files.length > 0) {
       files.forEach((file) => {
         const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', uploadPreset);
-        axios({
-          url: uploadURL,
-          method: 'POST',
+        formData.append('file', file); // מוסיף את הקובץ ל-FormData
+
+        requests.post('/upload', formData, {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'multipart/form-data',
           },
-          data: formData,
         })
           .then((res) => {
-            setImageUrl(res.data.secure_url);
+            setImageUrl(res.link); // קבלת הלינק של התמונה מהשרת שלך
           })
-          .catch((err) => console.log(err));
+          .catch((err) => console.log('Error uploading file:', err));
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files]);
+  }, [files, setImageUrl]);
 
-  useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
+  useEffect(() => {
+    return () => {
       files.forEach((file) => URL.revokeObjectURL(file.preview));
-    },
-    [files]
-  );
+    };
+  }, [files]);
 
   return (
     <div className="w-full text-center">
@@ -106,10 +103,12 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
       <aside className="flex flex-row flex-wrap mt-4">
         {imageUrl ? (
           <div className="relative inline-block">
-            <img
+            <Image
               className="border rounded-md border-gray-100 w-24 max-h-24 p-2"
+              width={90}
+              height={90}
               src={imageUrl}
-              alt="product"
+              alt="image"
             />
             <button
               className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full"
