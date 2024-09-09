@@ -16,7 +16,11 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
   };
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: {
+      "image/jpeg": [".jpeg", ".jpg"],
+      "image/png": [".png"],
+      "image/webp": [".webp"]
+    },
     multiple: false,
     onDrop: (acceptedFiles) => {
       const filteredFiles = acceptedFiles.filter((file) => {
