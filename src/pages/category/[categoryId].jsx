@@ -66,7 +66,7 @@ const CategoryPage = ({ products, attributes }) => {
     const { setSortedField, productData } = useFilter(products);
 
     return (
-        <Layout title={`CategoryPage ${categoryId}`} description="This is category page">
+        <Layout title={categoryId} description="This is category page">
             <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                 <div className="flex py-5">
                     <div className="flex w-full">
