@@ -209,15 +209,15 @@ const NavbarPromo = () => {
                             >
                               {category.icon ? (
                                 isHover == index || selectedCategory == index ?
-                                  <Image src={category.coloredIcon} width={30} height={30} alt="Category"
+                                  <Image src={category.coloredIcon} width={200} height={200} alt="Category"
                                     className="sm:w-[30px] w-[6vw]" /> :
-                                  <Image src={category.icon} width={30} height={30} alt="Category"
+                                  <Image src={category.icon} width={200} height={200} alt="Category"
                                     className="sm:w-[30px] w-[6vw]" />
                               ) : (
                                 <Image
                                   src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                                  width={30}
-                                  height={30}
+                                  width={200}
+                                  height={200}
                                   alt="category"
                                   className="sm:w-[30px] w-[6vw]"
                                 />
@@ -235,9 +235,9 @@ const NavbarPromo = () => {
                             className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
                             role="button">
                             {isHover == categoriesLength || selectedCategory == categoriesLength ?
-                              <Image src={offerIcon.src} width={30} height={30} alt="Category"
+                              <Image src={offerIcon.src} width={200} height={200} alt="Category"
                                 className="sm:w-[30px] w-[6vw]" /> :
-                              <Image src={offerIconNoColor.src} width={30} height={30} alt="Category"
+                              <Image src={offerIconNoColor.src} width={200} height={200} alt="Category"
                                 className="sm:w-[30px] w-[6vw]" />}
                             <div className="inline-flex items-center justify-center text-center text-[2vw] sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
                               {t("common:Offers")}
