@@ -165,7 +165,7 @@ const useCheckoutSubmit = () => {
       };
 
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
-      const dbOrder = await OrderServices.addOrder(orderInfo);
+      const dbOrder = await OrderServices.addOrder(orderInfo)
       // console.log("dbOrder: ", dbOrder)
 
       const cardcomObj = {
@@ -271,7 +271,7 @@ const useCheckoutSubmit = () => {
       //   setIsCheckoutSubmit(false);
       // }
     } catch (err) {
-      notifyError(err.message);
+      notifyError(err?.response?.data?.message || err.message);
       setIsCheckoutSubmit(false);
     }
   };
