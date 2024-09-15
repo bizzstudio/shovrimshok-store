@@ -54,7 +54,12 @@ const MyOrders = () => {
       })
       .catch((err) => {
         setLoading(false);
-        setError(err.message);
+        // בדיקת התגובה מהשרת להצגת ההודעה בעברית
+        if (err.response && err.response.data && err.response.data.message) {
+          setError(err.response.data.message);
+        } else {
+          setError(err.message);
+        }
       });
   }, [currentPage]);
 

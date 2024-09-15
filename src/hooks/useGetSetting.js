@@ -64,7 +64,12 @@ const useGetSetting = () => {
 
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        // בדיקה אם יש הודעת שגיאה מותאמת מהשרת
+        if (err.response && err.response.data && err.response.data.message) {
+          setError(err.response.data.message);
+        } else {
+          setError(err.message);
+        }
         console.log("Error on getting storeCustomizationSetting setting", err);
       }
     };
