@@ -52,7 +52,7 @@ const InputShipping = ({
             </span>
             <div>
               <h6 className={`flex items-center gap-1 font-serif font-medium text-base ${isDeliverable && isDeliveryOpen ? "text-gray-600" : "text-gray-400"} `}>
-                {value} {note && <span className="text-base text-gray-400" title={note}><FiInfo /></span>}
+                {value == 1 ? t("common:pickup") : t("common:shipping")} {note && <span className="text-base text-gray-400" title={note}><FiInfo /></span>}
               </h6>
               {!isDeliveryOpen ?
                 <p className={nextTime ? "text-sm text-red-500 -mt-1 pl-3" : "text-sm text-gray-400 -mt-1"}>

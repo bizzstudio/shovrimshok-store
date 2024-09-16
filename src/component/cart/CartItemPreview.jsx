@@ -36,7 +36,7 @@ const CartItemPreview = ({ item }) => {
         </div>
         <div className="flex items-center justify-between">
           <div className="font-bold text-sm md:text-base text-heading leading-5">
-            <span>{item.prices.price}₪</span>
+            <span>{item?.prices?.price}₪</span>
           </div>
         </div>
       </div>
