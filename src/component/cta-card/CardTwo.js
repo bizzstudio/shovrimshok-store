@@ -37,7 +37,7 @@ const CardTwo = () => {
               html={true}
             />
           </h2>
-          <p className="text-sm font-sans leading-6">
+          <div className="text-sm font-sans leading-6">
             <CMSkeleton
               count={4}
               height={20}
@@ -48,7 +48,7 @@ const CardTwo = () => {
               }
               html={true}
             />
-          </p>
+          </div>
           {/* <Link
             href={`${storeCustomizationSetting?.home?.quick_delivery_link}`}
             className="lg:w-1/3 flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"

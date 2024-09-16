@@ -112,7 +112,7 @@ const Checkout = () => {
         console.error("Failed to parse missing products:", error);
       }
     }
-  }, []);
+  }, [isCheckoutSubmit]);
 
   // משיכת ההגדרות של המשלוחים וההזמנות ובדיקה אם זה מאופשר או לא
   useEffect(() => {
@@ -323,7 +323,7 @@ const Checkout = () => {
                               currency={currency}
                               handleShippingCost={handleSubmitWithAddressCheck}
                               register={register}
-                              value="משלוח עד הבית (בתוספת תשלום)"
+                              value={2}
                               isDeliverable={isDeliverable}
                               nextTime={nextTime}
                               isDeliveryOpen={isDeliveryOpen}
@@ -339,7 +339,7 @@ const Checkout = () => {
                               currency={currency}
                               handleShippingCost={handleSubmitWithPickup}
                               register={register}
-                              value="איסוף עצמי"
+                              value={1}
                               isDeliverable={true}
                               icon={<LiaTruckPickupSolid />}
                             />

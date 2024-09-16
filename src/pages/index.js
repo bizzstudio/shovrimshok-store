@@ -150,7 +150,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                             data={storeCustomizationSetting?.home?.feature_title}
                           />
                         </h2>
-                        <p className="text-base font-sans text-gray-600 leading-6">
+                        <div className="text-base font-sans text-gray-600 leading-6">
                           <CMSkeleton
                             count={4}
                             height={10}
@@ -160,7 +160,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                               storeCustomizationSetting?.home?.feature_description
                             }
                           />
-                        </p>
+                        </div>
                       </div>
                     </div>
 
@@ -186,7 +186,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                           isIimage={true}
                         />
                       </h2>
-                      <p className="text-base font-sans text-gray-600 leading-6">
+                      <div className="text-base font-sans text-gray-600 leading-6">
                         <CMSkeleton
                           count={5}
                           height={10}
@@ -196,7 +196,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                             storeCustomizationSetting?.home?.popular_description
                           }
                         />
-                      </p>
+                      </div>
                     </div>
                   </div>
                   {/* )} */}
@@ -266,7 +266,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                             isIimage={true}
                           />
                         </h2>
-                        <p className="text-base font-sans text-gray-600 leading-6">
+                        <div className="text-base font-sans text-gray-600 leading-6">
                           <CMSkeleton
                             count={5}
                             height={20}
@@ -277,7 +277,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                                 ?.latest_discount_description
                             }
                           />
-                        </p>
+                        </div>
                       </div>
                     </div>
                     <div className="flex">

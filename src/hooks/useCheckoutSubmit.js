@@ -35,14 +35,13 @@ const useCheckoutSubmit = () => {
   const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [paymentSrc, setPaymentSrc] = useState(null);
-  const [isPaymentPageOpen, setIsPaymentPageOpen] = useState(false);
   const [shippingPercentageIncrease, setShippingPercentageIncrease] = useState(0);
 
   const router = useRouter();
   // const stripe = useStripe();
   // const elements = useElements();
   const couponRef = useRef("");
-  const { isEmpty, emptyCart, items, customCartTotal } = useCart();
+  const { isEmpty, emptyCart, items, customCartTotal, removeItem } = useCart();
 
   const {
     register,
@@ -166,59 +165,78 @@ const useCheckoutSubmit = () => {
 
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
       const dbOrder = await OrderServices.addOrder(orderInfo)
-      // console.log("dbOrder: ", dbOrder)
+        .then((res) => {
+          setPaymentSrc(res.paymentUrl);
+        }).catch((error) => {
+          // בדיקת מוצרים חסרים
+          if (error?.response?.status === 999) {
+            const errorData = error?.response?.data;
+            if (errorData?.missingProducts && errorData?.missingProducts?.length > 0) {
+              const missingProducts = errorData.missingProducts;
+              localStorage.setItem("missingProducts", JSON.stringify(missingProducts));
 
-      const cardcomObj = {
-        TerminalNumber: process.env.NEXT_PUBLIC_TERMINAL_NUMBER,
-        ApiName: process.env.NEXT_PUBLIC_API_NAME,
-        ReturnValue: dbOrder._id,
-        Amount: orderInfo.total,
-        SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/success",
-        FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/failed",
-        // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
-        WebHookUrl: "https://backend.meshek-kirshner.co.il/api" + "/orders/" + dbOrder._id + `?key=${process.env.NEXT_PUBLIC_CARDCOM_KEY}&secret=${process.env.NEXT_PUBLIC_CARDCOM_SECRET}`,
-        Document: {
-          To: userInfo.name,
-          Email: userInfo.email,
-          Products: [...orderInfo.cart.map(p => {
-            return {
-              // ProductID: p._id,
-              Description: p.title.he,
-              Quantity: p.quantity,
-              UnitCost: p.discountedPrice ? p.discountedPrice / p.quantity : p.itemTotal / p.quantity,
-              TotalLineCost: p.discountedPrice ? p.discountedPrice : p.itemTotal,
-              IsVatFree: p.isVatFree !== undefined ? p.isVatFree : true,
+              // הסרת המוצרים החסרים מהעגלה
+              missingProducts.forEach((missingProduct) => {
+                removeItem(missingProduct?._id);
+              });
             }
-          }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)), IsVatFree: true },
-          shippingCost > 0 ? {
-            Description: "התייקרות בגין משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
-            UnitCost: shippingCost,
-            IsVatFree: true,
-          } : null,
-          discountAmount > 0 ? {
-            Description: "הנחה",
-            UnitCost: -discountAmount,
-            IsVatFree: true,
-          } : null,
-          ].filter(Boolean)
-        }
-      }
-      // console.log('cardcomObj: ', cardcomObj)
-      const response = await fetch('https://secure.cardcom.solutions/api/v11/LowProfile/Create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cardcomObj)
-      });
+            return;
+          } else {
+            notifyError(error?.response?.data?.message || "שגיאה ביצירת ההזמנה.");
+          }
+        }).finally(() => {
+          setIsCheckoutSubmit(false);
+        })
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      // const cardcomObj = {
+      //   TerminalNumber: process.env.NEXT_PUBLIC_TERMINAL_NUMBER,
+      //   ApiName: process.env.NEXT_PUBLIC_API_NAME,
+      //   ReturnValue: dbOrder._id,
+      //   Amount: orderInfo.total,
+      //   SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/success",
+      //   FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/failed",
+      //   // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
+      //   WebHookUrl: "https://backend.meshek-kirshner.co.il/api" + "/orders/" + dbOrder._id + `?key=${process.env.NEXT_PUBLIC_CARDCOM_KEY}&secret=${process.env.NEXT_PUBLIC_CARDCOM_SECRET}`,
+      //   Document: {
+      //     To: userInfo.name,
+      //     Email: userInfo.email,
+      //     Products: [...orderInfo.cart.map(p => {
+      //       return {
+      //         // ProductID: p._id,
+      //         Description: p.title.he,
+      //         Quantity: p.quantity,
+      //         UnitCost: p.discountedPrice ? p.discountedPrice / p.quantity : p.itemTotal / p.quantity,
+      //         TotalLineCost: p.discountedPrice ? p.discountedPrice : p.itemTotal,
+      //         IsVatFree: p.isVatFree !== undefined ? p.isVatFree : true,
+      //       }
+      //     }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)), IsVatFree: true },
+      //     shippingCost > 0 ? {
+      //       Description: "התייקרות בגין משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
+      //       UnitCost: shippingCost,
+      //       IsVatFree: true,
+      //     } : null,
+      //     discountAmount > 0 ? {
+      //       Description: "הנחה",
+      //       UnitCost: -discountAmount,
+      //       IsVatFree: true,
+      //     } : null,
+      //     ].filter(Boolean)
+      //   }
+      // }
+      // // console.log('cardcomObj: ', cardcomObj)
+      // const response = await fetch('https://secure.cardcom.solutions/api/v11/LowProfile/Create', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(cardcomObj)
+      // });
 
-      const result = await response.json();
-      setPaymentSrc(result.Url);
-      setIsPaymentPageOpen(true);
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+
+      // const result = await response.json();
 
       // if (data.paymentMethod === "Card") {
       //   // if (!elements) {
@@ -409,7 +427,6 @@ const useCheckoutSubmit = () => {
     isDeliveryMetod,
     paymentSrc,
     setPaymentSrc,
-    isPaymentPageOpen,
     shippingPercentageIncrease,
   };
 };

@@ -299,8 +299,8 @@ const Footer = () => {
                 rel="noreferrer"
               >
                 <Image
-                  width={110}
-                  height={40}
+                  width={343}
+                  height={105}
                   src={
                     storeCustomizationSetting?.footer?.block4_logo ||
                     "/logo/logo-color.svg"

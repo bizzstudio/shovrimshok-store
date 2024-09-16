@@ -52,7 +52,7 @@ const Offers = ({ discountProducts, attributes }) => {
                           isIimage={true}
                         />
                       </h2>
-                      <p className="text-base font-sans text-gray-600 leading-6">
+                      <div className="text-base font-sans text-gray-600 leading-6">
                         <CMSkeleton
                           count={5}
                           height={20}
@@ -63,7 +63,7 @@ const Offers = ({ discountProducts, attributes }) => {
                               ?.latest_discount_description
                           }
                         />
-                      </p>
+                      </div>
                     </div>
                   </div>
                   <div className="flex">
