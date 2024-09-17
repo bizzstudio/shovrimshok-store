@@ -111,7 +111,6 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
         ) : (
           <Layout>
             <div className="min-h-screen">
-              <StickyCart />
               <div className="bg-white">
                 <div className="mx-auto py-5 max-w-screen-2x1 px-3 sm:px-10">
                   <div className="flex gap-2 mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
