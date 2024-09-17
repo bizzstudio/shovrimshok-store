@@ -39,7 +39,7 @@ const CategoryCard = ({ title, icon, nested, id, index, isOdd }) => {
 
     setShow(!show);
     id == "offers" ? router.push('/offers') :
-      router.push(`/search?category=${categoryName}&_id=${id}`);
+      router.push(`/category/${categoryName}`);
     setIsLoading(!isLoading);
   };
 
