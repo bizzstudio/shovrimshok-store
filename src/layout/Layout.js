@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import PopupServices from "@services/PopupServices";
 import useAsync from "@hooks/useAsync";
 import DynamicPopup from "@component/modal/DynamicPopup";
+import StickyCart from "@component/cart/StickyCart";
 
 const Layout = ({ title, description, children }) => {
 
@@ -138,7 +139,10 @@ const Layout = ({ title, description, children }) => {
         </Head>
         {/* <NavBarTop /> */}
         <Navbar />
-        <div className="bg-gray-50">{children}</div>
+        <div className="bg-gray-50">
+          <StickyCart />
+          {children}
+        </div>
         <MobileFooter />
         <div className="w-full">
           <FooterTop />
