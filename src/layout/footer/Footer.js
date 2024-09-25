@@ -470,11 +470,11 @@ const Footer = () => {
           </Link>
            | האתר נבנה על ידי 
            <Link
-            href="https://bizzstudio.co.il/"
+            href="https://lp.bizzstudio.co.il/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-customGreen"
-          >Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
+          >Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ | ניהול פרוייקט - מיכאל בלינצקי
         </p>
       </div>
 
