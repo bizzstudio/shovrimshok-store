@@ -39,7 +39,7 @@ const InputShipping = ({
   const formatDate = (dateString) => {
     dayjs.locale('he');
     const date = dayjs(dateString);
-    return date.format('dddd, D בMMMM בשעה HH:mm');
+    return date.format('dddd, D בMMMM החל משעה HH:mm');
   };
 
   return (

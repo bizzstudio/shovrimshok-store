@@ -169,11 +169,11 @@ const Checkout = () => {
     const nextDayIndex = (todayIndex % 7) + 1; // היום הבא עם תרגום ל-1 עד 7
 
     let isTodayDeliverable;
-    if (currentHour < 14) {
-      // אם השעה היא לפני 14:00
+    if (currentHour < 13) {
+      // אם השעה היא לפני 13:00
       isTodayDeliverable = daysArray.some(day => parseInt(day.value) === todayIndex);
     } else {
-      // אם השעה היא אחרי 14:00
+      // אם השעה היא אחרי 13:00
       isTodayDeliverable = daysArray.some(day => parseInt(day.value) === nextDayIndex);
     }
 
@@ -185,7 +185,7 @@ const Checkout = () => {
         if (daysArray.some(day => Number(day.value) === futureDayIndex)) {
           nextDeliverableDate = new Date();
           nextDeliverableDate.setDate(now.getDate() + i - 1);
-          nextDeliverableDate.setHours(14, 0, 0, 0); // הגדרת השעה ל-14:00
+          nextDeliverableDate.setHours(13, 0, 0, 0); // הגדרת השעה ל-13:00
           break;
         }
       }
@@ -327,7 +327,7 @@ const Checkout = () => {
                               isDeliverable={isDeliverable}
                               nextTime={nextTime}
                               isDeliveryOpen={isDeliveryOpen}
-                            // note="משלוחים מא’-ה’ שיתקבלו עד השעה 14:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
+                            // note="משלוחים מא’-ה’ שיתקבלו עד השעה 13:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
                             />
                           </div>
 

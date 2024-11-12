@@ -20,6 +20,13 @@ import DefaultSeo from "@component/common/DefaultSeo";
 import { SidebarProvider } from "@context/SidebarContext";
 import SettingServices from "@services/SettingServices";
 import { handlePageView } from "@utils/analytics";
+import { Assistant } from 'next/font/google';
+
+const assistant = Assistant({
+  weight: ['200', '400', '800'],
+  display: 'swap',
+  subsets: ['latin', 'hebrew'],
+});
 
 let persistor = persistStore(store);
 
@@ -71,7 +78,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
+    <div className={assistant.className}>
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
@@ -95,7 +102,7 @@ function MyApp({ Component, pageProps }) {
           </Provider>
         </UserProvider>
       </GoogleOAuthProvider>
-    </>
+    </div>
   );
 }
 
