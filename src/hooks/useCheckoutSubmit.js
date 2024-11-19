@@ -169,7 +169,7 @@ const useCheckoutSubmit = () => {
           setPaymentSrc(res.paymentUrl);
         }).catch((error) => {
           // בדיקת מוצרים חסרים
-          if (error?.response?.status === 999) {
+          if (error?.response?.status === 409) {
             const errorData = error?.response?.data;
             if (errorData?.missingProducts && errorData?.missingProducts?.length > 0) {
               const missingProducts = errorData.missingProducts;
@@ -182,7 +182,7 @@ const useCheckoutSubmit = () => {
             }
             return;
           } else {
-            notifyError(error?.response?.data?.message || "שגיאה ביצירת ההזמנה.");
+            notifyError(error?.response?.data?.message || "שגיאה ביצירת ההזמנה. מומלץ לרוקן את העגלה ולנסות שוב.");
           }
         }).finally(() => {
           setIsCheckoutSubmit(false);
