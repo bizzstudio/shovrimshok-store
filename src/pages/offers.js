@@ -10,13 +10,10 @@ import ProductCard from "@component/product/ProductCard";
 import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg"
-import OfferServices from "@services/OfferServices";
-import useAsync from "@hooks/useAsync";
 
 const Offers = ({ discountProducts, attributes }) => {
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
+  const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
-  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   useEffect(() => {
     setIsLoading(false);

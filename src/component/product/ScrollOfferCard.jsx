@@ -1,3 +1,4 @@
+// ScrollOfferCard.jsx
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useContext, useState } from "react";
@@ -18,6 +19,7 @@ import ImageWithFallback from "@component/common/ImageWithFallBack";
 import { handleLogEvent } from "@utils/analytics";
 import { SidebarContext } from "@context/SidebarContext";
 import useTranslation from "next-translate/useTranslation";
+import getOfferNames from "@component/offer/getOfferNames";
 
 const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,7 +64,9 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
     setModalOpen(event);
   };
 
-  const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+  // יצירת מחרוזת עם כל שמות המבצעים עבור המוצר
+  const offerName = getOfferNames(offers, product);
+
   // פונקציות מבצעים ישנים
   // const getOfferName = (product) => {
   //   if (product.isCombination) {

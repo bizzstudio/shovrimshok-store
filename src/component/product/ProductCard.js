@@ -18,6 +18,7 @@ import ImageWithFallback from "@component/common/ImageWithFallBack";
 import { handleLogEvent } from "@utils/analytics";
 import { SidebarContext } from "@context/SidebarContext";
 import useTranslation from "next-translate/useTranslation";
+import getOfferNames from "@component/offer/getOfferNames";
 
 const ProductCard = ({ product, attributes, offers = [] }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,7 +63,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
     setModalOpen(event);
   };
 
-  const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+  const offerName = getOfferNames(offers, product, <br />);
   // פונקציות מבצעים ישנים
   // const getOfferName = (product) => {
   //   if (product.isCombination) {

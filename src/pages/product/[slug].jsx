@@ -23,7 +23,6 @@ import Stock from "@component/common/Stock";
 import Tags from "@component/common/Tags";
 import Layout from "@layout/Layout";
 import { notifyError } from "@utils/toast";
-import Card from "@component/slug-card/Card";
 import useAddToCart from "@hooks/useAddToCart";
 import Loading from "@component/preloader/Loading";
 import ProductCard from "@component/product/ProductCard";
@@ -35,9 +34,8 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import Discount from "@component/common/Discount";
 import ImageCarousel from "@component/carousel/ImageCarousel";
 import relatedTitle from 'public/titles/relatedProducts.svg'
-import OfferServices from "@services/OfferServices";
-import useAsync from "@hooks/useAsync";
 import useCart from "@hooks/useCart";
+import getOfferNames from "@component/offer/getOfferNames";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   // console.log('ProductScreen product: ', product);
@@ -48,9 +46,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   // console.log('product',product)
 
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
+  const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
   const { handleAddItem, item, setItem } = useAddToCart();
-  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   // react hook
 
@@ -67,11 +64,11 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const [variants, setVariants] = useState([]);
 
   const { items } = useCart();
-  const [offerTitle, setOfferTitle] = useState('');
+  const [offerTitle, setOfferTitle] = useState();
 
   // עדכון מחיר המוצר על סמך המבצע שלו
   useEffect(() => {
-    const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+    const offerName = getOfferNames(offers, product);
     if (offerName) {
       setOfferTitle(offerName);
     } else {

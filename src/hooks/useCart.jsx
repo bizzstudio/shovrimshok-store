@@ -1,12 +1,11 @@
-import OfferServices from '@services/OfferServices';
 import { useCart as useOriginalCart } from 'react-use-cart';
-import useAsync from './useAsync';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { SidebarContext } from '@context/SidebarContext';
 
 const useCart = () => {
     const cart = useOriginalCart();
+    const { offers } = useContext(SidebarContext);
 
-    const { data: offers, loading: loadingOffers, error } = useAsync(() => OfferServices.getAllOffers());
     const [calculating, setCalculating] = useState(false); // מצב העוקב אחרי חישוב המבצעים
 
     // Helper function to apply offers to cart items
@@ -88,29 +87,23 @@ const useCart = () => {
             return;
         }
 
-        if (!error) {
-            setCalculating(true); // התחלת חישוב
-            const { updatedCartItems, totalDiscount } = applyOffers(cart.items, offers);
-            setCustomCart({
-                customCartTotal: (cart.cartTotal - totalDiscount) * 1.1, // הוספת דמי ליקוט 10%
-                updatedCartItems: updatedCartItems,
-            });
-            setCalculating(false); // סיום חישוב
-        } else {
-            console.error('Error fetching offers:', error);
-            setCustomCart({
-                customCartTotal: cart.cartTotal * 1.1, // במידה ויש שגיאה, לא נחשב הנחה ונשאיר את המחיר המקורי עם דמי ליקוט
-                updatedCartItems: cart.items,
-            });
-            setCalculating(false); // סיום חישוב גם במקרה של שגיאה
-        }
-    }, [cart, offers, error]);
+
+        setCalculating(true); // התחלת חישוב
+        
+        const { updatedCartItems, totalDiscount } = applyOffers(cart.items, offers);
+        setCustomCart({
+            customCartTotal: (cart.cartTotal - totalDiscount) * 1.1, // הוספת דמי ליקוט 10%
+            updatedCartItems: updatedCartItems,
+        });
+
+        setCalculating(false); // סיום חישוב
+    }, [cart, offers]);
 
     return {
         ...cart,
-        customCartTotal: calculating || loadingOffers ? 'מחשב פריטים...' : customCart.customCartTotal,
+        customCartTotal: calculating ? 'מחשב פריטים...' : customCart.customCartTotal,
         items: customCart.updatedCartItems,
-        isLoading: calculating || loadingOffers
+        isLoading: calculating
     };
 };
 
