@@ -18,18 +18,15 @@ import leguTitle from "public/titles/leguTitle.svg";
 import ourOffers from "public/titles/ourOffers.svg";
 import vegTitle from "public/titles/vegTitle.svg";
 import honeyTitle from "public/titles/honeyTitle.svg";
-import useAsync from "@hooks/useAsync";
-import OfferServices from "@services/OfferServices";
 import AttributeServices from "@services/AttributeServices";
 
 const CategoryPage = ({ products, attributes }) => {
     const { t } = useTranslation();
-    const { isLoading, setIsLoading } = useContext(SidebarContext);
+    const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
     const [visibleProduct, setVisibleProduct] = useState(24);
     const [category, setCategory] = useState('');
     const router = useRouter();
     const { categoryId } = router.query; // מתייחס לקטגוריה ישירות מהנתב
-    const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
     useEffect(() => {
         if (categoryId) {

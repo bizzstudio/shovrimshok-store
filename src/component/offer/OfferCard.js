@@ -1,23 +1,22 @@
-import React, { useRef } from "react";
-import Router from "next/router";
+// OfferCard.js
+import React, { useContext, useRef } from "react";
 
 //internal import
 import Coupon from "@component/coupon/Coupon";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import OfferServices from "@services/OfferServices";
-import useAsync from "@hooks/useAsync";
 import Discount from "@component/common/Discount";
 import ScrollOfferCard from "@component/product/ScrollOfferCard";
+import getOfferNames from "./getOfferNames";
+import { SidebarContext } from "@context/SidebarContext";
 
 const OfferCard = ({ discountProducts, height, attributes }) => {
   const { storeCustomizationSetting } = useGetSetting();
+  const { offers } = useContext(SidebarContext);
   const headerRef = useRef(null);
 
-  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
-
   const isProductWithDiscount = (product) => {
-    const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+    const offerName = getOfferNames(offers, product);
     if (offerName) {
       return <Discount slug product={product} title={offerName} />
     } else {
@@ -57,13 +56,13 @@ const OfferCard = ({ discountProducts, height, attributes }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            {discountProducts?.map((product) => (
-              <div key={product._id} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+            {discountProducts?.map((product, index) => (
+              <div key={product._id + index} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
                 <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id} />
               </div>
             ))}
-            {discountProducts?.map((product) => (
-              <div key={`${product._id}-clone`} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+            {discountProducts?.map((product, index) => (
+              <div key={`${product._id}-clone-${index}`} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
                 <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id} />
               </div>
             ))}

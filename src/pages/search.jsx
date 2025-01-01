@@ -21,19 +21,15 @@ import leguTitle from "public/titles/leguTitle.svg"
 import ourOffers from "public/titles/ourOffers.svg"
 import vegTitle from "public/titles/vegTitle.svg"
 import honeyTitle from "public/titles/honeyTitle.svg"
-import sortProducts from "src/functions/sortProducts";
-import OfferServices from "@services/OfferServices";
-import useAsync from "@hooks/useAsync";
 
 const Search = ({ products, attributes }) => {
   const { t } = useTranslation();
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
+  const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
   const [visibleProduct, setVisibleProduct] = useState(24);
   const [isCategory, setIsCategory] = useState(false);
   const [category, setCategory] = useState('');
   const router = useRouter();
   const { query } = router;
-  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
 
   useEffect(() => {
     if (query?.category) {

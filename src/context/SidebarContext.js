@@ -1,5 +1,7 @@
+// SidebarContext.js
+import OfferServices from "@services/OfferServices";
+import React, { useState, useMemo, createContext, useEffect } from "react";
 // import useNotification from "@hooks/useNotification";
-import React, { useState, useMemo, createContext } from "react";
 
 // create context
 export const SidebarContext = createContext();
@@ -10,6 +12,21 @@ export const SidebarProvider = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [offers, setOffers] = useState([]); // משתנה לשמירת המבצעים
+
+    // שליפת המבצעים פעם אחת כשאתר נטען
+    useEffect(() => {
+      const fetchOffers = async () => {
+        try {
+          const res = await OfferServices.getAllOffers();
+          setOffers(res || []);
+        } catch (error) {
+          console.error("Failed to fetch offers:", error);
+        }
+      };
+  
+      fetchOffers();
+    }, []);
 
   // const { socket } = useNotification();
 
@@ -43,9 +60,10 @@ export const SidebarProvider = ({ children }) => {
       handleChangePage,
       isLoading,
       setIsLoading,
+      offers,
     }),
 
-    [cartDrawerOpen, categoryDrawerOpen, isModalOpen, currentPage, isLoading]
+    [cartDrawerOpen, categoryDrawerOpen, isModalOpen, currentPage, isLoading, offers]
   );
 
   return (

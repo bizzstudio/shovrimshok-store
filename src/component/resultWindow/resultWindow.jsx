@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IoAdd, IoBagAddSharp, IoRemove } from 'react-icons/io5';
 import { notifyError } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
@@ -11,8 +11,8 @@ import Price from '@component/common/Price';
 import Image from 'next/image';
 import Discount from '@component/common/Discount';
 import useCart from '@hooks/useCart';
-import useAsync from '@hooks/useAsync';
-import OfferServices from '@services/OfferServices';
+import getOfferNames from '@component/offer/getOfferNames';
+import { SidebarContext } from '@context/SidebarContext';
 
 export default function ResultWindow({ products = [], attributes, clearInput, closeResultWindow }) {
     // console.log('products: ', products)
@@ -25,6 +25,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
     const { globalSetting } = useGetSetting();
     const { showingTranslateValue } = useUtilsFunction();
     const { t } = useTranslation();
+    const { offers } = useContext(SidebarContext);
 
     const currency = globalSetting?.default_currency || "₪";
 
@@ -71,10 +72,8 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
 
     // console.log('search Product: ', selectedProduct);
 
-    const { data: offers } = useAsync(() => OfferServices.getAllOffers());
-
     const isProductWithDiscount = (product) => {
-        const offerName = Array.isArray(offers) && offers.find((offer) => offer.products.some(prod => prod._id == product._id))?.name?.he
+        const offerName = getOfferNames(offers, product);
         if (offerName) {
             return <Discount search product={product} title={offerName} />
         } else {

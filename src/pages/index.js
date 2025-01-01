@@ -1,7 +1,7 @@
+// pages/index.js
 import { SidebarContext } from "@context/SidebarContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
 
 //internal import
 import Layout from "@layout/Layout";
@@ -19,16 +19,12 @@ import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg";
 import popolarTitle from "public/titles/popolarTitle.svg";
-import sortProducts from "src/functions/sortProducts";
-import useAsync from "@hooks/useAsync";
-import OfferServices from "@services/OfferServices";
 import logoGif from "public/logoGif.gif";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const router = useRouter();
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
+  const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
-  const { data: offers } = useAsync(() => OfferServices.getAllOffers());
   const [fakeLoading, setFakeLoading] = useState(false)
 
   useEffect(() => {
@@ -43,7 +39,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
       }, 2000);
     }
   }, []);
-  
+
 
   // רעיון לעתיד כותרות קופצות
   // const [showTitles, setShowTitles] = useState(false);
@@ -296,9 +292,9 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                                 storeCustomizationSetting?.home
                                   ?.latest_discount_product_limit
                               )
-                              .map((product) => (
+                              .map((product, index) => (
                                 <ProductCard
-                                  key={product._id}
+                                  key={product._id + index}
                                   product={product}
                                   attributes={attributes}
                                   offers={offers}
