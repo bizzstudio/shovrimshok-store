@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useCart } from "react-use-cart";
 import { FiHome, FiUser, FiShoppingCart, FiAlignLeft, FiUserCheck } from "react-icons/fi";
 import { BsWhatsapp } from "react-icons/bs";
 import { TbCategory } from "react-icons/tb";
@@ -12,6 +11,7 @@ import { UserContext } from "@context/UserContext";
 import LoginModal from "@component/modal/LoginModal";
 import { SidebarContext } from "@context/SidebarContext";
 import CategoryDrawer from "@component/drawer/CategoryDrawer";
+import useCart from "@hooks/useCart";
 
 const MobileFooter = () => {
   const [modalOpen, setModalOpen] = useState(false);

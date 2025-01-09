@@ -1,3 +1,4 @@
+// checkout.jsx
 import React, { useContext, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { CardElement } from "@stripe/react-stripe-js";
@@ -45,6 +46,7 @@ import MissingProductsModal from "@component/modal/MissingProductsModal";
 import websiteClose from 'public/websiteClose2.svg'
 import Image from "next/image";
 import Calculating from "@component/cart/Calculating";
+import PriceUpdatedModal from "@component/modal/PriceUpdatedModal";
 
 const Checkout = () => {
   const {
@@ -71,6 +73,13 @@ const Checkout = () => {
     isDeliveryMetod,
     paymentSrc,
     shippingPercentageIncrease,
+
+    missingProductsModal,
+    setMissingProductsModal,
+    missingProducts,
+    priceConflictsModal,
+    setPriceConflictsModal,
+    priceConflicts,
   } = useCheckoutSubmit();
   const router = useRouter();
 
@@ -91,7 +100,6 @@ const Checkout = () => {
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
   const [isNoteOpen, setIsNoteOpen] = useState(true);
-  const [missingProductsModal, setMissingProductsModal] = useState(false);
   const [missingProductsState, setMissingProductsState] = useState([]);
 
   // בעת שחזור הזמנה הודעה על מוצרים לא זמינים
@@ -111,7 +119,16 @@ const Checkout = () => {
       } catch (error) {
         console.error("Failed to parse missing products:", error);
       }
-    }
+    };
+
+    const offersError = localStorage.getItem("offerConflicts");
+    if (offersError) {
+      setTimeout(() => {
+        // מחיקת הנתונים מה-localStorage לאחר הצגת ההודעה
+        localStorage.removeItem("offerConflicts");
+        notifyError(t("common:errorTryAgain"))
+      }, 300);
+    };
   }, [isCheckoutSubmit]);
 
   // משיכת ההגדרות של המשלוחים וההזמנות ובדיקה אם זה מאופשר או לא
@@ -250,7 +267,14 @@ const Checkout = () => {
       {missingProductsModal && (
         <MainModal modalOpen={missingProductsModal} setModalOpen={setMissingProductsModal}>
           <div className="px-11 py-8">
-            <MissingProductsModal missingProducts={missingProductsState} />
+            <MissingProductsModal missingProducts={missingProductsState.length > 0 ? missingProductsState : missingProducts} />
+          </div>
+        </MainModal>
+      )}
+      {priceConflictsModal && (
+        <MainModal modalOpen={priceConflictsModal} setModalOpen={setPriceConflictsModal}>
+          <div className="px-11 py-8">
+            <PriceUpdatedModal priceUpdatedItems={priceConflicts} closeModal={() => setPriceConflictsModal(false)} />
           </div>
         </MainModal>
       )}

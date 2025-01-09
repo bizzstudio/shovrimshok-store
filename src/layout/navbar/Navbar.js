@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useCart } from "react-use-cart";
 import { IoSearchOutline } from "react-icons/io5";
 import { FiShoppingCart, FiUser, FiBell, FiUserCheck } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
@@ -23,6 +22,7 @@ import ProductServices from "@services/ProductServices";
 import ResultWindow from "@component/resultWindow/resultWindow";
 import AttributeServices from "@services/AttributeServices";
 import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
+import useCart from "@hooks/useCart";
 
 const Navbar = () => {
   const { t } = useTranslation();

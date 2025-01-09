@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import { IoAdd, IoBagAddSharp, IoRemove } from "react-icons/io5";
-import { useCart } from "react-use-cart";
 
 //internal import
 
@@ -19,6 +18,7 @@ import { handleLogEvent } from "@utils/analytics";
 import { SidebarContext } from "@context/SidebarContext";
 import useTranslation from "next-translate/useTranslation";
 import getOfferNames from "@component/offer/getOfferNames";
+import useCart from "@hooks/useCart";
 
 const ProductCard = ({ product, attributes, offers = [] }) => {
   const [modalOpen, setModalOpen] = useState(false);
