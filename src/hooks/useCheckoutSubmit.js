@@ -1,3 +1,4 @@
+// useCheckoutSubmit.js
 import Cookies from "js-cookie";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
@@ -15,6 +16,7 @@ import SettingServices from "@services/SettingServices";
 import NotificationServices from "@services/NotificaitonServices";
 import useTranslation from "next-translate/useTranslation";
 import useCart from "./useCart";
+import useAddToCart from "./useAddToCart";
 
 const useCheckoutSubmit = () => {
   const {
@@ -37,11 +39,20 @@ const useCheckoutSubmit = () => {
   const [paymentSrc, setPaymentSrc] = useState(null);
   const [shippingPercentageIncrease, setShippingPercentageIncrease] = useState(0);
 
+  // סטייטים לקונפליקטים
+  const [missingProductsModal, setMissingProductsModal] = useState(false);
+  const [missingProducts, setMissingProducts] = useState([]);
+  const [priceConflictsModal, setPriceConflictsModal] = useState(false);
+  const [priceConflicts, setPriceConflicts] = useState([]);
+  const [offerConflictsModal, setOfferConflictsModal] = useState(false);
+  const [offerConflicts, setOfferConflicts] = useState([]);
+  const [addUpdatedProducts, setAddUpdatedProducts] = useState(false);
+
   const router = useRouter();
   // const stripe = useStripe();
   // const elements = useElements();
   const couponRef = useRef("");
-  const { isEmpty, emptyCart, items, customCartTotal, removeItem } = useCart();
+  const { isEmpty, emptyCart, items, customCartTotal, removeItem, addItem, inCart } = useCart();
 
   const {
     register,
@@ -171,15 +182,7 @@ const useCheckoutSubmit = () => {
           // בדיקת מוצרים חסרים
           if (error?.response?.status === 409) {
             const errorData = error?.response?.data;
-            if (errorData?.missingProducts && errorData?.missingProducts?.length > 0) {
-              const missingProducts = errorData.missingProducts;
-              localStorage.setItem("missingProducts", JSON.stringify(missingProducts));
-
-              // הסרת המוצרים החסרים מהעגלה
-              missingProducts.forEach((missingProduct) => {
-                removeItem(missingProduct?._id);
-              });
-            }
+            handleConflicts(errorData);
             return;
           } else {
             notifyError(error?.response?.data?.message || "שגיאה ביצירת ההזמנה. מומלץ לרוקן את העגלה ולנסות שוב.");
@@ -291,6 +294,161 @@ const useCheckoutSubmit = () => {
     } catch (err) {
       notifyError(err?.response?.data?.message || err.message);
       setIsCheckoutSubmit(false);
+    }
+  };
+
+  // עדכון המוצרים ששונה להם המחיר
+  useEffect(() => {
+    console.log('priceConflicts :>> ', priceConflicts);
+  }, [priceConflicts])
+
+  useEffect(() => {
+    if (addUpdatedProducts) {
+      priceConflicts.forEach((conflict) => {
+        const { product, serverPrice, clientPrice } = conflict;
+        console.log('product :>> ', product);
+
+        const oldQuantity = product.oldQuantity;
+
+        let selectVariant = null;
+        let stock = product.stock;
+        let price = product.prices.price;
+        let originalPrice = product.prices.originalPrice;
+        let img = product.image[0];
+
+        if (
+          product?.variants.map(
+            (variant) =>
+              Object.entries(variant).sort().toString() ===
+              Object.entries(selectVariant).sort().toString()
+          )
+        ) {
+          const { variants, categories, description, ...updatedProduct } = product;
+          const newItem = {
+            ...updatedProduct,
+            id: `${product.variants.length <= 1
+              ? product._id
+              : product._id +
+              variantTitle
+                ?.map(
+                  // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                  (att) => selectVariant[att._id]
+                )
+                .join("-")
+              }`,
+
+            title: product.variants.length <= 1
+              ? product.title
+              : {
+                he: product.title.he +
+                  "-" +
+                  variantTitle
+                    ?.map(
+                      // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                      (att) =>
+                        att.variants?.find((v) => v._id === selectVariant[att._id])
+                    )
+                    .map((el) => el?.name),
+                en: product.title.en +
+                  "-" +
+                  variantTitle
+                    ?.map(
+                      // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+                      (att) =>
+                        att.variants?.find((v) => v._id === selectVariant[att._id])
+                    )
+                    .map((el) => el?.name)
+              },
+            image: img,
+            variant: selectVariant,
+            price: price,
+            originalPrice: originalPrice,
+          };
+
+          addItem(newItem, oldQuantity);
+        }
+      });
+
+      localStorage.removeItem("priceConflicts");
+      setAddUpdatedProducts(false);
+    }
+  }, [addUpdatedProducts]);
+
+  // פונקציית התמודדות עם קונפליקטים מהשרת
+  const handleConflicts = (errorData) => {
+    if (!errorData || !errorData.keyWord) return;
+
+    switch (errorData.keyWord) {
+      case "missingProducts": {
+        // מוצרים חסרים
+        const missingProducts = errorData.missingProducts || [];
+
+        // שמירה ב-localStorage אם רוצים לשחזר אחרי רענון
+        localStorage.setItem("missingProducts", JSON.stringify(missingProducts));
+
+        // אפשר, אם רוצים, להסיר אותם מייד מהעגלה:
+        missingProducts.forEach((p) => removeItem(p._id));
+
+        // הצגת המודאל עם המוצרים החסרים
+        setMissingProducts(missingProducts);
+        setMissingProductsModal(true);
+        break;
+      }
+
+      case "priceConflicts": {
+        // קונפליקט מחירים
+        const priceConflicts = errorData.priceConflicts || [];
+
+        // שמירה ב-localStorage
+        localStorage.setItem("priceConflicts", JSON.stringify(priceConflicts));
+
+        // **עדכון מיידי של מחיר המוצרים בעגלה**:
+        // הרעיון: להסיר את המוצר הישן ולהוסיף אותו מחדש עם המחיר החדש מהשרת
+        let productsWithQ = priceConflicts;
+        priceConflicts.forEach((conflict) => {
+          const { product } = conflict;
+
+          // 1) מוצאים את הפריט כפי שהוא בעגלה
+          const cartItem = items.find((cartI) => cartI._id === product._id);
+
+          if (cartItem) {
+            const oldQuantity = cartItem.quantity;
+
+            productsWithQ = productsWithQ.map(p => {
+              if (p.product._id === cartItem.id) {
+                return { ...p, product: { ...product, oldQuantity } }
+              }
+              return p;
+            });
+
+            // 2) הסרת הפריט הישן
+            removeItem(cartItem.id);
+
+            setAddUpdatedProducts(true);
+          };
+        });
+
+        // פתיחת מודאל ייעודי
+        setPriceConflicts(productsWithQ);
+        setPriceConflictsModal(true);
+        break;
+      }
+
+      case "offerConflicts": {
+        // קונפליקט מבצעים
+        const offerConflicts = errorData.offerConflicts || [];
+
+        // שמירה ב-localStorage
+        localStorage.setItem("offerConflicts", JSON.stringify(offerConflicts));
+        window.location.reload();
+        break;
+      }
+
+      default:
+        // במקרה שאין keyWord מוכר, או שאין צורך בטיפול מיוחד
+        console.warn("No specific conflict handling for keyWord:", errorData.keyWord);
+        notifyError("שגיאה ביצירת ההזמנה. מומלץ לרוקן את העגלה ולנסות שוב.");
+        break;
     }
   };
 
@@ -428,6 +586,19 @@ const useCheckoutSubmit = () => {
     paymentSrc,
     setPaymentSrc,
     shippingPercentageIncrease,
+
+    missingProductsModal,
+    setMissingProductsModal,
+    missingProducts,
+    setMissingProducts,
+    priceConflictsModal,
+    setPriceConflictsModal,
+    priceConflicts,
+    setPriceConflicts,
+    offerConflictsModal,
+    setOfferConflictsModal,
+    offerConflicts,
+    setOfferConflicts,
   };
 };
 

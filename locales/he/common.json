@@ -271,6 +271,8 @@
     "shipping": "משלוח עד הבית (בתוספת תשלום)",
     "noProductsInCart": "העגלה שלך ריקה!",
     "missingProductsAre": "נמצאו {{count}} מוצרים שלא זמינים יותר",
+    "priceUpdatedForProducts": "ל-{{count}} מוצרים עודכן המחיר:",
+    "errorTryAgain": "אירעה שגיאה, אנא נסה שוב",
     "restoreOrder": "משחזר הזמנה",
     "Reorder": "הזמנה חוזרת",
     "addingItemsToCart": "מוסיף {{x}}/{{y}} פריטים לעגלה...",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 // import { useCart } from "react-use-cart";
 import { IoBagCheckOutline, IoClose, IoBagHandle } from "react-icons/io5";
 import useTranslation from "next-translate/useTranslation";
@@ -23,7 +23,7 @@ const Cart = () => {
   const { currency } = useUtilsFunction();
   const { t } = useTranslation();
   const buttonRef = useRef(null);
-
+  
   const {
     state: { userInfo },
   } = useContext(UserContext);

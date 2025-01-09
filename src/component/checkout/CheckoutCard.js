@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { useCart } from "react-use-cart";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import SettingServices from "@services/SettingServices";
 import useAsync from "@hooks/useAsync";
+import useCart from "@hooks/useCart";
 
 const CheckoutCard = ({ item }) => {
   const { updateItemQuantity } = useCart();
