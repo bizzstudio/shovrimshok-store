@@ -52,6 +52,7 @@ const Checkout = () => {
   const {
     handleSubmit,
     submitHandler,
+    submitWithRefreshOffers,
     handleShippingCost,
     register,
     errors,
@@ -126,7 +127,7 @@ const Checkout = () => {
       setTimeout(() => {
         // מחיקת הנתונים מה-localStorage לאחר הצגת ההודעה
         localStorage.removeItem("offerConflicts");
-        notifyError(t("common:errorTryAgain"))
+        notifyError(t("common:pleaseNote"))
       }, 300);
     };
   }, [isCheckoutSubmit]);

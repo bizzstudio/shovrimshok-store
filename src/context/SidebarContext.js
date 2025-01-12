@@ -14,19 +14,24 @@ export const SidebarProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [offers, setOffers] = useState([]); // משתנה לשמירת המבצעים
 
-    // שליפת המבצעים פעם אחת כשאתר נטען
-    useEffect(() => {
-      const fetchOffers = async () => {
-        try {
-          const res = await OfferServices.getAllOffers();
-          setOffers(res || []);
-        } catch (error) {
-          console.error("Failed to fetch offers:", error);
-        }
-      };
-  
-      fetchOffers();
-    }, []);
+  // שליפת המבצעים פעם אחת כשאתר נטען
+  const fetchOffers = async () => {
+    try {
+      const res = await OfferServices.getAllOffers();
+      setOffers(res || []);
+    } catch (error) {
+      console.error("Failed to fetch offers:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOffers();
+  }, []);
+
+  // פונקציה לריענון
+  const refreshOffers = async () => {
+    await fetchOffers();
+  };
 
   // const { socket } = useNotification();
 
@@ -61,6 +66,7 @@ export const SidebarProvider = ({ children }) => {
       isLoading,
       setIsLoading,
       offers,
+      refreshOffers,
     }),
 
     [cartDrawerOpen, categoryDrawerOpen, isModalOpen, currentPage, isLoading, offers]

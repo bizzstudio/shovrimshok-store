@@ -1,3 +1,4 @@
+// useCart.jsx
 import { useCart as useOriginalCart } from 'react-use-cart';
 import { useContext, useEffect, useState } from 'react';
 import { SidebarContext } from '@context/SidebarContext';

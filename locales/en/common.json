@@ -272,6 +272,7 @@
   "missingProductsAre": "There are {{count}} products that are no longer available",
   "priceUpdatedForProducts": "The price has been updated for {{count}} products:",
   "errorTryAgain": "An error occurred, please try again",
+  "pleaseNote": "Please note, some of the offer prices have been updated.",
   "restoreOrder": "Restoring Order",
   "Reorder": "Reorder",
   "addingItemsToCart": "Adding {{x}}/{{y}} items to your cart...",

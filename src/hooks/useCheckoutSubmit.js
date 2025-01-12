@@ -17,12 +17,14 @@ import NotificationServices from "@services/NotificaitonServices";
 import useTranslation from "next-translate/useTranslation";
 import useCart from "./useCart";
 import useAddToCart from "./useAddToCart";
+import { SidebarContext } from "@context/SidebarContext";
 
 const useCheckoutSubmit = () => {
   const {
     state: { userInfo, shippingAddress },
     dispatch,
   } = useContext(UserContext);
+  const { refreshOffers } = useContext(SidebarContext);
   const { t } = useTranslation();
 
   const [error, setError] = useState("");
@@ -38,6 +40,7 @@ const useCheckoutSubmit = () => {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [paymentSrc, setPaymentSrc] = useState(null);
   const [shippingPercentageIncrease, setShippingPercentageIncrease] = useState(0);
+  const [readyToSubmit, setReadyToSubmit] = useState(null);
 
   // סטייטים לקונפליקטים
   const [missingProductsModal, setMissingProductsModal] = useState(false);
@@ -143,8 +146,34 @@ const useCheckoutSubmit = () => {
     setValue("zipCode", shippingAddress.zipCode);
   }, []);
 
+  // פונקציה חדשה: ריענון מבצעים + שליחה לשרת
+  const submitWithRefreshOffers = async (data) => {
+    try {
+      // 1) רענון המבצעים
+      await refreshOffers();
+      // עכשיו הסטייט של offers ב-SidebarContext יתעדכן
+
+      // 2) לחכות טיפה שהעגלת useCart תעשה applyOffers (אסינכרוני):
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      // 3) רק עכשיו שולחים את ההזמנה
+      setReadyToSubmit(data)
+    } catch (err) {
+      console.error("submitWithRefreshOffers error:", err);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (readyToSubmit) {
+  //     submitHandler(readyToSubmit)
+  //   };
+  // }, [readyToSubmit])
+
+  // שליחת ההזמנה לשרת
   const submitHandler = async (data) => {
     try {
+      console.log('items :>> ', items);
+
       dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
       Cookies.set("shippingAddress", JSON.stringify(data));
       setIsCheckoutSubmit(true);
@@ -299,14 +328,9 @@ const useCheckoutSubmit = () => {
 
   // עדכון המוצרים ששונה להם המחיר
   useEffect(() => {
-    console.log('priceConflicts :>> ', priceConflicts);
-  }, [priceConflicts])
-
-  useEffect(() => {
     if (addUpdatedProducts) {
       priceConflicts.forEach((conflict) => {
         const { product, serverPrice, clientPrice } = conflict;
-        console.log('product :>> ', product);
 
         const oldQuantity = product.oldQuantity;
 
@@ -375,7 +399,7 @@ const useCheckoutSubmit = () => {
   }, [addUpdatedProducts]);
 
   // פונקציית התמודדות עם קונפליקטים מהשרת
-  const handleConflicts = (errorData) => {
+  const handleConflicts = async (errorData) => {
     if (!errorData || !errorData.keyWord) return;
 
     switch (errorData.keyWord) {
@@ -440,7 +464,8 @@ const useCheckoutSubmit = () => {
 
         // שמירה ב-localStorage
         localStorage.setItem("offerConflicts", JSON.stringify(offerConflicts));
-        window.location.reload();
+        // window.location.reload();
+        await refreshOffers();
         break;
       }
 
@@ -562,6 +587,7 @@ const useCheckoutSubmit = () => {
   return {
     handleSubmit,
     submitHandler,
+    submitWithRefreshOffers,
     handleShippingCost,
     register,
     errors,
