@@ -172,7 +172,7 @@ const useCheckoutSubmit = () => {
   // שליחת ההזמנה לשרת
   const submitHandler = async (data) => {
     try {
-      console.log('items :>> ', items);
+      // console.log('items :>> ', items);
 
       dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
       Cookies.set("shippingAddress", JSON.stringify(data));
