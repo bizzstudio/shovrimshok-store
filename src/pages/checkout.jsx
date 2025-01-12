@@ -47,6 +47,7 @@ import websiteClose from 'public/websiteClose2.svg'
 import Image from "next/image";
 import Calculating from "@component/cart/Calculating";
 import PriceUpdatedModal from "@component/modal/PriceUpdatedModal";
+import { SidebarContext } from "@context/SidebarContext";
 
 const Checkout = () => {
   const {
@@ -102,6 +103,12 @@ const Checkout = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(true);
   const [isNoteOpen, setIsNoteOpen] = useState(true);
   const [missingProductsState, setMissingProductsState] = useState([]);
+
+  // רענון המבצעים בכניסה לעמוד התשלום
+  const { refreshOffers } = useContext(SidebarContext);
+  useEffect(() => {
+    refreshOffers();
+  }, []);
 
   // בעת שחזור הזמנה הודעה על מוצרים לא זמינים
   useEffect(() => {
