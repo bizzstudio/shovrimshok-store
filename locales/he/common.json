@@ -273,6 +273,7 @@
     "missingProductsAre": "נמצאו {{count}} מוצרים שלא זמינים יותר",
     "priceUpdatedForProducts": "ל-{{count}} מוצרים עודכן המחיר:",
     "errorTryAgain": "אירעה שגיאה, אנא נסה שוב",
+    "pleaseNote": "שימו לב, חלק מהמחירים של המבצעים התעדכנו.",
     "restoreOrder": "משחזר הזמנה",
     "Reorder": "הזמנה חוזרת",
     "addingItemsToCart": "מוסיף {{x}}/{{y}} פריטים לעגלה...",
