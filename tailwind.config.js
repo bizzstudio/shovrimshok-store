@@ -1,3 +1,4 @@
+// tailwind.config.js
 const colors = require("tailwindcss/colors");
 module.exports = {
   content: [
@@ -7,11 +8,11 @@ module.exports = {
   ],
 
   theme: {
-    // fontFamily: {
-    //   sans: ["Assistant", "sans-serif"],
-    //   serif: ["Assistant", "sans-serif"],
-    //   DejaVu: ["Assistant", "Arial", "sans-serif"],
-    // },
+    fontFamily: {
+      sans: ["Assistant", "Arial", "sans-serif"],
+      serif: ["Assistant", "sans-serif"],
+      DejaVu: ["Assistant", "Arial", "sans-serif"],
+    },
     extend: {
       height: {
         header: "560px",

@@ -1,12 +1,16 @@
 /* src/styles/custom.css */
+@import "/fonts/assistant/fonts.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 /* @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'); */
-@import "/public/fonts/assistant/fonts.css";
 
 * {
   font-family: 'Assistant', Arial, sans-serif;
+}
+
+html {
+  @apply font-sans;
 }
 
 .dynamicPopup h1 {
