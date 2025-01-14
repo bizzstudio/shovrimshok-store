@@ -223,7 +223,7 @@ const NavbarPromo = () => {
                                 />
                               )}
 
-                              <div className="inline-flex items-center justify-center text-center text-[2vw] sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
+                              <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
                                 {title}
                               </div>
                             </Link>
@@ -239,7 +239,7 @@ const NavbarPromo = () => {
                                 className="sm:w-[30px] w-[6vw]" /> :
                               <Image src={offerIconNoColor.src} width={200} height={200} alt="Category"
                                 className="sm:w-[30px] w-[6vw]" />}
-                            <div className="inline-flex items-center justify-center text-center text-[2vw] sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
+                            <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
                               {t("common:Offers")}
                             </div>
                           </Link>
