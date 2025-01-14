@@ -18,6 +18,7 @@ import leguTitle from "public/titles/leguTitle.svg";
 import ourOffers from "public/titles/ourOffers.svg";
 import vegTitle from "public/titles/vegTitle.svg";
 import honeyTitle from "public/titles/honeyTitle.svg";
+import eggsTitle from "public/titles/eggsTitle.svg";
 import AttributeServices from "@services/AttributeServices";
 
 const CategoryPage = ({ products, attributes }) => {
@@ -43,8 +44,8 @@ const CategoryPage = ({ products, attributes }) => {
                 case 'ירקות':
                     setCategory(vegTitle.src);
                     break;
-                case 'דבש':
-                    setCategory(honeyTitle.src);
+                case 'ביצים ושונות':
+                    setCategory(eggsTitle.src);
                     break;
                 case 'מבצעים':
                     setCategory(ourOffers.src);

@@ -1,3 +1,4 @@
+// _app.js
 import "@styles/custom.css";
 import { CartProvider } from "react-use-cart";
 import { Elements } from "@stripe/react-stripe-js";
@@ -20,13 +21,13 @@ import DefaultSeo from "@component/common/DefaultSeo";
 import { SidebarProvider } from "@context/SidebarContext";
 import SettingServices from "@services/SettingServices";
 import { handlePageView } from "@utils/analytics";
-import { Assistant } from 'next/font/google';
+// import { Assistant } from 'next/font/google';
 
-const assistant = Assistant({
-  weight: ['200', '400', '800'],
-  display: 'swap',
-  subsets: ['latin', 'hebrew'],
-});
+// const assistant = Assistant({
+//   weight: ['200', '400', '800'],
+//   display: 'swap',
+//   subsets: ['latin', 'hebrew'],
+// });
 
 let persistor = persistStore(store);
 
@@ -78,24 +79,26 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <div className={assistant.className}>
+    <div
+      // className={assistant.className}
+    >
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
           widgetId={storeSetting?.tawk_chat_widget_id || ""}
         />
       )}
-        
+
       <GoogleOAuthProvider clientId={storeSetting?.google_client_id || ""}>
         <UserProvider>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <SidebarProvider>
                 {/* <Elements stripe={stripePromise}> */}
-                  <CartProvider>
-                    <DefaultSeo />
-                    <Component {...pageProps} />
-                  </CartProvider>
+                <CartProvider>
+                  <DefaultSeo />
+                  <Component {...pageProps} />
+                </CartProvider>
                 {/* </Elements> */}
               </SidebarProvider>
             </PersistGate>
