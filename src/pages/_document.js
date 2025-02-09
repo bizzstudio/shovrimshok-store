@@ -1,3 +1,4 @@
+// src/pages/_document.js
 import SettingServices from "@services/SettingServices";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
@@ -20,7 +21,7 @@ class MyDocument extends Document {
 
   render() {
     const { setting, error } = this.props;
-    
+
     // Check if there was an error during data fetching
     if (error) {
       return (
@@ -40,6 +41,20 @@ class MyDocument extends Document {
       <Html lang="he" dir="rtl">
         <Head>
           <link rel="icon" href={setting?.favicon || "/favicon.png"} />
+
+          {/* Google Tag Manager */}
+          {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5FJVK2CGS"></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-R5FJVK2CGS');
+              `,
+            }}
+          /> */}
+
           <meta
             property="og:title"
             content={
@@ -57,7 +72,7 @@ class MyDocument extends Document {
           />
           <meta
             name="keywords"
-            content={setting?.meta_keywords || "ecommenrce online store"}
+            content={setting?.meta_keywords || "משק קירשנר - פירות וירקות מזמינים אונליין"}
           />
           <meta
             property="og:url"

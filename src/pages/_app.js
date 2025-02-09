@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import Hotjar from '@hotjar/browser';
+import Script from "next/script";
 
 //internal import
 import store from "@redux/store";
@@ -54,6 +55,12 @@ function MyApp({ Component, pageProps }) {
       // Track page view on route change
       const handleRouteChange = (url) => {
         handlePageView(url, "משק קירשנר");
+
+        // Google Analytics
+        // עדכון Google Tag עם הנתיב החדש
+        window.gtag('config', 'G-R5FJVK2CGS', {
+          page_path: url,
+        });
       };
 
       // Set up event listeners
@@ -72,6 +79,7 @@ function MyApp({ Component, pageProps }) {
     }
   }, [router.pathname]);
 
+  // Hotjar
   useEffect(() => {
     if (typeof window !== 'undefined') {
       Hotjar.init(siteId, hotjarVersion);
@@ -80,8 +88,22 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <div
-      // className={assistant.className}
+    // className={assistant.className}
     >
+      {/* טעינת הסקריפט של Google Tag */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-R5FJVK2CGS"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-R5FJVK2CGS');
+        `}
+      </Script>
+
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
