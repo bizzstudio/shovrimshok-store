@@ -1,39 +1,59 @@
-import { FiLock, FiMail } from "react-icons/fi";
-import useTranslation from "next-translate/useTranslation";
+// PickupMsgModal.jsx
 import dayjs from 'dayjs';
 import 'dayjs/locale/he';
+import useTranslation from "next-translate/useTranslation";
+import deliveryMsgTitle from 'public/titles/deliveryMsgTitle.svg';
 
 // הגדרת השפה לעברית
 dayjs.locale('he');
 
-//internal import
-import Error from "@component/form/Error";
-import useLoginSubmit from "@hooks/useLoginSubmit";
-import InputArea from "@component/form/InputArea";
-import deliveryMsgTitle from 'public/titles/deliveryMsgTitle.svg'
-import { useEffect } from "react";
-
 const PickupMsgModal = ({ closeModal = () => { } }) => {
   const { t } = useTranslation();
-
-  // התאמת ההודעה בהתאם לשעה (אם לפני או אחרי 16:00) וליום חמישי אחרי 14:00
-  let now = dayjs();
+  const now = dayjs();
   const currentHour = now.hour();
-  const currentDay = now.day();
+  // systemDay: ראשון=1, שני=2, ... שישי=6, שבת=7
+  const systemDay = now.day() + 1;
 
-  let messagePart;
+  let finalMessage = '';
+  let pickupDate;
+  let pickupWindow = '';
 
-  if (currentDay === 5 && currentHour >= 14) {
-    messagePart = t("common:PickupMessageThursdayAfter14Part2");
-  } else {
-    messagePart = t("common:PickupMessagePart2");
-  }
+  // לוגיקה לאיסוף עצמי
+  if (systemDay !== 6) { // אם היום אינו שישי
+    if (currentHour < 14) { // אם ההזמנה לפני 14
+      pickupDate = now;
+      const formattedToday = pickupDate.format('DD/MM');
+      const tomorrow = now.add(1, 'day').format('DD/MM');
 
-  if (currentHour >= 16) {
-    now = now.add(1, 'day');
-  }
-
-  const formattedDate = now.format('DD/MM');
+      if (systemDay === 5) {
+        // חמישי לפני 14 - עומס חריג = מחר עד 14
+        finalMessage = `נשתדל ללקט את ההזמנה שלך היום (${formattedToday}) עד השעה 16, ובמקרי עומס חריגים – עד מחר (${tomorrow}) עד השעה 14.`;
+      } else {
+        // א'-ד' לפני 14 - עומס חריג = מחר עד 16
+        finalMessage = `נשתדל ללקט את ההזמנה שלך היום (${formattedToday}) עד השעה 16, ובמקרי עומס חריגים – עד מחר (${tomorrow}) עד השעה 16.`;
+      }
+    } else { // אחרי 14: האיסוף מועבר למחר
+      pickupDate = now.add(1, 'day');
+      pickupWindow = systemDay === 5 ? 'עד 14' : 'עד 16';
+      finalMessage = `נלקט את ההזמנה שלך מחר (${pickupDate.format('DD/MM')}) ${pickupWindow}.`;
+    }
+  } else { // יום שישי (systemDay === 6)
+    if (currentHour < 10) { // עד 10 – איסוף היום עד 14
+      pickupDate = now;
+      pickupWindow = 'עד 14';
+      finalMessage = `נלקט את ההזמנה שלך היום (${pickupDate.format('DD/MM')}) ${pickupWindow}.`;
+    } else if (currentHour >= 10 && currentHour < 14) { // בין 10 ל-14
+      // בין 10 ל-14 – ננסה לאסוף היום, אך ככל הנראה האיסוף יהיה ביום ראשון (שמערכתנו: systemDay=1)
+      pickupDate = now.add(2, 'day');
+      pickupWindow = 'עד 16';
+      finalMessage = `נעשה מאמץ שההזמנה תהיה מוכנה היום עד 14, אך ככל הנראה היא תהיה מוכנה ביום ראשון (${pickupDate.format('DD/MM')}) ${pickupWindow}.`;
+    } else { // אחרי 14
+      // אחרי 14 – האיסוף בהכרח יהיה ביום ראשון
+      pickupDate = now.add(2, 'day');
+      pickupWindow = 'עד 16';
+      finalMessage = `ההזמנה שלך תהיה מוכנה ביום ראשון (${pickupDate.format('DD/MM')}) ${pickupWindow}.`;
+    }
+  };
 
   return (
     <div className="w-52">
@@ -42,10 +62,12 @@ const PickupMsgModal = ({ closeModal = () => { } }) => {
       </div>
       <div className="flex flex-col justify-center gap-3">
         <p className="text-center text-lg">
-          {currentHour < 16 ? t("common:PickupMessagePart1") + "(" + formattedDate + ")" + ", " + messagePart : t("common:PickupMessagePart3") + "(" + formattedDate + ")" + ", " + messagePart}
+          {finalMessage}
         </p>
-        <button onClick={closeModal}
-          className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap">
+        <button
+          onClick={closeModal}
+          className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+        >
           {t("common:ok")}
         </button>
       </div>

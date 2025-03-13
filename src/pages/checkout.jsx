@@ -93,6 +93,7 @@ const Checkout = () => {
   const { state: { userInfo } } = useContext(UserContext);
   const city = userInfo?.address?.city?.city_name_he;
   const [isDeliverable, setIsDeliverable] = useState(null);
+  const [availableDays, setAvailableDays] = useState([]);
   const [nextTime, setNextTime] = useState(null);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -223,12 +224,15 @@ const Checkout = () => {
     const fetchData = async () => {
       try {
         const check = await isAddressDeliverable(city);
+        console.log('check :>> ', check);
         const { isTodayDeliverable, nextDeliverableDate } = canOrderToday(check.days);
 
-        if (isTodayDeliverable) {
+        if (check?.days?.length > 0) {
           setIsDeliverable(true);
+          setAvailableDays(check.days.map(d => d.value));
         } else {
           setIsDeliverable(false);
+          setAvailableDays([]);
           setNextTime(nextDeliverableDate);
         }
         setDeliveryPrice(check.price);
@@ -289,7 +293,10 @@ const Checkout = () => {
       {deliveryMsg && (
         <MainModal modalOpen={deliveryMsg} setModalOpen={setDeliveryMsg}>
           <div className="px-11 py-8">
-            <DeliveryMsgModal closeModal={() => setDeliveryMsg(false)} />
+            <DeliveryMsgModal closeModal={() => setDeliveryMsg(false)} cityName={city?.trim()}
+              shippingDays={availableDays}
+            // shippingDays={["1", "2", "3", "4", "5", "6", "7"]}
+            />
           </div>
         </MainModal>
       )}
@@ -357,9 +364,8 @@ const Checkout = () => {
                               register={register}
                               value={2}
                               isDeliverable={isDeliverable}
-                              nextTime={nextTime}
+                              nextTime={null}
                               isDeliveryOpen={isDeliveryOpen}
-                            // note="משלוחים מא’-ה’ שיתקבלו עד השעה 13:00 בלבד נשתדל לספק עד שעה 22:00 באותו היום, או ביום למחרת לכל המאוחר"
                             />
                           </div>
 
@@ -372,7 +378,7 @@ const Checkout = () => {
                               handleShippingCost={handleSubmitWithPickup}
                               register={register}
                               value={1}
-                              isDeliverable={true}
+                              isDeliverable
                               icon={<LiaTruckPickupSolid />}
                             />
                           </div>
@@ -419,7 +425,7 @@ const Checkout = () => {
                                 </span>
                               </span>
                             ) : (
-                              <div className="w-full flex flex-col sm:flex-row items-start justify-end gap-2">
+                              <div className="w-full flex items-center justify-center gap-2">
                                 <input
                                   ref={couponRef}
                                   type="text"
@@ -435,7 +441,7 @@ const Checkout = () => {
                                 <button
                                   type="button"
                                   onClick={handleCouponCode}
-                                  className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 text-white bg-customGreen hover:bg-customGreen-dark h-12 text-sm lg:text-base w-full sm:w-auto"
+                                  className="w-fit md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-customGreen rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 sm:ml-3 md:ml-3 lg:ml-3 text-customGreen hover:text-white hover:bg-customGreen h-12 text-sm lg:text-base whitespace-nowrap"
                                 >
                                   {showingTranslateValue(
                                     storeCustomizationSetting?.checkout?.apply_button
