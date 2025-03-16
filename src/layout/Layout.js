@@ -1,5 +1,8 @@
+import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 //internal import
 import Navbar from "@layout/navbar/Navbar";
@@ -8,18 +11,21 @@ import NavBarTop from "./navbar/NavBarTop";
 import FooterTop from "@layout/footer/FooterTop";
 import MobileFooter from "@layout/footer/MobileFooter";
 import FeatureCard from "@component/feature-card/FeatureCard";
-import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
 import MainModal from "@component/modal/MainModal";
 import UserAddressInitialize from "@component/userAddressInitialize/UserAddressInitialize";
 import RegisterSuccess from "@component/login/RegisterSuccess";
-import { useRouter } from "next/router";
 import PopupServices from "@services/PopupServices";
 import useAsync from "@hooks/useAsync";
 import DynamicPopup from "@component/modal/DynamicPopup";
 import StickyCart from "@component/cart/StickyCart";
+import { UserContext } from "@context/UserContext";
+import BeforeStartPopup from "@component/modal/BeforeStartPopup";
 
 const Layout = ({ title, description, children }) => {
+
+  const {
+    state: { userInfo },
+  } = useContext(UserContext);
 
   let currentLang = Cookies.get('_lang');
 
@@ -98,6 +104,31 @@ const Layout = ({ title, description, children }) => {
     };
   }, []);
 
+
+  // פופאפ לפני שמתחילים בחירת עיר
+  const [showBeforeStartPopup, setShowBeforeStartPopup] = useState(false);
+  // נבדוק בתנאי שהמשתמש אינו מחובר וכו'
+  useEffect(() => {
+    // אם יש יוזר -> לא מציגים את הפופאפ
+    if (userInfo) return;
+
+    // אם כבר יש פופאפ דינאמי או addressPopup וכו' -> חכה עם זה
+    if (currentPopup || addressPopup || showRegisterSuccess) return;
+
+    // אם כבר ראינו את הפופאפ
+    if (sessionStorage.getItem("beforeStartPopupShown")) return;
+
+    // במידה והגענו לכאן, נפתח את הפופאפ
+    setShowBeforeStartPopup(true);
+    sessionStorage.setItem("beforeStartPopupShown", "true");
+  }, [
+    userInfo,
+    currentPopup,
+    addressPopup,
+    showRegisterSuccess,
+    // וכל State אחר שמבטיח שלא תקפוץ כפילות
+  ]);
+
   return (
     <>
       <ToastContainer rtl={currentLang} />
@@ -119,11 +150,21 @@ const Layout = ({ title, description, children }) => {
       )}
 
       {/* פופאפ דינאמי */}
-      {!loading && !error && currentPopup && !addressPopup && !showRegisterSuccess && (
+      {!loading && !error && currentPopup && !addressPopup && !showRegisterSuccess && !showBeforeStartPopup && (
         <MainModal modalOpen={true} setModalOpen={() => setCurrentPopup(null)}>
           <div className="px-3 sm:px-11 py-7 max-w-md">
             <DynamicPopup popup={currentPopup} />
           </div>
+        </MainModal>
+      )}
+
+      {/* פופאפ "לפני שמתחילים" */}
+      {showBeforeStartPopup && (
+        <MainModal
+          modalOpen={showBeforeStartPopup}
+          setModalOpen={setShowBeforeStartPopup}
+        >
+          <BeforeStartPopup onClose={() => setShowBeforeStartPopup(false)} />
         </MainModal>
       )}
 

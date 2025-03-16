@@ -35,7 +35,7 @@ const City = ({ setValue, placeholder }) => {
       '&:hover': {
         borderColor: state.isFocused ? '#3c6d16' : provided.borderColor,
       },
-      padding: '5px', 
+      padding: '5px',
       direction: 'rtl',
       textAlign: 'right',
     }),
@@ -57,6 +57,7 @@ const City = ({ setValue, placeholder }) => {
       ...provided,
       textAlign: 'right',
     }),
+    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
   };
 
   return (
@@ -67,6 +68,8 @@ const City = ({ setValue, placeholder }) => {
       styles={customStyles}
       noOptionsMessage={() => t("common:noOptions")}
       isRtl={true}
+      menuPortalTarget={typeof window !== "undefined" ? document.body : null}
+      menuPosition="absolute"
     />
   );
 };
