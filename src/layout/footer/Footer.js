@@ -466,7 +466,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             className="text-customGreen"
           >
-            למשק קירשנר
+            לאחים שפירא
           </Link>
            | האתר נבנה על ידי 
            <Link

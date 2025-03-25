@@ -1,4 +1,4 @@
-// _app.js
+// shapira-store/src/pages/_app.js
 import "@styles/custom.css";
 import { CartProvider } from "react-use-cart";
 import { Elements } from "@stripe/react-stripe-js";
@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }) {
 
       // Track page view on route change
       const handleRouteChange = (url) => {
-        handlePageView(url, "משק קירשנר");
+        handlePageView(url, "אחים שפירא");
 
         // Google Analytics
         // עדכון Google Tag עם הנתיב החדש

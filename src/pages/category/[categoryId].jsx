@@ -1,3 +1,5 @@
+// shapira-store/pages/category/[categoryId].jsx
+
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
@@ -6,12 +8,15 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "@layout/Layout";
 import useFilter from "@hooks/useFilter";
 import ProductServices from "@services/ProductServices";
+import AttributeServices from "@services/AttributeServices";
+import CategoryServices from "@services/CategoryServices";
+
 import ProductCard from "@component/product/ProductCard";
 import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
 import { useRouter } from "next/router";
 
-// import ctegories titles
+// import categories titles
 import fruitTitle from "public/titles/fruitTitle.svg";
 import herbsTitle from "public/titles/herbsTitle.svg";
 import leguTitle from "public/titles/leguTitle.svg";
@@ -19,52 +24,122 @@ import ourOffers from "public/titles/ourOffers.svg";
 import vegTitle from "public/titles/vegTitle.svg";
 import honeyTitle from "public/titles/honeyTitle.svg";
 import eggsTitle from "public/titles/eggsTitle.svg";
-import AttributeServices from "@services/AttributeServices";
 
-const CategoryPage = ({ products, attributes }) => {
+/*
+ * עמוד קטגוריה שמקבל מה-SSR:
+ *  - props.allProd (מוצרים בעמוד הראשון)
+ *  - props.attributes
+*/
+const CategoryPage = ({ allProd, attributes }) => {
     const { t } = useTranslation();
-    const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
-    const [visibleProduct, setVisibleProduct] = useState(24);
-    const [category, setCategory] = useState('');
+    const { isLoading, setIsLoading, offers, categories } = useContext(SidebarContext);
+
+    // נשמור כאן את כל המוצרים מכל העמודים
+    const [allProducts, setAllProducts] = useState(allProd || []);
+    console.log('all Products :>> ', allProducts);
+
+    // state לניהול page = עמוד נוכחי
+    const [page, setPage] = useState(1);
+
+    // האם יש עוד מוצרים בעמוד הבא?
+    const [hasMore, setHasMore] = useState(true);
+
     const router = useRouter();
-    const { categoryId } = router.query; // מתייחס לקטגוריה ישירות מהנתב
+    const { categoryId, sub } = router.query;
 
-    useEffect(() => {
-        if (categoryId) {
-            switch (categoryId) { // משתמש ב-categoryId במקום query?.category
-                case 'פירות':
-                    setCategory(fruitTitle.src);
-                    break;
-                case 'עלים ועשבי תיבול':
-                    setCategory(herbsTitle.src);
-                    break;
-                case 'קטניות':
-                    setCategory(leguTitle.src);
-                    break;
-                case 'ירקות':
-                    setCategory(vegTitle.src);
-                    break;
-                case 'ביצים ושונות':
-                    setCategory(eggsTitle.src);
-                    break;
-                case 'מבצעים':
-                    setCategory(ourOffers.src);
-                    break;
-                default:
-                    setCategory('');
-                    break;
-            }
-        }
-    }, [categoryId]);
+    // שליפת שמות הקטגוריה ותת-הקטגוריה מהקונטקסט
+    const foundParent = categories?.find((cat) => cat.code === categoryId);
+    const parentName = foundParent?.name || categoryId;
 
+    let childName = "";
+    if (sub && foundParent?.children?.length > 0) {
+        const foundChild = foundParent.children.find((child) => child.code === sub);
+        childName = foundChild?.name || sub;
+    }
+
+    // כדי לוודא שאין ספינר
     useEffect(() => {
         setIsLoading(false);
-    }, [products]);
+    }, [allProducts, setIsLoading]);
 
-    const { setSortedField, productData } = useFilter(products);
+    // useFilter עדיין יכול לעבוד: למשל אם צריך למיין מוצרים
+    // אבל צריך להזין את כל המוצרים שיש (allProducts):
+    const { productData } = useFilter(allProducts);
+
+    // בוחרים איזו תמונה להציג לפי parentName
+    const [categoryImg, setCategoryImg] = useState("");
+    const [fallbackTitle, setFallbackTitle] = useState("");
+
+    // הגדרות לוגיקה לתמונה
+    useEffect(() => {
+        if (!parentName) return;
+
+        let foundImg = "";
+        let catName = parentName;
+
+        switch (parentName) {
+            case "פירות":
+                foundImg = fruitTitle.src;
+                break;
+            case "עלים ועשבי תיבול":
+                foundImg = herbsTitle.src;
+                break;
+            case "קטניות":
+                foundImg = leguTitle.src;
+                break;
+            case "ירקות":
+                foundImg = vegTitle.src;
+                break;
+            case "ביצים ושונות":
+                foundImg = eggsTitle.src;
+                break;
+            case "מבצעים":
+                foundImg = ourOffers.src;
+                break;
+            default:
+                foundImg = "";
+                break;
+        }
+
+        // אם יש childName ולא מצאנו תמונה מיוחדת, נוסיף " / childName" בכותרת
+        if (!foundImg && childName) {
+            catName += " / " + childName;
+        }
+
+        setCategoryImg(foundImg);
+        setFallbackTitle(catName);
+    }, [parentName, childName]);
+
+    // title ל-Layout
+    const layoutTitle = childName ? `${parentName} / ${childName}` : parentName;
+
+    // פונקציה לטעינת עמוד נוסף
+    const handleLoadMore = async () => {
+        const nextPage = page + 1;
+        setIsLoading(true);
+        try {
+            const res = await ProductServices.getShowingStoreProducts({
+                category: categoryId,
+                subcategories: sub,
+                page: nextPage,
+            });
+            // אם אין מוצרים בעמוד הבא, סוגרים hasMore
+            if (!res.products || res.products.length === 0) {
+                setHasMore(false);
+            } else {
+                // מוסיפים את המוצרים החדשים למערך
+                setAllProducts([...allProducts, ...res.products]);
+                setPage(nextPage);
+            }
+        } catch (err) {
+            console.error("Load More error: ", err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
-        <Layout title={categoryId} description="This is category page">
+        <Layout title={layoutTitle || "קטגוריה"} description="This is category page">
             <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                 <div className="flex py-5">
                     <div className="flex w-full">
@@ -82,37 +157,43 @@ const CategoryPage = ({ products, attributes }) => {
                                         {t("common:sorryText")}
                                     </h2>
                                 </div>
+                            ) : categoryImg ? (
+                                // מצאנו תמונה תואמת
+                                <img
+                                    src={categoryImg}
+                                    alt={layoutTitle}
+                                    className="h-24 mx-auto animate-fadeIn"
+                                />
                             ) : (
-                                category ? (
-                                    <img src={category} alt={categoryId} className="h-24 mx-auto animate-fadeIn" />
-                                ) : (
-                                    <div className="flex justify-between my-3 bg-customBrown-light border border-gray-100 rounded p-3">
-                                        <h6 className="text-sm font-serif">
-                                            {t("common:totalI")}{" "}
-                                            <span className="font-bold">{productData?.length}</span>{" "}
-                                            {t("common:itemsFound")}
-                                        </h6>
-                                    </div>
-                                )
+                                // אחרת מציגים מלבן עם כותרת "קטגוריה / תת קטגוריה"
+                                <div className="flex justify-center items-center my-3 bg-customBrown-light border border-gray-100 rounded p-3">
+                                    <h6 className="text-sm font-serif">{fallbackTitle}</h6>
+                                </div>
                             )}
 
-                            {isLoading ? (
+                            {isLoading && page === 1 ? (
+                                // ספינר ראשוני רק בעמוד הראשון
                                 <Loading loading={isLoading} />
                             ) : (
                                 <>
                                     <div
-                                        className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3 ${productData?.length < 6 ? 'justify-center' : ''}`}
+                                        className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3 ${productData?.length < 6 ? "justify-center" : ""
+                                            }`}
                                         style={{
-                                            gridTemplateColumns: window.innerWidth < 640
-                                                ? `repeat(2, minmax(150px, 1fr))`
-                                                : productData?.length < 6
-                                                    ? `repeat(${Math.min(productData?.length, 6)}, minmax(150px, 235px))`
-                                                    : '',
+                                            gridTemplateColumns:
+                                                typeof window !== "undefined" && window.innerWidth < 640
+                                                    ? `repeat(2, minmax(150px, 1fr))`
+                                                    : productData?.length < 6
+                                                        ? `repeat(${Math.min(
+                                                            productData?.length,
+                                                            6
+                                                        )}, minmax(150px, 235px))`
+                                                        : "",
                                         }}
                                     >
-                                        {productData?.slice(0, visibleProduct).map((product, i) => (
+                                        {productData.map((product, i) => (
                                             <ProductCard
-                                                key={i + 1}
+                                                key={product.ItemCode || i}
                                                 product={product}
                                                 attributes={attributes}
                                                 offers={offers}
@@ -120,9 +201,10 @@ const CategoryPage = ({ products, attributes }) => {
                                         ))}
                                     </div>
 
-                                    {productData?.length > visibleProduct && (
+                                    {/* כפתור "Load More" – נטען עמוד נוסף מהשרת */}
+                                    {hasMore && productData?.length > 0 && (
                                         <button
-                                            onClick={() => setVisibleProduct((pre) => pre + 36)}
+                                            onClick={handleLoadMore}
                                             className="w-auto mx-auto mt-6 flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                                         >
                                             {t("common:loadMoreBtn")}
@@ -140,19 +222,26 @@ const CategoryPage = ({ products, attributes }) => {
 
 export default CategoryPage;
 
+// ===============================
+// =       getServerSideProps    =
+// ===============================
 export const getServerSideProps = async (context) => {
-    const { categoryId } = context.query;
+    const { categoryId, sub } = context.query;
 
+    // 1) נטען את העמוד הראשון (page=1)
     const [data, attributes] = await Promise.all([
         ProductServices.getShowingStoreProducts({
             category: categoryId,
+            subcategories: sub,
+            page: 1,
+            limit: 36,
         }),
         AttributeServices.getShowingAttributes({}),
     ]);
 
     return {
         props: {
-            products: data?.products,
+            allProd: data?.products || [],
             attributes,
         },
     };

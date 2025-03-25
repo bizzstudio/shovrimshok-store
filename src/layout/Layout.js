@@ -1,3 +1,4 @@
+// shapira-store/src/layout/Layout.js
 import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
@@ -172,8 +173,8 @@ const Layout = ({ title, description, children }) => {
         <Head>
           <title>
             {title
-              ? `משק קירשנר | ${title}`
-              : "משק קירשנר"}
+              ? `אחים שפירא | ${title}`
+              : "אחים שפירא"}
           </title>
           {description && <meta name="description" content={description} />}
           <link ref="icon" href="/favicon.png" />

@@ -1,3 +1,4 @@
+// shapira-store/src/layout/navbar/NavbarPromo.js
 import { Fragment, useState, useEffect, useContext, useTransition } from "react";
 import Link from "next/link";
 import { Transition, Popover } from "@headlessui/react";
@@ -142,11 +143,11 @@ const NavbarPromo = () => {
       {LoginModalOpen && (
         <LoginModal modalOpen={LoginModalOpen} setModalOpen={setLoginModalOpen} />
       )}
-      <div className="lg:block xl:block bg-white border-b">
-        <div className="w-full px-5 pb-1 lg:pb-3 pt-1.5 sm:px-4 flex justify-center lg:justify-between items-center overflow-x-auto noScroller">
-          <div className="inline-flex sm:w-fit w-full">
-            <Popover className="relative sm:w-fit w-full">
-              <div className="max-w-7xl mx-auto sm:w-fit w-full">
+      <div className="hidden lg:block xl:block bg-white border-b">
+        <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 h-12 flex justify-between items-center">
+          <div className="inline-flex">
+            <Popover className="relative">
+              <div className="max-w-7xl mx-auto">
                 {/* <div className="relative grid gap-2 p-6">
                   {data[0]?.children?.map((category) => (
                     <CategoryCard
@@ -158,93 +159,94 @@ const NavbarPromo = () => {
                     />
                   ))}
                 </div> */}
-                <div className="flex justify-between items-center md:justify-start md:space-x-10 sm:w-fit w-full">
+                <div className="flex justify-between items-center md:justify-start md:space-x-10">
                   <Popover.Group
                     as="nav"
                     className="flex items-center justify-between sm:justify-center sm:gap-4 sm:w-fit w-full"
                   >
+                    {/* categoies */}
                     {storeCustomizationSetting?.navbar
                       ?.categories_menu_status && (
-                        // <Popover className="relative font-serif">
-                        //   <Popover.Button className="group inline-flex items-center py-2 hover:text-customGreen-dark focus:outline-none">
-                        //     <span className="font-serif text-sm font-medium">
-                        //       {showingTranslateValue(
-                        //         storeCustomizationSetting?.navbar?.categories
-                        //       )}
-                        //     </span>
-
-                        //     <ChevronDownIcon
-                        //       className="ml-1 h-3 w-3 group-hover:text-customGreen-dark"
-                        //       aria-hidden="true"
-                        //     />
-                        //   </Popover.Button>
-
-                        //   <Transition
-                        //     as={Fragment}
-                        //     enter="transition ease-out duration-200"
-                        //     enterFrom="opacity-0 translate-y-1"
-                        //     enterTo="opacity-100 translate-y-0"
-                        //     leave="transition ease-in duration-150"
-                        //     leaveFrom="opacity-100 translate-y-0"
-                        //     leaveTo="opacity-0 translate-y-1"
-                        //   >
-                        //     <Popover.Panel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
-                        //       <div className="rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
-                        //         <Category />
-                        //       </div>
-                        //     </Popover.Panel>
-                        //   </Transition>
-                        // </Popover>
-                        <>
-                          {!loading && !error && data && data[0]?.children?.map((category, index) => {
-                            const title = showingTranslateValue(category?.name)
-                            return <Link
-                              onMouseEnter={() => setIsHover(index)}
-                              onMouseLeave={() => setIsHover(null)}
-                              // onClick={() => showCategory(category._id, title)}
-                              href={'/category/' + category?.name?.he}
-                              className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
-                              role="button"
-                              key={category._id}
-                            >
-                              {category.icon ? (
-                                isHover == index || selectedCategory == index ?
-                                  <Image src={category.coloredIcon} width={200} height={200} alt="Category"
-                                    className="sm:w-[30px] w-[6vw]" /> :
-                                  <Image src={category.icon} width={200} height={200} alt="Category"
-                                    className="sm:w-[30px] w-[6vw]" />
-                              ) : (
-                                <Image
-                                  src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                                  width={200}
-                                  height={200}
-                                  alt="category"
-                                  className="sm:w-[30px] w-[6vw]"
-                                />
+                        <Popover className="relative font-serif">
+                          <Popover.Button className="group inline-flex items-center py-2 hover:text-customGreen focus:outline-none">
+                            <span className="font-serif text-sm font-medium">
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.navbar?.categories
                               )}
+                            </span>
 
-                              <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
-                                {title}
+                            <ChevronDownIcon
+                              className="ml-1 h-3 w-3 group-hover:text-customGreen"
+                              aria-hidden="true"
+                            />
+                          </Popover.Button>
+
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-200"
+                            enterFrom="opacity-0 translate-y-1"
+                            enterTo="opacity-100 translate-y-0"
+                            leave="transition ease-in duration-150"
+                            leaveFrom="opacity-100 translate-y-0"
+                            leaveTo="opacity-0 translate-y-1"
+                          >
+                            <Popover.Panel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
+                              <div className="rounded-md shadow-lg ring-1 ring-black ring-opacity-5 flex-grow w-full h-full">
+                                <Category />
                               </div>
-                            </Link>
-                          })}
+                            </Popover.Panel>
+                          </Transition>
+                        </Popover>
+                        // <>
+                        //   {!loading && !error && data && data[0]?.children?.map((category, index) => {
+                        //     const title = showingTranslateValue(category?.name)
+                        //     return <Link
+                        //       onMouseEnter={() => setIsHover(index)}
+                        //       onMouseLeave={() => setIsHover(null)}
+                        //       // onClick={() => showCategory(category._id, title)}
+                        //       href={'/category/' + category?.name?.he}
+                        //       className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
+                        //       role="button"
+                        //       key={category._id}
+                        //     >
+                        //       {category.icon ? (
+                        //         isHover == index || selectedCategory == index ?
+                        //           <Image src={category.coloredIcon} width={200} height={200} alt="Category"
+                        //             className="sm:w-[30px] w-[6vw]" /> :
+                        //           <Image src={category.icon} width={200} height={200} alt="Category"
+                        //             className="sm:w-[30px] w-[6vw]" />
+                        //       ) : (
+                        //         <Image
+                        //           src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                        //           width={200}
+                        //           height={200}
+                        //           alt="category"
+                        //           className="sm:w-[30px] w-[6vw]"
+                        //         />
+                        //       )}
 
-                          <Link onMouseEnter={() => setIsHover(categoriesLength)}
-                            onMouseLeave={() => setIsHover(null)}
-                            href="/offers"
-                            className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
-                            role="button">
-                            {isHover == categoriesLength || selectedCategory == categoriesLength ?
-                              <Image src={offerIcon.src} width={200} height={200} alt="Category"
-                                className="sm:w-[30px] w-[6vw]" /> :
-                              <Image src={offerIconNoColor.src} width={200} height={200} alt="Category"
-                                className="sm:w-[30px] w-[6vw]" />}
-                            <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
-                              {t("common:Offers")}
-                            </div>
-                          </Link>
+                        //       <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
+                        //         {title}
+                        //       </div>
+                        //     </Link>
+                        //   })}
 
-                        </>
+                        //   <Link onMouseEnter={() => setIsHover(categoriesLength)}
+                        //     onMouseLeave={() => setIsHover(null)}
+                        //     href="/offers"
+                        //     className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
+                        //     role="button">
+                        //     {isHover == categoriesLength || selectedCategory == categoriesLength ?
+                        //       <Image src={offerIcon.src} width={200} height={200} alt="Category"
+                        //         className="sm:w-[30px] w-[6vw]" /> :
+                        //       <Image src={offerIconNoColor.src} width={200} height={200} alt="Category"
+                        //         className="sm:w-[30px] w-[6vw]" />}
+                        //     <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
+                        //       {t("common:Offers")}
+                        //     </div>
+                        //   </Link>
+
+                        // </>
                       )}
 
                     {/* {storeCustomizationSetting?.navbar?.about_menu_status && (
@@ -271,6 +273,7 @@ const NavbarPromo = () => {
                       </Link>
                     )} */}
 
+                    {/* pages */}
                     {/* <Popover className="relative font-serif">
                       <Popover.Button className="group inline-flex items-center py-2 text-sm font-medium hover:text-customGreen-dark focus:outline-none">
                         <span>
@@ -465,20 +468,18 @@ const NavbarPromo = () => {
             {/* <button className="hidden sm:inline-block lg:inline-block text-sm leading-6 font-serif font-medium px-6 py-2 bg-customGreen text-center rounded-md text-white hover:bg-customGreen-dark">
               משלוחים ואיזורי חלוקה
             </button> */}
-            <a href="https://api.whatsapp.com/send/?phone=972525123003" target="_blank">
+            {/* <a href="https://api.whatsapp.com/send/?phone=972525123003" target="_blank">
               <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               >
-                {/* <TbTruckDelivery size={21} className="mt-0.5" /> */}
                 <BsWhatsapp className="w-6 h-6 drop-shadow-xl" />
                 <span>שירות לקוחות</span>
               </button>
             </a>
             <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               onClick={() => setDeliveriesPopup(true)}>
-              {/* <TbTruckDelivery size={21} className="mt-0.5" /> */}
               <img src={deliveryIcon.src} className="h-full mt-1 " />
               <span>משלוחים ואיזורי חלוקה</span>
-            </button>
+            </button> */}
             {/* <div className="dropdown">
               <div
                 className={`flot-l flag ${currentLang?.flag?.toLowerCase()}`}

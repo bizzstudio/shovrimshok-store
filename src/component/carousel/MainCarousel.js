@@ -137,7 +137,7 @@ const MainCarousel = () => {
             key={i + 1}
             onClick={() => Router.push(item.url)}
           >
-            <div className="text-sm text-gray-600 hover:text-emerald-dark">
+            <div className="text-sm text-gray-600 hover:text-customGreen-dark">
               <Image
                 width={950}
                 height={400}

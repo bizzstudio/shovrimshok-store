@@ -1,8 +1,8 @@
+// shapira-store/src/component/common/DefaultSeo.js
 import React from "react";
 import { DefaultSeo as NextSeo } from "next-seo";
 
 //internal import
-
 import useAsync from "@hooks/useAsync";
 import SettingServices from "@services/SettingServices";
 
@@ -16,7 +16,7 @@ const DefaultSeo = () => {
     <NextSeo
       title={
         globalSetting?.meta_title ||
-        "משק קירשנר - חנות ירקות און ליין"
+        "אחים שפירא - ספקי וסיטונאי מזון"
       }
       openGraph={{
         type: "website",
@@ -24,7 +24,7 @@ const DefaultSeo = () => {
         url: globalSetting?.meta_url || "https://meshek-kirshner.co.il",
         site_name:
           globalSetting?.meta_title ||
-          "משק קירשנר - חנות ירקות און ליין",
+          "אחים שפירא - ספקי וסיטונאי מזון",
       }}
       twitter={{
         handle: "@handle",

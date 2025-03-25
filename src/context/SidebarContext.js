@@ -1,4 +1,5 @@
 // SidebarContext.js
+import CategoryServices from "@services/CategoryServices";
 import OfferServices from "@services/OfferServices";
 import React, { useState, useMemo, createContext, useEffect } from "react";
 // import useNotification from "@hooks/useNotification";
@@ -13,6 +14,7 @@ export const SidebarProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [offers, setOffers] = useState([]); // משתנה לשמירת המבצעים
+  const [categories, setCategories] = useState([]); // משתנה לשמירת הקטגוריות
 
   // שליפת המבצעים פעם אחת כשאתר נטען
   const fetchOffers = async () => {
@@ -24,8 +26,18 @@ export const SidebarProvider = ({ children }) => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await CategoryServices.getShowingCategory();
+      setCategories(res || []);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  };
+
   useEffect(() => {
     fetchOffers();
+    fetchCategories();
   }, []);
 
   // פונקציה לריענון
@@ -67,9 +79,10 @@ export const SidebarProvider = ({ children }) => {
       setIsLoading,
       offers,
       refreshOffers,
+      categories,
     }),
 
-    [cartDrawerOpen, categoryDrawerOpen, isModalOpen, currentPage, isLoading, offers]
+    [cartDrawerOpen, categoryDrawerOpen, isModalOpen, currentPage, isLoading, offers, categories]
   );
 
   return (

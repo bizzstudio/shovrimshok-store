@@ -187,7 +187,7 @@ const Dashboard = ({ title, description, children }) => {
                         )}
                         Icon={FiCheck}
                         quantity={data?.delivered}
-                        className="text-customGreen-dark bg-emerald-200"
+                        className="text-customGreen-dark bg-customGreen-leaf"
                       />
                     </div>
                     <RecentOrder data={data} loading={loading} error={error} />

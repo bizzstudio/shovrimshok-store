@@ -170,7 +170,7 @@ const contactData = [
     title: "contact-page-box1-title",
     info: "contact-page-box1-info",
     icon: FiMail,
-    contact: "משק קירשנר@gmail.com",
+    contact: "אחים שפירא@gmail.com",
     className: "bg-customBrown-light",
   },
   {

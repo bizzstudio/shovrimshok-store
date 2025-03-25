@@ -71,7 +71,7 @@ class MyDocument extends Document {
             property="og:title"
             content={
               setting?.meta_title ||
-              "משק קירשנר - פירות וירקות מזמינים אונליין"
+              "אחים שפירא - ספקי וסיטונאי מזון"
             }
           />
           <meta property="og:type" content="eCommerce Website" />
@@ -79,12 +79,12 @@ class MyDocument extends Document {
             property="og:description"
             content={
               setting?.meta_description ||
-              "משק קירשנר - פירות וירקות מזמינים אונליין"
+              "אחים שפירא - ספקי וסיטונאי מזון"
             }
           />
           <meta
             name="keywords"
-            content={setting?.meta_keywords || "משק קירשנר - פירות וירקות מזמינים אונליין"}
+            content={setting?.meta_keywords || "אחים שפירא - ספקי וסיטונאי מזון"}
           />
           <meta
             property="og:url"

@@ -27,7 +27,7 @@ const VariantList = ({
       {option === "Dropdown" ? (
         <select
           onChange={(e) => handleChangeVariant(e.target.value)}
-          className="focus:shadow-none w-1/2 px-2 py-1 form-select outline-none h-10 text-sm focus:outline-none block rounded-md bg-gray-100 border-transparent focus:bg-white border-customGreen-dark focus:border-emerald-400 focus:ring focus:ring-emerald-200"
+          className="focus:shadow-none w-1/2 px-2 py-1 form-select outline-none h-10 text-sm focus:outline-none block rounded-md bg-gray-100 border-transparent focus:bg-white border-customGreen-dark focus:border-customGreen focus:ring focus:ring-customGreen-leaf"
           name="parent"
         >
           {[

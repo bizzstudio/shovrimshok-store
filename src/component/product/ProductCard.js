@@ -114,7 +114,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
         >
           <div className="relative w-full h-full p-2">
             {product.stock <= 0 && <div className="absolute z-10 w-full h-full flex items-center justify-center"> <div className="bg-white bg-opacity-70 -rotate-6 text-customRed border-4 border-customRed rounded inline-flex items-center justify-center px-2 py-1 text-2xl font-bold font-serif">{t("common:stockOut")}</div></div>}
-            {product.image[0] ? (
+            {product.image?.[0] ? (
               <ImageWithFallback src={product.image[0]} outOfStock={product.stock <= 0} alt="product" />
             ) : (
               <Image
@@ -135,15 +135,13 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
             <span className="text-gray-400 font-medium text-xs d-block mb-1">
               {product.unit}
             </span>
-            <h2 className="text-heading truncate mb-0 block text-base font-medium text-gray-600">
-              {/* <span className="line-clamp-2"> */}
-              {showingTranslateValue(product?.title)}
-              {/* </span> */}
+            <h2 className="text-heading line-clamp-2 mb-0 block text-base font-medium text-gray-600">
+              {product?.ItemName}
             </h2>
           </div>
 
           <div className="flex justify-between items-center text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl">
-            <Price
+            {/* <Price
               card
               product={product}
               currency={currency}
@@ -157,7 +155,8 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                   ? product?.variants[0]?.originalPrice
                   : product?.prices?.originalPrice
               }
-            />
+            /> */}
+            <span className="text-sm">{t("common:itemCode")}: {product?.ItemCode}</span>
 
             {inCart(product._id) ? (
               <div>

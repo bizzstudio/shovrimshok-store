@@ -1,4 +1,4 @@
-// pages/index.js
+// shapira-store/src/pages/index.js
 import { SidebarContext } from "@context/SidebarContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -345,8 +345,8 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
-      popularProducts: sortedPopularProducts,
-      discountProducts: sortedDiscountProducts,
+      popularProducts: sortedPopularProducts || [],
+      discountProducts: sortedDiscountProducts || [],
       cookies: cookies,
       attributes,
     },
