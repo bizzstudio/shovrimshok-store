@@ -214,7 +214,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                             )
                             .map((product) => (
                               <ProductCard
-                                key={product._id}
+                                key={(product._id ?? product.ItemCode)}
                                 product={product}
                                 attributes={attributes}
                                 offers={offers}
@@ -294,7 +294,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                               )
                               .map((product, index) => (
                                 <ProductCard
-                                  key={product._id + index}
+                                  key={(product._id ?? product.ItemCode) + index}
                                   product={product}
                                   attributes={attributes}
                                   offers={offers}

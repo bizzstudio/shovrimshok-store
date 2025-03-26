@@ -1,3 +1,4 @@
+// src/component/product/ProductCard.js
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useContext, useState } from "react";
@@ -30,26 +31,26 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
   const { t } = useTranslation();
 
   const currency = globalSetting?.default_currency || "₪";
+  const inStock = product?.stock > 0 || product?.OnHand > 0;
 
   // console.log('attributes in product cart',attributes)
 
   const handleAddItem = (p) => {
-    if (p.stock < 1) return notifyError(t("common:productStockOut"));
+    if (!inStock) return notifyError(t("common:productStockOut"));
 
     if (p?.variants?.length > 0) {
       setModalOpen(!modalOpen);
       return;
     }
-    const { slug, variants, categories, description, ...updatedProduct } =
-      product;
+    const { slug, variants, categories, description, ...updatedProduct } = product;
     const newItem = {
       ...updatedProduct,
       title: p.title,
-      id: p._id,
-      variant: p.prices,
-      price: p.prices.price,
-      originalPrice: product.prices?.originalPrice,
-      slug: p.slug,
+      id: p._id ?? p.ItemCode,
+      variant: p.prices || 0,
+      price: p.prices?.price || 0,
+      originalPrice: product.prices?.originalPrice || 0,
+      slug: p.ItemCode,
     };
     addItem(newItem);
     // פתיחת העגלה לשתי שניות באופן אוטומטי
@@ -98,13 +99,13 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
 
       <div className="group box-border overflow-hidden flex justify-between rounded-md shadow-sm pe-0 flex-col items-center bg-white relative">
         <div className="w-full flex justify-between">
+          {!inStock && <Stock product={product} stock={product.stock ?? product.OnHand} card right={2} top={2} />}
           {/* אם אין מלאי למוצר מופיע אזל מהמלאי */}
-          {/* {product.stock <= 0 && <Stock product={product} stock={product.stock} card right={"2"} top={"2"} />} */}
           <Discount product={product} title={offerName} />
         </div>
         <div
           onClick={() => {
-            handleModalOpen(!modalOpen, product._id);
+            handleModalOpen(!modalOpen, (product._id ?? product.ItemCode));
             handleLogEvent(
               "product",
               `opened ${showingTranslateValue(product?.title)} product modal`
@@ -113,9 +114,9 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
           className="relative flex justify-center cursor-pointer pt-2 w-full h-44"
         >
           <div className="relative w-full h-full p-2">
-            {product.stock <= 0 && <div className="absolute z-10 w-full h-full flex items-center justify-center"> <div className="bg-white bg-opacity-70 -rotate-6 text-customRed border-4 border-customRed rounded inline-flex items-center justify-center px-2 py-1 text-2xl font-bold font-serif">{t("common:stockOut")}</div></div>}
+            {!inStock && <div className="absolute z-10 w-full h-full flex items-center justify-center"><div className="bg-white bg-opacity-70 -rotate-6 text-customRed border-4 border-customRed rounded inline-flex items-center justify-center px-2 py-1 text-2xl font-bold font-serif">{t("common:stockOut")}</div></div>}
             {product.image?.[0] ? (
-              <ImageWithFallback src={product.image[0]} outOfStock={product.stock <= 0} alt="product" />
+              <ImageWithFallback src={product.image?.[0]} outOfStock={!inStock} alt="product" />
             ) : (
               <Image
                 src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
@@ -158,11 +159,11 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
             /> */}
             <span className="text-sm">{t("common:itemCode")}: {product?.ItemCode}</span>
 
-            {inCart(product._id) ? (
+            {inCart((product._id ?? product.ItemCode)) ? (
               <div>
                 {items.map(
                   (item) =>
-                    item.id === product._id && (
+                    item.id === (product._id ?? product.ItemCode) && (
                       <div
                         key={item.id}
                         className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-customGreen text-white rounded"
@@ -198,10 +199,10 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
               </div>
             ) : (
               <button
-                // disabled={product?.stock <= 0}
+                // disabled={!inStock}
                 onClick={() => handleAddItem(product)}
                 aria-label="cart"
-                className={product?.stock <= 0 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customGreen hover:border-customGreen hover:bg-customGreen hover:text-white transition-all"}
+                className={!inStock ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customGreen hover:border-customGreen hover:bg-customGreen hover:text-white transition-all"}
               >
                 {" "}
                 {product?.variants?.length > 0 ?

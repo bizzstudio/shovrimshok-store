@@ -69,9 +69,7 @@ const Navbar = () => {
     const fetchData = async () => {
       if (searchText.trim()) {
         // קבלת המוצרים המתאימים מהשרת
-        let serverProducts = await ProductServices.getShowingStoreProducts({
-          title: searchText,
-        });
+        let serverProducts = await ProductServices.getProductsByTitle({ title: searchText });
         setSearchResults(serverProducts.products);
         // קבלת התכונות מהשרת
         let attributes = await AttributeServices.getShowingAttributes();
@@ -114,10 +112,10 @@ const Navbar = () => {
               className=" hidden md:hidden lg:block"
             >
               <Image
-                width={350}
-                height={43}
+                width={250}
+                height={25}
                 src={
-                  storeCustomizationSetting?.navbar?.header_logo ||
+                  storeCustomizationSetting?.navbar?.logo ||
                   logo
                 }
                 alt="logo"

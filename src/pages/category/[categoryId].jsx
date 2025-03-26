@@ -1,5 +1,4 @@
 // shapira-store/pages/category/[categoryId].jsx
-
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
@@ -36,6 +35,7 @@ const CategoryPage = ({ allProd, attributes }) => {
 
     // נשמור כאן את כל המוצרים מכל העמודים
     const [allProducts, setAllProducts] = useState(allProd || []);
+    const [isLoadMore, setIsLoadMore] = useState(false);
     console.log('all Products :>> ', allProducts);
 
     // state לניהול page = עמוד נוכחי
@@ -116,7 +116,7 @@ const CategoryPage = ({ allProd, attributes }) => {
     // פונקציה לטעינת עמוד נוסף
     const handleLoadMore = async () => {
         const nextPage = page + 1;
-        setIsLoading(true);
+        setIsLoadMore(true);
         try {
             const res = await ProductServices.getShowingStoreProducts({
                 category: categoryId,
@@ -124,7 +124,7 @@ const CategoryPage = ({ allProd, attributes }) => {
                 page: nextPage,
             });
             // אם אין מוצרים בעמוד הבא, סוגרים hasMore
-            if (!res.products || res.products.length === 0) {
+            if (!res.products || res.products.length < 36) {
                 setHasMore(false);
             } else {
                 // מוסיפים את המוצרים החדשים למערך
@@ -134,9 +134,35 @@ const CategoryPage = ({ allProd, attributes }) => {
         } catch (err) {
             console.error("Load More error: ", err);
         } finally {
-            setIsLoading(false);
+            setIsLoadMore(false);
         }
     };
+
+    // משיכת המוצרים בעת שינוי קטגוריה
+    useEffect(() => {
+        const fetchProducts = async () => {
+            if (!categoryId) return;
+
+            setIsLoading(true);
+            setPage(1); // התחלה מחדש
+            try {
+                const res = await ProductServices.getShowingStoreProducts({
+                    category: categoryId,
+                    subcategories: sub,
+                    page: 1,
+                    limit: 36,
+                });
+                setAllProducts(res?.products || []);
+                setHasMore(res?.products?.length === 36); // אם יש פחות מ־36, אין עוד עמוד
+            } catch (err) {
+                console.error("Reload products error: ", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, [categoryId, sub]);
 
     return (
         <Layout title={layoutTitle || "קטגוריה"} description="This is category page">
@@ -203,12 +229,13 @@ const CategoryPage = ({ allProd, attributes }) => {
 
                                     {/* כפתור "Load More" – נטען עמוד נוסף מהשרת */}
                                     {hasMore && productData?.length > 0 && (
-                                        <button
-                                            onClick={handleLoadMore}
-                                            className="w-auto mx-auto mt-6 flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
-                                        >
-                                            {t("common:loadMoreBtn")}
-                                        </button>
+                                        isLoadMore ? <Loading loading={isLoadMore} /> :
+                                            <button
+                                                onClick={handleLoadMore}
+                                                className="w-auto mx-auto mt-6 flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+                                            >
+                                                {t("common:loadMoreBtn")}
+                                            </button>
                                     )}
                                 </>
                             )}

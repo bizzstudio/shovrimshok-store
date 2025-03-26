@@ -32,13 +32,13 @@ const CartItemPreview = ({ item }) => {
       </div>
       <div className="flex flex-col">
         <div className="text-sm font-medium text-gray-700 text-heading">
-          {(currentLang ? item?.title?.he : item.title?.en) || 'מוצר מחוק'}
+          {item.ItemName ? item.ItemName : (currentLang ? item?.title?.he : item.title?.en) || 'מוצר מחוק'}
         </div>
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <div className="font-bold text-sm md:text-base text-heading leading-5">
             <span>{item?.prices?.price || "0"}₪</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ const useCart = () => {
         // יישום המבצע בהתבסס על כמות המוצרים שתואמים לו
         offers.forEach(offer => {
             // מזהי המוצרים שבמבצע המסוים הזה
-            const offerProducts = offer.products.map(p => p._id);
+            const offerProducts = offer.products.map(p => (p._id ?? p.ItemCode));
 
             // חישוב כמות כללית בעגלה שנכנסת למבצע
             let totalApplicableQuantity = 0;
@@ -63,7 +63,7 @@ const useCart = () => {
 
                             const discountedPrice =
                                 discountQuantity * offerUnitPrice +
-                                nonDiscountQuantity * item.prices.price;
+                                nonDiscountQuantity * (item.prices?.price ?? 0);
 
                             return {
                                 ...item,
@@ -108,7 +108,7 @@ const useCart = () => {
         let localTotal = 0;
         updatedCartItems.forEach(item => {
             // כמו בצד השרת: itemTotal = מחיר יחידה * כמות
-            const itemTotal = item.prices.price * item.quantity;
+            const itemTotal = (item.prices?.price ?? 0) * item.quantity;
             // אם יש מחיר מבצע, נשתמש בו; אם לא, במחיר הרגיל
             localTotal += item.discountedPrice ? item.discountedPrice : itemTotal;
         });

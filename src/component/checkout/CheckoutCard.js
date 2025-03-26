@@ -16,7 +16,7 @@ const CheckoutCard = ({ item }) => {
       className="group w-full h-auto flex justify-start items-center py-2 px-5 border-b hover:bg-white transition-all border-gray-100 relative last:border-b-0"
     >
       <div className="relative flex rounded-md overflow-hidden flex-shrink-0 cursor-pointer mr-4">
-        <Image src={item.image} width={50} height={50} alt={item?.title?.he} />
+        <Image src={item.image || "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"} width={50} height={50} alt={item?.title?.he} />
       </div>
       <div className="flex flex-col w-full overflow-hidden">
         <div className="flex items-center justify-between">

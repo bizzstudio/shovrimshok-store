@@ -141,8 +141,8 @@ const MainCarousel = () => {
               <Image
                 width={950}
                 height={400}
-                src={item.image}
-                alt={item.title}
+                src={item.image || "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"}
+                alt={item.ItemName?.slice(0, 15) || item.title}
                 className="object-cover"
                 priority
               />

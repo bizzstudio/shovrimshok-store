@@ -30,12 +30,11 @@ const ProductServices = {
     page = 1,
     limit = 36, // ברירת מחדל
     title = "",
+    itemCode = "",
   }) => {
     let queryString = `?page=${page}&limit=${limit}`;
 
-    if (category) {
-      queryString += `&category=${encodeURIComponent(category)}`;
-    }
+    if (category) queryString += `&category=${encodeURIComponent(category)}`;
 
     if (subcategories) {
       // אם זה array או string בודד
@@ -46,12 +45,18 @@ const ProductServices = {
       queryString += `&subcategories=${subArr.join(",")}`;
     }
 
-    if (title) {
-      queryString += `&title=${encodeURIComponent(title)}`;
-    }
+    if (title) queryString += `&title=${encodeURIComponent(title)}`;
+
+    if (itemCode) queryString += `&itemCode=${encodeURIComponent(itemCode)}`;
 
     // עכשיו קוראים ל-API
     return requests.get(`/products/store${queryString}`);
+  },
+
+  getProductsByTitle: async ({ title, page = 1, limit = 36 }) => {
+    let queryString = `?page=${page}&limit=${limit}`;
+    if (title) queryString += `&title=${encodeURIComponent(title)}`;
+    return requests.get(`/products/search${queryString}`);
   },
 
   getDiscountedProducts: async () => {

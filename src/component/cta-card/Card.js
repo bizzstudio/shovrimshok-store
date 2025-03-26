@@ -17,7 +17,7 @@ const Card = () => {
             <Image
               width={550}
               height={234}
-              src={item.image}
+              src={item.image || "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"}
               alt={item?.title?.he}
               priority
               className="object-cover"

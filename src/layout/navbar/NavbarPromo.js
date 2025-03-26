@@ -24,14 +24,6 @@ import MainModal from "@component/modal/MainModal";
 import deliveryIcon from 'public/shipped.svg'
 import whatsapp from 'public/22.svg'
 
-// TODO: אמור להגיע מהאדמין
-import offerIcon from 'public/categories icons/gift-color.svg'
-import offerIconNoColor from 'public/categories icons/gift.svg'
-import fruitsIcon from 'public/categories icons/fruits_color.svg'
-import legumesIcon from 'public/categories icons/beans_color.svg'
-import herbsIcon from 'public/categories icons/mortar_color.svg'
-import vegetablesIcon from 'public/categories icons/carrot_color.svg'
-
 import { UserContext } from "@context/UserContext";
 import LoginModal from "@component/modal/LoginModal";
 import { BsWhatsapp } from "react-icons/bs";
@@ -168,34 +160,38 @@ const NavbarPromo = () => {
                     {storeCustomizationSetting?.navbar
                       ?.categories_menu_status && (
                         <Popover className="relative font-serif">
-                          <Popover.Button className="group inline-flex items-center py-2 hover:text-customGreen focus:outline-none">
-                            <span className="font-serif text-sm font-medium">
-                              {showingTranslateValue(
-                                storeCustomizationSetting?.navbar?.categories
-                              )}
-                            </span>
+                          {({ open, close }) => (
+                            <>
+                              <Popover.Button className="group inline-flex items-center py-2 hover:text-customGreen focus:outline-none">
+                                <span className="font-serif text-sm font-medium">
+                                  {showingTranslateValue(
+                                    storeCustomizationSetting?.navbar?.categories
+                                  )}
+                                </span>
 
-                            <ChevronDownIcon
-                              className="ml-1 h-3 w-3 group-hover:text-customGreen"
-                              aria-hidden="true"
-                            />
-                          </Popover.Button>
+                                <ChevronDownIcon
+                                  className="ml-1 h-3 w-3 group-hover:text-customGreen"
+                                  aria-hidden="true"
+                                />
+                              </Popover.Button>
 
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-200"
-                            enterFrom="opacity-0 translate-y-1"
-                            enterTo="opacity-100 translate-y-0"
-                            leave="transition ease-in duration-150"
-                            leaveFrom="opacity-100 translate-y-0"
-                            leaveTo="opacity-0 translate-y-1"
-                          >
-                            <Popover.Panel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
-                              <div className="rounded-md shadow-lg ring-1 ring-black ring-opacity-5 flex-grow w-full h-full">
-                                <Category />
-                              </div>
-                            </Popover.Panel>
-                          </Transition>
+                              <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-200"
+                                enterFrom="opacity-0 translate-y-1"
+                                enterTo="opacity-100 translate-y-0"
+                                leave="transition ease-in duration-150"
+                                leaveFrom="opacity-100 translate-y-0"
+                                leaveTo="opacity-0 translate-y-1"
+                              >
+                                <Popover.Panel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
+                                  <div className="rounded-md shadow-lg ring-1 ring-black ring-opacity-5 flex-grow w-full h-full">
+                                    <Category onLinkClick={() => close()} />
+                                  </div>
+                                </Popover.Panel>
+                              </Transition>
+                            </>
+                          )}
                         </Popover>
                         // <>
                         //   {!loading && !error && data && data[0]?.children?.map((category, index) => {

@@ -129,7 +129,7 @@ const Dashboard = ({ title, description, children }) => {
                         href={item.href}
                         className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customGreen-dark"
                       >
-                        {item.title}
+                        {item.ItemName ? item.ItemName : item.title}
                       </Link>
                     </span>
                   ))}

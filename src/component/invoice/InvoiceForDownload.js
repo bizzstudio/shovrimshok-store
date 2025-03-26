@@ -378,7 +378,7 @@ const InvoiceForDownload = ({
                   <Text style={styles.tableCell}>{i + 1} </Text>
                 </View>
                 <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{currentLang ? item.title?.he : item.title?.en}</Text>
+                  <Text style={styles.tableCell}>{item.ItemName ? item.ItemName : currentLang ? item.title?.he : item.title?.en}</Text>
                 </View>
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>

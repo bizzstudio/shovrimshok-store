@@ -1,3 +1,4 @@
+// src/pages/product/[slug].jsx
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,18 +39,12 @@ import useCart from "@hooks/useCart";
 import getOfferNames from "@component/offer/getOfferNames";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
-  // console.log('ProductScreen product: ', product);
   const router = useRouter();
 
-  const { lang, showingTranslateValue, getNumber, currency } =
-    useUtilsFunction();
+  const { lang, showingTranslateValue, getNumber, currency } = useUtilsFunction();
 
-  // console.log('product',product)
-
-  const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
+  const { isLoading, setIsLoading, offers, categories } = useContext(SidebarContext);
   const { handleAddItem, item, setItem } = useAddToCart();
-
-  // react hook
 
   const [value, setValue] = useState("");
   const [price, setPrice] = useState(0);
@@ -77,90 +72,89 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   }, [offers]);
 
   useEffect(() => {
-    // console.log('value', value, product);
-    if (value) {
-      const result = product?.variants?.filter((variant) =>
-        Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
-      );
+    // if (value) {
+    //   const result = product?.variants?.filter((variant) =>
+    //     Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
+    //   );
 
-      const res = result?.map(
-        ({
-          originalPrice,
-          price,
-          discount,
-          quantity,
-          barcode,
-          sku,
-          productId,
-          image,
-          ...rest
-        }) => ({
-          ...rest,
-        })
-      );
+    //   const res = result?.map(
+    //     ({
+    //       originalPrice,
+    //       price,
+    //       discount,
+    //       quantity,
+    //       barcode,
+    //       sku,
+    //       productId,
+    //       image,
+    //       ...rest
+    //     }) => ({
+    //       ...rest,
+    //     })
+    //   );
 
-      const filterKey = Object.keys(Object.assign({}, ...res));
-      const selectVar = filterKey?.reduce(
-        (obj, key) => ({ ...obj, [key]: selectVariant[key] }),
-        {}
-      );
-      const newObj = Object.entries(selectVar).reduce(
-        (a, [k, v]) => (v ? ((a[k] = v), a) : a),
-        {}
-      );
+    //   const filterKey = Object.keys(Object.assign({}, ...res));
+    //   const selectVar = filterKey?.reduce(
+    //     (obj, key) => ({ ...obj, [key]: selectVariant[key] }),
+    //     {}
+    //   );
+    //   const newObj = Object.entries(selectVar).reduce(
+    //     (a, [k, v]) => (v ? ((a[k] = v), a) : a),
+    //     {}
+    //   );
 
-      // const result2 = result?.find((v) =>
-      //   Object.keys(newObj).every((k) => newObj[k] === v[k])
-      // );
-      const result2 = result[0];
+    //   // const result2 = result?.find((v) =>
+    //   //   Object.keys(newObj).every((k) => newObj[k] === v[k])
+    //   // );
+    //   const result2 = result[0];
 
-      // console.log("result2", result2);
+    //   // console.log("result2", result2);
 
-      if (result.length <= 0 || result2 === undefined) return setStock(0);
+    //   if (result.length <= 0 || result2 === undefined) return setStock(0);
 
-      setVariants(result);
-      setSelectVariant(result2);
-      setSelectVa(result2);
-      setImg(result2?.image);
-      setStock(result2?.quantity);
-      const price = getNumber(result2?.price);
-      const originalPrice = getNumber(result2?.originalPrice);
-      const discountPercentage = getNumber(
-        ((originalPrice - price) / originalPrice) * 100
-      );
-      setDiscount(getNumber(discountPercentage));
-      setPrice(price);
-      setOriginalPrice(originalPrice);
-    } else if (product?.variants?.length > 0) {
-      const result = product?.variants?.filter((variant) =>
-        Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
-      );
+    //   setVariants(result);
+    //   setSelectVariant(result2);
+    //   setSelectVa(result2);
+    //   setImg(result2?.image);
+    //   setStock(result2?.quantity);
+    //   const price = getNumber(result2?.price);
+    //   const originalPrice = getNumber(result2?.originalPrice);
+    //   const discountPercentage = getNumber(
+    //     ((originalPrice - price) / originalPrice) * 100
+    //   );
+    //   setDiscount(getNumber(discountPercentage));
+    //   setPrice(price);
+    //   setOriginalPrice(originalPrice);
+    // } else if (product?.variants?.length > 0) {
+    //   const result = product?.variants?.filter((variant) =>
+    //     Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
+    //   );
 
-      setVariants(result);
-      setStock(product.variants[0]?.quantity);
-      setSelectVariant(product.variants[0]);
-      setSelectVa(product.variants[0]);
-      setImg(product.variants[0]?.image);
-      const price = getNumber(product.variants[0]?.price);
-      const originalPrice = getNumber(product.variants[0]?.originalPrice);
-      const discountPercentage = getNumber(
-        ((originalPrice - price) / originalPrice) * 100
-      );
-      setDiscount(getNumber(discountPercentage));
-      setPrice(price);
-      setOriginalPrice(originalPrice);
-    } else {
-      setStock(product?.stock);
-      setImg(product?.image[0]);
-      const price = getNumber(product?.prices?.price);
-      const originalPrice = getNumber(product?.prices?.originalPrice);
-      const discountPercentage = getNumber(
-        ((originalPrice - price) / originalPrice) * 100
-      );
-      setDiscount(getNumber(discountPercentage));
-      setPrice(price);
-      setOriginalPrice(originalPrice);
-    }
+    //   setVariants(result);
+    //   setStock(product.variants[0]?.quantity);
+    //   setSelectVariant(product.variants[0]);
+    //   setSelectVa(product.variants[0]);
+    //   setImg(product.variants[0]?.image);
+    //   const price = getNumber(product.variants[0]?.price);
+    //   const originalPrice = getNumber(product.variants[0]?.originalPrice);
+    //   const discountPercentage = getNumber(
+    //     ((originalPrice - price) / originalPrice) * 100
+    //   );
+    //   setDiscount(getNumber(discountPercentage));
+    //   setPrice(price);
+    //   setOriginalPrice(originalPrice);
+    // } else {
+    setStock(product?.OnHand ?? product?.stock ?? 0);
+    setImg(product?.image?.[0]);
+    const price = getNumber(product?.prices?.price ?? product?.LastPurPrc ?? 0);
+    const originalPrice = getNumber(product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
+    const discountPercentage = getNumber(
+      ((originalPrice - price) / originalPrice) * 100
+    );
+    setDiscount(getNumber(discountPercentage));
+    setPrice(price);
+    setOriginalPrice(originalPrice);
+    // }
   }, [
     product?.prices?.discount,
     product?.prices?.originalPrice,
@@ -170,78 +164,94 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     selectVa,
     selectVariant,
     value,
+    product?.OnHand,
+    product?.LastPurPrc,
+    product?.AvgPrice,
   ]);
 
-  useEffect(() => {
-    const res = Object.keys(Object.assign({}, ...product?.variants));
-    const varTitle = attributes?.filter((att) => res.includes(att?._id));
+  // קביעת שם הגרסת מוצר
+  // useEffect(() => {
+  //   const res = Object.keys(Object.assign({}, ...(product?.variants || [{}])));
 
-    setVariantTitle(varTitle?.sort());
-  }, [variants, attributes]);
+  //   const varTitle = attributes?.filter((att) => res.includes(att?._id));
+
+  //   setVariantTitle(varTitle?.sort());
+  // }, [variants, attributes]);
 
   useEffect(() => {
     setIsLoading(false);
   }, [product]);
 
   const handleAddToCart = (p) => {
-    if (p.variants.length === 1 && p.variants[0].quantity < 1)
-      return notifyError(t("common:productStockOut"));
+    // if (p.variants.length === 1 && p.variants[0].quantity < 1)
+    //   return notifyError(t("common:productStockOut"));
     // if (notAvailable) return notifyError('This Variation Not Available Now!');
     if (stock <= 0) return notifyError(t("common:productStockOut"));
     // console.log('selectVariant', selectVariant);
 
-    if (
-      product?.variants.map(
-        (variant) =>
-          Object.entries(variant).sort().toString() ===
-          Object.entries(selectVariant).sort().toString()
-      )
-    ) {
-      const { variants, categories, description, ...updatedProduct } = product;
-      const newItem = {
-        ...updatedProduct,
-        id: `${p.variants.length <= 1
-          ? p._id
-          : p._id +
-          variantTitle
-            ?.map(
-              // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
-              (att) => selectVariant[att._id]
-            )
-            .join("-")
-          }`,
+    // if (
+    //   product?.variants?.map(
+    //     (variant) =>
+    //       Object.entries(variant).sort().toString() ===
+    //       Object.entries(selectVariant).sort().toString()
+    //   )
+    // ) {
+    //   const { variants, categories, description, ...updatedProduct } = product;
+    //   const newItem = {
+    //     ...updatedProduct,
+    //     id: `${p.variants.length <= 1
+    //       ? (p._id ?? p.ItemCode)
+    //       : (p._id ?? p.ItemCode) +
+    //       variantTitle
+    //         ?.map(
+    //           // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+    //           (att) => selectVariant[att._id]
+    //         )
+    //         .join("-")
+    //       }`,
 
-        title: p.variants.length <= 1
-          ? product.title
-          : {
-            he: product.title.he +
-              "-" +
-              variantTitle
-                ?.map(
-                  // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
-                  (att) =>
-                    att.variants?.find((v) => v._id === selectVariant[att._id])
-                )
-                .map((el) => el?.name),
-            en: product.title.en +
-              "-" +
-              variantTitle
-                ?.map(
-                  // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
-                  (att) =>
-                    att.variants?.find((v) => v._id === selectVariant[att._id])
-                )
-                .map((el) => el?.name)
-          },
-        image: img,
-        variant: selectVariant,
-        price: price,
-        originalPrice: originalPrice,
-      };
-      handleAddItem(newItem);
-    } else {
-      return notifyError("Please select all variant first!");
-    }
+    //     title: p.variants.length <= 1
+    //       ? product.title
+    //       : {
+    //         he: product.title.he +
+    //           "-" +
+    //           variantTitle
+    //             ?.map(
+    //               // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+    //               (att) =>
+    //                 att.variants?.find((v) => v._id === selectVariant[att._id])
+    //             )
+    //             .map((el) => el?.name),
+    //         en: product.title.en +
+    //           "-" +
+    //           variantTitle
+    //             ?.map(
+    //               // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
+    //               (att) =>
+    //                 att.variants?.find((v) => v._id === selectVariant[att._id])
+    //             )
+    //             .map((el) => el?.name)
+    //       },
+    //     image: img,
+    //     variant: selectVariant,
+    //     price: price,
+    //     originalPrice: originalPrice,
+    //   };
+    //   handleAddItem(newItem);
+    // } else {
+    //   return notifyError("Please select all variant first!");
+    // }
+
+    const newItem = {
+      ...p,
+      id: p.ItemCode,
+      title: p.ItemName ? p.ItemName : showingTranslateValue(p.title),
+      image: img,
+      price: price,
+      originalPrice: originalPrice,
+      variant: {}, // אפשר להשאיר ריק
+    };
+    handleAddItem(newItem);
   };
 
   const handleChangeImage = (img) => {
@@ -251,11 +261,12 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const { t } = useTranslation();
 
   // category name slug
-  const category_name = showingTranslateValue(product?.category?.name)
-    .toLowerCase()
+  // const category_name = showingTranslateValue(product?.category?.name)
+  //   .toLowerCase()
   // .replace(/[^A-Z0-9]+/gi, "-");
 
-  // console.log("discount", discount);
+  const categoryId = product?.ItemCode?.slice(0, 4);
+  const category_name = categories?.find((cat) => cat.code === categoryId)?.name;
 
   return (
     <>
@@ -263,7 +274,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
         <Loading loading={isLoading} />
       ) : (
         <Layout
-          title={showingTranslateValue(product?.title)}
+          title={product?.ItemName ?? showingTranslateValue(product?.title)}
           description={showingTranslateValue(product.description)}
         >
           <div className="px-0 py-10 lg:py-10">
@@ -279,7 +290,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   </li>
                   <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customGreen font-semibold ">
                     <Link
-                      href={`/search?category=${category_name}&_id=${product?.category?._id}`}
+                      href={`/category/${categoryId}`}
+                    // href={`/search?category=${category_name}&_id=${product?.category?._id}`}
                     >
                       <button
                         type="button"
@@ -294,7 +306,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                     <FiChevronLeft />{" "}
                   </li>
                   <li className="text-sm px-1 transition duration-200 ease-in ">
-                    {showingTranslateValue(product?.title)}
+                    {product?.ItemName ?? showingTranslateValue(product?.title)}
                   </li>
                 </ol>
               </div>
@@ -321,9 +333,9 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   // ) : '')}
                   />
 
-                  {product.image[0] ? (
+                  {product.image?.[0] ? (
                     <Image
-                      src={img || product.image[0]}
+                      src={img || product.image?.[0]}
                       alt="product"
                       width={650}
                       height={650}
@@ -354,28 +366,31 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   <div className="xl:pr-6 md:pr-6 w-full">
                     <div className="mb-3">
                       <h1 className="leading-7 text-lg md:text-xl lg:text-2xl mb-1 font-semibold font-serif text-gray-800">
-                        {showingTranslateValue(product?.title)}
+                        {product?.ItemName ?? showingTranslateValue(product?.title)}
                       </h1>
 
                       <p className="uppercase font-serif font-medium text-gray-500 text-sm">
                         {t("common:SKU")} :{" "}
                         <span className="font-bold text-gray-600">
-                          {product.sku}
+                          {product?.ItemCode ?? product.sku}
                         </span>
                       </p>
 
-                      <div className="relative h-5">
-                        <Stock stock={stock} top={1} />
+                      <div className="pt-2">
+                        <Stock stock={stock} card={false} />
                       </div>
                     </div>
-                    <Price
+
+                    {/* מחיר */}
+                    {/* <Price
                       price={price}
                       product={product}
                       currency={currency}
                       originalPrice={originalPrice}
-                    />
+                    /> */}
 
-                    <div className="mb-4">
+                    {/* אופציות מוצר (גדול קטן בינוני וכו') */}
+                    {/* <div className="mb-4">
                       {variantTitle?.map((a, i) => (
                         <span key={a._id}>
                           <h4 className="text-sm py-1">
@@ -396,7 +411,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                           </div>
                         </span>
                       ))}
-                    </div>
+                    </div> */}
 
                     <div>
                       {showingTranslateValue(product?.description) &&
@@ -447,7 +462,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             </p>
                             <button
                               onClick={() => setItem(item + 1)}
-                              disabled={selectVariant?.quantity <= item}
+                              // disabled={selectVariant?.quantity <= item}
+                              disabled={stock <= item}
                               className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-s border-gray-300 hover:text-gray-500"
                             >
                               <span className="text-dark text-base">
@@ -470,7 +486,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             {t("common:category")}:
                           </span>{" "}
                           <Link
-                            href={`/search?category=${category_name}&_id=${product?.category?._id}`}
+                            href={`/category/${categoryId}`}
+                          // href={`/search?category=${category_name}&_id=${product?.category?._id}`}
                           >
                             <button
                               type="button"
@@ -571,7 +588,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
                         {relatedProducts?.slice(1, 13).map((product, i) => (
                           <ProductCard
-                            key={product._id}
+                            key={(product._id ?? product.ItemCode)}
                             product={product}
                             attributes={attributes}
                             offers={offers}
@@ -591,71 +608,32 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 };
 
 // you can use getServerSideProps alternative for getStaticProps and getStaticPaths
-
 export const getServerSideProps = async (context) => {
   const { slug } = context.params;
-  console.log('slug', slug)
 
   const [data, attributes] = await Promise.all([
     ProductServices.getShowingStoreProducts({
-      category: "",
-      slug: slug,
+      itemCode: slug,
+      subcategories: slug.slice(0, 8), // תת הקטגוריה של המוצר
+      limit: 13, // כדי שיהיה מקום ל־related
     }),
-
     AttributeServices.getShowingAttributes({}),
   ]);
 
-  let product = {};
+  const product = data?.products?.find(p => p.ItemCode === slug);
+  const relatedProducts = data?.products?.filter(p => p.ItemCode !== slug);
 
-  if (slug) {
-    product = data?.products?.find((p) => p.slug === slug);
-  }
-
-  // מעבר לדף 404 אם המוצר לא נמצא
   if (!product) {
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 
   return {
     props: {
       product,
-      relatedProducts: data?.relatedProducts,
       attributes,
+      relatedProducts,
     },
   };
-  // const { slug } = context.params;
-
-  // // Encode the slug to handle special characters
-  // const encodedSlug = encodeURIComponent(slug);
-
-  // try {
-  //   const product = await ProductServices.getProductBySlug(encodedSlug);
-
-  //   // Ensure no undefined values are serialized
-  //   if (product === undefined) {
-  //     return {
-  //       notFound: true,
-  //     };
-  //   }
-
-  //   // Handle undefined values in the product object
-  //   const serializedProduct = JSON.parse(JSON.stringify(product, (key, value) => {
-  //     return value === undefined ? null : value;
-  //   }));
-
-  //   return {
-  //     props: {
-  //       product: serializedProduct,
-  //     },
-  //   };
-  // } catch (error) {
-  //   console.error(error);
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
 };
 
 export default ProductScreen;

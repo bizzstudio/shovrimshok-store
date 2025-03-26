@@ -57,13 +57,13 @@ const OfferCard = ({ discountProducts, height, attributes }) => {
             onMouseLeave={handleMouseLeave}
           >
             {discountProducts?.map((product, index) => (
-              <div key={product._id + index} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
-                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id} />
+              <div key={(product._id ?? product.ItemCode) + index} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={(product._id ?? product.ItemCode)} />
               </div>
             ))}
             {discountProducts?.map((product, index) => (
-              <div key={`${product._id}-clone-${index}`} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
-                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={product._id} />
+              <div key={`${(product._id ?? product.ItemCode)}-clone-${index}`} className="group w-full h-auto flex gap-4 justify-start products-center bg-white py-3 px-6 border-b transition-all border-gray-100 relative last:border-b-0 cursor-pointer">
+                <ScrollOfferCard product={product} offers={offers} attributes={attributes} key={(product._id ?? product.ItemCode)} />
               </div>
             ))}
           </div>

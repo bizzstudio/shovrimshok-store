@@ -10,7 +10,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
 import CategoryCard from "./CategoryCard";
 
-const Category = () => {
+const Category = ({ onLinkClick }) => {
   const { categoryDrawerOpen, closeCategoryDrawer, categories } = useContext(SidebarContext);
 
   console.log('categoies :>> ', categories);
@@ -58,6 +58,7 @@ const Category = () => {
                 icon={null}
                 nested={category.children} // תתי קטגוריות
                 title={category.name}
+                onLinkClick={onLinkClick}
               />
             ))}
           </div>
@@ -71,7 +72,7 @@ const Category = () => {
             <div className="relative grid gap-1 p-6">
               {pages.map((item) => (
                 <a
-                  key={item.title}
+                  key={item.ItemName ? item.ItemName : item.title}
                   href={item.href}
                   className="p-2 flex font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen"
                 >
@@ -80,7 +81,7 @@ const Category = () => {
                     aria-hidden="true"
                   />
                   <p className="inline-flex items-center justify-between ml-2 text-sm font-medium w-full hover:text-customGreen">
-                    {item.title}
+                    {item.ItemName ? item.ItemName : item.title}
                   </p>
                 </a>
               ))}

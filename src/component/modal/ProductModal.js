@@ -1,3 +1,4 @@
+// src/component/modal/ProductModal.js
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,7 +30,7 @@ const ProductModal = ({
 }) => {
   // console.log('ProductModal product: ', product);
   const router = useRouter();
-  const { setIsLoading, isLoading } = useContext(SidebarContext);
+  const { setIsLoading, isLoading, categories } = useContext(SidebarContext);
   const { t } = useTranslation("ns1");
 
   const { handleAddItem, setItem, item } = useAddToCart();
@@ -134,10 +135,10 @@ const ProductModal = ({
       setPrice(price);
       setOriginalPrice(originalPrice);
     } else {
-      setStock(product?.stock);
-      setImg(product?.image[0]);
-      const price = getNumber(product?.prices?.price);
-      const originalPrice = getNumber(product?.prices?.originalPrice);
+      setStock(product?.stock ?? product?.OnHand ?? 0);
+      setImg(product?.image?.[0]);
+      const price = getNumber(product?.prices?.price ?? product?.LastPurPrc ?? 0);
+      const originalPrice = getNumber(product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
       const discountPercentage = getNumber(
         ((originalPrice - price) / originalPrice) * 100
       );
@@ -157,7 +158,7 @@ const ProductModal = ({
   ]);
 
   useEffect(() => {
-    const res = Object.keys(Object.assign({}, ...product?.variants));
+    const res = Object.keys(Object.assign({}, ...(product?.variants || [{}])));
 
     const varTitle = attributes?.filter((att) => res.includes(att?._id));
 
@@ -165,86 +166,97 @@ const ProductModal = ({
   }, [variants, attributes]);
 
   const handleAddToCart = (p) => {
-    if (p.variants.length === 1 && p.variants[0].quantity < 1)
-      return notifyError(t("common:productStockOut"));
+    // if (p.variants.length === 1 && p.variants[0].quantity < 1)
+    //   return notifyError(t("common:productStockOut"));
 
     if (stock <= 0) return notifyError(t("common:productStockOut"));
 
-    if (
-      product?.variants.map(
-        (variant) =>
-          Object.entries(variant).sort().toString() ===
-          Object.entries(selectVariant).sort().toString()
-      )
-    ) {
-      const { variants, categories, description, ...updatedProduct } = product;
-      const newItem = {
-        ...updatedProduct,
-        id: `${p?.variants.length <= 0
-          ? p._id
-          : p._id +
-          "-" +
-          variantTitle?.map((att) => selectVariant[att._id]).join("-")
-          }`,
-        title: p?.variants.length <= 0
-          ? p.title
-          : {
-            he: p.title.he +
-              "-" +
-              variantTitle
-                ?.map((att) =>
-                  att.variants?.find((v) => v._id === selectVariant[att._id])
-                )
-                .map((el) => el?.name),
-            en: p.title.en +
-              "-" +
-              variantTitle
-                ?.map((att) =>
-                  att.variants?.find((v) => v._id === selectVariant[att._id])
-                )
-                .map((el) => el?.name),
-          },
-        image: img,
-        variant: selectVariant || {},
-        price:
-          p.variants.length === 0
-            ? getNumber(p.prices.price)
-            : getNumber(price),
-        originalPrice:
-          p.variants.length === 0
-            ? getNumber(p.prices.originalPrice)
-            : getNumber(originalPrice),
-      };
+    // if (
+    //   product?.variants?.map(
+    //     (variant) =>
+    //       Object.entries(variant).sort().toString() ===
+    //       Object.entries(selectVariant).sort().toString()
+    //   )
+    // ) {
+    //   const { variants, categories, description, ...updatedProduct } = product;
+    //   const newItem = {
+    //     ...updatedProduct,
+    //     id: `${p?.variants.length <= 0
+    //       ? (p._id ?? p.ItemCode)
+    //       : (p._id ?? p.ItemCode) +
+    //       "-" +
+    //       variantTitle?.map((att) => selectVariant[att._id]).join("-")
+    //       }`,
+    //     title: p?.variants.length <= 0
+    //       ? (p.ItemName ?? p.title)
+    //       : {
+    //         he: (p.ItemName ?? p.title.he) +
+    //           "-" +
+    //           variantTitle
+    //             ?.map((att) =>
+    //               att.variants?.find((v) => v._id === selectVariant[att._id])
+    //             )
+    //             .map((el) => el?.name),
+    //         en: (p.ItemName ?? p.title.en) +
+    //           "-" +
+    //           variantTitle
+    //             ?.map((att) =>
+    //               att.variants?.find((v) => v._id === selectVariant[att._id])
+    //             )
+    //             .map((el) => el?.name),
+    //       },
+    //     image: img,
+    //     variant: selectVariant || {},
+    //     price:
+    //       p.variants.length === 0
+    //         ? getNumber(p.prices.price)
+    //         : getNumber(price),
+    //     originalPrice:
+    //       p.variants.length === 0
+    //         ? getNumber(p.prices.originalPrice)
+    //         : getNumber(originalPrice),
+    //   };
 
-      // console.log("newItem", newItem);
+    //   // console.log("newItem", newItem);
 
-      handleAddItem(newItem);
-      handleClose();
-    } else {
-      return notifyError("Please select all variant first!");
-    }
+    //   handleAddItem(newItem);
+    //   handleClose();
+    // } else {
+    //   return notifyError("Please select all variant first!");
+    // }
+
+    const newItem = {
+      ...p,
+      id: p.ItemCode,
+      title: p.ItemName ? p.ItemName : showingTranslateValue(p.title),
+      image: img,
+      price: price,
+      originalPrice: originalPrice,
+      variant: {}, // אפשר להשאיר ריק
+    };
+    handleAddItem(newItem);
   };
 
-  const handleMoreInfo = (slug) => {
+  const handleMoreInfo = (ItemCode) => {
     handleClose();
 
-    router.push(`/product/${slug}`);
+    router.push(`/product/${ItemCode}`);
     setIsLoading(!isLoading);
-    handleLogEvent("product", `opened ${slug} product details`);
+    handleLogEvent("product", `opened ${ItemCode} product details`);
   };
 
-  const category_name = showingTranslateValue(product?.category?.name)
-    ?.toLowerCase()
+  // const category_name = showingTranslateValue(product?.category?.name)
+  //   ?.toLowerCase()
   // ?.replace(/[^A-Z0-9]+/gi, "-");
-
-  // console.log("product", product, "stock", stock);
+  const categoryId = product?.ItemCode?.slice(0, 4);
+  const category_name = categories?.find((cat) => cat.code === categoryId)?.name;
 
   return (
     <>
       <MainModal modalOpen={modalOpen && !isClosing} setModalOpen={setModalOpen}>
         <div className="inline-block overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl">
           <div className="flex flex-col items-center justify-center lg:flex-row md:flex-row w-full max-w-4xl overflow-hidden">
-            <Link href={`/product/${product.slug}`} passHref className="border-none outline-none">
+            <Link href={`/product/${product.ItemCode}`} passHref className="border-none outline-none">
               <div
                 onClick={() => handleClose()}
                 className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer p-5 pl-0"
@@ -273,9 +285,9 @@ const ProductModal = ({
                 // ) : '')}
                 />
 
-                {product.image[0] ? (
+                {product.image?.[0] ? (
                   <Image
-                    src={img || product.image[0]}
+                    src={img || product.image?.[0]}
                     width={420}
                     height={420}
                     alt="product"
@@ -294,12 +306,12 @@ const ProductModal = ({
 
             <div className="w-full flex flex-col p-5 md:p-8 text-left">
               <div className="flex flex-col gap-0.5 mb-1 -mt-1.5">
-                <Link href={`/product/${product.slug}`} passHref>
+                <Link href={`/product/${product.ItemCode}`} passHref>
                   <h1
                     onClick={() => handleClose()}
                     className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif hover:text-black cursor-pointer text-right mb-1"
                   >
-                    {showingTranslateValue(product?.title)}
+                    {product?.ItemName || product?.title}
                   </h1>
                 </Link>
                 <div
@@ -341,16 +353,18 @@ const ProductModal = ({
                     )}
                 </p>}
 
-              <div className="flex items-center my-4">
+              {/* מחיר */}
+              {/* <div className="flex items-center my-4">
                 <Price
                   product={product}
                   price={price}
                   currency={currency}
                   originalPrice={originalPrice}
                 />
-              </div>
+              </div> */}
 
-              <div className="mb-1">
+              {/* אופציות מוצר (גדול קטן בינוני וכו') */}
+              {/* <div className="mb-1">
                 {variantTitle?.map((a, i) => (
                   <span key={a._id}>
                     <h4 className="text-lg py-1 pb-2 font-serif text-gray-700 font-bold text-right">
@@ -371,8 +385,9 @@ const ProductModal = ({
                     </div>
                   </span>
                 ))}
-              </div>
+              </div> */}
 
+              {/* בחירת כמות והוספה */}
               <div className="flex items-center mt-4">
                 <div className="flex items-center gap-3 justify-between space-s-3 sm:space-s-4 w-full">
                   <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 md:h-12 border-gray-300">
@@ -391,7 +406,7 @@ const ProductModal = ({
                     <button
                       onClick={() => setItem(item + 1)}
                       disabled={
-                        product.quantity < item || product.quantity === item
+                        (product.quantity ?? product.OnHand ?? 1) <= item
                       }
                       className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-s border-gray-300 hover:text-gray-500"
                     >
@@ -409,21 +424,24 @@ const ProductModal = ({
                   </button>
                 </div>
               </div>
+
               <div className="flex items-center mt-4">
                 <div className="flex justify-between space-s-3 sm:space-s-4 w-full">
+                  {/* קטגוריה */}
                   <div className="flex flex-col items-start gap-2">
                     <span className="font-serif font-semibold text-sm d-block">
                       <span className="text-gray-700">
                         {t("common:category")}:
                       </span>{" "}
                       <Link
-                        href={`/search?category=${category_name}&_id=${product?.category?._id}`}
+                        href={`/category/${categoryId}`}
+                      // href={`/search?category=${category_name}&_id=${product?.category?._id}`}
                       >
                         <button
                           type="button"
-                          className="text-gray-600 font-serif font-medium underline ml-2 hover:text-teal-600"
+                          className="text-gray-600 font-serif font-medium underline ml-2 hover:text-customGreen"
                           onClick={() => {
-                            setIsLoading(!isLoading);
+                            // setIsLoading(!isLoading);
                             handleClose();
                             clearInput();
                           }}
@@ -436,9 +454,10 @@ const ProductModal = ({
                     <Tags product={product} />
                   </div>
 
+                  {/* מידע נוסף */}
                   <div>
                     <button
-                      onClick={() => handleMoreInfo(product.slug)}
+                      onClick={() => handleMoreInfo(product.ItemCode)}
                       className="font-sans font-medium text-sm text-customRed hover:underline whitespace-nowrap"
                     >
                       {t("common:moreInfo")}

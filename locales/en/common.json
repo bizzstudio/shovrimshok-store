@@ -201,7 +201,7 @@
   "relatedProducts": "Related Products",
   "stock": "Stock",
   "options": "Options",
-  "SKU": "SKU",
+  "SKU": "Product Code",
   "productStockOut": "Product is out of stock",
   "itemCode": "Code",
 
@@ -451,6 +451,8 @@
   "lowToHigh": "Low to High",
   "highToLow": "High to Low",
   "sorryText": "Sorry, we can not find this product",
+  "searchPageDesc": "This is search page",
+  "search": "Search",
 
   "/=================* faq* =================/": "",
   "faq-title": "Frequently Asked Questions",

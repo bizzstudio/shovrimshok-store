@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useState } from "react";
+import { useRouter } from "next/router";
 import {
   IoChevronDownOutline,
   IoChevronBackOutline,
@@ -12,50 +13,97 @@ import { SidebarContext } from "@context/SidebarContext";
 
 // פונקציה שמחזירה אייקון לפי קוד קטגוריה (להרחיב לפי הצורך)
 const getCategoryIconByCode = (code) => {
+  const base = "/categories icons";
   const iconsMap = {
-    // "1000": "/icons/canned.svg",
+    "1000": "cannedFood",
+    "1500": "spices",
+    "2000": "rice",
+    "2500": "softDrinks",
+    "3000": "bakingGoods",
+    "3500": "cleaningSupplies",
+    "4000": "alcoholic",
+    "4500": "sauces",
+    "5000": "sweets",
+    "5500": "nuts",
+    "6000": "asianFood",
+    "6500": "mealBoxes",
+    "7500": "legumes",
+    "8000": "cookies",
+    "8500": "organic",
   };
-  return iconsMap[code] || "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png";
+
+  const name = iconsMap[code];
+
+  if (!name) {
+    return {
+      color: "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
+      bw: "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
+    };
+  }
+
+  return {
+    color: `${base}/${name}_color.svg`,
+    bw: `${base}/${name}.svg`,
+  };
 };
 
-const CategoryCard = ({ title, nested, id }) => {
-  const { closeCategoryDrawer, isLoading, setIsLoading } = useContext(SidebarContext);
+
+const CategoryCard = ({ title, nested, id, onLinkClick }) => {
+  const router = useRouter();
+  const { query, pathname } = router;
+
+  const { closeCategoryDrawer, setIsLoading } = useContext(SidebarContext);
 
   const [show, setShow] = useState(false);
-  const [showSubCategory, setShowSubCategory] = useState({
-    id: "",
-    show: false,
-  });
 
   const toggleShow = () => setShow(!show);
 
-  const handleSubSubToggle = (code) => {
-    setShowSubCategory((prev) => ({
-      id: code,
-      show: prev.id === code ? !prev.show : true,
-    }));
+  const handleClick = (targetPath, targetSub = "") => {
+    const currentPath = pathname;
+    const currentSub = query?.sub || "";
+
+    const isSameCategory = currentPath === "/category/[categoryId]" && query.categoryId === id;
+    const isSameSub = currentSub === targetSub;
+
+    if (isSameCategory && (!nested || isSameSub)) {
+      // אם כבר באותה הקטגוריה ותת־קטגוריה – לא טוענים מחדש
+      closeCategoryDrawer();
+      if (onLinkClick) setTimeout(() => onLinkClick(), 100);
+      return;
+    }
+
+    // אחרת – מתחילים טעינה ומעבירים
+    closeCategoryDrawer();
+    if (onLinkClick) setTimeout(() => onLinkClick(), 100);
+    // setIsLoading(true);
   };
 
-  const handleCategoryClick = () => {
-    closeCategoryDrawer();
-    setIsLoading(true);
-  };
+  const icon = getCategoryIconByCode(id);
 
   return (
     <>
       <div className="flex items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen cursor-pointer select-none">
         <Link
           href={`/category/${id}`}
-          className="p-2 flex items-center w-full gap-2"
-          onClick={handleCategoryClick}
+          onMouseDown={() => handleClick(`/category/${id}`)} // סוגר את התפריט לפני הניווט
+          className="p-2 flex items-center w-full gap-2 group"
         >
-          <Image
-            src={getCategoryIconByCode(id)}
-            width={30}
-            height={30}
-            alt="Category"
-            className="object-contain"
-          />
+          <div className="relative w-[25px] h-[25px]">
+            <Image
+              src={icon.bw}
+              width={25}
+              height={25}
+              alt="Category BW"
+              className="absolute top-0 left-0 object-contain transition-opacity duration-200 group-hover:opacity-0"
+            />
+            <Image
+              src={icon.color}
+              width={25}
+              height={25}
+              alt="Category Color"
+              className="absolute top-0 left-0 object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+            />
+          </div>
           <div className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customGreen">
             {title}
           </div>
@@ -81,7 +129,7 @@ const CategoryCard = ({ title, nested, id }) => {
             <li key={child.code}>
               <Link
                 href={`/category/${id}?sub=${child.code}`}
-                onClick={handleCategoryClick}
+                onMouseDown={() => handleClick(`/category/${id}`, child.code)} // סוגר את התפריט לפני הניווט
                 className="flex items-center gap-1 font-serif py-1 text-sm text-gray-600 hover:text-customGreen"
               >
                 <span className="text-xs text-gray-500 pr-2">

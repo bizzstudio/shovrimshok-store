@@ -338,10 +338,10 @@ const useCheckoutSubmit = () => {
         let stock = product.stock;
         let price = product.prices.price;
         let originalPrice = product.prices.originalPrice;
-        let img = product.image[0];
+        let img = product.image?.[0];
 
         if (
-          product?.variants.map(
+          product?.variants?.map(
             (variant) =>
               Object.entries(variant).sort().toString() ===
               Object.entries(selectVariant).sort().toString()
@@ -351,8 +351,8 @@ const useCheckoutSubmit = () => {
           const newItem = {
             ...updatedProduct,
             id: `${product.variants.length <= 1
-              ? product._id
-              : product._id +
+              ? (product._id ?? product.ItemCode)
+              : (product._id ?? product.ItemCode) +
               variantTitle
                 ?.map(
                   // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]
@@ -411,7 +411,7 @@ const useCheckoutSubmit = () => {
         localStorage.setItem("missingProducts", JSON.stringify(missingProducts));
 
         // אפשר, אם רוצים, להסיר אותם מייד מהעגלה:
-        missingProducts.forEach((p) => removeItem(p._id));
+        missingProducts.forEach((p) => removeItem((p._id ?? p.ItemCode)));
 
         // הצגת המודאל עם המוצרים החסרים
         setMissingProducts(missingProducts);
@@ -433,13 +433,13 @@ const useCheckoutSubmit = () => {
           const { product } = conflict;
 
           // 1) מוצאים את הפריט כפי שהוא בעגלה
-          const cartItem = items.find((cartI) => cartI._id === product._id);
+          const cartItem = items.find((cartI) => cartI._id === (product._id ?? product.ItemCode));
 
           if (cartItem) {
             const oldQuantity = cartItem.quantity;
 
             productsWithQ = productsWithQ.map(p => {
-              if (p.product._id === cartItem.id) {
+              if (p.product._id === cartItem.id || p.product.ItemCode === cartItem.id) {
                 return { ...p, product: { ...product, oldQuantity } }
               }
               return p;

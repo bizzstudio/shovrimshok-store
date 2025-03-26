@@ -49,17 +49,17 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
     }, [products, clearInput, closeResultWindow, modalOpen]);
 
     const handleAddToCart = (product) => {
-        if (product.stock < 1) return notifyError(t("common:productStockOut"));
+        if (product.stock < 1 || product.OnHand < 1) return notifyError(t("common:productStockOut"));
 
         const { slug, variants, categories, description, ...updatedProduct } = product;
         const newItem = {
             ...updatedProduct,
-            id: product._id,
-            title: product.title,
-            price: product.prices.price,
+            id: (product._id ?? product.ItemCode),
+            title: product.ItemName || product.title,
+            price: product.prices?.price,
             originalPrice: product.prices?.originalPrice,
-            image: product.image[0],
-            slug: product.slug,  // Ensure slug is included
+            image: product.image?.[0],
+            slug: product.ItemCode,  // Ensure slug is included
         };
 
         addItem(newItem);
@@ -105,14 +105,14 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                     <div className="overflow-y-auto sm:max-h-[570px] max-h-[450px]">
                         {products.slice(0, 10).map((product) => (
                             <Link
-                                href={`/product/${product.slug}`} onClick={() => clearInput()}
-                                key={product._id}>
+                                href={`/product/${product.ItemCode}`} onClick={() => clearInput()}
+                                key={(product._id ?? product.ItemCode)}>
                                 <div className="flex items-center justify-between border-t p-4 hover:bg-gray-100">
                                     {/* תמונה כותרת ומחיר */}
                                     <div className="flex items-center gap-2">
-                                        {product.image[0] ? (
+                                        {product.image?.[0] ? (
                                             <Image
-                                                src={product.image[0]}
+                                                src={product.image?.[0]}
                                                 width={420}
                                                 height={420}
                                                 alt="product"
@@ -128,25 +128,25 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                             />
                                         )}
                                         <div className="text-right ml-4">
-                                            <h3 className="font-bold">{showingTranslateValue(product?.title)}</h3>
-                                            <Price
+                                            <h3 className="font-bold">{product.ItemName || showingTranslateValue(product?.title)}</h3>
+                                            {/* <Price
                                                 product={product}
                                                 price={product.prices.price}
                                                 originalPrice={product.prices.originalPrice}
                                                 currency={currency}
                                                 card={true}
                                             />
-                                            {isProductWithDiscount(product)}
+                                            {isProductWithDiscount(product)} */}
                                         </div>
                                     </div>
                                     {/* ProductCard-כפתורים דינאמיים כמו ב */}
                                     <div className="flex items-center"
                                         onClick={e => { e.preventDefault(), e.stopPropagation() }}>
-                                        {inCart(product._id) ? (
+                                        {inCart((product._id ?? product.ItemCode)) ? (
                                             items.map(
                                                 (item) =>
                                                     // כפתורי פלוס ומינוס
-                                                    item.id === product._id && (
+                                                    item.id === (product._id ?? product.ItemCode) && (
                                                         <div
                                                             key={item.id}
                                                             className="h-9 w-auto flex items-center justify-evenly py-1 px-2 bg-customGreen text-white rounded"
@@ -196,10 +196,11 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                                 </button>
                                             ) : (
                                                 <button
+                                                    // disabled={product.stock < 1 || product.OnHand < 1}
                                                     type='button'
                                                     onClick={() => handleAddToCart(product)}
                                                     aria-label="cart"
-                                                    className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customGreen hover:border-customGreen hover:bg-customGreen hover:text-white transition-all"
+                                                    className={product.stock < 1 || product.OnHand < 1 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customGreen hover:border-customGreen hover:bg-customGreen hover:text-white transition-all"}
                                                 >
                                                     <span className="text-xl">
                                                         <IoBagAddSharp />

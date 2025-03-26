@@ -7,12 +7,12 @@
  * @returns {String|null} - מחרוזת שמות המבצעים מופרדים במפריד או null אם אין מבצעים
  */
 const getOfferNames = (offers, product, separator = " / ") => {
-    if (!Array.isArray(offers) || !product || !product._id) {
+    if (!Array.isArray(offers) || !product || !(product._id ?? product.ItemCode)) {
         return null;
     };
 
     const offerNames = offers
-        .filter((offer) => offer.products.some((prod) => prod._id === product._id))
+        .filter((offer) => offer.products.some((prod) => prod._id === (product._id ?? product.ItemCode)))
         .map((offer) => offer.name?.he); // מחלץ את שם המבצע
 
     if (offerNames.length === 0) {

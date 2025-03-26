@@ -34,7 +34,7 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
   // console.log('attributes in product cart',attributes)
 
   const handleAddItem = (p) => {
-    if (p.stock < 1) return notifyError(t("common:productStockOut"));
+    // if (p.stock < 1) return notifyError(t("common:productStockOut"));
 
     if (p?.variants?.length > 0) {
       setModalOpen(!modalOpen);
@@ -45,11 +45,11 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
     const newItem = {
       ...updatedProduct,
       title: p.title,
-      id: p._id,
-      variant: p.prices,
-      price: p.prices.price,
-      originalPrice: product.prices?.originalPrice,
-      slug: p.slug,
+      id: p._id ?? p.ItemCode,
+      variant: p.prices || 0,
+      price: p.prices?.price || 0,
+      originalPrice: product.prices?.originalPrice || 0,
+      slug: p.ItemCode,
     };
     addItem(newItem);
     // פתיחת העגלה לשתי שניות באופן אוטומטי
@@ -102,7 +102,7 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
         {/* image */}
         <div
           onClick={() => {
-            handleModalOpen(!modalOpen, product._id);
+            handleModalOpen(!modalOpen, (product._id ?? product.ItemCode));
             handleLogEvent(
               "product",
               `opened ${showingTranslateValue(product?.title)} product modal`
@@ -117,8 +117,8 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
                 </div>
               </div>
             }
-            {product.image[0] ? (
-              <ImageWithFallback src={product.image[0]} outOfStock={product.stock <= 0} alt="product" noPadding={true} />
+            {product.image?.[0] ? (
+              <ImageWithFallback src={product.image?.[0]} outOfStock={product.stock <= 0} alt="product" noPadding={true} />
             ) : (
               <Image
                 src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
@@ -172,11 +172,11 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
             </div>
 
 
-            {inCart(product._id) ? (
+            {inCart((product._id ?? product.ItemCode)) ? (
               <div>
                 {items.map(
                   (item) =>
-                    item.id === product._id && (
+                    item.id === (product._id ?? product.ItemCode) && (
                       <div
                         key={item.id}
                         className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-customGreen text-white rounded"

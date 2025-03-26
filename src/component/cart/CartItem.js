@@ -16,7 +16,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
   const { handleIncreaseQuantity } = useAddToCart();
   const router = useRouter();
 
-  const [totalPrice, setTotalPrice] = useState(item.prices.price * item.quantity);
+  const [totalPrice, setTotalPrice] = useState((item.prices?.price ?? 0) * item.quantity);
   const [offerTitle, setOfferTitle] = useState('');
 
   let currentLang = Cookies.get('_lang');
@@ -40,7 +40,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
       setTotalPrice(thisItem?.discountedPrice);
       setOfferTitle(thisItem?.offerTitle?.he);
     } else {
-      setTotalPrice(item.prices.price * item.quantity);
+      setTotalPrice((item.prices?.price ?? 0) * item.quantity);
       setOfferTitle('');
     }
   }, [items]);
@@ -124,24 +124,24 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
 
   return (
     <div className="group w-full h-auto flex gap-4 justify-start items-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0">
-      <div onClick={() => router.push(`/product/${item?.slug}`)} className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0 cursor-pointer"
+      <div onClick={() => router.push(`/product/${item?.ItemCode}`)} className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0 cursor-pointer"
       >
         <img
           key={item.id}
-          src={item.image}
+          src={item.image || "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"}
           width={60}
           height={60}
-          alt={item.title}
+          alt={item.ItemName?.slice(0, 15) || item.title}
           style={{ aspectRatio: 1, objectFit: 'contain' }}
         />
       </div>
       <div className="flex flex-col w-full overflow-hidden">
         <Link
-          href={`/product/${item?.slug}`}
+          href={`/product/${item?.ItemCode}`}
           onClick={closeCartDrawer}
           className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1"
         >
-          {currentLang ? item.title?.he : item.title?.en}
+          {item.ItemName ? item.ItemName : currentLang ? item.title?.he : item.title?.en}
         </Link>
         {/* <span className="text-xs text-gray-400 mb-1">
           Item Price ${item.price}
@@ -151,9 +151,9 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
             <span>
               {/* {(item.price * item.quantity).toFixed(2)} */}
               {/* אם יש הנחה מופיע בקטן המחיר המקורי */}
-              {totalPrice < item.prices.price * item.quantity &&
+              {totalPrice < (item.prices?.price ?? 0) * item.quantity &&
                 <del className="text-xs font-normal text-gray-400 mr-1">
-                  {(item.prices.price * item.quantity).toFixed(2)}
+                  {((item.prices?.price ?? 0) * item.quantity).toFixed(2)}
                 </del>}
               {currency}
               {totalPrice.toFixed(2)}

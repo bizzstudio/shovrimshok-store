@@ -102,10 +102,10 @@ const MyOrders = () => {
         let stock = product.stock;
         let price = product.prices.price;
         let originalPrice = product.prices.originalPrice;
-        let img = product.image[0];
+        let img = product.image?.[0];
 
         if (
-          product?.variants.map(
+          product?.variants?.map(
             (variant) =>
               Object.entries(variant).sort().toString() ===
               Object.entries(selectVariant).sort().toString()
@@ -115,8 +115,8 @@ const MyOrders = () => {
           const newItem = {
             ...updatedProduct,
             id: `${product.variants.length <= 1
-              ? product._id
-              : product._id +
+              ? (product._id ?? product.ItemCode)
+              : (product._id ?? product.ItemCode) +
               variantTitle
                 ?.map(
                   // (att) => selectVariant[att.title.replace(/[^a-zA-Z0-9]/g, '')]

@@ -27,7 +27,7 @@ const OrderTable = ({ data, currency }) => {
             {i + 1}{" "}
           </th>
           <td className="px-6 py-1 whitespace-nowrap font-normal text-gray-500 text-center">
-            {currentLang ? item.title?.he : item.title?.en}
+            {item.ItemName ? item.ItemName : currentLang ? item.title?.he : item.title?.en}
           </td>
           <td className="px-6 py-1 whitespace-nowrap font-bold text-center">
             {item.quantity}{" "}
