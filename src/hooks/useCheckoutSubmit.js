@@ -180,7 +180,7 @@ const useCheckoutSubmit = () => {
       setError("");
 
       const userDetails = {
-        name: userInfo.name,
+        name: userInfo.CardName,
         lastName: userInfo.lastName || '',
         contact: userInfo.phone,
         email: userInfo.email,
@@ -230,7 +230,7 @@ const useCheckoutSubmit = () => {
       //   // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
       //   WebHookUrl: "https://backend.meshek-kirshner.co.il/api" + "/orders/" + dbOrder._id + `?key=${process.env.NEXT_PUBLIC_CARDCOM_KEY}&secret=${process.env.NEXT_PUBLIC_CARDCOM_SECRET}`,
       //   Document: {
-      //     To: userInfo.name,
+      //     To: userInfo.CardName,
       //     Email: userInfo.email,
       //     Products: [...orderInfo.cart.map(p => {
       //       return {

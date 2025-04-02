@@ -44,11 +44,11 @@ const Dashboard = ({ title, description, children }) => {
 
   useEffect(() => {
     OrderServices.getOrderCustomer({
-      page: currentPage,
-      limit: 8,
+      // page: currentPage,
+      // limit: 8,
     })
       .then((res) => {
-        // console.log("res: ", res);
+        console.log("res: ", res);
         setData(res);
         setLoading(false);
       })

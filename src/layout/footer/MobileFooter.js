@@ -83,7 +83,7 @@ const MobileFooter = () => {
                   className="rounded-full object-cover aspect-1 border-2 border-white"
                 />
               </Link>
-            ) : userInfo?.name ? (
+            ) : userInfo?.CardName ? (
               <Link
                 href="/user/dashboard"
                 className="leading-none font-bold font-serif block mb-0.5"
@@ -96,7 +96,7 @@ const MobileFooter = () => {
               </div>
             )}
           </div>
-          {userInfo?.name ? (
+          {userInfo?.CardName ? (
             <p className="text-xs text-white text-center">{t("common:profile")}</p>
           ) : (
             <p className="text-xs text-white text-center">{t("common:login")}</p>

@@ -341,7 +341,7 @@ const Checkout = () => {
                         <div className="w-full 2xl:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
                           <CiUser className="text-[41px] text-customGreen group-hover:text-white transition ease-in-out duration-300" />
                           <div className="flex flex-col items-start">
-                            <h2 className="text-xl">{userInfo?.name}</h2>
+                            <h2 className="text-xl">{userInfo?.CardName}</h2>
                             {city &&
                               <p className="text-base text-gray-400 -mt-1">{city}, {userInfo?.address?.street}, {userInfo?.address?.houseNumber}{
                                 userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''

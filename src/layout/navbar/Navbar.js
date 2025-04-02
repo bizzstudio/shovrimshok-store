@@ -178,7 +178,7 @@ const Navbar = () => {
               </button>
               {/* Profile dropdown */}
 
-              {userInfo?.name ?
+              {userInfo?.CardName ?
                 <Link
                   className="flex items-center justify-center text-white bg-customGreen text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customGreen outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
                   aria-label="Login"

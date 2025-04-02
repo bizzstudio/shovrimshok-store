@@ -223,6 +223,7 @@
     "loginBoxText": "התחברו לחשבון עם אימייל וסיסמה",
     "email": "אימייל",
     "phone": "טלפון",
+    "clientCode": "קוד לקוח",
     "password": "סיסמה",
     "forgotPassword": "שכחת סיסמה?",
     "resetPassword": "אפס/י את הסיסמה שלך",

@@ -10,6 +10,7 @@ import { UserContext } from "@context/UserContext";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
 import useTranslation from "next-translate/useTranslation";
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const useLoginSubmit = (setModalOpen) => {
   const router = useRouter();
@@ -50,24 +51,24 @@ const useLoginSubmit = (setModalOpen) => {
     //   phone
     // })
 
-    if (registerEmail && password) {
+    if (phone && password) {
       if (localStorage.getItem("plsRegisterAgain")) {
         setLoading(false);
         notifyError(t("common:pls_register_again"));
         return;
       } else {
         CustomerServices.customerLogin({
-          registerEmail,
+          phone,
           password,
         })
           .then((res) => {
-            // console.log(res);
+            console.log(res);
             setLoading(false);
             setModalOpen(false);
             localStorage.removeItem("plsRegisterAgain");
             localStorage.removeItem("waitingForVerification");
             // גרימה לפופאפ הזנת כתובת לקפוץ אם אין לו כתובת
-            if (!res.address.city) {
+            if (!res.city) {
               localStorage.setItem("firstTime", true);
             }
             router.push(redirect || "/");
@@ -78,13 +79,14 @@ const useLoginSubmit = (setModalOpen) => {
             });
           })
           .catch((err) => {
+            console.error(err);
             // בדיקה אם המשתמש כבר נרשם וממתין לאימות
-            if (localStorage.getItem("waitingForVerification") == registerEmail) {
+            if (localStorage.getItem("waitingForVerification") == phone) {
               setLoading(false);
               notifyError(t("common:waiting_for_verification"));
               return;
             } else {
-              notifyError(err ? err.response.data.message : err.message);
+              notifyApiResponse(err, false);
               setLoading(false);
             }
           });
@@ -117,19 +119,19 @@ const useLoginSubmit = (setModalOpen) => {
         .catch((err) => {
           console.log(err)
           setLoading(false);
-          notifyError(err.response.data.message);
+          notifyApiResponse(err, false);
         });
     }
     if (verifyEmail) {
       CustomerServices.forgetPassword({ verifyEmail })
         .then((res) => {
           setLoading(false);
-          notifySuccess(res.message);
+          notifyApiResponse(res, true);
           setValue("verifyEmail");
         })
         .catch((err) => {
           setLoading(false);
-          notifyError(err ? err.response.data.message : err.message);
+          notifyApiResponse(err, false);
         });
     }
   };
@@ -148,10 +150,8 @@ const useLoginSubmit = (setModalOpen) => {
           Cookies.set("userInfo", JSON.stringify(res), {
             expires: cookieTimeOut,
           });
-        })
-
-        .catch((err) => {
-          notifyError(err.message);
+        }).catch((err) => {
+          notifyApiResponse(err, false);
           setModalOpen(false);
         });
     }

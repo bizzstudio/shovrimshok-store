@@ -153,7 +153,7 @@ const UserAddressInitialize = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <img src={initializeAddressTitle.src} alt="login" className="h-28 mx-auto -mt-4 -mb-6" />
       <p className="text-center text-lg font-semibold">
-        {t("common:hey")} {userInfo?.name?.split(' ')[0]}! {t("common:initializeAddressDes")}
+        {t("common:hey")} {userInfo?.CardName}! {t("common:initializeAddressDes")}
       </p>
       <div className="mt-5 md:mt-0 md:col-span-2">
         <div className="mt-10 sm:mt-0">

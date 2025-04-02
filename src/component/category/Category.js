@@ -13,7 +13,7 @@ import CategoryCard from "./CategoryCard";
 const Category = ({ onLinkClick }) => {
   const { categoryDrawerOpen, closeCategoryDrawer, categories } = useContext(SidebarContext);
 
-  console.log('categoies :>> ', categories);
+  // console.log('categoies :>> ', categories);
 
   return (
     <div className="flex flex-col w-full h-full bg-white cursor-pointer overflow-y-auto">

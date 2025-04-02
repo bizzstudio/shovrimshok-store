@@ -1,4 +1,4 @@
-import { FiLock, FiMail } from "react-icons/fi";
+import { FiLock, FiMail, FiPhone } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 
 //internal  import
@@ -8,9 +8,8 @@ import InputArea from "@component/form/InputArea";
 import loginTitle from 'public/titles/loginTitle.svg'
 
 const Login = ({ setShowResetPassword, setModalOpen }) => {
-  const { handleSubmit, submitHandler, register, errors, loading } =
-    useLoginSubmit(setModalOpen);
-    const { t } = useTranslation();
+  const { handleSubmit, submitHandler, register, errors, loading } = useLoginSubmit(setModalOpen);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -30,12 +29,12 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
             <InputArea
               register={register}
               // label={t("common:email")}
-              name="registerEmail"
-              type="email"
-              placeholder={t("common:email")}
-              Icon={FiMail}
+              name="phone"
+              type="tel"
+              placeholder={t("common:phone")}
+              Icon={FiPhone}
             />
-            <Error errorName={errors.registerEmail} />
+            <Error errorName={errors.phone} />
           </div>
           <div className="form-group">
             <InputArea
@@ -43,7 +42,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
               // label={t("common:password")}
               name="password"
               type="password"
-              placeholder={t("common:password")}
+              placeholder={t("common:clientCode")}
               Icon={FiLock}
             />
 
