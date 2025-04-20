@@ -281,14 +281,14 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
             <div className="mx-auto px-3 lg:px-10 max-w-screen-2xl">
               <div className="flex items-center pb-4">
                 <ol className="flex items-center w-full overflow-hidden font-serif">
-                  <li className="text-sm pr-1 transition duration-200 ease-in cursor-pointer hover:text-customGreen font-semibold">
+                  <li className="text-sm pr-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold">
                     <Link href="/">{t("common:HOME")}</Link>
                   </li>
                   <li className="text-sm mt-[1px]">
                     {" "}
                     <FiChevronLeft />{" "}
                   </li>
-                  <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customGreen font-semibold ">
+                  <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold ">
                     <Link
                       href={`/category/${categoryId}`}
                     // href={`/search?category=${category_name}&_id=${product?.category?._id}`}
@@ -473,7 +473,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                           </div>
                           <button
                             onClick={() => handleAddToCart(product)}
-                            className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none text-white px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white bg-customGreen hover:bg-customGreen-dark w-full h-12"
+                            className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none text-white px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white bg-customRed hover:bg-customRed-dark w-full h-12"
                           >
                             {t("common:addToCart")}
                           </button>
@@ -504,7 +504,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                       {/* <div className="mt-8">
                         <p className="text-xs sm:text-sm text-gray-700 font-medium">
                           Call Us To Order By Mobile Number :{" "}
-                          <span className="text-customGreen-dark font-semibold">
+                          <span className="text-customRed-dark font-semibold">
                             +0044235234
                           </span>{" "}
                         </p>
@@ -519,7 +519,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                           {t("common:shareYourSocialText")}
                         </p> */}
                         {/* <ul className="flex gap-2 mt-4">
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customGreen transition ease-in-out duration-500">
+                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <FacebookShareButton
                               url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
                               quote=""
@@ -527,7 +527,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                               <FacebookIcon size={32} round />
                             </FacebookShareButton>
                           </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customGreen transition ease-in-out duration-500">
+                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <TwitterShareButton
                               url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
                               quote=""
@@ -535,7 +535,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                               <TwitterIcon size={32} round />
                             </TwitterShareButton>
                           </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customGreen transition ease-in-out duration-500">
+                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <RedditShareButton
                               url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
                               quote=""
@@ -543,7 +543,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                               <RedditIcon size={32} round />
                             </RedditShareButton>
                           </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customGreen transition ease-in-out duration-500">
+                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <WhatsappShareButton
                               url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
                               quote=""
@@ -551,7 +551,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                               <WhatsappIcon size={32} round />
                             </WhatsappShareButton>
                           </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customGreen transition ease-in-out duration-500">
+                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <LinkedinShareButton
                               url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
                               quote=""

@@ -334,12 +334,12 @@ const Checkout = () => {
                   //   />
                   // </div>
                   : <div className="mt-5 md:mt-0 md:col-span-2">
-                    <h1 className="text-3xl font-bold text-customGreen w-full my-3 text-center bg-white border border-gray-200 p-3 rounded-md">{t("common:likutMessage")}</h1>
+                    <h1 className="text-3xl font-bold text-customRed w-full my-3 text-center bg-white border border-gray-200 p-3 rounded-md">{t("common:likutMessage")}</h1>
                     <form onSubmit={handleSubmit(submitHandler)}>
                       <div className="w-full flex flex-col 2xl:flex-row items-center pb-3 gap-3.5">
                         {/* פרטים אישיים */}
                         <div className="w-full 2xl:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
-                          <CiUser className="text-[41px] text-customGreen group-hover:text-white transition ease-in-out duration-300" />
+                          <CiUser className="text-[41px] text-customRed group-hover:text-white transition ease-in-out duration-300" />
                           <div className="flex flex-col items-start">
                             <h2 className="text-xl">{userInfo?.CardName}</h2>
                             {city &&
@@ -417,9 +417,9 @@ const Checkout = () => {
                           <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
                             {/* <form className="w-full"> */}
                             {couponInfo.couponCode ? (
-                              <span className="bg-customGreen-superLight px-4 py-3 leading-tight w-full rounded-md flex justify-between">
+                              <span className="bg-customRed-superLight px-4 py-3 leading-tight w-full rounded-md flex justify-between">
                                 {" "}
-                                <p className="text-customGreen-dark">{t("common:couponApplied")} </p>{" "}
+                                <p className="text-customRed-dark">{t("common:couponApplied")} </p>{" "}
                                 <span className="text-red-500 text-right">
                                   {couponInfo.couponCode}
                                 </span>
@@ -430,7 +430,7 @@ const Checkout = () => {
                                   ref={couponRef}
                                   type="text"
                                   placeholder={t("common:couponCode")}
-                                  className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-md h-12 duration-200 bg-white border-gray-200 focus:ring-0 focus:outline-none focus:border-customGreen placeholder-gray-500 placeholder-opacity-75"
+                                  className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-md h-12 duration-200 bg-white border-gray-200 focus:ring-0 focus:outline-none focus:border-customRed placeholder-gray-500 placeholder-opacity-75"
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       e.preventDefault(); // מונע את שליחת הטופס הכללי
@@ -441,7 +441,7 @@ const Checkout = () => {
                                 <button
                                   type="button"
                                   onClick={handleCouponCode}
-                                  className="w-fit md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-customGreen rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 sm:ml-3 md:ml-3 lg:ml-3 text-customGreen hover:text-white hover:bg-customGreen h-12 text-sm lg:text-base whitespace-nowrap"
+                                  className="w-fit md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-customRed rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 sm:ml-3 md:ml-3 lg:ml-3 text-customRed hover:text-white hover:bg-customRed h-12 text-sm lg:text-base whitespace-nowrap"
                                 >
                                   {showingTranslateValue(
                                     storeCustomizationSetting?.checkout?.apply_button
@@ -476,7 +476,7 @@ const Checkout = () => {
                               {currency}
                               {shippingCost?.toFixed(2)}
                             </span>
-                            <span className="ml-auto flex-shrink-0 text-customGreen font-bold">
+                            <span className="ml-auto flex-shrink-0 text-customRed font-bold">
                               {typeof customCartTotal === 'number' && <>({shippingPercentageIncrease?.toFixed(2)}%)</>}
                             </span>
                           </div>
@@ -519,7 +519,7 @@ const Checkout = () => {
                             <h2 className="font-semibold font-serif text-lg">
                               {t("common:customerNote")}
                             </h2>
-                            <button type="button" className="text-customGreen">
+                            <button type="button" className="text-customRed">
                               <MdKeyboardArrowDown size={30} className={`transform ${isNoteOpen ? 'rotate-180' : ''}`} />
                             </button>
                           </div>
@@ -557,7 +557,7 @@ const Checkout = () => {
                             onClick={() => isDeliveryMetod ? {} : (notifyError(t("common:selectDeliveryMethod")), scrollUp())}
                             type="submit"
                             disabled={isEmpty || isCheckoutSubmit || typeof customCartTotal !== 'number'}
-                            className="bg-customGreen hover:bg-customGreen-dark border border-customGreen transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
+                            className="bg-customRed hover:bg-customRed-dark border border-customRed transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
                           >
                             {typeof customCartTotal !== 'number' ? (
                               <Calculating />

@@ -149,7 +149,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                                     item.id === (product._id ?? product.ItemCode) && (
                                                         <div
                                                             key={item.id}
-                                                            className="h-9 w-auto flex items-center justify-evenly py-1 px-2 bg-customGreen text-white rounded"
+                                                            className="h-9 w-auto flex items-center justify-evenly py-1 px-2 bg-customRed text-white rounded"
                                                         >
                                                             <button
                                                                 type='button'
@@ -188,7 +188,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                                     type='button'
                                                     onClick={() => handleModalOpen(product)}
                                                     aria-label="options"
-                                                    className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customGreen hover:border-customGreen hover:bg-customGreen hover:text-white transition-all"
+                                                    className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"
                                                 >
                                                     <span className="text-[10px]">
                                                         {t("common:options")}
@@ -200,7 +200,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                                     type='button'
                                                     onClick={() => handleAddToCart(product)}
                                                     aria-label="cart"
-                                                    className={product.stock < 1 || product.OnHand < 1 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customGreen hover:border-customGreen hover:bg-customGreen hover:text-white transition-all"}
+                                                    className={product.stock < 1 || product.OnHand < 1 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
                                                 >
                                                     <span className="text-xl">
                                                         <IoBagAddSharp />
@@ -217,7 +217,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                     {products.length > 10 && (
                         <div className="text-center">
                             <button
-                                className="text-customGreen hover:underline"
+                                className="text-customRed hover:underline"
                                 type='submit'
                             >
                                 {t("common:showAll")} ({products.length})

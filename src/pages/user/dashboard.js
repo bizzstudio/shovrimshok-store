@@ -119,7 +119,7 @@ const Dashboard = ({ title, description, children }) => {
                   {userSidebar?.map((item) => (
                     <span
                       key={item?.title}
-                      className="p-2 my-2 flex gap-1 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark"
+                      className="p-2 my-2 flex gap-1 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed-dark"
                     >
                       <item.icon
                         className="flex-shrink-0 h-4 w-4"
@@ -127,19 +127,19 @@ const Dashboard = ({ title, description, children }) => {
                       />
                       <Link
                         href={item.href}
-                        className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customGreen-dark"
+                        className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customRed-dark"
                       >
                         {item.ItemName ? item.ItemName : item.title}
                       </Link>
                     </span>
                   ))}
-                  <span className="p-2 flex gap-1 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                  <span className="p-2 flex gap-1 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed-dark">
                     <span>
                       <IoLockOpenOutline />
                     </span>{" "}
                     <button
                       onClick={handleLogOut}
-                      className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customGreen-dark"
+                      className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customRed-dark"
                     >
                       {showingTranslateValue(
                         storeCustomizationSetting?.navbar?.logout
@@ -187,7 +187,7 @@ const Dashboard = ({ title, description, children }) => {
                         )}
                         Icon={FiCheck}
                         quantity={data?.delivered}
-                        className="text-customGreen-dark bg-customGreen-leaf"
+                        className="text-customRed-dark bg-customRed-leaf"
                       />
                     </div>
                     <RecentOrder data={data} loading={loading} error={error} />

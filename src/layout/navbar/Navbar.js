@@ -1,3 +1,4 @@
+// shapira-store/src/layout/navbar/Navbar.js
 import { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -104,16 +105,16 @@ const Navbar = () => {
         <LoginModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       )}
 
-      <div className="bg-white sticky lg:top-0 -top-16 z-20">
-        <div className="w-full px-3 sm:px-10">
-          <div className="top-bar h-16 lg:h-auto flex items-center justify-between pt-4 mx-auto">
+      <div className="bg-white sticky lg:top-0 -top-16 z-20 border-b border-b-gray-200">
+        <div className="w-full px-3 sm:px-10 bg-gradient-to-b from-[#E0E2E9] to-transparent">
+          <div className="top-bar h-16 lg:h-auto flex items-center justify-between pt-3 pb-2 mx-auto">
             <Link
               href="/"
-              className=" hidden md:hidden lg:block"
+              className="hidden md:hidden lg:block"
             >
               <Image
-                width={250}
-                height={25}
+                width={290}
+                height={117}
                 src={
                   storeCustomizationSetting?.navbar?.logo ||
                   logo
@@ -123,11 +124,11 @@ const Navbar = () => {
               />
             </Link>
             <div className="w-full transition-all duration-200 dnone ease-in-out lg:flex lg:max-w-[520px] xl:max-w-[750px] 2xl:max-w-[900px] md:mx-12 lg:mx-4 xl:mx-0">
-              <div className="w-full flex flex-col justify-center flex-shrink-0 relative z-30">
+              <div className="w-full flex flex-col justify-center flex-shrink-0 relative z-30 mt-1">
                 <div className="flex flex-col mx-auto w-full">
                   <form onSubmit={handleSubmit}
-                    className={`${isPaymentPageOpen ? "hidden" : "flex"} relative w-full h-[40px] items-center px-3.5 rounded-[10px] transition-[border-radius] duration-500 ease-in-out bg-gray-100 focus-within:rounded-[1px] before:content-[''] before:absolute before:bg-customGreen before:transform before:scale-x-0 before:origin-center before:w-full before:h-[2px] before:left-0 before:bottom-0 before:rounded-[1px] before:transition-transform before:duration-300 before:ease-in-out focus-within:before:scale-100`}>
-                    <button type="submit" className="border-none bg-none text-[#8b8ba7] focus:text-customGreen">
+                    className={`${isPaymentPageOpen ? "hidden" : "flex"} relative w-full h-[40px] items-center px-3.5 rounded-[10px] transition-[border-radius] duration-500 ease-in-out bg-gray-100 focus-within:rounded-[1px] before:content-[''] before:absolute before:bg-customRed before:transform before:scale-x-0 before:origin-center before:w-full before:h-[2px] before:left-0 before:bottom-0 before:rounded-[1px] before:transition-transform before:duration-300 before:ease-in-out focus-within:before:scale-100 shadow-lg`}>
+                    <button type="submit" className="border-none bg-none text-customRed-dark">
                       <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
                         <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round"></path>
                       </svg>
@@ -159,7 +160,7 @@ const Navbar = () => {
             </div>
             <div className="hidden md:hidden md:items-center lg:flex gap-5 absolute inset-y-0 right-0 pr-2 sm:static sm:inset-auto sm:pr-0">
               {/* <button
-                className="text-customGreen-dark text-2xl font-bold"
+                className="text-customRed-dark text-2xl font-bold"
                 aria-label="Alert"
               >
                 <FiBell className="w-6 h-6 drop-shadow-xl" />
@@ -167,10 +168,10 @@ const Navbar = () => {
               <button
                 aria-label="Total"
                 onClick={toggleCartDrawer}
-                className="relative text-customGreen-dark text-2xl font-bold"
+                className="relative text-customRed-dark text-2xl font-bold"
               >
                 {totalItems === 0 ? null :
-                  <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 text-xs font-medium leading-none text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full" style={{ minWidth: '20px' }}>
+                  <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 text-xs font-medium leading-none text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-customRed rounded-full" style={{ minWidth: '20px' }}>
                     {totalItems}
                   </span>
                 }
@@ -180,7 +181,7 @@ const Navbar = () => {
 
               {userInfo?.CardName ?
                 <Link
-                  className="flex items-center justify-center text-white bg-customGreen text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customGreen outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
+                  className="flex items-center justify-center text-white bg-customRed text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customRed outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
                   aria-label="Login"
                   href="/user/dashboard"
                 >
@@ -196,7 +197,7 @@ const Navbar = () => {
                       <FiUserCheck className="w-6 h-6 drop-shadow-xl" />
                     </span>}
                 </Link> :
-                <button className="flex items-center justify-center text-white bg-customGreen text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customGreen outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
+                <button className="flex items-center justify-center text-white bg-customRed text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customRed outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
                   aria-label="Login"
                   onClick={() => setModalOpen(!modalOpen)}>
                   <FiUser className="w-6 h-6 drop-shadow-xl" />
@@ -205,10 +206,10 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+      </div >
 
         {/* second header */}
         <NavbarPromo />
-      </div >
     </>
   );
 };

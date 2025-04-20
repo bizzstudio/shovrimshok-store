@@ -12,7 +12,7 @@ const PriceUpdatedModal = ({ priceUpdatedItems = [], closeModal = () => { } }) =
     return (
         <div className="flex flex-col w-fit justify-center items-center">
             <img src={newPriceImage.src} alt="Price Updated image" className="w-[85px]" />
-            <h1 className="text-[22px] font-bold text-customGreen mt-4 mb-2 text-center">
+            <h1 className="text-[22px] font-bold text-customRed mt-4 mb-2 text-center">
                 {/* "למוצרים הבאים עודכן המחיר" עם משתנה count */}
                 {t("common:priceUpdatedForProducts", { count })}
             </h1>
@@ -24,7 +24,7 @@ const PriceUpdatedModal = ({ priceUpdatedItems = [], closeModal = () => { } }) =
                 ))}
             </ul>
             <button onClick={closeModal}
-                className="w-full mt-3 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap">
+                className="w-full mt-3 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap">
                 {t("common:ok")}
             </button>
         </div>

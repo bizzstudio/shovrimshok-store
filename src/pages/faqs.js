@@ -34,7 +34,7 @@ const Faq = () => {
               <Disclosure>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
                       <span>
                         {showingTranslateValue(
                           storeCustomizationSetting?.faq?.faq_one
@@ -42,7 +42,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>
@@ -58,7 +58,7 @@ const Faq = () => {
               <Disclosure as="div" className="mt-2">
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none">
                       <span>
                         {" "}
                         {showingTranslateValue(
@@ -67,7 +67,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>
@@ -83,7 +83,7 @@ const Faq = () => {
               <Disclosure as="div" className="mt-2">
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none">
                       <span>
                         {" "}
                         {showingTranslateValue(
@@ -92,7 +92,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>
@@ -107,7 +107,7 @@ const Faq = () => {
               <Disclosure as="div" className="mt-2">
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none">
                       <span>
                         {" "}
                         {showingTranslateValue(
@@ -116,7 +116,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>
@@ -131,7 +131,7 @@ const Faq = () => {
               <Disclosure as="div" className="mt-2">
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none">
                       <span>
                         {showingTranslateValue(
                           storeCustomizationSetting?.faq?.faq_five
@@ -139,7 +139,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>
@@ -154,7 +154,7 @@ const Faq = () => {
               <Disclosure as="div" className="mt-2">
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none">
                       <span>
                         {showingTranslateValue(
                           storeCustomizationSetting?.faq?.faq_six
@@ -162,7 +162,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>
@@ -177,7 +177,7 @@ const Faq = () => {
               <Disclosure>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
                       <span>
                         {" "}
                         {showingTranslateValue(
@@ -186,7 +186,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>
@@ -202,7 +202,7 @@ const Faq = () => {
               <Disclosure as="div" className="mt-2">
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customGreen bg-gray-50 hover:bg-customGreen-superLight rounded-lg focus:outline-none">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-600 focus:text-customRed bg-gray-50 hover:bg-customRed-superLight rounded-lg focus:outline-none">
                       <span>
                         {showingTranslateValue(
                           storeCustomizationSetting?.faq?.faq_eight
@@ -210,7 +210,7 @@ const Faq = () => {
                       </span>
                       <ChevronUpIcon
                         className={`${
-                          open ? "transform rotate-180 text-customGreen" : ""
+                          open ? "transform rotate-180 text-customRed" : ""
                         } w-5 h-5 text-gray-500`}
                       />
                     </Disclosure.Button>

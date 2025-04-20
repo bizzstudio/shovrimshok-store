@@ -49,7 +49,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block1_sub_link1}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -65,7 +65,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block1_sub_link2}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -81,7 +81,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block1_sub_link3}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     {showingTranslateValue(
                       storeCustomizationSetting?.footer_block_one_link_three_title
@@ -100,7 +100,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block1_sub_link4}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -131,7 +131,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block2_sub_link1}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -148,7 +148,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block2_sub_link2}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -164,7 +164,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block2_sub_link3}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -180,7 +180,7 @@ const Footer = () => {
                 <li className="flex items-baseline">
                   <Link
                     href={`${storeCustomizationSetting?.footer?.block2_sub_link4}`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -215,7 +215,7 @@ const Footer = () => {
                       storeCustomizationSetting?.footer?.block3_sub_link1
                       // : "#"
                       }`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -235,7 +235,7 @@ const Footer = () => {
                       storeCustomizationSetting?.footer?.block3_sub_link2
                       // : "#"
                       }`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -255,7 +255,7 @@ const Footer = () => {
                       storeCustomizationSetting?.footer?.block3_sub_link3
                       // : "#"
                       }`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -275,7 +275,7 @@ const Footer = () => {
                       storeCustomizationSetting?.footer?.block3_sub_link4
                       // : "#"
                       }`}
-                    className="text-gray-600 inline-block w-full hover:text-customGreen"
+                    className="text-gray-600 inline-block w-full hover:text-customRed"
                   >
                     <CMSkeleton
                       count={1}
@@ -428,7 +428,7 @@ const Footer = () => {
                   <p className="text-base leading-7 font-medium block">
                     {t("common:footer-call-us")}
                   </p>
-                  <h5 className="text-2xl font-bold text-customGreen leading-7">
+                  <h5 className="text-2xl font-bold text-customRed leading-7">
                     {/* +012345-67900 */}
                     {storeCustomizationSetting?.footer?.bottom_contact}
                   </h5>
@@ -464,7 +464,7 @@ const Footer = () => {
             href="/terms-and-conditions"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-customGreen"
+            className="text-customRed"
           >
             לאחים שפירא
           </Link>
@@ -473,7 +473,7 @@ const Footer = () => {
             href="https://lp.bizzstudio.co.il/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-customGreen"
+            className="text-customRed"
           >Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ | ניהול פרוייקט - מיכאל בלינצקי
         </p>
       </div>

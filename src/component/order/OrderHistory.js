@@ -13,7 +13,7 @@ const OrderHistory = ({ order, currency }) => {
   useEffect(() => {
     const fetchStatus = async () => {
       if (order?.status?.name === "Delivered")
-        setStatus(<span className="text-customGreen max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
+        setStatus(<span className="text-customRed max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
       else if (order?.status?.name === "Pending")
         setStatus(<span className="text-gray-400 max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
       else if (order?.status?.name === "Cancel")

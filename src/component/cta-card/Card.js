@@ -33,7 +33,7 @@ const Card = () => {
                 <p className="text-sm font-sans text-gray-50">
                   Weekend discount offer
                 </p>
-                <button className="hidden sm:block lg:block text-xs mx-auto leading-6 font-serif font-medium mt-4 px-4 py-1 bg-customGreen text-center rounded-full text-white hover:bg-customGreen-dark">
+                <button className="hidden sm:block lg:block text-xs mx-auto leading-6 font-serif font-medium mt-4 px-4 py-1 bg-customRed text-center rounded-full text-white hover:bg-customRed-dark">
                   Shop Now
                 </button>
               </div>

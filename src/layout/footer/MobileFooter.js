@@ -30,7 +30,7 @@ const MobileFooter = () => {
       <div className="flex flex-col h-full justify-between align-middle bg-white rounded cursor-pointer overflow-y-scroll flex-grow scrollbar-hide w-full">
         <CategoryDrawer className="w-6 h-6 drop-shadow-xl" />
       </div>
-      <footer className="lg:hidden fixed z-30 bottom-0 bg-customGreen flex items-center justify-between w-full h-16 px-3 sm:px-10">
+      <footer className="lg:hidden fixed z-30 bottom-0 bg-customRed flex items-center justify-between w-full h-16 px-3 sm:px-10">
         <button
           aria-label="Bar"
           onClick={toggleCategoryDrawer}
@@ -70,7 +70,7 @@ const MobileFooter = () => {
           className="flex flex-col items-center justify-center text-white"
         >
           <div
-          // className="flex flex-col gap-4 items-center justify-center text-xl text-customGreen bg-white p-0.5 
+          // className="flex flex-col gap-4 items-center justify-center text-xl text-customRed bg-white p-0.5 
           // aspect-1 rounded-full outline outline-2 outline-white outline-offset-2"
           >
             {userInfo?.image ? (

@@ -117,7 +117,7 @@ const ChangePassword = () => {
             <button
               disabled={loading}
               type="submit"
-              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customGreen text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customGreen-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
+              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
             >
               <img
                 src="/loader/spinner.gif"
@@ -130,7 +130,7 @@ const ChangePassword = () => {
           ) : (
             <button
               type="submit"
-              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customGreen text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customGreen-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
+              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
             >
               {showingTranslateValue(
                 storeCustomizationSetting?.dashboard?.change_password

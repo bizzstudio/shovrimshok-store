@@ -27,7 +27,7 @@ const VariantList = ({
       {option === "Dropdown" ? (
         <select
           onChange={(e) => handleChangeVariant(e.target.value)}
-          className="focus:shadow-none w-1/2 px-2 py-1 form-select outline-none h-10 text-sm focus:outline-none block rounded-md bg-gray-100 border-transparent focus:bg-white border-customGreen-dark focus:border-customGreen focus:ring focus:ring-customGreen-leaf"
+          className="focus:shadow-none w-1/2 px-2 py-1 form-select outline-none h-10 text-sm focus:outline-none block rounded-md bg-gray-100 border-transparent focus:bg-white border-customRed-dark focus:border-customRed focus:ring focus:ring-customRed-leaf"
           name="parent"
         >
           {[
@@ -97,7 +97,7 @@ const VariantList = ({
                         onClick={(e) => handleChangeVariant(vl[att])}
                         key={i + 1}
                         className={`${Object?.values(selectVariant).includes(vl[att])
-                            ? "bg-customGreen text-white border-0 rounded-full inline-flex items-center justify-center px-3 py-1 text-base font-serif focus:outline-none"
+                            ? "bg-customRed text-white border-0 rounded-full inline-flex items-center justify-center px-3 py-1 text-base font-serif focus:outline-none"
                             : "bg-gray-100 border-0 text-gray-600 rounded-full inline-flex items-center justify-center px-3 py-1 text-base font-serif focus:outline-none"
                           }`}
                       >

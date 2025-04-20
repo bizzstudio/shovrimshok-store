@@ -10,43 +10,7 @@ import {
 } from "react-icons/io5";
 
 import { SidebarContext } from "@context/SidebarContext";
-
-// פונקציה שמחזירה אייקון לפי קוד קטגוריה (להרחיב לפי הצורך)
-const getCategoryIconByCode = (code) => {
-  const base = "/categories icons";
-  const iconsMap = {
-    "1000": "cannedFood",
-    "1500": "spices",
-    "2000": "rice",
-    "2500": "softDrinks",
-    "3000": "bakingGoods",
-    "3500": "cleaningSupplies",
-    "4000": "alcoholic",
-    "4500": "sauces",
-    "5000": "sweets",
-    "5500": "nuts",
-    "6000": "asianFood",
-    "6500": "mealBoxes",
-    "7500": "legumes",
-    "8000": "cookies",
-    "8500": "organic",
-  };
-
-  const name = iconsMap[code];
-
-  if (!name) {
-    return {
-      color: "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
-      bw: "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
-    };
-  }
-
-  return {
-    color: `${base}/${name}_color.svg`,
-    bw: `${base}/${name}.svg`,
-  };
-};
-
+import getCategoryIconByCode from "@utils/getCategoryIconByCode";
 
 const CategoryCard = ({ title, nested, id, onLinkClick }) => {
   const router = useRouter();
@@ -82,7 +46,7 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
 
   return (
     <>
-      <div className="flex items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen cursor-pointer select-none">
+      <div className="flex items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed cursor-pointer select-none">
         <Link
           href={`/category/${id}`}
           onMouseDown={() => handleClick(`/category/${id}`)} // סוגר את התפריט לפני הניווט
@@ -104,7 +68,7 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
               className="absolute top-0 left-0 object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100"
             />
           </div>
-          <div className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customGreen">
+          <div className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customRed">
             {title}
           </div>
         </Link>
@@ -116,7 +80,7 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
               e.stopPropagation();
               toggleShow();
             }}
-            className="p-2 text-gray-400 hover:text-customGreen"
+            className="p-2 text-gray-400 hover:text-customRed"
           >
             {show ? <IoChevronDownOutline /> : <IoChevronBackOutline />}
           </span>
@@ -125,17 +89,19 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
 
       {show && nested?.length > 0 && (
         <ul className="pl-6 pb-3 pt-1 -mt-1">
-          {nested.map((child) => (
+          {nested.map((child, ci) => (
             <li key={child.code}>
               <Link
                 href={`/category/${id}?sub=${child.code}`}
                 onMouseDown={() => handleClick(`/category/${id}`, child.code)} // סוגר את התפריט לפני הניווט
-                className="flex items-center gap-1 font-serif py-1 text-sm text-gray-600 hover:text-customGreen"
+                className="flex items-center gap-1 font-serif py-1 text-sm text-gray-600 hover:text-customRed"
               >
                 <span className="text-xs text-gray-500 pr-2">
                   <IoRemoveSharp />
                 </span>
-                {child.name}
+                <span className=" truncate max-w-[150px]" title={child?.name || `תת קטגוריה ${ci + 1}`}>
+                  {child?.name || `תת קטגוריה ${ci + 1}`}
+                </span>
               </Link>
             </li>
           ))}

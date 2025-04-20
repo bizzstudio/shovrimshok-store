@@ -24,7 +24,7 @@ const Stock = ({ stock, card , top = 2, right = 2}) => {
           >
             {t("common:stock")}
             :
-            <span className="text-customGreen-dark pl-1 font-bold">&nbsp;{stock}</span>
+            <span className="text-customRed-dark pl-1 font-bold">&nbsp;{stock}</span>
           </span>
         </>
       )}

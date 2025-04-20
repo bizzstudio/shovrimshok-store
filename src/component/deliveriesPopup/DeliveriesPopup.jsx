@@ -67,7 +67,7 @@ const DeliveriesPopup = ({ closeCategoryDrawer = () => { } }) => {
           <Link
             onClick={closeCategoryDrawer}
             href={`${storeCustomizationSetting?.home?.quick_delivery_link}`}
-            className="md:hidden flex lg:w-1/3 items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+            className="md:hidden flex lg:w-1/3 items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
           >
             {showingTranslateValue(
               storeCustomizationSetting?.home?.quick_delivery_button
@@ -88,7 +88,7 @@ const DeliveriesPopup = ({ closeCategoryDrawer = () => { } }) => {
           <Link
             onClick={closeCategoryDrawer}
             href={`${storeCustomizationSetting?.home?.quick_delivery_link}`}
-            className="w-full flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+            className="w-full flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white mt-5 px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
           >
             {showingTranslateValue(
               storeCustomizationSetting?.home?.quick_delivery_button

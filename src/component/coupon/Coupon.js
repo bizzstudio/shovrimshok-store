@@ -67,7 +67,7 @@ const Coupon = ({ couponInHome }) => {
                         {t("common:inactive")}
                       </span>
                     ) : (
-                      <span className="text-customGreen-dark inline-block px-4 py-1 rounded-full font-medium text-xs bg-customGreen-light">
+                      <span className="text-customRed-dark inline-block px-4 py-1 rounded-full font-medium text-xs bg-customRed-light">
                         {t("common:active")}
                       </span>
                     )}
@@ -112,18 +112,18 @@ const Coupon = ({ couponInHome }) => {
               <div className="info flex items-center">
                 <div className="w-full">
                   <div className="block">
-                    <div className="font-serif border border-dashed bg-customGreen-superLight py-1 border-customGreen rounded-lg text-center block">
+                    <div className="font-serif border border-dashed bg-customRed-superLight py-1 border-customRed rounded-lg text-center block">
                       <CopyToClipboard
                         text={coupon.couponCode}
                         onCopy={() => handleCopied(coupon.couponCode)}
                       >
                         <button className="block w-full">
                           {copied && coupon.couponCode === copiedCode ? (
-                            <span className="text-customGreen-dark text-sm leading-7 font-semibold">
+                            <span className="text-customRed-dark text-sm leading-7 font-semibold">
                               {t("common:copied!")}
                             </span>
                           ) : (
-                            <span className="uppercase font-serif font-semibold text-sm leading-7 text-customGreen-dark">
+                            <span className="uppercase font-serif font-semibold text-sm leading-7 text-customRed-dark">
                               {coupon.couponCode}{" "}
                             </span>
                           )}
@@ -215,25 +215,25 @@ const Coupon = ({ couponInHome }) => {
                             {t("common:inactive")}
                           </span>
                         ) : (
-                          <span className="text-customGreen-dark inline-block">
+                          <span className="text-customRed-dark inline-block">
                             {t("common:active")}
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="font-serif border border-dashed bg-customGreen-superLight py-2 border-customGreen rounded-lg text-center block">
+                    <div className="font-serif border border-dashed bg-customRed-superLight py-2 border-customRed rounded-lg text-center block">
                       <CopyToClipboard
                         text={coupon.couponCode}
                         onCopy={() => handleCopied(coupon.couponCode)}
                       >
                         <button className="block w-full">
                           {copied && coupon.couponCode === copiedCode ? (
-                            <span className="text-customGreen-dark text-base leading-7 font-semibold">
+                            <span className="text-customRed-dark text-base leading-7 font-semibold">
                               {t("common:copied!")}
                             </span>
                           ) : (
-                            <span className="uppercase font-serif font-semibold text-base leading-7 text-customGreen-dark">
+                            <span className="uppercase font-serif font-semibold text-base leading-7 text-customRed-dark">
                               {coupon.couponCode}{" "}
                             </span>
                           )}

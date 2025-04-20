@@ -2,6 +2,8 @@
 import { SidebarContext } from "@context/SidebarContext";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from "swiper";
 
 //internal import
 import Layout from "@layout/Layout";
@@ -20,6 +22,7 @@ import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg";
 import popolarTitle from "public/titles/popolarTitle.svg";
 import logoGif from "public/logoGif.gif";
+import Image from "next/image";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const router = useRouter();
@@ -99,7 +102,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     }
   }, [fakeLoading, carouselRef.current]);
 
-  if (storeCustomizationSetting?.home?.popular_products_status && storeCustomizationSetting?.home?.delivery_status && popularProducts && discountProducts && attributes && Array.isArray(offers) && fakeLoading) {
+  if (storeCustomizationSetting?.home?.popular_products_status && popularProducts && discountProducts && attributes && Array.isArray(offers) && fakeLoading) {
     return (
       <>
         {isLoading ? (
@@ -108,18 +111,27 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
           <Layout>
             <div className="min-h-screen">
               <div className="bg-white">
-                <div className="mx-auto py-5 max-w-screen-2x1 px-3 sm:px-10">
-                  <div className="flex gap-2 mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
-                    <div ref={carouselRef} className="flex-shrink-0 lg:block w-full lg:w-3/5 h-fit">
+                <div className="mx-auto py-6 max-w-screen-2x1 px-3 sm:px-7">
+                  <div className="w-full flex gap-8">
+                    <div ref={carouselRef} className="w-[85%] h-fit">
                       <MainCarousel />
                     </div>
                     <div className="w-full hidden lg:flex">
-                      <OfferCard
-                        discountProducts={discountProducts}
-                        // קבלת הגובה של הבאנר המתחלף (קרוסלה)
-                        height={carouselHeight}
-                        attributes={attributes}
-                      />
+                      {storeCustomizationSetting?.home?.small_banner_img ?
+                        <Image
+                          src={storeCustomizationSetting?.home?.small_banner_img}
+                          alt="small banner"
+                          width={300}
+                          height={300}
+                          className="w-full h-full object-cover"
+                        /> :
+                        <OfferCard
+                          discountProducts={discountProducts}
+                          // קבלת הגובה של הבאנר המתחלף (קרוסלה)
+                          height={carouselHeight}
+                          attributes={attributes}
+                        />
+                      }
                     </div>
                   </div>
                   {storeCustomizationSetting?.home?.promotion_banner_status && (
@@ -134,32 +146,75 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               {storeCustomizationSetting?.home?.featured_status && (
                 <div className="bg-gray-100 lg:py-16 py-10">
                   <div className="mx-auto max-w-screen-2x1 px-3 sm:px-10">
-                    <div className="mb-10 flex justify-center">
-                      <div className="text-center w-full lg:w-2/5">
-                        <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
-                          <CMSkeleton
-                            count={1}
-                            height={30}
-                            // error={error}
-                            loading={loading}
-                            data={storeCustomizationSetting?.home?.feature_title}
-                          />
-                        </h2>
-                        <div className="text-base font-sans text-gray-600 leading-6">
-                          <CMSkeleton
-                            count={4}
-                            height={10}
-                            error={error}
-                            loading={loading}
-                            data={
-                              storeCustomizationSetting?.home?.feature_description
-                            }
-                          />
+                    {storeCustomizationSetting?.home?.feature_title?.he &&
+                      <div className="mb-10 flex justify-center">
+                        <div className="text-center w-full lg:w-2/5">
+                          {storeCustomizationSetting?.home?.feature_title?.he &&
+                            <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
+                              <CMSkeleton
+                                count={1}
+                                height={30}
+                                // error={error}
+                                loading={loading}
+                                data={storeCustomizationSetting?.home?.feature_title}
+                              />
+                            </h2>
+                          }
+                          {storeCustomizationSetting?.home?.feature_description?.he &&
+                            <div className="text-base font-sans text-gray-600 leading-6">
+                              <CMSkeleton
+                                count={4}
+                                height={10}
+                                error={error}
+                                loading={loading}
+                                data={
+                                  storeCustomizationSetting?.home?.feature_description
+                                }
+                              />
+                            </div>
+                          }
                         </div>
                       </div>
-                    </div>
+                    }
 
                     <FeatureCategory />
+                  </div>
+                </div>
+              )}
+
+              {/* logos_carousel */}
+              {storeCustomizationSetting?.home?.logos_carousel_status && (
+                <div className="bg-white lg:py-10 py-3 select-none">
+                  <div className="mx-auto px-3 sm:px-24">
+                    <Swiper
+                      modules={[Autoplay]}
+                      spaceBetween={30}
+                      slidesPerView="auto"
+                      loop={true}
+                      speed={4000}
+                      autoplay={{
+                        delay: 0,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                        waitForTransition: false,
+                      }}
+                      allowTouchMove={false}
+                      className="flex items-center"
+                    >
+                      {storeCustomizationSetting?.home?.logos_carousel?.map((logo, index) => (
+                        <SwiperSlide
+                          key={index}
+                          className="w-auto flex items-center justify-center"
+                          style={{ width: "150px" }}
+                        >
+                          <img
+                            src={logo}
+                            alt={`Logo ${index}`}
+                            className="h-[70px] object-contain transition duration-300 select-none"
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
                   </div>
                 </div>
               )}
@@ -231,7 +286,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               {storeCustomizationSetting?.home?.delivery_status && (
                 // <div className="block mx-auto max-w-screen-2xl">
                 <div className="w-full">
-                  {/* <div className="lg:p-16 p-6 bg-customGreen shadow-sm border rounded-lg"> */}
+                  {/* <div className="lg:p-16 p-6 bg-customRed shadow-sm border rounded-lg"> */}
                   <CardTwo />
                   {/* </div> */}
                 </div>

@@ -75,7 +75,7 @@ const InputShipping = ({
             type="radio"
             disabled={!isDeliveryOpen || !isDeliverable}
             value={value}
-            className={`form-radio outline-none focus:ring-0 text-customGreen bg-transparent cursor-pointer ${!isDeliverable || !isDeliveryOpen ? "cursor-not-allowed" : ""}`}
+            className={`form-radio outline-none focus:ring-0 text-customRed bg-transparent cursor-pointer ${!isDeliverable || !isDeliveryOpen ? "cursor-not-allowed" : ""}`}
           />
         </div>
       </label>

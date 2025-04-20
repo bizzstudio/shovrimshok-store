@@ -166,7 +166,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                     item.id === (product._id ?? product.ItemCode) && (
                       <div
                         key={item.id}
-                        className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-customGreen text-white rounded"
+                        className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-customRed text-white rounded"
                       >
                         <button
                           className="pl-1"
@@ -202,7 +202,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                 // disabled={!inStock}
                 onClick={() => handleAddItem(product)}
                 aria-label="cart"
-                className={!inStock ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customGreen hover:border-customGreen hover:bg-customGreen hover:text-white transition-all"}
+                className={!inStock ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
               >
                 {" "}
                 {product?.variants?.length > 0 ?

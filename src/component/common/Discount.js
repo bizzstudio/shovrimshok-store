@@ -23,12 +23,12 @@ const Discount = ({ discount, product, slug, modal, title = '', search, noMargin
     <>
       {title ? <span className={
         modal
-          ? "absolute text-dark text-sm bg-customGreen text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
+          ? "absolute text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
           : slug
-            ? "text-dark text-sm bg-customGreen text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
+            ? "text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
             : search 
-            ? "text-customGreen-darker text-sm text-center font-medium py-0.5 px-2"
-            : `text-center text-customGreen-dark text-xs bg-customGreen-light text-customGreen-darker py-2 px-3 ${noMargin ? "" : "m-2"} rounded font-medium`
+            ? "text-customRed-darker text-sm text-center font-medium py-0.5 px-2"
+            : `text-center text-customRed-dark text-xs bg-customRed-light text-customRed-darker py-2 px-3 ${noMargin ? "" : "m-2"} rounded font-medium`
       }  >
         {title}
       </span> :
@@ -37,10 +37,10 @@ const Discount = ({ discount, product, slug, modal, title = '', search, noMargin
             <span
               className={
                 modal
-                  ? "absolute text-dark text-sm bg-customGreen text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
+                  ? "absolute text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
                   : slug
-                    ? "text-dark text-sm bg-customGreen text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
-                    : `w-full flex items-center justify-center text-center text-customGreen-dark text-xs bg-customGreen-light text-customGreen-darker py-2 px-2 ${noMargin ? "" : "m-2"} rounded font-medium`
+                    ? "text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
+                    : `w-full flex items-center justify-center text-center text-customRed-dark text-xs bg-customRed-light text-customRed-darker py-2 px-2 ${noMargin ? "" : "m-2"} rounded font-medium`
               }
             >
 
@@ -51,10 +51,10 @@ const Discount = ({ discount, product, slug, modal, title = '', search, noMargin
             <span
               className={
                 modal
-                  ? "absolute text-dark text-sm bg-customGreen text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
+                  ? "absolute text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
                   : slug
-                    ? "text-dark text-sm bg-customGreen text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
-                    : `w-full flex items-center justify-center text-center text-customGreen-dark text-xs bg-customGreen-light text-customGreen-darker py-2 px-2 ${noMargin ? "" : "m-2"} rounded font-medium`
+                    ? "text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
+                    : `w-full flex items-center justify-center text-center text-customRed-dark text-xs bg-customRed-light text-customRed-darker py-2 px-2 ${noMargin ? "" : "m-2"} rounded font-medium`
               }
             >
               {/* {Number(product.prices.discount).toFixed(0)}% Off */}

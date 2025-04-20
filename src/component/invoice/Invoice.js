@@ -45,7 +45,7 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
                 switch (data?.status?.name) {
                   case "delivered":
                   case "POS-Completed":
-                    return <span className="text-customGreen">{data?.status?.heName}</span>;
+                    return <span className="text-customRed">{data?.status?.heName}</span>;
                   case "Pending":
                     return <span className="text-gray-400">{data?.status?.heName}</span>;
                   case "Cancel":
@@ -162,7 +162,7 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
         </div>
       </div>
 
-      <div className="border-t border-b border-gray-100 p-10 bg-customGreen-superLight">
+      <div className="border-t border-b border-gray-100 p-10 bg-customRed-superLight">
         <div className="flex lg:flex-row md:flex-row flex-col justify-between pt-4">
           <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
             <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 block">

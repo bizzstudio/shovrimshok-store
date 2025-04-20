@@ -60,7 +60,7 @@ const NavBarTop = () => {
                 href={`tel:${storeCustomizationSetting?.navbar?.phone_number
                   // || "+099949343"
                   }`}
-                className="font-bold text-customGreen ml-1"
+                className="font-bold text-customRed ml-1"
               >
                 {storeCustomizationSetting?.navbar?.phone_number
                   // || "+099949343"
@@ -73,7 +73,7 @@ const NavBarTop = () => {
                 <div>
                   <Link
                     href="/about-us"
-                    className="font-medium hover:text-customGreen-dark"
+                    className="font-medium hover:text-customRed-dark"
                   >
                     {showingTranslateValue(
                       storeCustomizationSetting?.navbar?.about_us
@@ -86,7 +86,7 @@ const NavBarTop = () => {
                 <div>
                   <Link
                     href="/contact-us"
-                    className="font-medium hover:text-customGreen-dark"
+                    className="font-medium hover:text-customRed-dark"
                   >
                     {showingTranslateValue(
                       storeCustomizationSetting?.navbar?.contact_us
@@ -97,7 +97,7 @@ const NavBarTop = () => {
               )}
               <button
                 onClick={handleModal}
-                className="font-medium hover:text-customGreen-dark"
+                className="font-medium hover:text-customRed-dark"
               >
                 {showingTranslateValue(
                   storeCustomizationSetting?.navbar?.my_account
@@ -107,7 +107,7 @@ const NavBarTop = () => {
               {userInfo?.email ? (
                 <button
                   onClick={handleLogOut}
-                  className="flex items-center font-medium hover:text-customGreen-dark"
+                  className="flex items-center font-medium hover:text-customRed-dark"
                 >
                   <span className="ml-1">
                     <IoLockOpenOutline />
@@ -119,7 +119,7 @@ const NavBarTop = () => {
               ) : (
                 <button
                   onClick={() => setModalOpen(!modalOpen)}
-                  className="flex items-center font-medium hover:text-customGreen-dark"
+                  className="flex items-center font-medium hover:text-customRed-dark"
                 >
                   <span className="ml-1">
                     <FiUser />

@@ -73,7 +73,7 @@ const Common = ({ setModalOpen }) => {
             {showRegister ? t("common:alreadyHaveAccount") : t("common:notAccount")}
             <button
               onClick={handleModal}
-              className="text-gray-800 hover:text-customGreen font-bold mx-1 underline"
+              className="text-gray-800 hover:text-customRed font-bold mx-1 underline"
             >
               {showRegister ? t("common:loginBtn") : t("common:register")}
             </button>

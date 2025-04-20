@@ -76,7 +76,7 @@ const Order = ({ params }) => {
               {showingTranslateValue(
                 storeCustomizationSetting?.dashboard?.invoice_message_first
               )}{" "}
-              <span className="font-bold text-customGreen-dark">
+              <span className="font-bold text-customRed-dark">
                 {data?.user_info?.name},
               </span>{" "}
               {showingTranslateValue(
@@ -108,7 +108,7 @@ const Order = ({ params }) => {
                     loading ? (
                       "Loading..."
                     ) : (
-                      <button className={currentLang ? "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex flex-row-reverse items-center justify-center gap-2 bg-customGreen text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md" : "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center gap-2 bg-customGreen text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md"}>
+                      <button className={currentLang ? "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex flex-row-reverse items-center justify-center gap-2 bg-customRed text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md" : "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center gap-2 bg-customRed text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md"}>
                         {showingTranslateValue(
                           storeCustomizationSetting?.dashboard?.download_button
                         )}{" "}
@@ -122,7 +122,7 @@ const Order = ({ params }) => {
 
                 <ReactToPrint
                   trigger={() => (
-                    <button className={currentLang ? "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex flex-row-reverse items-center justify-center gap-2 bg-customGreen text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md" : "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center gap-2 bg-customGreen text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md"}>
+                    <button className={currentLang ? "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex flex-row-reverse items-center justify-center gap-2 bg-customRed text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md" : "mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center gap-2 bg-customRed text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-md"}>
                       {showingTranslateValue(
                         storeCustomizationSetting?.dashboard?.print_button
                       )}{" "}

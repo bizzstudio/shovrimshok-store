@@ -204,7 +204,7 @@ const MyOrders = () => {
               </h2>
             ) : data?.orders?.length === 0 ? (
               <div className="text-center">
-                <span className="flex justify-center my-30 pt-16 text-customGreen font-semibold text-6xl">
+                <span className="flex justify-center my-30 pt-16 text-customRed font-semibold text-6xl">
                   <IoBagHandle />
                 </span>
                 <h2 className="font-medium text-md my-4 text-gray-600">
@@ -218,13 +218,13 @@ const MyOrders = () => {
                 </h2>
                 <div className="flex md:hidden gap-2 justify-between w-full mb-5">
                   <div
-                    className="flex flex-grow gap-1 items-center justify-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark font-semibold rounded-full cursor-auto text-center"
+                    className="flex flex-grow gap-1 items-center justify-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customRed-dark font-semibold rounded-full cursor-auto text-center"
                   >
                     <MdPayment size={17} /> <span>=</span>
                     {t("common:payNow")}
                   </div>
                   <div
-                    className="flex flex-grow gap-1 items-center justify-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark font-semibold rounded-full cursor-auto text-center"
+                    className="flex flex-grow gap-1 items-center justify-center px-3 py-1 bg-customBrown-light text-xs text-customRed-dark font-semibold rounded-full cursor-auto text-center"
                   >
                     <MdRestore size={17} /> <span>=</span>
                     {t("common:Reorder")}
@@ -283,7 +283,7 @@ const MyOrders = () => {
                                   <>
                                     <button
                                       disabled={loadingRestore}
-                                      className="hidden md:flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      className="hidden md:flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdPayment size={17} />
@@ -291,7 +291,7 @@ const MyOrders = () => {
                                     </button>
                                     <button
                                       disabled={loadingRestore}
-                                      className="flex md:hidden gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      className="flex md:hidden gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdPayment size={17} />
@@ -301,7 +301,7 @@ const MyOrders = () => {
                                   <div className="flex gap-2 items-center justify-center">
                                     <button
                                       disabled={loadingRestore}
-                                      className="hidden md:flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      className="hidden md:flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdRestore size={17} />
@@ -309,7 +309,7 @@ const MyOrders = () => {
                                     </button>
                                     <button
                                       disabled={loadingRestore}
-                                      className="flex md:hidden gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customGreen-dark hover:bg-customGreen hover:text-white transition-all font-semibold rounded-full"
+                                      className="flex md:hidden gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdRestore size={17} />

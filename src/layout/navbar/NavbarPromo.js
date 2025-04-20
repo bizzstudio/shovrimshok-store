@@ -135,12 +135,10 @@ const NavbarPromo = () => {
       {LoginModalOpen && (
         <LoginModal modalOpen={LoginModalOpen} setModalOpen={setLoginModalOpen} />
       )}
-      <div className="hidden lg:block xl:block bg-white border-b">
-        <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 h-12 flex justify-between items-center">
-          <div className="inline-flex">
-            <Popover className="relative">
-              <div className="max-w-7xl mx-auto">
-                {/* <div className="relative grid gap-2 p-6">
+      <div className="hidden lg:block xl:block bg-gray-100 border-b border-gray-200">
+        <div className="h-[70px]">
+          <Popover className="relative w-full h-full">
+            {/* <div className="relative grid gap-2 p-6">
                   {data[0]?.children?.map((category) => (
                     <CategoryCard
                       key={category._id}
@@ -151,134 +149,161 @@ const NavbarPromo = () => {
                     />
                   ))}
                 </div> */}
-                <div className="flex justify-between items-center md:justify-start md:space-x-10">
-                  <Popover.Group
-                    as="nav"
-                    className="flex items-center justify-between sm:justify-center sm:gap-4 sm:w-fit w-full"
-                  >
-                    {/* categoies */}
-                    {storeCustomizationSetting?.navbar
-                      ?.categories_menu_status && (
-                        <Popover className="relative font-serif">
-                          {({ open, close }) => (
-                            <>
-                              <Popover.Button className="group inline-flex items-center py-2 hover:text-customGreen focus:outline-none">
-                                <span className="font-serif text-sm font-medium">
-                                  {showingTranslateValue(
-                                    storeCustomizationSetting?.navbar?.categories
-                                  )}
-                                </span>
+            <Popover.Group
+              as="nav"
+              className="flex items-center justify-center text-center w-full h-full p-3"
+            >
+              {/* main */}
+              <Link
+                href="/"
+                // onClick={() => setIsLoading(true)}
+                className="flex-grow font-serif mx-4 py-2 text-lg font-medium hover:text-customRed"
+              >
+                {t("common:main")}
+              </Link>
 
-                                <ChevronDownIcon
-                                  className="ml-1 h-3 w-3 group-hover:text-customGreen"
-                                  aria-hidden="true"
-                                />
-                              </Popover.Button>
+              <hr className="border-r border-gray-300 h-full" />
 
-                              <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-200"
-                                enterFrom="opacity-0 translate-y-1"
-                                enterTo="opacity-100 translate-y-0"
-                                leave="transition ease-in duration-150"
-                                leaveFrom="opacity-100 translate-y-0"
-                                leaveTo="opacity-0 translate-y-1"
-                              >
-                                <Popover.Panel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
-                                  <div className="rounded-md shadow-lg ring-1 ring-black ring-opacity-5 flex-grow w-full h-full">
-                                    <Category onLinkClick={() => close()} />
-                                  </div>
-                                </Popover.Panel>
-                              </Transition>
-                            </>
-                          )}
-                        </Popover>
-                        // <>
-                        //   {!loading && !error && data && data[0]?.children?.map((category, index) => {
-                        //     const title = showingTranslateValue(category?.name)
-                        //     return <Link
-                        //       onMouseEnter={() => setIsHover(index)}
-                        //       onMouseLeave={() => setIsHover(null)}
-                        //       // onClick={() => showCategory(category._id, title)}
-                        //       href={'/category/' + category?.name?.he}
-                        //       className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
-                        //       role="button"
-                        //       key={category._id}
-                        //     >
-                        //       {category.icon ? (
-                        //         isHover == index || selectedCategory == index ?
-                        //           <Image src={category.coloredIcon} width={200} height={200} alt="Category"
-                        //             className="sm:w-[30px] w-[6vw]" /> :
-                        //           <Image src={category.icon} width={200} height={200} alt="Category"
-                        //             className="sm:w-[30px] w-[6vw]" />
-                        //       ) : (
-                        //         <Image
-                        //           src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                        //           width={200}
-                        //           height={200}
-                        //           alt="category"
-                        //           className="sm:w-[30px] w-[6vw]"
-                        //         />
-                        //       )}
+              {/* categoies */}
+              {storeCustomizationSetting?.navbar
+                ?.categories_menu_status && (
+                  <Popover className="flex-grow relative font-serif flex items-center justify-center">
+                    {({ open, close }) => (
+                      <>
+                        <Popover.Button className="group w-full gap-2 inline-flex items-center justify-center py-2 hover:text-customRed focus:outline-none">
+                          <span className="font-serif text-lg font-medium">
+                            {showingTranslateValue(
+                              storeCustomizationSetting?.navbar?.categories
+                            )}
+                          </span>
 
-                        //       <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
-                        //         {title}
-                        //       </div>
-                        //     </Link>
-                        //   })}
+                          <ChevronDownIcon
+                            className="ml-1 h-3 w-3 group-hover:text-customRed"
+                            aria-hidden="true"
+                          />
+                        </Popover.Button>
 
-                        //   <Link onMouseEnter={() => setIsHover(categoriesLength)}
-                        //     onMouseLeave={() => setIsHover(null)}
-                        //     href="/offers"
-                        //     className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customGreen transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
-                        //     role="button">
-                        //     {isHover == categoriesLength || selectedCategory == categoriesLength ?
-                        //       <Image src={offerIcon.src} width={200} height={200} alt="Category"
-                        //         className="sm:w-[30px] w-[6vw]" /> :
-                        //       <Image src={offerIconNoColor.src} width={200} height={200} alt="Category"
-                        //         className="sm:w-[30px] w-[6vw]" />}
-                        //     <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customGreen-dark whitespace-nowrap">
-                        //       {t("common:Offers")}
-                        //     </div>
-                        //   </Link>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-200"
+                          enterFrom="opacity-0 translate-y-1"
+                          enterTo="opacity-100 translate-y-0"
+                          leave="transition ease-in duration-150"
+                          leaveFrom="opacity-100 translate-y-0"
+                          leaveTo="opacity-0 translate-y-1"
+                        >
+                          <Popover.Panel className="absolute top-full z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
+                            <div className="rounded-md shadow-lg ring-1 ring-black ring-opacity-5 flex-grow w-full h-full">
+                              <Category onLinkClick={() => close()} />
+                            </div>
+                          </Popover.Panel>
+                        </Transition>
+                      </>
+                    )}
+                  </Popover>
+                  // <>
+                  //   {!loading && !error && data && data[0]?.children?.map((category, index) => {
+                  //     const title = showingTranslateValue(category?.name)
+                  //     return <Link
+                  //       onMouseEnter={() => setIsHover(index)}
+                  //       onMouseLeave={() => setIsHover(null)}
+                  //       // onClick={() => showCategory(category._id, title)}
+                  //       href={'/category/' + category?.name?.he}
+                  //       className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customRed transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
+                  //       role="button"
+                  //       key={category._id}
+                  //     >
+                  //       {category.icon ? (
+                  //         isHover == index || selectedCategory == index ?
+                  //           <Image src={category.coloredIcon} width={200} height={200} alt="Category"
+                  //             className="sm:w-[30px] w-[6vw]" /> :
+                  //           <Image src={category.icon} width={200} height={200} alt="Category"
+                  //             className="sm:w-[30px] w-[6vw]" />
+                  //       ) : (
+                  //         <Image
+                  //           src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                  //           width={200}
+                  //           height={200}
+                  //           alt="category"
+                  //           className="sm:w-[30px] w-[6vw]"
+                  //         />
+                  //       )}
 
-                        // </>
-                      )}
+                  //       <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customRed whitespace-nowrap">
+                  //         {title}
+                  //       </div>
+                  //     </Link>
+                  //   })}
 
-                    {/* {storeCustomizationSetting?.navbar?.about_menu_status && (
-                      <Link
-                        href="/about-us"
-                        onClick={() => setIsLoading(!isLoading)}
-                        className="font-serif mx-4 py-2 text-sm font-medium hover:text-customGreen-dark"
-                      >
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.navbar?.about_us
-                        )}
-                      </Link>
-                    )} */}
+                  //   <Link onMouseEnter={() => setIsHover(categoriesLength)}
+                  //     onMouseLeave={() => setIsHover(null)}
+                  //     href="/offers"
+                  //     className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md hover:text-customRed transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
+                  //     role="button">
+                  //     {isHover == categoriesLength || selectedCategory == categoriesLength ?
+                  //       <Image src={offerIcon.src} width={200} height={200} alt="Category"
+                  //         className="sm:w-[30px] w-[6vw]" /> :
+                  //       <Image src={offerIconNoColor.src} width={200} height={200} alt="Category"
+                  //         className="sm:w-[30px] w-[6vw]" />}
+                  //     <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full hover:text-customRed whitespace-nowrap">
+                  //       {t("common:Offers")}
+                  //     </div>
+                  //   </Link>
 
-                    {/* {storeCustomizationSetting?.navbar?.contact_menu_status && (
-                      <Link
-                        onClick={() => setIsLoading(!isLoading)}
-                        href="/contact-us"
-                        className="font-serif mx-4 py-2 text-sm font-medium hover:text-customGreen-dark"
-                      >
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.navbar?.contact_us
-                        )}
-                      </Link>
-                    )} */}
+                  // </>
+                )}
 
-                    {/* pages */}
-                    {/* <Popover className="relative font-serif">
-                      <Popover.Button className="group inline-flex items-center py-2 text-sm font-medium hover:text-customGreen-dark focus:outline-none">
+              <hr className="border-r border-gray-300 h-full" />
+
+              {/* best-sellers */}
+              <Link
+                href="/best-sellers"
+                // onClick={() => setIsLoading(true)}
+                className="flex-grow font-serif mx-4 py-2 text-lg font-medium hover:text-customRed"
+              >
+                {t("common:bestSellers")}
+              </Link>
+
+              <hr className="border-r border-gray-300 h-full" />
+
+              {/* about-us */}
+              {storeCustomizationSetting?.navbar?.about_menu_status && (
+                <Link
+                  href="/about-us"
+                  onClick={() => setIsLoading(true)}
+                  className="flex-grow font-serif mx-4 py-2 text-lg font-medium hover:text-customRed"
+                >
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.navbar?.about_us
+                  )}
+                </Link>
+              )}
+
+              <hr className="border-r border-gray-300 h-full" />
+
+              {/* contact-us */}
+              {storeCustomizationSetting?.navbar?.contact_menu_status && (
+                <Link
+                  onClick={() => setIsLoading(true)}
+                  href="/contact-us"
+                  className="flex-grow font-serif mx-4 py-2 text-lg font-medium hover:text-customRed"
+                >
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.navbar?.contact_us
+                  )}
+                </Link>
+              )}
+
+              {/* pages */}
+              {/* <Popover className="relative font-serif">
+                      <Popover.Button className="group inline-flex items-center py-2 text-lg font-medium hover:text-customRed focus:outline-none">
                         <span>
                           {showingTranslateValue(
                             storeCustomizationSetting?.navbar?.pages
                           )}
                         </span>
                         <ChevronDownIcon
-                          className="ml-1 h-3 w-3 group-hover:text-customGreen-dark"
+                          className="ml-1 h-3 w-3 group-hover:text-customRed"
                           aria-hidden="true"
                         />
                       </Popover.Button>
@@ -296,13 +321,13 @@ const NavbarPromo = () => {
                             <div className="relative grid gap-2 px-6 py-6">
                               {storeCustomizationSetting?.navbar
                                 ?.offers_menu_status && (
-                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                     <div className="w-full flex">
                                       <FiGift className="my-auto" />
                                       <Link
                                         href="/offer"
-                                        onClick={() => setIsLoading(!isLoading)}
-                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                        onClick={() => setIsLoading(true)}
+                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                       >
                                         {showingTranslateValue(
                                           storeCustomizationSetting?.navbar
@@ -312,13 +337,13 @@ const NavbarPromo = () => {
                                     </div>
                                   </span>
                                 )}
-                              <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                              <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                 <div className="w-full flex">
                                   <FiShoppingBag className="my-auto" />
                                   <Link
                                     href="/checkout"
-                                    onClick={() => setIsLoading(!isLoading)}
-                                    className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                    onClick={() => setIsLoading(true)}
+                                    className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                   >
                                     {showingTranslateValue(
                                       storeCustomizationSetting?.navbar
@@ -330,13 +355,13 @@ const NavbarPromo = () => {
 
                               {storeCustomizationSetting?.navbar
                                 ?.faq_status && (
-                                  <span className="p-2 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                                  <span className="p-2 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                     <div className="w-full flex">
                                       <FiHelpCircle className="my-auto" />
                                       <Link
                                         href="/faq"
-                                        onClick={() => setIsLoading(!isLoading)}
-                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                        onClick={() => setIsLoading(true)}
+                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                       >
                                         {showingTranslateValue(
                                           storeCustomizationSetting?.navbar?.faq
@@ -348,13 +373,13 @@ const NavbarPromo = () => {
 
                               {storeCustomizationSetting?.navbar
                                 ?.about_menu_status && (
-                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                     <div className="w-full flex">
                                       <FiUsers className="my-auto" />
                                       <Link
                                         href="/about-us"
-                                        onClick={() => setIsLoading(!isLoading)}
-                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                        onClick={() => setIsLoading(true)}
+                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                       >
                                         {showingTranslateValue(
                                           storeCustomizationSetting?.navbar
@@ -367,13 +392,13 @@ const NavbarPromo = () => {
 
                               {storeCustomizationSetting?.navbar
                                 ?.contact_menu_status && (
-                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                     <div className="w-full flex">
                                       <FiPhoneIncoming className="my-auto" />
                                       <Link
                                         href="/contact-us"
-                                        onClick={() => setIsLoading(!isLoading)}
-                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                        onClick={() => setIsLoading(true)}
+                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                       >
                                         {showingTranslateValue(
                                           storeCustomizationSetting?.navbar
@@ -386,13 +411,13 @@ const NavbarPromo = () => {
 
                               {storeCustomizationSetting?.navbar
                                 ?.privacy_policy_status && (
-                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                     <div className="w-full flex">
                                       <FiPocket className="my-auto" />
                                       <Link
                                         href="/privacy-policy"
-                                        onClick={() => setIsLoading(!isLoading)}
-                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                        onClick={() => setIsLoading(true)}
+                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                       >
                                         {showingTranslateValue(
                                           storeCustomizationSetting?.navbar
@@ -405,13 +430,13 @@ const NavbarPromo = () => {
 
                               {storeCustomizationSetting?.navbar
                                 ?.term_and_condition_status && (
-                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                                  <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                     <div className="w-full flex">
                                       <FiFileText className="my-auto" />
                                       <Link
                                         href="/terms-and-conditions"
-                                        onClick={() => setIsLoading(!isLoading)}
-                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                        onClick={() => setIsLoading(true)}
+                                        className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                       >
                                         {showingTranslateValue(
                                           storeCustomizationSetting?.navbar
@@ -422,13 +447,13 @@ const NavbarPromo = () => {
                                   </span>
                                 )}
 
-                              <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen-dark">
+                              <span className="p-2  font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed">
                                 <div className="w-full flex">
                                   <FiAlertCircle className="my-auto" />
                                   <Link
                                     href="/404"
-                                    onClick={() => setIsLoading(!isLoading)}
-                                    className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-sm font-medium  hover:text-customGreen-dark"
+                                    onClick={() => setIsLoading(true)}
+                                    className="relative inline-flex items-center font-serif ml-2 py-0 rounded text-lg font-medium  hover:text-customRed"
                                   >
                                     404
                                   </Link>
@@ -440,11 +465,11 @@ const NavbarPromo = () => {
                       </Transition>
                     </Popover> */}
 
-                    {/* {storeCustomizationSetting?.navbar?.offers_menu_status && (
+              {/* {storeCustomizationSetting?.navbar?.offers_menu_status && (
                       <Link
                         href="/offer"
-                        onClick={() => setIsLoading(!isLoading)}
-                        className="relative inline-flex items-center bg-red-100 font-serif py-0 px-2 m-2 rounded text-sm font-medium text-red-500 hover:text-red-800"
+                        onClick={() => setIsLoading(true)}
+                        className="relative inline-flex items-center bg-red-100 font-serif py-0 px-2 m-2 rounded text-lg font-medium text-red-500 hover:text-red-800"
                       >
                         {showingTranslateValue(
                           storeCustomizationSetting?.navbar?.offers
@@ -455,23 +480,20 @@ const NavbarPromo = () => {
                         </div>
                       </Link>
                     )} */}
-                  </Popover.Group>
-                </div>
-              </div>
-            </Popover>
-          </div>
+            </Popover.Group>
+          </Popover>
           <div className="xl:flex gap-3 hidden">
-            {/* <button className="hidden sm:inline-block lg:inline-block text-sm leading-6 font-serif font-medium px-6 py-2 bg-customGreen text-center rounded-md text-white hover:bg-customGreen-dark">
+            {/* <button className="hidden sm:inline-block lg:inline-block text-lg leading-6 font-serif font-medium px-6 py-2 bg-customRed text-center rounded-md text-white hover:bg-customRed-dark">
               משלוחים ואיזורי חלוקה
             </button> */}
             {/* <a href="https://api.whatsapp.com/send/?phone=972525123003" target="_blank">
-              <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+              <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               >
                 <BsWhatsapp className="w-6 h-6 drop-shadow-xl" />
                 <span>שירות לקוחות</span>
               </button>
             </a>
-            <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customGreen text-white px-6 py-1.5 h-11 rounded-lg border-customGreen-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+            <button className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
               onClick={() => setDeliveriesPopup(true)}>
               <img src={deliveryIcon.src} className="h-full mt-1 " />
               <span>משלוחים ואיזורי חלוקה</span>
@@ -507,9 +529,9 @@ const NavbarPromo = () => {
 
             {storeCustomizationSetting?.navbar?.privacy_policy_status && (
               <Link
-                onClick={() => setIsLoading(!isLoading)}
+                onClick={() => setIsLoading(true)}
                 href="/privacy-policy"
-                className="font-serif mx-4 py-2 text-sm font-medium hover:text-customGreen-dark"
+                className="font-serif mx-4 py-2 text-lg font-medium hover:text-customRed"
               >
                 {showingTranslateValue(
                   storeCustomizationSetting?.navbar?.privacy_policy
@@ -518,9 +540,9 @@ const NavbarPromo = () => {
             )}
             {storeCustomizationSetting?.navbar?.term_and_condition_status && (
               <Link
-                onClick={() => setIsLoading(!isLoading)}
+                onClick={() => setIsLoading(true)}
                 href="/terms-and-conditions"
-                className="font-serif mx-4 py-2 text-sm font-medium hover:text-customGreen-dark"
+                className="font-serif mx-4 py-2 text-lg font-medium hover:text-customRed"
               >
                 {showingTranslateValue(
                   storeCustomizationSetting?.navbar?.term_and_condition

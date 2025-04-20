@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 
-//internal import
+// Internal import
 import { pages } from "@utils/data";
 import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
@@ -18,7 +18,7 @@ const Category = ({ onLinkClick }) => {
   return (
     <div className="flex flex-col w-full h-full bg-white cursor-pointer overflow-y-auto">
       {categoryDrawerOpen && (
-        <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-customGreen text-white border-b border-gray-100">
+        <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-customRed text-white border-b border-gray-100">
           <h2 className="font-semibold font-serif text-lg m-0 text-heading flex align-center">
             <Link href="/" className="mr-10">
               <Image
@@ -74,13 +74,13 @@ const Category = ({ onLinkClick }) => {
                 <a
                   key={item.ItemName ? item.ItemName : item.title}
                   href={item.href}
-                  className="p-2 flex font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customGreen"
+                  className="p-2 flex font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed"
                 >
                   <item.icon
                     className="flex-shrink-0 h-4 w-4"
                     aria-hidden="true"
                   />
-                  <p className="inline-flex items-center justify-between ml-2 text-sm font-medium w-full hover:text-customGreen">
+                  <p className="inline-flex items-center justify-between ml-2 text-sm font-medium w-full hover:text-customRed">
                     {item.ItemName ? item.ItemName : item.title}
                   </p>
                 </a>

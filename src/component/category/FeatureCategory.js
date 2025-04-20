@@ -1,104 +1,91 @@
+// shapira-store/src/component/category/FeatureCategory.js
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useContext } from "react";
-import { IoChevronForwardSharp } from "react-icons/io5";
+import { IoChevronBackSharp } from "react-icons/io5";
+import Router from "next/router";
+import Link from "next/link";
 
-//internal import
-
-import useAsync from "@hooks/useAsync";
-import CategoryServices from "@services/CategoryServices";
+// Internal import
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import { SidebarContext } from "@context/SidebarContext";
-import useUtilsFunction from "@hooks/useUtilsFunction";
+import getCategoryIconByCode from "@utils/getCategoryIconByCode";
 
 const FeatureCategory = () => {
-  const router = useRouter();
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const { showingTranslateValue } = useUtilsFunction();
-
-  const { data, error, loading } = useAsync(
-    CategoryServices.getShowingCategory
-  );
-
-  // console.log('category',data)
-
-  const handleCategoryClick = (id, categoryName) => {
-    const category_name = categoryName
-      .toLowerCase()
-      .replace(/[^A-Z0-9]+/gi, "-");
-    const url = `/search?category=${category_name}&_id=${id}`;
-    router.push(url);
-    setIsLoading(!isLoading);
-  };
+  const { categories } = useContext(SidebarContext);
 
   return (
-    <>
-      {loading ? (
-        <CMSkeleton count={10} height={20} error={error} loading={loading} />
+    <div className="container mx-auto">
+      {!categories?.length ? (
+        <CMSkeleton count={10} height={20} />
       ) : (
-        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6">
-          {data[0]?.children?.map((category, i) => (
-            <li className="group" key={i + 1}>
-              <div className="flex w-full h-full border border-gray-100 shadow-sm bg-white p-4 cursor-pointer transition duration-200 ease-linear transform group-hover:shadow-lg">
-                <div className="flex items-center">
-                  <div>
-                    {category.icon ? (
-                      <Image
-                        src={category?.icon}
-                        alt="category"
-                        width={35}
-                        height={35}
-                      />
-                    ) : (
-                      <Image
-                        src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                        alt="category"
-                        width={35}
-                        height={35}
-                      />
-                    )}
-                  </div>
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5">
+          {categories?.map((category, i) => {
+            const icon = getCategoryIconByCode(category?.code);
+            const title = category?.name;
+            return (
+              <li
+                onClick={() => Router.push(`/category/${category?.code}`)}
+                className="group"
+                key={category?.code + i}
+                title={title}
+              >
+                <div className="flex w-full h-full border border-gray-100 shadow-sm bg-white p-4 cursor-pointer transition duration-200 ease-linear transform group-hover:shadow-lg">
+                  <div className="flex gap-2 items-center">
+                    <div className="p-2 flex items-center gap-2 group">
+                      <div className="relative w-[55px] h-[55px]">
+                        <Image
+                          src={icon.bw}
+                          width={55}
+                          height={55}
+                          alt="Category BW"
+                          className="absolute top-0 left-0 object-contain transition-opacity duration-200 group-hover:opacity-0"
+                        />
+                        <Image
+                          src={icon.color}
+                          width={55}
+                          height={55}
+                          alt="Category Color"
+                          className="absolute top-0 left-0 object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                        />
+                      </div>
+                    </div>
 
-                  <div className="pl-4">
-                    <h3
-                      onClick={() =>
-                        handleCategoryClick(
-                          category._id,
-                          showingTranslateValue(category?.name)
-                        )
-                      }
-                      className="text-sm text-gray-600 font-serif font-medium leading-tight line-clamp-1  group-hover"
-                    >
-                      {showingTranslateValue(category?.name)}
-                    </h3>
-                    <ul className="pt-1 mt-1">
-                      {category?.children?.slice(0, 3).map((child) => (
-                        <li key={child._id} className="pt-1">
-                          <a
-                            onClick={() =>
-                              handleCategoryClick(
-                                child._id,
-                                showingTranslateValue(child?.name)
-                              )
-                            }
-                            className="flex items-center font-serif text-xs text-gray-400 cursor-pointer"
+                    <div className="pl-4">
+                      <div>
+                        <h3 className="text-gray-600 font-serif font-medium leading-tight line-clamp-1 group-hover group-hover:text-customRed">
+                          {title}
+                        </h3>
+                      </div>
+                      <ul className="pt-1 mt-1">
+                        {category?.children?.slice(0, 3).map((child, ci) => (
+                          <li
+                            onClick={e => e.stopPropagation()}
+                            key={child.code + ci}
+                            className="pt-1 text-gray-400 cursor-pointer hover:text-customRed-light hover:ms-2 transition-all duration-150"
                           >
-                            <span className="text-xs text-gray-400 ">
-                              <IoChevronForwardSharp />
-                            </span>
-                            {showingTranslateValue(child?.name)}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+                            <Link
+                              href={`/category/${category?.code}?sub=${child?.code}`}
+                              className="flex items-center gap-1 font-serif text-xs"
+                            >
+                              <span className="text-sm">
+                                <IoChevronBackSharp />
+                              </span>
+                              <span className=" truncate max-w-[150px]" title={child?.name || `תת קטגוריה ${ci + 1}`}>
+                                {child?.name || `תת קטגוריה ${ci + 1}`}
+                              </span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            )
+          })}
+        </ul >
       )}
-    </>
+    </div>
   );
 };
 

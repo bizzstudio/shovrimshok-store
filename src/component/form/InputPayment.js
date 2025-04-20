@@ -21,7 +21,7 @@ const InputPayment = ({ register, Icon, name, value, setShowCard }) => {
             type="radio"
             value={value}
             name="paymentMethod"
-            className="form-radio outline-none focus:ring-0 text-customGreen"
+            className="form-radio outline-none focus:ring-0 text-customRed"
           />
         </div>
       </label>

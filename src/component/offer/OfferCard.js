@@ -40,7 +40,7 @@ const OfferCard = ({ discountProducts, height, attributes }) => {
 
   return (
     <div className="w-full group">
-      <div className="transition duration-150 ease-linear transform border-customGreen">
+      <div className="transition duration-150 ease-linear transform border-customRed">
         <div className="text-gray-900 px-6 py-2 rounded-t border-b flex items-center justify-center" ref={headerRef}>
           <h3 className="text-base font-serif font-medium">
             <img

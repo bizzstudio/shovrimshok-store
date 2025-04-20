@@ -56,20 +56,20 @@ const Cart = () => {
 
   const handleMouseEnter = () => {
     if (buttonRef.current) {
-      buttonRef.current.classList.add('bg-customGreen-dark');
+      buttonRef.current.classList.add('bg-customRed-dark');
     }
   };
 
   const handleMouseLeave = () => {
     if (buttonRef.current) {
-      buttonRef.current.classList.remove('bg-customGreen-dark');
+      buttonRef.current.classList.remove('bg-customRed-dark');
     }
   };
 
   const checkoutClass = (
     <button
       ref={buttonRef}
-      className="w-full py-3 px-3 rounded-lg bg-customGreen flex items-center justify-between bg-heading text-sm sm:text-base text-white focus:outline-none transition duration-300 cursor-auto"
+      className="w-full py-3 px-3 rounded-lg bg-customRed flex items-center justify-between bg-heading text-sm sm:text-base text-white focus:outline-none transition duration-300 cursor-auto"
     >
       <span className="font-medium font-serif text-xl flex flex-col justify-start items-start">
         <span>
@@ -87,7 +87,7 @@ const Cart = () => {
         onClick={handleCheckoutClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="rounded-lg font-bold font-serif py-2 px-3 bg-white text-customGreen-dark cursor-pointer"
+        className="rounded-lg font-bold font-serif py-2 px-3 bg-white text-customRed-dark cursor-pointer"
       >
         {t("common:proceedToCheckoutBtn")}
       </span>
@@ -122,7 +122,7 @@ const Cart = () => {
             <div className="flex flex-col h-full justify-center">
               <div className="flex flex-col items-center">
                 <div className="flex justify-center items-center w-20 h-20 rounded-full bg-customBrown-light">
-                  <span className="text-customGreen-dark text-4xl block">
+                  <span className="text-customRed-dark text-4xl block">
                     <IoBagHandle />
                   </span>
                 </div>

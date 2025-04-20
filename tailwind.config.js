@@ -41,11 +41,11 @@ module.exports = {
           leaf: '#afdc34'
         },
         customRed: {
-          superLight: '#ffd6d6',
-          light: '#ffa1a1',
-          DEFAULT: '#ff4d4d',
-          darker: '#e04646',
-          dark: '#470000',
+          superLight: '#ffdbdb',
+          light: '#fb6117',
+          DEFAULT: '#e7191f',
+          dark: '#ab1317',
+          leaf: '#ffa073'
         },
       },
       keyframes: {
@@ -63,7 +63,7 @@ module.exports = {
         fadeOut: 'fadeOut 1s ease-out forwards',
       },
       boxShadow: {
-        popup: "#3c6d16 0 3px 0, #3c6d16 3px 0px 0, #3c6d16 3px 3px 0, rgba(0, 0, 0, 0.432) 3px 3px 3px",
+        popup: "#e7191f 0 3px 0, #e7191f 3px 0px 0, #e7191f 3px 3px 0, rgba(0, 0, 0, 0.432) 3px 3px 3px",
       },
     },
   },
