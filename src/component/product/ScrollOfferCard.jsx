@@ -111,12 +111,12 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
           className="relative flex justify-center cursor-pointer h-full"
         >
           <div className="relative w-28 h-full">
-            {product.stock <= 0 &&
+            {/* {product.stock <= 0 &&
               <div className="absolute z-10 w-full h-full flex items-center justify-center">
                 <div className="bg-white bg-opacity-70 -rotate-6 text-customRed border-4 border-customRed rounded inline-flex items-center justify-center px-2 py-1 text-2xl font-bold font-serif">{t("common:stockOut")}
                 </div>
               </div>
-            }
+            } */}
             {product.image?.[0] ? (
               <ImageWithFallback src={product.image?.[0]} outOfStock={product.stock <= 0} alt="product" noPadding={true} />
             ) : (
@@ -215,7 +215,8 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
                 // disabled={product?.stock <= 0}
                 onClick={() => handleAddItem(product)}
                 aria-label="cart"
-                className={product?.stock <= 0 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
+                // className={product?.stock <= 0 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
+                className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"
               >
                 {" "}
                 {product?.variants?.length > 0 ?

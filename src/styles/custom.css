@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 /* @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'); */
+@import url(https://db.onlinewebfonts.com/c/d57b819a8d3c50f0e691dbfe863c2a01?family=Popper+Sans);
+@import "./fonts.css";
 
 * {
   font-family: 'Assistant', Arial, sans-serif;
@@ -11,6 +13,60 @@
 
 html {
   @apply font-sans;
+}
+
+/* אנימציית כותרות */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.8s ease-out forwards;
+}
+
+.animate-fade-scale-in {
+  animation: fade-scale-in 0.9s ease-out forwards;
+}
+
+/* צבע כחול לקטגוריות בעמוד הבית */
+.filter-custom-blue {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(65%) saturate(1000%) hue-rotate(180deg) brightness(80%) contrast(90%);
 }
 
 .dynamicPopup h1 {

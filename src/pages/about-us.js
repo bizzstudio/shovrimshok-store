@@ -111,7 +111,7 @@ const AboutUs = () => {
               </div>
             </div>
 
-            <div className="mt-10 lg:mt-0">
+            <div className="mt-10 lg:mt-0 h-full">
               <Image
                 width={920}
                 height={750}
@@ -120,6 +120,7 @@ const AboutUs = () => {
                   "/about-us.jpg"
                 }
                 alt="logo"
+                className="object-cover w-full h-full rounded-lg"
               />
             </div>
           </div>
@@ -157,7 +158,7 @@ const AboutUs = () => {
                 "/about-banner.jpg"
               }
               alt="logo"
-              className="block rounded-lg"
+              className="block rounded-lg max-h-[570px] object-cover"
             />
           </div>
         </div>
@@ -334,6 +335,9 @@ const AboutUs = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="text-xs text-gray-400 text-center my-4">
+          Fonts made from <a href="http://www.onlinewebfonts.com" target="_blank" rel="noopener noreferrer" className="underline">Web Fonts</a> is licensed by CC BY 4.0
         </div>
       </div>
     </Layout>

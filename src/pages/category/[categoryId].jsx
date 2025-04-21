@@ -23,6 +23,7 @@ import ourOffers from "public/titles/ourOffers.svg";
 import vegTitle from "public/titles/vegTitle.svg";
 import honeyTitle from "public/titles/honeyTitle.svg";
 import eggsTitle from "public/titles/eggsTitle.svg";
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
 /*
  * עמוד קטגוריה שמקבל מה-SSR:
@@ -36,7 +37,7 @@ const CategoryPage = ({ allProd, attributes }) => {
     // נשמור כאן את כל המוצרים מכל העמודים
     const [allProducts, setAllProducts] = useState(allProd || []);
     const [isLoadMore, setIsLoadMore] = useState(false);
-    console.log('all Products :>> ', allProducts);
+    // console.log('all Products :>> ', allProducts);
 
     // state לניהול page = עמוד נוכחי
     const [page, setPage] = useState(1);
@@ -192,8 +193,9 @@ const CategoryPage = ({ allProd, attributes }) => {
                                 />
                             ) : (
                                 // אחרת מציגים מלבן עם כותרת "קטגוריה / תת קטגוריה"
-                                <div className="flex justify-center items-center my-3 bg-customBrown-light border border-gray-100 rounded p-3">
-                                    <h6 className="text-sm font-serif">{fallbackTitle}</h6>
+                                <div className="flex justify-center items-center mb-3 mt-6">
+                                    {/* <h6 className="text-sm font-serif">{fallbackTitle}</h6> */}
+                                    <ShapiraTitle text={fallbackTitle} height={70} key={fallbackTitle} />
                                 </div>
                             )}
 

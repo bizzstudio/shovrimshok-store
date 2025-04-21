@@ -1,3 +1,4 @@
+// shapira-store/src/component/resultWindow/resultWindow.jsx
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IoAdd, IoBagAddSharp, IoRemove } from 'react-icons/io5';
 import { notifyError } from "@utils/toast";
@@ -49,7 +50,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
     }, [products, clearInput, closeResultWindow, modalOpen]);
 
     const handleAddToCart = (product) => {
-        if (product.stock < 1 || product.OnHand < 1) return notifyError(t("common:productStockOut"));
+        // if (product.stock < 1 || product.OnHand < 1) return notifyError(t("common:productStockOut"));
 
         const { slug, variants, categories, description, ...updatedProduct } = product;
         const newItem = {
@@ -200,7 +201,8 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                                     type='button'
                                                     onClick={() => handleAddToCart(product)}
                                                     aria-label="cart"
-                                                    className={product.stock < 1 || product.OnHand < 1 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
+                                                    // className={product.stock < 1 || product.OnHand < 1 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
+                                                    className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"
                                                 >
                                                     <span className="text-xl">
                                                         <IoBagAddSharp />

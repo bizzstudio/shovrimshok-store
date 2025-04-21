@@ -1,3 +1,4 @@
+// shapira-store/src/pages/user/my-orders.js
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -153,11 +154,11 @@ const MyOrders = () => {
             originalPrice: originalPrice,
           };
 
-          if (stock >= item.quantity) {
-            handleAddItem(newItem, item.quantity);
-          } else {
-            notifyError(`Not enough stock for ${showingTranslateValue(product.title)}.`);
-          }
+          // if (stock >= item.quantity) {
+          handleAddItem(newItem, item.quantity);
+          // } else {
+          //   notifyError(`Not enough stock for ${showingTranslateValue(product.title)}.`);
+          // }
         }
       }
 

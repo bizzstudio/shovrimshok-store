@@ -1,0 +1,12 @@
+/* Font "Popper Sans" from OnlineWebFonts.com – licensed under CC BY 4.0
+   Source: http://www.onlinewebfonts.com
+*/
+@font-face {
+    font-family: "Popper Sans";
+    src: url("/fonts/popper-sans/popper-sans.woff2") format("woff2"),
+        url("/fonts/popper-sans/popper-sans.woff") format("woff"),
+        url("/fonts/popper-sans/popper-sans.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

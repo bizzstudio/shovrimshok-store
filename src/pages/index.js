@@ -23,6 +23,7 @@ import ourOffers from "public/titles/ourOffers.svg";
 import popolarTitle from "public/titles/popolarTitle.svg";
 import logoGif from "public/shapira_loading_gif.gif";
 import Image from "next/image";
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const router = useRouter();
@@ -113,7 +114,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               <div className="bg-white">
                 <div className="mx-auto py-6 max-w-screen-2x1 px-3 sm:px-7">
                   <div className="w-full flex gap-8">
-                    <div ref={carouselRef} className="w-[85%] h-fit">
+                    <div ref={carouselRef} className="2xl:w-[85%] w-full h-fit">
                       <MainCarousel />
                     </div>
                     <div className="w-full hidden lg:flex">
@@ -122,7 +123,8 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                           src={storeCustomizationSetting?.home?.small_banner_img}
                           alt="small banner"
                           width={300}
-                          height={300}
+                          // height={300}
+                          height={carouselHeight}
                           className="w-full h-full object-cover"
                         /> :
                         <OfferCard
@@ -223,10 +225,10 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               {storeCustomizationSetting?.home?.popular_products_status && (
                 <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
                   {/* {showTitles && ( */}
-                  <div className="mb-10 flex justify-center animate-fadeIn">
+                  <div className="mt-4 mb-3 flex justify-center animate-fadeIn">
                     <div className="text-center w-full lg:w-2/5">
-                      <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
-                        <CMSkeleton
+                      <h2 className="text-xl lg:text-2xl font-serif font-semibold">
+                        {/* <CMSkeleton
                           count={1}
                           height={30}
                           // error={error}
@@ -234,7 +236,8 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                           // data={storeCustomizationSetting?.home?.popular_title}
                           data={popolarTitle.src}
                           isIimage={true}
-                        />
+                        /> */}
+                        <ShapiraTitle text={storeCustomizationSetting?.home?.popular_title} height={70} />
                       </h2>
                       <div className="text-base font-sans text-gray-600 leading-6">
                         <CMSkeleton
@@ -388,13 +391,13 @@ export const getServerSideProps = async (context) => {
     AttributeServices.getShowingAttributes(),
   ]);
 
-  // console.log('data: ', data)
+  console.log('data: ', data)
 
   // const sortedPopularProducts = sortProducts(data.popularProducts);
-  const sortedPopularProducts = data.popularProducts;
+  const sortedPopularProducts = data.products;
 
   // שינוי המוצרים במבצע למוצרים עם מבצעי הצעות במקום מבצעים של סתם מחיר זול יותר
-  const sortedDiscountProducts = data.productsWithOffers;
+  const sortedDiscountProducts = data.products;
   // const sortedDiscountProducts = sortProducts(data.productsWithOffers);
   // const sortedDiscountProducts = sortProducts(data.discountedProducts);
 

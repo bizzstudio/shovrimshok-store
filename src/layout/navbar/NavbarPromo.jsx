@@ -298,7 +298,7 @@ const NavbarPromo = () => {
 
               <div className="bg-white h-full flex items-center justify-center gap-3 px-8">
                 <Link
-                  href="https://api.whatsapp.com/send/?phone=972525123003" target="_blank"
+                  href="https://api.whatsapp.com/send/?phone=972542542428" target="_blank"
                   className="bg-transparent flex items-center justify-center gap-1 text-customBlue">
                   <RiCustomerServiceFill />
                   {t("common:customerService")}

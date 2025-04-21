@@ -36,7 +36,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
   // console.log('attributes in product cart',attributes)
 
   const handleAddItem = (p) => {
-    if (!inStock) return notifyError(t("common:productStockOut"));
+    // if (!inStock) return notifyError(t("common:productStockOut"));
 
     if (p?.variants?.length > 0) {
       setModalOpen(!modalOpen);
@@ -99,7 +99,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
 
       <div className="group box-border overflow-hidden flex justify-between rounded-md shadow-sm pe-0 flex-col items-center bg-white relative">
         <div className="w-full flex justify-between">
-          {!inStock && <Stock product={product} stock={product.stock ?? product.OnHand} card right={2} top={2} />}
+          {/* {!inStock && <Stock product={product} stock={product.stock ?? product.OnHand} card right={2} top={2} />} */}
           {/* אם אין מלאי למוצר מופיע אזל מהמלאי */}
           <Discount product={product} title={offerName} />
         </div>
@@ -114,7 +114,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
           className="relative flex justify-center cursor-pointer pt-2 w-full h-44"
         >
           <div className="relative w-full h-full p-2">
-            {!inStock && <div className="absolute z-10 w-full h-full flex items-center justify-center"><div className="bg-white bg-opacity-70 -rotate-6 text-customRed border-4 border-customRed rounded inline-flex items-center justify-center px-2 py-1 text-2xl font-bold font-serif">{t("common:stockOut")}</div></div>}
+            {/* {!inStock && <div className="absolute z-10 w-full h-full flex items-center justify-center"><div className="bg-white bg-opacity-70 -rotate-6 text-customRed border-4 border-customRed rounded inline-flex items-center justify-center px-2 py-1 text-2xl font-bold font-serif">{t("common:stockOut")}</div></div>} */}
             {product.image?.[0] ? (
               <ImageWithFallback src={product.image?.[0]} outOfStock={!inStock} alt="product" />
             ) : (
@@ -202,7 +202,8 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                 // disabled={!inStock}
                 onClick={() => handleAddItem(product)}
                 aria-label="cart"
-                className={!inStock ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
+                // className={!inStock ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
+                className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"
               >
                 {" "}
                 {product?.variants?.length > 0 ?

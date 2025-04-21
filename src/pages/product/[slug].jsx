@@ -50,7 +50,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const [price, setPrice] = useState(0);
   const [img, setImg] = useState("");
   const [originalPrice, setOriginalPrice] = useState(0);
-  const [stock, setStock] = useState(0);
+  // const [stock, setStock] = useState(0);
+  const [stock, setStock] = useState(Infinity);
   const [discount, setDiscount] = useState(0);
   const [selectVariant, setSelectVariant] = useState({});
   const [isReadMore, setIsReadMore] = useState(true);
@@ -144,7 +145,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     //   setPrice(price);
     //   setOriginalPrice(originalPrice);
     // } else {
-    setStock(product?.OnHand ?? product?.stock ?? 0);
+    // setStock(product?.OnHand ?? product?.stock ?? 0);
     setImg(product?.image?.[0]);
     const price = getNumber(product?.prices?.price ?? product?.LastPurPrc ?? 0);
     const originalPrice = getNumber(product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
@@ -159,7 +160,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     product?.prices?.discount,
     product?.prices?.originalPrice,
     product?.prices?.price,
-    product?.stock,
+    // product?.stock,
     product.variants,
     selectVa,
     selectVariant,
@@ -186,7 +187,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     // if (p.variants.length === 1 && p.variants[0].quantity < 1)
     //   return notifyError(t("common:productStockOut"));
     // if (notAvailable) return notifyError('This Variation Not Available Now!');
-    if (stock <= 0) return notifyError(t("common:productStockOut"));
+    // if (stock <= 0) return notifyError(t("common:productStockOut"));
     // console.log('selectVariant', selectVariant);
 
     // if (
@@ -376,9 +377,9 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                         </span>
                       </p>
 
-                      <div className="pt-2">
+                      {/* <div className="pt-2">
                         <Stock stock={stock} card={false} />
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* מחיר */}
@@ -463,7 +464,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             <button
                               onClick={() => setItem(item + 1)}
                               // disabled={selectVariant?.quantity <= item}
-                              disabled={stock <= item}
+                              // disabled={stock <= item}
                               className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-s border-gray-300 hover:text-gray-500"
                             >
                               <span className="text-dark text-base">

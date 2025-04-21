@@ -108,7 +108,7 @@ const Navbar = () => {
 
       <div className="bg-white sticky lg:top-0 -top-16 z-20 border-b border-b-gray-200">
         <div className="w-full px-3 sm:px-10 bg-gradient-to-b from-[#E0E2E9] to-transparent">
-          <div className="top-bar h-16 lg:h-auto flex items-center justify-between pt-3 pb-2 mx-auto">
+          <div className="top-bar h-auto flex items-center justify-between pt-3 xl:pb-2 pb-4 mx-auto">
             <Link
               href="/"
               className="hidden md:hidden lg:block"
@@ -167,7 +167,7 @@ const Navbar = () => {
               <button
                 aria-label="Total"
                 onClick={toggleCartDrawer}
-                className="relative text-customRed-dark text-2xl font-bold"
+                className="relative text-customBlue text-2xl font-bold"
               >
                 {totalItems === 0 ? null :
                   <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 text-xs font-medium leading-none text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-customRed rounded-full" style={{ minWidth: '20px' }}>
@@ -180,7 +180,7 @@ const Navbar = () => {
 
               {userInfo?.CardName ?
                 <Link
-                  className="flex items-center justify-center text-white bg-customRed text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customRed outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
+                  className="flex items-center justify-center text-white bg-customBlue text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customBlue outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
                   aria-label="Login"
                   href="/user/dashboard"
                 >
@@ -196,7 +196,7 @@ const Navbar = () => {
                       <FiUserCheck className="w-6 h-6 drop-shadow-xl" />
                     </span>}
                 </Link> :
-                <button className="flex items-center justify-center text-white bg-customRed text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customRed outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
+                <button className="flex items-center justify-center text-white bg-customBlue text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customBlue outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
                   aria-label="Login"
                   onClick={() => setModalOpen(!modalOpen)}>
                   <FiUser className="w-6 h-6 drop-shadow-xl" />

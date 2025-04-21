@@ -1,3 +1,4 @@
+// shapira-store/next.config.js
 const runtimeCaching = require("next-pwa/cache");
 const nextTranslate = require("next-translate-plugin");
 
@@ -69,6 +70,16 @@ module.exports = withPWA({
         hostname: "**",
       },
     ],
+  },
+
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return config;
   },
 
   ...nextTranslate(),

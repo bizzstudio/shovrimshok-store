@@ -12,6 +12,7 @@ module.exports = {
       sans: ["Assistant", "Arial", "sans-serif"],
       serif: ["Assistant", "sans-serif"],
       DejaVu: ["Assistant", "Arial", "sans-serif"],
+      popper: ['"Popper Sans"', 'sans-serif'],
     },
     extend: {
       height: {

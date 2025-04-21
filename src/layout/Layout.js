@@ -151,23 +151,25 @@ const Layout = ({ title, description, children }) => {
       )}
 
       {/* פופאפ דינאמי */}
-      {!loading && !error && currentPopup && !addressPopup && !showRegisterSuccess && !showBeforeStartPopup && (
-        <MainModal modalOpen={true} setModalOpen={() => setCurrentPopup(null)}>
-          <div className="px-3 sm:px-11 py-7 max-w-md">
-            <DynamicPopup popup={currentPopup} />
-          </div>
-        </MainModal>
-      )}
+      {!loading && !error && currentPopup && !addressPopup && !showRegisterSuccess
+        // && !showBeforeStartPopup 
+        && (
+          <MainModal modalOpen={true} setModalOpen={() => setCurrentPopup(null)}>
+            <div className="px-3 sm:px-11 py-7 max-w-md">
+              <DynamicPopup popup={currentPopup} />
+            </div>
+          </MainModal>
+        )}
 
       {/* פופאפ "לפני שמתחילים" */}
-      {showBeforeStartPopup && (
+      {/* {showBeforeStartPopup && (
         <MainModal
           modalOpen={showBeforeStartPopup}
           setModalOpen={setShowBeforeStartPopup}
         >
           <BeforeStartPopup onClose={() => setShowBeforeStartPopup(false)} />
         </MainModal>
-      )}
+      )} */}
 
       <div className="font-sans">
         <Head>
@@ -187,11 +189,11 @@ const Layout = ({ title, description, children }) => {
         </div>
         <MobileFooter />
         <div className="w-full">
-          {/* <FooterTop />
-          <div className="hidden relative lg:block mx-auto max-w-screen-2xl py-6 px-3 sm:px-10">
+          <FooterTop />
+          {/* <div className="hidden relative lg:block mx-auto max-w-screen-2xl py-6 px-3 sm:px-10">
             <FeatureCard />
-          </div>
-          <hr className="hr-line"></hr> */}
+          </div> */}
+          <hr className="hr-line"></hr>
           <div className="border-t border-gray-100 w-full">
             <Footer />
           </div>

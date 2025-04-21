@@ -104,7 +104,7 @@ const MainCarousel = () => {
   ];
 
   return (
-    <>
+    <div className="w-full aspect-[1578/246]">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
@@ -129,7 +129,7 @@ const MainCarousel = () => {
           }
         }
         modules={[Autoplay, Pagination, Navigation, EffectFade]} // הוספת EffectFade למודולים
-        className="h-[246px]"
+        className="w-full h-full"
       >
         {sliderData?.map((item, i) => (
           <SwiperSlide
@@ -166,7 +166,7 @@ const MainCarousel = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 };
 

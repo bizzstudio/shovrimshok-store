@@ -69,7 +69,7 @@ const Cart = () => {
   const checkoutClass = (
     <button
       ref={buttonRef}
-      className="w-full py-3 px-3 rounded-lg bg-customRed flex items-center justify-between bg-heading text-sm sm:text-base text-white focus:outline-none transition duration-300 cursor-auto"
+      className="w-full py-3 px-3 rounded-lg bg-customRed-dark flex items-center justify-between bg-heading text-sm sm:text-base text-white focus:outline-none transition duration-300 cursor-auto"
     >
       <span className="font-medium font-serif text-xl flex flex-col justify-start items-start">
         <span>

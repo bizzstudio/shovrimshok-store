@@ -42,7 +42,8 @@ const ProductModal = ({
   const [price, setPrice] = useState(0);
   const [img, setImg] = useState("");
   const [originalPrice, setOriginalPrice] = useState(0);
-  const [stock, setStock] = useState(0);
+  // const [stock, setStock] = useState(0);
+  const [stock, setStock] = useState(Infinity);
   const [discount, setDiscount] = useState(0);
   const [selectVariant, setSelectVariant] = useState({});
   const [selectVa, setSelectVa] = useState({});
@@ -101,13 +102,13 @@ const ProductModal = ({
 
       // console.log("result2: ", result2);
 
-      if (result.length <= 0 || result2 === undefined) return setStock(0);
+      // if (result.length <= 0 || result2 === undefined) return setStock(0);
 
       setVariants(result);
       setSelectVariant(result2);
       setSelectVa(result2);
       setImg(result2?.image);
-      setStock(result2?.quantity);
+      // setStock(result2?.quantity);
       const price = getNumber(result2?.price);
       const originalPrice = getNumber(result2?.originalPrice);
       const discountPercentage = getNumber(
@@ -122,7 +123,7 @@ const ProductModal = ({
       );
 
       setVariants(result);
-      setStock(product.variants[0]?.quantity);
+      // setStock(product.variants[0]?.quantity);
       setSelectVariant(product.variants[0]);
       setSelectVa(product.variants[0]);
       setImg(product.variants[0]?.image);
@@ -135,7 +136,7 @@ const ProductModal = ({
       setPrice(price);
       setOriginalPrice(originalPrice);
     } else {
-      setStock(product?.stock ?? product?.OnHand ?? 0);
+      // setStock(product?.stock ?? product?.OnHand ?? 0);
       setImg(product?.image?.[0]);
       const price = getNumber(product?.prices?.price ?? product?.LastPurPrc ?? 0);
       const originalPrice = getNumber(product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
@@ -150,7 +151,7 @@ const ProductModal = ({
     product?.prices?.discount,
     product?.prices?.originalPrice,
     product?.prices?.price,
-    product?.stock,
+    // product?.stock,
     product.variants,
     selectVa,
     selectVariant,
@@ -169,7 +170,7 @@ const ProductModal = ({
     // if (p.variants.length === 1 && p.variants[0].quantity < 1)
     //   return notifyError(t("common:productStockOut"));
 
-    if (stock <= 0) return notifyError(t("common:productStockOut"));
+    // if (stock <= 0) return notifyError(t("common:productStockOut"));
 
     // if (
     //   product?.variants?.map(
@@ -314,12 +315,12 @@ const ProductModal = ({
                     {product?.ItemName || product?.title}
                   </h1>
                 </Link>
-                <div
+                {/* <div
                   className={`${stock <= 0 ? "relative py-1 mb-2 text-right" : "relative text-right"
                     }`}
                 >
                   <Stock stock={stock} />
-                </div>
+                </div> */}
               </div>
               {/* {showingTranslateValue(product?.description)} */}
               {showingTranslateValue(product?.description) &&
@@ -405,9 +406,9 @@ const ProductModal = ({
                     </p>
                     <button
                       onClick={() => setItem(item + 1)}
-                      disabled={
-                        (product.quantity ?? product.OnHand ?? 1) <= item
-                      }
+                      // disabled={
+                      //   (product.quantity ?? product.OnHand ?? 1) <= item
+                      // }
                       className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-s border-gray-300 hover:text-gray-500"
                     >
                       <span className="text-dark text-base">
@@ -417,7 +418,7 @@ const ProductModal = ({
                   </div>
                   <button
                     onClick={() => handleAddToCart(product)}
-                    disabled={product.quantity < 1}
+                    // disabled={product.quantity < 1}
                     className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none text-white px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white bg-customRed hover:bg-customRed-dark w-full h-12"
                   >
                     {t("common:addToCart")}

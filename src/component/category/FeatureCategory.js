@@ -38,7 +38,7 @@ const FeatureCategory = () => {
                           width={55}
                           height={55}
                           alt="Category BW"
-                          className="absolute top-0 left-0 object-contain transition-opacity duration-200 group-hover:opacity-0"
+                          className="absolute top-0 left-0 object-contain transition-opacity duration-200 group-hover:opacity-0 filter-custom-blue"
                         />
                         <Image
                           src={icon.color}
@@ -52,12 +52,12 @@ const FeatureCategory = () => {
 
                     <div className="pl-4">
                       <div>
-                        <h3 className="text-gray-600 font-serif font-medium leading-tight line-clamp-1 group-hover group-hover:text-customRed">
+                        <h3 className="text-customBlue font-serif font-medium leading-tight line-clamp-1 group-hover group-hover:text-customRed">
                           {title}
                         </h3>
                       </div>
                       <ul className="pt-1 mt-1">
-                        {category?.children?.slice(0, 3).map((child, ci) => (
+                        {category?.children?.slice(0, 5).map((child, ci) => (
                           <li
                             onClick={e => e.stopPropagation()}
                             key={child.code + ci}
