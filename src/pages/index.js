@@ -21,7 +21,7 @@ import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg";
 import popolarTitle from "public/titles/popolarTitle.svg";
-import logoGif from "public/logoGif.gif";
+import logoGif from "public/shapira_loading_gif.gif";
 import Image from "next/image";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
@@ -369,7 +369,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   } else {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <img src={logoGif.src} alt="loading" className="m-auto" />
+        <img src={logoGif.src} alt="loading" className="m-auto w-[550px] max-w-[90%]" />
       </div>
     );
   }

@@ -40,7 +40,7 @@ class MyDocument extends Document {
     return (
       <Html lang="he" dir="rtl">
         <Head>
-          <link rel="icon" href={setting?.favicon || "/favicon.png"} />
+          <link rel="icon" href={setting?.favicon || "/shapira_leaf.svg"} />
 
           {/* Google Tag Manager */}
           {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5FJVK2CGS"></script>

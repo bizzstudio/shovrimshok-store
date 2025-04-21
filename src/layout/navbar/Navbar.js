@@ -9,6 +9,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FiShoppingCart, FiUser, FiBell, FiUserCheck } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 import debounce from "lodash.debounce";
+import { FaSearch } from "react-icons/fa";
 
 //internal import
 import NavbarPromo from "@layout/navbar/NavbarPromo";
@@ -123,21 +124,19 @@ const Navbar = () => {
                 className="object-contain"
               />
             </Link>
-            <div className="w-full transition-all duration-200 dnone ease-in-out lg:flex lg:max-w-[520px] xl:max-w-[750px] 2xl:max-w-[900px] md:mx-12 lg:mx-4 xl:mx-0">
+            <div className="w-full transition-all duration-200 dnone ease-in-out lg:flex lg:max-w-[520px] xl:max-w-[700px] 2xl:max-w-[700px] md:mx-12 lg:mx-4 xl:mx-0">
               <div className="w-full flex flex-col justify-center flex-shrink-0 relative z-30 mt-1">
                 <div className="flex flex-col mx-auto w-full">
                   <form onSubmit={handleSubmit}
-                    className={`${isPaymentPageOpen ? "hidden" : "flex"} relative w-full h-[40px] items-center px-3.5 rounded-[10px] transition-[border-radius] duration-500 ease-in-out bg-gray-100 focus-within:rounded-[1px] before:content-[''] before:absolute before:bg-customRed before:transform before:scale-x-0 before:origin-center before:w-full before:h-[2px] before:left-0 before:bottom-0 before:rounded-[1px] before:transition-transform before:duration-300 before:ease-in-out focus-within:before:scale-100 shadow-lg`}>
+                    className={`${isPaymentPageOpen ? "hidden" : "flex"} relative w-full h-[43px] items-center px-8 rounded-[50px] transition-[border-radius] duration-500 ease-in-out bg-white focus-within:rounded-[1px] before:content-[''] before:absolute before:bg-customRed before:transform before:scale-x-0 before:origin-center before:w-full before:h-[2px] before:left-0 before:bottom-0 before:rounded-[1px] before:transition-transform before:duration-300 before:ease-in-out focus-within:before:scale-100 shadow-md`}>
                     <button type="submit" className="border-none bg-none text-customRed-dark">
-                      <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
-                        <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round"></path>
-                      </svg>
+                      <FaSearch className="text-customBlue" />
                     </button>
                     <input
                       disabled={isPaymentPageOpen}
                       title={isPaymentPageOpen ? t("common:noOptionToSearchInCheckoutPage") : ''}
                       onChange={(e) => setSearchText(e.target.value)}
-                      className={`${isPaymentPageOpen ? "cursor-not-allowed" : ""} peer text-sm bg-transparent w-full h-full px-2 py-[0.7em] border-none focus:outline-none focus:ring-0`}
+                      className={`${isPaymentPageOpen ? "cursor-not-allowed" : ""} peer text-base bg-transparent w-full h-full px-3 py-[0.7em] border-none focus:outline-none focus:ring-0`}
                       placeholder={t(`common:search-placeholder`)}
                       required
                       type="text"
@@ -208,8 +207,8 @@ const Navbar = () => {
         </div>
       </div >
 
-        {/* second header */}
-        <NavbarPromo />
+      {/* second header */}
+      <NavbarPromo />
     </>
   );
 };

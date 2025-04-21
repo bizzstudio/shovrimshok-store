@@ -47,6 +47,9 @@ module.exports = {
           dark: '#ab1317',
           leaf: '#ffa073'
         },
+        customBlue: {
+          DEFAULT: 'rgb(0, 40, 99)',
+        },
       },
       keyframes: {
         fadeIn: {
