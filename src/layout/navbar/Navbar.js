@@ -106,12 +106,28 @@ const Navbar = () => {
         <LoginModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       )}
 
-      <div className="bg-white sticky lg:top-0 -top-16 z-20 border-b border-b-gray-200">
+      {/* <Link
+        href="/"
+        className="block md:hidden"
+      >
+        <Image
+          width={290}
+          height={117}
+          src={
+            storeCustomizationSetting?.navbar?.logo ||
+            logo
+          }
+          alt="logo"
+          className="object-contain"
+        />
+      </Link> */}
+
+      <div className="bg-white sticky lg:top-0 -top-[102px] z-20 border-b border-b-gray-200">
         <div className="w-full px-3 sm:px-10 bg-gradient-to-b from-[#E0E2E9] to-transparent">
-          <div className="top-bar h-auto flex items-center justify-between pt-3 xl:pb-2 pb-4 mx-auto">
+          <div className="top-bar h-auto flex sm:flex-row flex-col items-center justify-between pt-3 xl:pb-2 pb-4 mx-auto">
             <Link
               href="/"
-              className="hidden md:hidden lg:block"
+              className="sm:w-fit sm:h-fit h-[90px] sm:mb-0 mb-3"
             >
               <Image
                 width={290}
@@ -121,7 +137,7 @@ const Navbar = () => {
                   logo
                 }
                 alt="logo"
-                className="object-contain"
+                className="object-contain h-full"
               />
             </Link>
             <div className="w-full transition-all duration-200 dnone ease-in-out lg:flex lg:max-w-[520px] xl:max-w-[700px] 2xl:max-w-[700px] md:mx-12 lg:mx-4 xl:mx-0">

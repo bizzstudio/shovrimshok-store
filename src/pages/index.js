@@ -146,7 +146,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
 
               {/* feature category's */}
               {storeCustomizationSetting?.home?.featured_status && (
-                <div className="bg-gray-100 lg:py-16 py-10">
+                <div className="bg-gray-100 lg:py-16 sm:py-11 py-3">
                   <div className="mx-auto max-w-screen-2x1 px-3 sm:px-10">
                     {storeCustomizationSetting?.home?.feature_title?.he &&
                       <div className="mb-10 flex justify-center">
@@ -223,9 +223,9 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
 
               {/* popular products */}
               {storeCustomizationSetting?.home?.popular_products_status && (
-                <div className="bg-gray-50 lg:py-10 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+                <div className="bg-gray-50 lg:py-10 py-3 mx-auto max-w-screen-2xl px-3 sm:px-10">
                   {/* {showTitles && ( */}
-                  <div className="mt-4 mb-3 flex justify-center animate-fadeIn">
+                  <div className="lg:mt-4 mt-9 mb-3 flex justify-center animate-fadeIn">
                     <div className="text-center w-full lg:w-2/5">
                       <h2 className="text-xl lg:text-2xl font-serif font-semibold">
                         {/* <CMSkeleton

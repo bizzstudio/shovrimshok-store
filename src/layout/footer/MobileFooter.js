@@ -112,7 +112,7 @@ const MobileFooter = () => {
               <p className="text-xs text-center">{t("common:login")}</p>
             )}
           </button>
-          <a href="https://api.whatsapp.com/send/?phone=972525123003"
+          <a href="https://api.whatsapp.com/send/?phone=972542542428"
             target="_blank"
             className="flex flex-col gap-1 items-center justify-center text-xl">
             <span>

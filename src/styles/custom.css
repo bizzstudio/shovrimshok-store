@@ -1,11 +1,10 @@
 /* src/styles/custom.css */
 @import "/fonts/assistant/fonts.css";
+@import "./fonts.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 /* @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'); */
-@import url(https://db.onlinewebfonts.com/c/d57b819a8d3c50f0e691dbfe863c2a01?family=Popper+Sans);
-@import "./fonts.css";
 
 * {
   font-family: 'Assistant', Arial, sans-serif;
@@ -184,14 +183,18 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #e7191f;
+  background-color: rgb(0, 40, 99);
   /* color of the scrollbar thumb */
   border-radius: 4px;
   /* radius of the scrollbar thumb */
 }
 
+::-webkit-scrollbar-thumb:active {
+  background-color: #e7191f;
+}
+
 ::-webkit-scrollbar-track {
-  background-color: #ffdbdb;
+  background-color: rgba(0, 40, 99, 0.272);
   /* color of the scrollbar track */
   border-radius: 4px;
 }

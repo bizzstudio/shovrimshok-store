@@ -141,7 +141,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
             </h2>
           </div>
 
-          <div className="flex justify-between items-center text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl">
+          <div className="flex justify-between items-center gap-1 text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl">
             {/* <Price
               card
               product={product}
@@ -157,7 +157,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                   : product?.prices?.originalPrice
               }
             /> */}
-            <span className="text-sm">{t("common:itemCode")}: {product?.ItemCode}</span>
+            <span className="text-sm truncate">{t("common:itemCode")}: {product?.ItemCode}</span>
 
             {inCart((product._id ?? product.ItemCode)) ? (
               <div>
@@ -166,7 +166,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                     item.id === (product._id ?? product.ItemCode) && (
                       <div
                         key={item.id}
-                        className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-customRed text-white rounded"
+                        className="h-9 w-auto flex items-center justify-evenly py-1 px-2 bg-customRed text-white rounded"
                       >
                         <button
                           className="pl-1"

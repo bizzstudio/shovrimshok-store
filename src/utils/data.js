@@ -1,5 +1,5 @@
 import {
-  // FiUser,
+  FiUser,
   FiGift,
   FiGrid,
   FiAlertCircle,
@@ -20,23 +20,23 @@ import {
 
 const pages = [
   // {
-  //   title: 'User',
+  //   title: 'PersonalArea',
   //   href: '/user/dashboard',
   //   icon: FiUser,
   // },
-  {
-    title: "offer-page",
-    href: "/offer",
-    icon: FiGift,
-  },
-  {
-    title: "checkout-page",
-    href: "/checkout",
-    icon: FiShoppingBag,
-  },
+  // {
+  //   title: "offer-page",
+  //   href: "/offer",
+  //   icon: FiGift,
+  // },
+  // {
+  //   title: "checkout-page",
+  //   href: "/checkout",
+  //   icon: FiShoppingBag,
+  // },
   {
     title: "faq-page",
-    href: "/faq",
+    href: "/faqs",
     icon: FiHelpCircle,
   },
   {
@@ -59,11 +59,11 @@ const pages = [
     href: "/terms-and-conditions",
     icon: FiFileText,
   },
-  {
-    title: "not-found-page",
-    href: "/404",
-    icon: FiAlertCircle,
-  },
+  // {
+  //   title: "not-found-page",
+  //   href: "/404",
+  //   icon: FiAlertCircle,
+  // },
 ];
 
 const userSidebar = [

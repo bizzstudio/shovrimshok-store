@@ -68,46 +68,18 @@ const CategoryPage = ({ allProd, attributes }) => {
     const { productData } = useFilter(allProducts);
 
     // בוחרים איזו תמונה להציג לפי parentName
-    const [categoryImg, setCategoryImg] = useState("");
     const [fallbackTitle, setFallbackTitle] = useState("");
 
     // הגדרות לוגיקה לתמונה
     useEffect(() => {
         if (!parentName) return;
-
-        let foundImg = "";
         let catName = parentName;
 
-        switch (parentName) {
-            case "פירות":
-                foundImg = fruitTitle.src;
-                break;
-            case "עלים ועשבי תיבול":
-                foundImg = herbsTitle.src;
-                break;
-            case "קטניות":
-                foundImg = leguTitle.src;
-                break;
-            case "ירקות":
-                foundImg = vegTitle.src;
-                break;
-            case "ביצים ושונות":
-                foundImg = eggsTitle.src;
-                break;
-            case "מבצעים":
-                foundImg = ourOffers.src;
-                break;
-            default:
-                foundImg = "";
-                break;
-        }
-
         // אם יש childName ולא מצאנו תמונה מיוחדת, נוסיף " / childName" בכותרת
-        if (!foundImg && childName) {
+        if (childName) {
             catName += " / " + childName;
         }
 
-        setCategoryImg(foundImg);
         setFallbackTitle(catName);
     }, [parentName, childName]);
 
@@ -168,7 +140,7 @@ const CategoryPage = ({ allProd, attributes }) => {
     return (
         <Layout title={layoutTitle || "קטגוריה"} description="This is category page">
             <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                <div className="flex py-5">
+                <div className="flex sm:py-5 py-3">
                     <div className="flex w-full">
                         <div className="w-full">
                             {productData?.length === 0 ? (
@@ -184,16 +156,9 @@ const CategoryPage = ({ allProd, attributes }) => {
                                         {t("common:sorryText")}
                                     </h2>
                                 </div>
-                            ) : categoryImg ? (
-                                // מצאנו תמונה תואמת
-                                <img
-                                    src={categoryImg}
-                                    alt={layoutTitle}
-                                    className="h-24 mx-auto animate-fadeIn"
-                                />
                             ) : (
-                                // אחרת מציגים מלבן עם כותרת "קטגוריה / תת קטגוריה"
-                                <div className="flex justify-center items-center mb-3 mt-6">
+                                // אחרת מציגים כותרת "קטגוריה / תת קטגוריה" מעוצבת
+                                <div className="flex justify-center items-center mb-3">
                                     {/* <h6 className="text-sm font-serif">{fallbackTitle}</h6> */}
                                     <ShapiraTitle text={fallbackTitle} height={70} key={fallbackTitle} />
                                 </div>

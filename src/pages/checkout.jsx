@@ -153,7 +153,7 @@ const Checkout = () => {
   // ללא פרטי משתמש ניווט ללוגאין
   useEffect(() => {
     if (!userInfo) {
-      router.push("/login");
+      router.push("/");
     } else {
       if (!userInfo.address.city) {
         localStorage.setItem("firstTime", true);

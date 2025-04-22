@@ -40,6 +40,10 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
     closeCategoryDrawer();
     if (onLinkClick) setTimeout(() => onLinkClick(), 100);
     // setIsLoading(true);
+
+    const finalPath = targetSub ? `${targetPath}?sub=${targetSub}` : targetPath;
+
+    router.push(finalPath);
   };
 
   const icon = getCategoryIconByCode(id);

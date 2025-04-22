@@ -461,23 +461,28 @@ const Footer = () => {
       </div>
 
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10 flex justify-center py-4">
-        <p className="flex items-center gap-1 text-sm text-gray-500 leading-6">
-          <FaRegCopyright /> כל הזכויות שמורות{" "}
-          <Link
-            href="/terms-and-conditions"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-customRed"
-          >
-            לאחים שפירא
-          </Link>
-          | האתר נבנה על ידי
-          <Link
-            href="https://bizzstudio.co.il/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-customRed"
-          >Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
+        <p className="flex sm:flex-row flex-col items-center sm:gap-2 gap-1 text-sm text-gray-500 leading-6">
+          <span className="flex items-center gap-1">
+            <FaRegCopyright /> כל הזכויות שמורות{" "}
+            <Link
+              href="/terms-and-conditions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-customRed"
+            >
+              לאחים שפירא
+            </Link>
+          </span>
+          <hr className="sm:h-4 sm:w-[1px] h-[1px] w-7 bg-gray-400"/>
+          <span>
+            האתר נבנה על ידי
+            <Link
+              href="https://bizzstudio.co.il/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-customRed"
+            > Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
+          </span>
         </p>
       </div>
 
