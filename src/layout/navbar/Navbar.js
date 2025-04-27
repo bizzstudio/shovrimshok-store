@@ -95,7 +95,7 @@ const Navbar = () => {
   useEffect(() => {
     if (Cookies.get("userInfo")) {
       const user = JSON.parse(Cookies.get("userInfo"));
-      setImageUrl(user.image);
+      setImageUrl(user.Picture);
     }
   }, []);
 
@@ -200,11 +200,11 @@ const Navbar = () => {
                   aria-label="Login"
                   href="/user/dashboard"
                 >
-                  {imageUrl || userInfo?.image ?
+                  {imageUrl || userInfo?.Picture ?
                     <Image
                       width={100}
                       height={100}
-                      src={imageUrl || userInfo?.image}
+                      src={imageUrl || userInfo?.Picture}
                       alt="user"
                       className="min-w-full min-h-full object-cover"
                     /> :

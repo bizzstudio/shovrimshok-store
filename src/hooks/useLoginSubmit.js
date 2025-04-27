@@ -1,11 +1,11 @@
+// shapira-store/src/hooks/useLoginSubmit.js
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { GoogleLogin } from "@react-oauth/google";
 
 // Internal import
-
 import { UserContext } from "@context/UserContext";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
@@ -30,7 +30,7 @@ const useLoginSubmit = (setModalOpen) => {
   } = useForm();
 
   const submitHandler = ({
-    name,
+    username,
     lastName,
     email,
     registerEmail,
@@ -41,24 +41,14 @@ const useLoginSubmit = (setModalOpen) => {
     setLoading(true);
     const cookieTimeOut = 10;
 
-    // console.log({
-    //   name,
-    //   lastName,
-    //   email,
-    //   registerEmail,
-    //   verifyEmail,
-    //   password,
-    //   phone
-    // })
-
-    if (phone && password) {
+    if (username && password) {
       if (localStorage.getItem("plsRegisterAgain")) {
         setLoading(false);
         notifyError(t("common:pls_register_again"));
         return;
       } else {
         CustomerServices.customerLogin({
-          phone,
+          username,                       // שינוי מ-phone ל-username
           password,
         })
           .then((res) => {
@@ -81,7 +71,7 @@ const useLoginSubmit = (setModalOpen) => {
           .catch((err) => {
             console.error(err);
             // בדיקה אם המשתמש כבר נרשם וממתין לאימות
-            if (localStorage.getItem("waitingForVerification") == phone) {
+            if (localStorage.getItem("waitingForVerification") == username) {
               setLoading(false);
               notifyError(t("common:waiting_for_verification"));
               return;
@@ -139,7 +129,6 @@ const useLoginSubmit = (setModalOpen) => {
   const handleGoogleSignIn = (user) => {
     // console.log("google sign in", user?.credential);
     const cookieTimeOut = 0.5;
-
     if (user) {
       CustomerServices.signUpWithProvider(user?.credential)
         .then((res) => {
@@ -150,7 +139,8 @@ const useLoginSubmit = (setModalOpen) => {
           Cookies.set("userInfo", JSON.stringify(res), {
             expires: cookieTimeOut,
           });
-        }).catch((err) => {
+        })
+        .catch((err) => {
           notifyApiResponse(err, false);
           setModalOpen(false);
         });
@@ -166,7 +156,7 @@ const useLoginSubmit = (setModalOpen) => {
     GoogleLogin,
     loading,
     watch,
-    setError
+    setError,
   };
 };
 

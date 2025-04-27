@@ -112,7 +112,7 @@ const Uploader = ({ setImageUrl, imageUrl }) => {
         {imageUrl ? (
           <div className="relative inline-block">
             <Image
-              className="border rounded-md border-gray-100 w-24 max-h-24 p-2"
+              className="border rounded-md border-gray-100 w-24 h-24 object-cover p-2"
               width={90}
               height={90}
               src={imageUrl}

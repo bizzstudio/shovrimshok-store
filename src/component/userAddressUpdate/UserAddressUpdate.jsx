@@ -138,7 +138,7 @@ const UserAddressUpdate = () => {
         setChosenCity(user.address.city);
       }
       setValue("phone", user.phone);
-      setImageUrl(user.image);
+      setImageUrl(user.Picture);
     }
   }, [setValue]);
 

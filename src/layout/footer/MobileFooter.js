@@ -83,12 +83,12 @@ const MobileFooter = () => {
             // className="flex flex-col gap-4 items-center justify-center text-xl text-customRed bg-white p-0.5 
             // aspect-1 rounded-full outline outline-2 outline-white outline-offset-2"
             >
-              {userInfo?.image ? (
+              {userInfo?.Picture ? (
                 <Link href="/user/dashboard" className="w-6 h-6">
                   <Image
                     width={29}
                     height={29}
-                    src={userInfo.image}
+                    src={userInfo?.Picture}
                     alt="user"
                     className="rounded-full object-cover aspect-1 border-2 border-white"
                   />
