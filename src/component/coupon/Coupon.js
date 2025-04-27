@@ -3,7 +3,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-//internal import
+// Internal import
 import useAsync from "@hooks/useAsync";
 import CouponServices from "@services/CouponServices";
 import OfferTimer from "@component/coupon/OfferTimer";

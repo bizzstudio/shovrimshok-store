@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import React, { useContext, useState } from "react";
 import { IoBagHandleOutline } from "react-icons/io5";
 
-//internal import
+// Internal import
 import { SidebarContext } from "@context/SidebarContext";
 import useAsync from "@hooks/useAsync";
 import SettingServices from "@services/SettingServices";

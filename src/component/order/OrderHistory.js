@@ -1,3 +1,4 @@
+// shapira-store/src/component/order/OrderHistory.js
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import useTranslation from "next-translate/useTranslation";
@@ -5,30 +6,8 @@ import Cookies from "js-cookie";
 import 'dayjs/locale/he'; // ייבוא תאריכים בעברית
 
 const OrderHistory = ({ order, currency }) => {
-
   const { t } = useTranslation();
-  const [status, setStatus] = useState(null);
   const [dateFormat, setDateFormat] = useState("D/MM/YYYY"); // פורמט ברירת מחדל
-
-  useEffect(() => {
-    const fetchStatus = async () => {
-      if (order?.status?.name === "Delivered")
-        setStatus(<span className="text-customRed max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
-      else if (order?.status?.name === "Pending")
-        setStatus(<span className="text-gray-400 max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
-      else if (order?.status?.name === "Cancel")
-        setStatus(<span className="text-red-500 max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
-      else if (order?.status?.name === "Processing")
-        setStatus(<span className="text-green-600 max-md:w-min max-md:flex max-md:mx-auto">{order?.status?.heName}</span>);
-      else {
-        const phone = order?.status?.phone;
-        setStatus(<span className="text-blue-700">{order?.status?.heName}{phone ? ' - ' + phone : ''}</span>);
-      }
-    };
-
-    fetchStatus();
-  }, [order.status]);
-  // console.log("order: ", order);
 
   let currentLang = Cookies.get('_lang');
 
@@ -72,7 +51,7 @@ const OrderHistory = ({ order, currency }) => {
 
   // עיצוב תאריך
   const formatDate = (value) => {
-    return value ? dayjs(value).format("DD/MM/YYYY") : "-";
+    return value ? dayjs(value).format(dateFormat) : "-";
   };
 
   return (
@@ -87,12 +66,11 @@ const OrderHistory = ({ order, currency }) => {
           {formatDate(order.CreateDate)}
         </span>
       </td>
-
       <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap md:block hidden">
         <span className="text-sm">{order.DocTotal?.toFixed(2)} {order.DocCur || ""}</span>
       </td>
       <td className="px-1 md:px-5 py-3 leading-6 text-center md:whitespace-nowrap font-medium text-sm max-md:w-min">
-      {order.VatSum?.toFixed(2)} {order.DocCur || ""}
+        {order.VatSum?.toFixed(2)} {order.DocCur || ""}
       </td>
       <td className={`${order.DocStatus === "O" ? "text-green-500" : "text-red-500"} text-sm max-w-[10vw] overflow-hidden truncate px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap`}>
         {order.DocStatus === "O" ? t("common:open") : t("common:close")}

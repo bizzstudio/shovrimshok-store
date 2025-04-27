@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import useFilter from "@hooks/useFilter";
 import ProductServices from "@services/ProductServices";

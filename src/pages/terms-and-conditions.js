@@ -1,6 +1,6 @@
 import React from "react";
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
 import PageHeader from "@component/header/PageHeader";

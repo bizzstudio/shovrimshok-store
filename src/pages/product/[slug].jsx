@@ -18,7 +18,7 @@ import {
   WhatsappShareButton,
 } from "react-share";
 
-//internal import
+// Internal import
 import Price from "@component/common/Price";
 import Stock from "@component/common/Stock";
 import Tags from "@component/common/Tags";

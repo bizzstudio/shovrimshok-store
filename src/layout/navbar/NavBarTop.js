@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { IoLockOpenOutline } from "react-icons/io5";
 import { FiPhoneCall, FiUser } from "react-icons/fi";
 
-//internal import
+// Internal import
 import LoginModal from "@component/modal/LoginModal";
 import { UserContext } from "@context/UserContext";
 import useGetSetting from "@hooks/useGetSetting";

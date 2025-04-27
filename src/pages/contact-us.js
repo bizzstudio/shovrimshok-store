@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import { FiMail, FiMapPin, FiBell } from "react-icons/fi";
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import Label from "@component/form/Label";
 import Error from "@component/form/Error";

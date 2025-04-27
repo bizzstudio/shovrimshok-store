@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-//internal import
+// Internal import
 // import useAsync from "./useAsync";
 import SettingServices from "@services/SettingServices";
 import { addSetting } from "@redux/slice/settingSlice";

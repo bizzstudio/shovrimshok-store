@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
 
-//internal import
+// Internal import
 import Price from "@component/common/Price";
 import Stock from "@component/common/Stock";
 import Tags from "@component/common/Tags";

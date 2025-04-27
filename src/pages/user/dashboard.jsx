@@ -15,8 +15,11 @@ import {
   FiShoppingCart,
   FiTruck,
 } from "react-icons/fi";
+import useTranslation from "next-translate/useTranslation";
+import { PiCoins } from "react-icons/pi";
 
-//internal import
+
+// Internal import
 import Layout from "@layout/Layout";
 import Card from "@component/order-card/Card";
 import { UserContext } from "@context/UserContext";
@@ -30,6 +33,8 @@ import MyOrders from "./my-orders";
 
 const Dashboard = ({ title, description, children }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+
   const {
     dispatch,
     state: { userInfo },
@@ -49,7 +54,7 @@ const Dashboard = ({ title, description, children }) => {
       // limit: 8,
     })
       .then((res) => {
-        console.log("res: ", res);
+        // console.log("res: ", res);
         setData(res);
         setLoading(false);
       })
@@ -118,7 +123,8 @@ const Dashboard = ({ title, description, children }) => {
               <div className="flex-shrink-0 w-full lg:w-80 ml-7 lg:ml-10  xl:ml-10 ">
                 <div className="bg-white p-4 sm:p-5 lg:p-8 rounded-md sticky top-32">
                   {userSidebar?.map((item) => (
-                    <span
+                    <Link
+                      href={item.href}
                       key={item?.title}
                       className="p-2 my-2 flex gap-1 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed-dark"
                     >
@@ -126,13 +132,12 @@ const Dashboard = ({ title, description, children }) => {
                         className="flex-shrink-0 h-4 w-4"
                         aria-hidden="true"
                       />
-                      <Link
-                        href={item.href}
+                      <span
                         className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customRed-dark"
                       >
                         {item.ItemName ? item.ItemName : item.title}
-                      </Link>
-                    </span>
+                      </span>
+                    </Link>
                   ))}
                   <span className="p-2 flex gap-1 font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed-dark">
                     <span>
@@ -157,30 +162,30 @@ const Dashboard = ({ title, description, children }) => {
                         storeCustomizationSetting?.dashboard?.dashboard_title
                       )}
                     </h2>
-                    <div className="grid gap-4 mb-8 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid gap-4 mb-8 grid-cols-1 lg:grid-cols-4">
                       <Card
                         title={showingTranslateValue(
                           storeCustomizationSetting?.dashboard?.total_order
                         )}
                         Icon={FiShoppingCart}
                         quantity={data?.totalDoc}
-                        className="text-red-600  bg-red-200"
+                        className="text-customRed-dark bg-red-100"
                       />
-                      <Card
+                      {/* <Card
                         title={showingTranslateValue(
                           storeCustomizationSetting?.dashboard?.pending_order
                         )}
                         Icon={FiRefreshCw}
                         quantity={data?.pending}
                         className="text-orange-600 bg-orange-200"
-                      />
+                      /> */}
                       <Card
                         title={showingTranslateValue(
                           storeCustomizationSetting?.dashboard?.processing_order
                         )}
                         Icon={FiTruck}
                         quantity={data?.processing}
-                        className="text-indigo-600 bg-indigo-200"
+                        className="text-amber-600 bg-amber-100"
                       />
                       <Card
                         title={showingTranslateValue(
@@ -188,7 +193,13 @@ const Dashboard = ({ title, description, children }) => {
                         )}
                         Icon={FiCheck}
                         quantity={data?.delivered}
-                        className="text-customRed-dark bg-customRed-leaf"
+                        className="text-green-600 bg-green-100"
+                      />
+                      <Card
+                        title={t("common:balance")}
+                        Icon={PiCoins}
+                        quantity={data?.balance}
+                        className="text-customBlue bg-blue-100"
                       />
                     </div>
                     <RecentOrder data={data} loading={loading} error={error} />

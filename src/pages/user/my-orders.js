@@ -8,7 +8,7 @@ import { FiZoomIn } from "react-icons/fi";
 import { MdRestore } from "react-icons/md";
 import { MdPayment } from "react-icons/md";
 
-//internal import
+// Internal import
 import Dashboard from "@pages/user/dashboard";
 import OrderServices from "@services/OrderServices";
 import Loading from "@component/preloader/Loading";
@@ -219,13 +219,13 @@ const MyOrders = () => {
                 </h2>
                 <div className="flex md:hidden gap-2 justify-between w-full mb-5">
                   <div
-                    className="flex flex-grow gap-1 items-center justify-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customRed-dark font-semibold rounded-full cursor-auto text-center"
+                    className="flex flex-grow gap-1 items-center justify-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customBlue font-semibold rounded-full cursor-auto text-center"
                   >
                     <MdPayment size={17} /> <span>=</span>
                     {t("common:payNow")}
                   </div>
                   <div
-                    className="flex flex-grow gap-1 items-center justify-center px-3 py-1 bg-customBrown-light text-xs text-customRed-dark font-semibold rounded-full cursor-auto text-center"
+                    className="flex flex-grow gap-1 items-center justify-center px-3 py-1 bg-customBrown-light text-xs text-customBlue font-semibold rounded-full cursor-auto text-center"
                   >
                     <MdRestore size={17} /> <span>=</span>
                     {t("common:Reorder")}
@@ -239,37 +239,37 @@ const MyOrders = () => {
                           <tr className="bg-gray-100">
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
+                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
-                              {t("common:orderId")}
+                              {t("common:DocNum")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
-                              {t("common:orderTime")}
+                              {t("common:CreateDate")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
+                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
-                              {t("common:method")}
+                              {t("common:DocTotal")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
-                              {t("common:Status")}
+                              {t("common:VatSum")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
-                              {t("common:total")}
+                              {t("common:DocStatus")}
                             </th>
                             <th
                               scope="col"
-                              className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
                             >
                               {t("common:action")}
                             </th>
@@ -277,14 +277,14 @@ const MyOrders = () => {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                           {data?.orders?.map((order) => (
-                            <tr key={order._id} onClick={() => handleRowClick(order._id)} className="cursor-pointer hover:bg-gray-50">
+                            <tr key={order.DocEntry} onClick={() => handleRowClick(order.DocEntry)} className="cursor-pointer hover:bg-gray-50">
                               <OrderHistory order={order} />
                               <td className="px-1 md:px-5 py-3 whitespace-nowrap text-center text-sm">
                                 {order?.status?.name === "Pending" ? (
                                   <>
                                     <button
                                       disabled={loadingRestore}
-                                      className="hidden md:flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
+                                      className="hidden md:flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdPayment size={17} />
@@ -292,7 +292,7 @@ const MyOrders = () => {
                                     </button>
                                     <button
                                       disabled={loadingRestore}
-                                      className="flex md:hidden gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
+                                      className="flex md:hidden gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdPayment size={17} />
@@ -302,7 +302,7 @@ const MyOrders = () => {
                                   <div className="flex gap-2 items-center justify-center">
                                     <button
                                       disabled={loadingRestore}
-                                      className="hidden md:flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
+                                      className="hidden md:flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdRestore size={17} />
@@ -310,7 +310,7 @@ const MyOrders = () => {
                                     </button>
                                     <button
                                       disabled={loadingRestore}
-                                      className="flex md:hidden gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customRed-dark hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
+                                      className="flex md:hidden gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdRestore size={17} />

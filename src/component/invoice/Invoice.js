@@ -2,16 +2,18 @@ import dayjs from "dayjs";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-//internal import
+// Internal import
 import OrderTable from "@component/order/OrderTable";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import newLogo from "public/newlogo.svg"
 import useTranslation from "next-translate/useTranslation";
 import Cookies from "js-cookie";
 import 'dayjs/locale/he'; // ייבוא תאריכים בעברית
+import useGetSetting from "@hooks/useGetSetting";
 
 const Invoice = ({ data, printRef, globalSetting, currency }) => {
   // console.log('invoice data',data)
+  const { storeCustomizationSetting } = useGetSetting();
 
   const { getNumberTwo } = useUtilsFunction();
   const { t } = useTranslation();
@@ -28,176 +30,119 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
     default:
       dayjs.locale('en'); // הגדרת ברירת מחדל לאנגלית
       break;
-  }
-
-  const { name } = data?.user_info || {};
-  const { city, street, houseNumber, apartmentNumber } = data?.user_info?.address || {};
+  };
 
   return (
-    <div ref={printRef}>
-      <div className="bg-customBrown-light p-8 rounded-t-xl">
-        <div className="flex lg:flex-row md:flex-row flex-col lg:items-center justify-between pb-4 border-b border-gray-50">
+    <div ref={printRef} className="print:bg-white print:p-0 print:shadow-none">
+      <div className="bg-white p-4 rounded-t-md print:rounded-none print:p-2 print:border-none">
+        <div className="flex flex-row justify-between items-start pb-2 border-b border-gray-200 print:pb-1 print:mb-2 print:border-b print:border-gray-300">
           <div>
-            <h1 className="font-bold font-serif text-2xl uppercase">{t("common:order")}</h1>
-            <h6 className="text-gray-700">
-              <b>{t("common:status")}: </b>
-              {(() => {
-                switch (data?.status?.name) {
-                  case "delivered":
-                  case "POS-Completed":
-                    return <span className="text-customRed">{data?.status?.heName}</span>;
-                  case "Pending":
-                    return <span className="text-gray-400">{data?.status?.heName}</span>;
-                  case "Cancel":
-                    return <span className="text-red-500">{data?.status?.heName}</span>;
-                  case "Processing":
-                    return <span className="text-green-600">{data?.status?.heName}</span>;
-                  case "Deleted":
-                    return <span className="text-red-500">{data?.status?.heName}</span>;
-                  default:
-                    return <span className="text-red-500">{data?.status?.heName}</span>;
-                }
-              })()}
+            <h1 className="font-bold font-serif text-base uppercase print:text-sm">{t("common:order")}</h1>
+            <h6 className="text-gray-700 text-xs print:text-xs">
+              <b>{t("common:DocStatus")}: </b>
+              <span className={data?.DocStatus === "O" ? "text-green-600" : "text-red-500"}>
+                {data?.DocStatus === "O" ? t("common:open") : t("common:close")}
+              </span>
             </h6>
             {/* הערות הלקוח להזמנה */}
-            {data?.customer_note && (
+            {data?.Comments && (
               <div>
-                <h6 className="text-gray-700"><b>{t("common:notes")}: </b>{data?.customer_note}</h6>
+                <h6 className="text-gray-700 text-xs print:text-xs"><b>{t("common:notes")}: </b>{data?.Comments}</h6>
               </div>
             )}
           </div>
-          <div className="lg:text-right text-left">
-            <h2 className="text-lg font-serif font-semibold mt-4 lg:mt-0 md:mt-0">
-              <Link href="/">
-                <Image
-                  width={190}
-                  height={40}
-                  // src="/logo/logo-color.svg"
-                  src={newLogo.src}
-                  alt="logo"
-                  className="-mx-1.5"
-                />
-              </Link>
+          <div className="text-right">
+            <h2 className="text-base font-serif font-semibold mt-0 print:text-xs">
+              <Image
+                width={120}
+                height={20}
+                src={storeCustomizationSetting?.footer?.block4_logo}
+                alt="logo"
+                className="print:mx-0"
+              />
             </h2>
-            <p className="text-sm text-gray-500">
-              {globalSetting?.address ||
-                "Cecilia Chapman, 561-4535 Nulla LA, <br /> United States 96522"}
-            </p>
+            <span className="text-xs text-gray-500 print:text-xs">
+              {globalSetting?.address} <br />
+              {globalSetting?.contact} <br />
+              <span>{globalSetting?.email}</span>
+            </span>
           </div>
         </div>
-        <div className="flex lg:flex-row md:flex-row flex-col justify-between pt-4">
-          <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
-            <span className="font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:date")}
+        <div className="flex flex-row justify-between pt-2 print:pt-1">
+          <div className="flex flex-col">
+            <span className="font-bold font-serif text-xs uppercase text-gray-600 block">
+              {t("common:CreateDate")}
             </span>
-            <span className="text-sm text-gray-500 block">
-              {data.createdAt !== undefined && (
-                <span>{dayjs(data?.createdAt).format("MMMM D, YYYY")}</span>
-              )}
+            <span className="text-xs text-gray-500 block">
+              {data?.CreateDate && dayjs(data?.CreateDate).format("DD/MM/YYYY")}
             </span>
           </div>
-          <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
-            <span className="font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:orderNo")}
+          <div className="flex flex-col">
+            <span className="font-bold font-serif text-xs uppercase text-gray-600 block">
+              {t("common:DocNum")}
             </span>
-            <span className="text-sm text-gray-500 block">
-              #{data?.invoice}
+            <span className="text-xs text-gray-500 block">
+              #{data?.DocNum}
             </span>
           </div>
-          <div className="flex flex-col lg:text-right text-left">
-            <span className="font-bold font-serif text-sm uppercase text-gray-600 block">
+          <div className="flex flex-col text-right">
+            <span className="font-bold font-serif text-xs uppercase text-gray-600 block">
               {t("common:orderTo")}
             </span>
-            <span className="text-sm text-gray-500 block min-w-[175px]">
-              {name}<br />
-              {city?.city_name_he}, {street}, {houseNumber}{apartmentNumber ? "/" + apartmentNumber : ''}<br />
-              {data?.user_info?.email}<br />
-              <span className="ml-2">{data?.user_info?.contact}</span>
+            <span className="text-xs text-gray-500 block min-w-[120px]">
+              {data?.CardName}<br />
+              {data?.Address}
             </span>
           </div>
         </div>
       </div>
-      <div className="s">
-        <div className="overflow-hidden lg:overflow-visible px-8 my-10">
-          <div className="-my-2 overflow-x-auto">
-            <table className="table-auto min-w-full border border-gray-100 divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr className="text-xs bg-gray-100">
-                  <th
-                    scope="col"
-                    className="font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-center"
-                  >
-                    {t("common:sr")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-center"
-                  >
-                    {t("common:productName")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-center"
-                  >
-                    {t("common:quantity")}
-                  </th>
-                  <th
-                    scope="col"
-                    className="font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-center"
-                  >
-                    {t("common:itemPrice")}
-                  </th>
-
-                  <th
-                    scope="col"
-                    className="font-serif font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-right"
-                  >
-                    {t("common:amount")}
-                  </th>
-                </tr>
-              </thead>
-              <OrderTable data={data} currency={currency} />
-            </table>
-          </div>
+      <div className="px-6 mb-7 print:my-2 print:px-0">
+        <div className="-my-1 overflow-x-auto">
+          <table className="table-auto min-w-full border border-gray-200 divide-y divide-gray-200 print:text-xs">
+            <thead className="bg-gray-50 print:bg-white">
+              <tr className="text-xs bg-gray-100 print:bg-white">
+                <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-center print:px-1 print:py-0.5">
+                  {t("common:sr")}
+                </th>
+                <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-start print:px-1 print:py-0.5">
+                  {t("common:productName")}
+                </th>
+                <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-center print:px-1 print:py-0.5">
+                  {t("common:quantity")}
+                </th>
+                <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-center print:px-1 print:py-0.5">
+                  {t("common:itemPrice")}
+                </th>
+                <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-right print:px-1 print:py-0.5">
+                  {t("common:amount")}
+                </th>
+              </tr>
+            </thead>
+            <OrderTable data={data} currency={currency} compact />
+          </table>
         </div>
       </div>
-
-      <div className="border-t border-b border-gray-100 p-10 bg-customRed-superLight">
-        <div className="flex lg:flex-row md:flex-row flex-col justify-between pt-4">
-          <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
-            <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:paymentMethod")}
+      {/* סיכום תשלום */}
+      <div className="bg-red-100 border-t border-b border-gray-200 p-4 print:p-2 print:border-t print:border-b print:border-gray-300">
+        <div className="flex flex-row justify-between pt-2 print:pt-1 gap-2">
+          <div className="flex flex-col">
+            <span className="mb-0.5 font-bold font-serif text-xs uppercase text-gray-600 block">
+              {t("common:VatSum")}
             </span>
-            <span className="text-sm text-gray-500 font-semibold font-serif block">
-              {t(`common:${data?.paymentMethod}`)}
+            <span className="text-xs text-gray-500 font-semibold font-serif block">
+              {getNumberTwo(data?.VatSum)}
+              {" "}
+              {currency}
             </span>
           </div>
-          <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
-            <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:shippingCost")}
-
+          <div className="flex flex-col">
+            <span className="mb-0.5 font-bold font-serif text-xs uppercase text-gray-600 block">
+              {t("common:DocTotal")}
             </span>
-            <span className="text-sm text-gray-500 font-semibold font-serif block">
+            <span className="text-base font-serif font-bold text-red-500 block print:text-xs">
+              {getNumberTwo(data?.DocTotal)}
+              {" "}
               {currency}
-              {getNumberTwo(data.shippingCost)}
-            </span>
-          </div>
-          <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
-            <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:discount")}
-            </span>
-            <span className="text-sm text-gray-500 font-semibold font-serif block">
-              {currency}
-              {getNumberTwo(data.discount)}
-            </span>
-          </div>
-          <div className="flex flex-col sm:flex-wrap">
-            <span className="mb-1 font-bold font-serif text-sm uppercase text-gray-600 block">
-              {t("common:totalAmount")}
-            </span>
-            <span className="text-2xl font-serif font-bold text-red-500 block">
-              {currency}
-              {getNumberTwo(data.total)}
             </span>
           </div>
         </div>

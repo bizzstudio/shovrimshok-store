@@ -1,7 +1,7 @@
 import React from "react";
 import { FiCreditCard, FiGift, FiPhoneCall, FiTruck } from "react-icons/fi";
 
-//internal import
+// Internal import
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 

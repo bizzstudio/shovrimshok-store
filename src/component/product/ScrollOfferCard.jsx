@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { IoAdd, IoBagAddSharp, IoRemove } from "react-icons/io5";
 
-//internal import
+// Internal import
 import Price from "@component/common/Price";
 import Stock from "@component/common/Stock";
 import { notifyError } from "@utils/toast";

@@ -1,7 +1,7 @@
 import { SidebarContext } from "@context/SidebarContext";
 import { useContext, useEffect } from "react";
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
 import Loading from "@component/preloader/Loading";

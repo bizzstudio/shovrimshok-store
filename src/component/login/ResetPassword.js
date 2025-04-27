@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { FiMail } from "react-icons/fi";
 
-//internal import
+// Internal import
 import Error from "@component/form/Error";
 import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";

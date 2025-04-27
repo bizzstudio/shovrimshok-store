@@ -2,7 +2,7 @@
 import React from "react";
 import { DefaultSeo as NextSeo } from "next-seo";
 
-//internal import
+// Internal import
 import useAsync from "@hooks/useAsync";
 import SettingServices from "@services/SettingServices";
 

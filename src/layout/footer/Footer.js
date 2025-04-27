@@ -13,7 +13,7 @@ import {
 } from "react-share";
 import { FaRegCopyright } from "react-icons/fa";
 
-//internal import
+// Internal import
 import { UserContext } from "@context/UserContext";
 import useGetSetting from "@hooks/useGetSetting";
 import CMSkeleton from "@component/preloader/CMSkeleton";

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from "swiper";
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import Banner from "@component/banner/Banner";
 import useGetSetting from "@hooks/useGetSetting";

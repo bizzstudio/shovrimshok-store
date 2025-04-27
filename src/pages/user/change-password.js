@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 
-//internal import
+// Internal import
 import Error from "@component/form/Error";
 import Dashboard from "@pages/user/dashboard";
 import InputArea from "@component/form/InputArea";

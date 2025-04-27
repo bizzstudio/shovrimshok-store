@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { GoogleLogin } from "@react-oauth/google";
 
-//internal import
+// Internal import
 
 import { UserContext } from "@context/UserContext";
 import { notifyError, notifySuccess } from "@utils/toast";

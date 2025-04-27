@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-//internal import
+// Internal import
 import useAsync from "@hooks/useAsync";
 import { SidebarContext } from "@context/SidebarContext";
 import CategoryServices from "@services/CategoryServices";

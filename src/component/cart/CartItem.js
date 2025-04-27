@@ -4,7 +4,7 @@ import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-//internal import
+// Internal import
 import useAddToCart from "@hooks/useAddToCart";
 import { SidebarContext } from "@context/SidebarContext";
 import useCart from "@hooks/useCart";

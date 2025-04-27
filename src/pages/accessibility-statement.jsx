@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import { notifySuccess } from "@utils/toast";
 import PageHeader from "@component/header/PageHeader";

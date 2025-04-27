@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { IoBagCheckOutline, IoClose, IoBagHandle } from "react-icons/io5";
 import useTranslation from "next-translate/useTranslation";
 
-//internal import
+// Internal import
 import CartItem from "@component/cart/CartItem";
 import LoginModal from "@component/modal/LoginModal";
 import { UserContext } from "@context/UserContext";

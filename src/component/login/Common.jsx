@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ImFacebook, ImGoogle } from "react-icons/im";
 
-//internal import
+// Internal import
 import useAsync from "@hooks/useAsync";
 import Login from "@component/login/Login";
 import { notifyError } from "@utils/toast";

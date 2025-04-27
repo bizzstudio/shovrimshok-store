@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-//internal import
+// Internal import
 import useGetSetting from "@hooks/useGetSetting";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import { SidebarContext } from "@context/SidebarContext";

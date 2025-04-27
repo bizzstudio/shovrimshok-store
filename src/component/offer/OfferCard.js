@@ -1,7 +1,7 @@
 // OfferCard.js
 import React, { useContext, useRef } from "react";
 
-//internal import
+// Internal import
 import Coupon from "@component/coupon/Coupon";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";

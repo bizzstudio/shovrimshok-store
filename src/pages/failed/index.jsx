@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import { IoHome } from "react-icons/io5";
 import { LuShoppingCart } from "react-icons/lu";
 
-//internal import
+// Internal import
 import failedImg from "public/failedImg2.svg"
 import Link from "next/link";
 import Layout from "@layout/Layout";

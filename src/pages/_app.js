@@ -13,7 +13,7 @@ import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import Hotjar from '@hotjar/browser';
 import Script from "next/script";
 
-//internal import
+// Internal import
 import store from "@redux/store";
 import getStripe from "@utils/stripe";
 import useAsync from "@hooks/useAsync";

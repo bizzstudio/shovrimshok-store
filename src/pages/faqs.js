@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
 import PageHeader from "@component/header/PageHeader";

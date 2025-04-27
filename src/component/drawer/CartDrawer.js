@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import Drawer from 'rc-drawer';
 
-//internal import
+// Internal import
 import Cart from '@component/cart/Cart';
 import { SidebarContext } from '@context/SidebarContext';
 

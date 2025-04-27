@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-//internal import
+// Internal import
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 

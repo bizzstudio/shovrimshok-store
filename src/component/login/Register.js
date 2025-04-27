@@ -2,7 +2,7 @@ import { FiLock, FiMail, FiPhone, FiUser } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
 
-//internal import
+// Internal import
 import Error from "@component/form/Error";
 import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";

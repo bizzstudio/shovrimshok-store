@@ -1,4 +1,4 @@
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import Coupon from "@component/coupon/Coupon";
 import PageHeader from "@component/header/PageHeader";

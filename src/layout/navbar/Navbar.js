@@ -11,7 +11,7 @@ import useTranslation from "next-translate/useTranslation";
 import debounce from "lodash.debounce";
 import { FaSearch } from "react-icons/fa";
 
-//internal import
+// Internal import
 import NavbarPromo from "@layout/navbar/NavbarPromo";
 import { UserContext } from "@context/UserContext";
 import LoginModal from "@component/modal/LoginModal";

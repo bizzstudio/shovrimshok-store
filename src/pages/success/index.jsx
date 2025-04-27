@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import { IoHome } from "react-icons/io5";
 import { PiListMagnifyingGlassBold } from "react-icons/pi";
 
-//internal import
+// Internal import
 import cartSuccess from "public/cart success2.svg"
 import leaf from "public/leaf.svg"
 import Link from "next/link";

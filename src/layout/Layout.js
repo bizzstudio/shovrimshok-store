@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
-//internal import
+// Internal import
 import Navbar from "@layout/navbar/Navbar";
 import Footer from "@layout/footer/Footer";
 import NavBarTop from "./navbar/NavBarTop";

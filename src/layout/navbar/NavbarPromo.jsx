@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import useTranslation from "next-translate/useTranslation";
 import { RiCustomerServiceFill } from "react-icons/ri";
 
-//internal import
+// Internal import
 import { notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import Category from "@component/category/Category";

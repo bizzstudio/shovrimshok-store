@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { FiLock, FiMail } from "react-icons/fi";
 import { ToastContainer } from "react-toastify";
 
-//internal import
+// Internal import
 import Error from "@component/form/Error";
 import InputArea from "@component/form/InputArea";
 import CustomerServices from "@services/CustomerServices";

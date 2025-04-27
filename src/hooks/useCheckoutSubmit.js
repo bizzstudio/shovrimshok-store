@@ -6,7 +6,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CardElement, useElements } from "@stripe/react-stripe-js";
 
-//internal import
+// Internal import
 import useAsync from "@hooks/useAsync";
 import { UserContext } from "@context/UserContext";
 import OrderServices from "@services/OrderServices";

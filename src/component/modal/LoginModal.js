@@ -1,6 +1,6 @@
 import React from "react";
 
-//internal import
+// Internal import
 
 import Common from "@component/login/Common";
 import MainModal from "@component/modal/MainModal";

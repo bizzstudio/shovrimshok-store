@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 
-//internal import
+// Internal import
 import Label from "@component/form/Label";
 import Error from "@component/form/Error";
 import Dashboard from "@pages/user/dashboard";

@@ -4,7 +4,7 @@ import ReactPaginate from "react-paginate";
 import { SidebarContext } from "@context/SidebarContext";
 import { useRouter } from "next/router";
 
-//internal import
+// Internal import
 import Loading from "@component/preloader/Loading";
 import OrderHistory from "@component/order/OrderHistory";
 import useGetSetting from "@hooks/useGetSetting";

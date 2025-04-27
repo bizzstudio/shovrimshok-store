@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import { LiaTruckPickupSolid } from "react-icons/lia";
 
 
-//internal import
+// Internal import
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
 import Label from "@component/form/Label";

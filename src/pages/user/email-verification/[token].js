@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
 
-//internal import
+// Internal import
 import { notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
