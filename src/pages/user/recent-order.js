@@ -61,38 +61,38 @@ const RecentOrder = ({ data, loading, error }) => {
                             scope="col"
                             className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
                           >
-                            {t("common:orderId")}
+                            {t("common:DocNum")}
                           </th>
                           <th
                             scope="col"
                             className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                           >
-                            {t("common:orderTime")}
+                            {t("common:CreateDate")}
                           </th>
 
                           <th
                             scope="col"
                             className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider hidden md:block"
                           >
-                            {t("common:method")}
+                            {t("common:DocTotal")}
                           </th>
                           <th
                             scope="col"
                             className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                           >
-                            {t("common:Status")}
+                            {t("common:VatSum")}
                           </th>
                           <th
                             scope="col"
                             className="text-center text-xs font-serif font-semibold md:px-6 px-2 py-2 text-gray-700 uppercase tracking-wider"
                           >
-                            {t("common:total")}
+                            {t("common:DocStatus")}
                           </th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {data?.orders?.map((order) => (
-                          <tr key={order._id} onClick={() => handleRowClick(order._id)} className="cursor-pointer hover:bg-gray-50">
+                          <tr key={order.DocEntry} onClick={() => handleRowClick(order.DocEntry)} className="cursor-pointer hover:bg-gray-50">
                             <OrderHistory order={order} />
                           </tr>
                         ))}

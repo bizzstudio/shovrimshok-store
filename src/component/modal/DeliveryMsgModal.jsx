@@ -156,8 +156,8 @@ const DeliveryMsgModal = ({
 
   return (
     <div className="w-52">
-      <div className="text-center mb-6">
-        <img src={deliveryMsgTitle.src} alt="Delivery Message" className="h-28 mx-auto -mt-4 -mb-12" />
+      <div className="text-center mb-4">
+        <ShapiraTitle text={t("common:deliveryMsgTitle")} height={70} key="deliveryMsgTitle" />
       </div>
       <div className="flex flex-col justify-center gap-3">
         <p className="text-center text-lg">

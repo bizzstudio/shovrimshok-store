@@ -7,6 +7,7 @@ import useLoginSubmit from "@hooks/useLoginSubmit";
 import InputArea from "@component/form/InputArea";
 import registerSuccess from 'public/titles/registerSuccess.svg'
 import { useEffect } from "react";
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
 const RegisterSuccess = ({ setShowResetPassword, setModalOpen }) => {
   const { handleSubmit, submitHandler, register, errors, loading } =
@@ -21,8 +22,8 @@ const RegisterSuccess = ({ setShowResetPassword, setModalOpen }) => {
 
   return (
     <>
-      <div className="text-center mb-6">
-        <img src={registerSuccess.src} alt="Register Success" className="h-28 mx-auto -mt-4 -mb-9" />
+      <div className="text-center mb-4">
+        <ShapiraTitle text={t("common:registerSuccess")} height={70} key="registerSuccess" />
       </div>
       <div className="flex flex-col justify-center gap-3">
         <p className="text-center"><b>{t("common:registerMessage1")}</b> {t("common:registerMessage2")}</p>

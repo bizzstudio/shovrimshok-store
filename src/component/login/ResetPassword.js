@@ -8,6 +8,7 @@ import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";
 import forgetPassTitle from "public/titles/forgetPassTitle.svg";
 import useTranslation from "next-translate/useTranslation";
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
 const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
   const { handleSubmit, submitHandler, register, errors, loading } =
@@ -16,12 +17,8 @@ const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
 
   return (
     <>
-      <div className="text-center mb-6">
-        <img src={forgetPassTitle.src} alt="register" className="h-28 mx-auto -mt-4 -mb-9" />
-        {/* <h2 className="text-3xl font-bold font-serif">{t("common:forgotPassword")}</h2>
-        <p className="text-sm md:text-base text-gray-500 mt-2 mb-8 sm:mb-10">
-          {t("common:resetPassword")}
-        </p> */}
+      <div className="text-center mb-4">
+        <ShapiraTitle text={t("common:forgotPassword")} height={70} key="forgotPassword" />
       </div>
       <form
         onSubmit={handleSubmit(submitHandler)}

@@ -62,30 +62,40 @@ const OrderHistory = ({ order, currency }) => {
     };
   }, []);
 
+  // פונקציה להציג מקף במקום ערכים חסרים
+  const displayValue = (value) => {
+    if (value === null || value === undefined || value === "null") {
+      return "-";
+    }
+    return value;
+  };
+
+  // עיצוב תאריך
+  const formatDate = (value) => {
+    return value ? dayjs(value).format("DD/MM/YYYY") : "-";
+  };
+
   return (
     <>
       <td className="px-1 md:px-5 py-3 leading-6 whitespace-nowrap justify-center md:flex hidden">
         <span className="uppercase text-sm font-medium">
-          {order?.invoice}
+          {displayValue(order.DocNum)}
         </span>
       </td>
       <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap">
         <span className="text-sm">
-          {dayjs(order.createdAt).format(dateFormat)}
+          {formatDate(order.CreateDate)}
         </span>
       </td>
 
       <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap md:block hidden">
-        <span className="text-sm">{t(`common:${order.paymentMethod}`)}</span>
+        <span className="text-sm">{order.DocTotal?.toFixed(2)} {order.DocCur || ""}</span>
       </td>
       <td className="px-1 md:px-5 py-3 leading-6 text-center md:whitespace-nowrap font-medium text-sm max-md:w-min">
-        {status}
+      {order.VatSum?.toFixed(2)} {order.DocCur || ""}
       </td>
-      <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap">
-        <span className="text-sm font-bold">
-          {currency}
-          {parseFloat(order?.total).toFixed(2)} ₪
-        </span>
+      <td className={`${order.DocStatus === "O" ? "text-green-500" : "text-red-500"} text-sm max-w-[10vw] overflow-hidden truncate px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap`}>
+        {order.DocStatus === "O" ? t("common:open") : t("common:close")}
       </td>
     </>
   );

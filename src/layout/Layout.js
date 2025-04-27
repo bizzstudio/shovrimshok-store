@@ -134,13 +134,13 @@ const Layout = ({ title, description, children }) => {
     <>
       <ToastContainer rtl={currentLang} />
 
-      {addressPopup && (
+      {/* {addressPopup && (
         <MainModal modalOpen={addressPopup} setModalOpen={setAddressPopup}>
           <div className="px-3 sm:px-11 py-8 max-w-xl">
             <UserAddressInitialize />
           </div>
         </MainModal>
-      )}
+      )} */}
 
       {showRegisterSuccess && (
         <MainModal modalOpen={showRegisterSuccess} setModalOpen={setShowRegisterSuccess}>

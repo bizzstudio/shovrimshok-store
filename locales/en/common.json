@@ -449,6 +449,14 @@
   "noOptions": "No Options",
   "selectCity": "Select a city",
 
+  "DocNum": "Order Number",
+  "CreateDate": "Order Creation Date",
+  "DocTotal": "Total Amount",
+  "VatSum": "VAT Amount",
+  "DocStatus": "Order Status",
+  "open": "Open",
+  "close": "Close",
+
   "/=================* Search * =================/": "",
 
   "loadMoreBtn": "Load More",

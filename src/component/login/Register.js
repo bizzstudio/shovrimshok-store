@@ -7,6 +7,7 @@ import Error from "@component/form/Error";
 import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";
 import registerTitle from 'public/titles/registerTitle.svg';
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
 const Register = ({ setShowResetPassword, setModalOpen }) => {
   const { handleSubmit, submitHandler, register, errors, loading, watch, setError } =
@@ -55,12 +56,8 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
 
   return (
     <>
-      <div className="text-center mb-6">
-        <img src={registerTitle.src} alt="register" className="h-28 mx-auto -mt-4 -mb-9" />
-        {/* <h2 className="text-3xl font-bold font-serif">{t("common:signingUp")}</h2>
-        <p className="text-sm md:text-base text-gray-500 mt-2 mb-8 sm:mb-10">
-        {t("common:createAccount")}
-        </p> */}
+      <div className="text-center mb-4">
+        <ShapiraTitle text={t("common:signingUp")} height={70} key="signingUp" />
       </div>
       <form
         onSubmit={handleSubmit(customSubmitHandler)}

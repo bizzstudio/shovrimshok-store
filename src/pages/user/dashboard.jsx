@@ -1,3 +1,4 @@
+// shapira-store/src/pages/user/dashboard.jsx
 import Cookies from "js-cookie";
 import dynamic from "next/dynamic";
 import Link from "next/link";
