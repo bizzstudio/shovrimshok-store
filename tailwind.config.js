@@ -49,7 +49,7 @@ module.exports = {
           leaf: '#ffa073'
         },
         customBlue: {
-          DEFAULT: 'rgb(0, 40, 99)',
+          DEFAULT: '#002863',
         },
       },
       keyframes: {

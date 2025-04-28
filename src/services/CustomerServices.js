@@ -1,3 +1,4 @@
+// shapira-store/src/services/CustomerServices.js
 import requests from "./httpServices";
 
 const CustomerServices = {

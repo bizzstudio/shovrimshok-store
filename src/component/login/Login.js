@@ -24,7 +24,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
               register={register}
               name="username"                             // שינוי מ-phone ל-username
               type="text"
-              placeholder={t("common:clientCode")}   // שינוי טקסט placeholder
+              placeholder={t("common:clientCodeOrEmail")}   // שינוי טקסט placeholder
               Icon={FiUser}                              // אייקון משתמש
             />
             <Error errorName={errors.username} />

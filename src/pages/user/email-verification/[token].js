@@ -1,14 +1,13 @@
+// shapira-store/src/pages/user/email-verification/[token].js
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
 
 // Internal import
-import { notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
 import Loading from "@component/preloader/Loading";
-import useTranslation from "next-translate/useTranslation";
 import notifyApiResponse from "@utils/notifyApiResponse";
 
 const EmailVerification = ({ params }) => {
@@ -17,9 +16,6 @@ const EmailVerification = ({ params }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { dispatch } = useContext(UserContext);
-  const { t } = useTranslation();
-
-  // console.log("params", params);
 
   useEffect(() => {
     setLoading(true);
@@ -44,7 +40,7 @@ const EmailVerification = ({ params }) => {
       {loading ? (
         <Loading loading={loading} />
       ) : success ? (
-        <div className="text-customRed">
+        <div className="text-customBlue">
           <IoCheckmarkCircle className="mx-auto mb-2 text-center text-4xl" />
           <h2 className="text-xl font-medium"> {success} </h2>
         </div>

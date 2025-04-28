@@ -230,6 +230,7 @@
     "email": "אימייל",
     "phone": "טלפון",
     "clientCode": "קוד לקוח",
+    "clientCodeOrEmail": "קוד לקוח או אימייל",
     "idNumberOrLicense": "תעודת זהות / מספר עוסק / ח.פ",
     "password": "סיסמה",
     "forgotPassword": "שכחת סיסמה?",
