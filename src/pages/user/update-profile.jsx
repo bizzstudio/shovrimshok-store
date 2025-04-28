@@ -1,4 +1,4 @@
-// shapira-store/src/pages/user/update-profile.js
+// shapira-store/src/pages/user/update-profile.jsx
 import dynamic from "next/dynamic";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
@@ -13,15 +13,17 @@ import InputArea from "@component/form/InputArea";
 import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
 import Uploader from "@component/image-uploader/Uploader";
-import { notifySuccess, notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import City from "@component/select/City";
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const UpdateProfile = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [chosenCity, setChosenCity] = useState();
+  const [cityValue, setCityValue] = useState("");
+  const [mailCityValue, setMailCityValue] = useState("");
   const {
     state: { userInfo },
   } = useContext(UserContext);
@@ -97,38 +99,40 @@ const UpdateProfile = () => {
       .then((res) => {
         if (res) {
           setLoading(false);
-          notifySuccess(t("common:success"));
+          notifyApiResponse(res, true);
           Cookies.set("userInfo", JSON.stringify(res));
           window.location.reload();
         }
       })
       .catch((err) => {
         setLoading(false);
-        notifyError(err?.response?.data?.message || err?.message);
+        notifyApiResponse(err, false);
       });
   };
 
   useEffect(() => {
-    if (Cookies.get("userInfo")) {
-      const user = JSON.parse(Cookies.get("userInfo"));
-      setValue("CardName", user.CardName || "");
-      setValue("Address", user.Address || "");
-      setValue("City", user.City || "");
-      setValue("ZipCode", user.ZipCode || "");
-      setValue("Country", user.Country || "");
-      setValue("StreetNo", user.StreetNo || "");
-      setValue("Block", user.Block || "");
-      setValue("MailAddres", user.MailAddres || "");
-      setValue("MailCity", user.MailCity || "");
-      setValue("MailZipCod", user.MailZipCod || "");
-      setValue("AddID", user.AddID || "");
-      setValue("GlblLocNum", user.GlblLocNum || "");
-      setValue("E_Mail", user.E_Mail || "");
-      setValue("Phone1", user.Phone1 || "");
-      setValue("Phone2", user.Phone2 || "");
-      setValue("Cellular", user.Cellular || "");
-      setValue("LicTradNum", user.LicTradNum || "");
-      setImageUrl(user.Picture || "");
+    if (userInfo) {
+      setValue("CardName", userInfo.CardName || "");
+      setValue("Address", userInfo.Address || "");
+      setValue("City", userInfo.City || "");
+      setValue("ZipCode", userInfo.ZipCode || "");
+      setValue("Country", userInfo.Country || "");
+      setValue("StreetNo", userInfo.StreetNo || "");
+      setValue("Block", userInfo.Block || "");
+      setValue("MailAddres", userInfo.MailAddres || "");
+      setValue("MailCity", userInfo.MailCity || "");
+      setValue("MailZipCod", userInfo.MailZipCod || "");
+      setValue("AddID", userInfo.AddID || "");
+      setValue("GlblLocNum", userInfo.GlblLocNum || "");
+      setValue("E_Mail", userInfo.E_Mail || "");
+      setValue("Phone1", userInfo.Phone1 || "");
+      setValue("Phone2", userInfo.Phone2 || "");
+      setValue("Cellular", userInfo.Cellular || "");
+      setValue("LicTradNum", userInfo.LicTradNum || "");
+      setValue("CardCode", userInfo.CardCode || "");
+      setImageUrl(userInfo.Picture || "");
+      setCityValue(userInfo.City || "");
+      setMailCityValue(userInfo.MailCity || "");
     }
   }, [setValue]);
 
@@ -153,9 +157,10 @@ const UpdateProfile = () => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mt-5 md:mt-0 md:col-span-2">
+            {/* תמונה */}
             <div className="bg-white space-y-6">
               <div>
-                <Label label="Photo" />
+                <Label label={t("common:image")} />
                 <div className="mt-1 flex items-center">
                   <Uploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
                 </div>
@@ -167,6 +172,20 @@ const UpdateProfile = () => {
                 <div className="mt-5 md:mt-0 md:col-span-2">
                   <div className="lg:mt-6 mt-4 bg-white">
                     <div className="grid grid-cols-6 gap-6">
+
+                      {/* קוד כרטיס לקוח */}
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label={t("common:cardCode")}
+                          name="CardCode"
+                          type="text"
+                          placeholder={t("common:cardCode")}
+                          disabled
+                          isRequired={false}
+                        />
+                        <Error errorName={errors.CardCode} />
+                      </div>
 
                       {/* שם כרטיס לקוח */}
                       <div className="col-span-6 sm:col-span-3">
@@ -188,7 +207,6 @@ const UpdateProfile = () => {
                           name="LicTradNum"
                           type="text"
                           placeholder={t("common:idNumberOrLicense")}
-                          isRequired={false}
                         />
                         <Error errorName={errors.LicTradNum} />
                       </div>
@@ -207,12 +225,14 @@ const UpdateProfile = () => {
 
                       {/* עיר */}
                       <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={t("common:city")}
-                          name="City"
-                          type="text"
-                          placeholder={t("common:city")}
+                        <Label label={t("common:city")} isRequired className="mb-0" />
+                        <City
+                          setValue={(cityName) => {
+                            setValue("City", cityName);
+                            setCityValue(cityName);
+                          }}
+                          value={cityValue}
+                          placeholder={JSON.stringify({ city_name_he: t("common:city") })}
                         />
                         <Error errorName={errors.City} />
                       </div>
@@ -238,7 +258,6 @@ const UpdateProfile = () => {
                           name="Country"
                           type="text"
                           placeholder={t("common:country")}
-                          isRequired={false}
                         />
                         <Error errorName={errors.Country} />
                       </div>
@@ -284,13 +303,14 @@ const UpdateProfile = () => {
 
                       {/* עיר למשלוח */}
                       <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label={t("common:mailCity")}
-                          name="MailCity"
-                          type="text"
-                          placeholder={t("common:mailCity")}
-                          isRequired={false}
+                        <Label label={t("common:mailCity")} isRequired={false} className="mb-0" />
+                        <City
+                          setValue={(cityName) => {
+                            setValue("MailCity", cityName);
+                            setMailCityValue(cityName);
+                          }}
+                          value={mailCityValue}
+                          placeholder={JSON.stringify({ city_name_he: t("common:mailCity") })}
                         />
                         <Error errorName={errors.MailCity} />
                       </div>
@@ -384,7 +404,7 @@ const UpdateProfile = () => {
                         <Error errorName={errors.Cellular} />
                       </div>
                     </div>
-                    <div className="col-span-6 sm:col-span-3 mt-5 text-right">
+                    <div className="col-span-6 sm:col-span-3 mt-5 flex justify-end">
                       {loading ? (
                         <button
                           disabled={true}

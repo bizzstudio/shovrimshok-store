@@ -230,7 +230,7 @@
     "email": "אימייל",
     "phone": "טלפון",
     "clientCode": "קוד לקוח",
-    "idNumberOrLicense": "תעודת זהות / מספר עוסק",
+    "idNumberOrLicense": "תעודת זהות / מספר עוסק / ח.פ",
     "password": "סיסמה",
     "forgotPassword": "שכחת סיסמה?",
     "resetPassword": "אפס/י את הסיסמה שלך",
@@ -462,6 +462,7 @@
     "open": "פתוחה",
     "close": "סגורה",
     "cardName": "שם לקוח",
+    "cardCode": "קוד לקוח",
     "address": "כתובת",
     "zipCode": "מיקוד",
     "streetNo": "מספר רחוב",
@@ -474,6 +475,7 @@
     "phone1": "טלפון 1",
     "phone2": "טלפון 2",
     "cellular": "טלפון 3",
+    "image": "תמונה",
 
     "/=================* Search * =================/": "",
   

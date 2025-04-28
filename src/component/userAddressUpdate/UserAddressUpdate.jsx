@@ -17,6 +17,7 @@ import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import City from "@component/select/City";
 import updateProfileTitle from "public/titles/updateProfileTitle.svg"
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const UserAddressUpdate = () => {
   const [imageUrl, setImageUrl] = useState("");
@@ -111,7 +112,7 @@ const UserAddressUpdate = () => {
       .then((res) => {
         if (res) {
           setLoading(false);
-          notifySuccess(t("common:success"));
+          notifyApiResponse(res, true);
           Cookies.set("userInfo", JSON.stringify(res));
           window.location.reload();
         }

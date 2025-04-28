@@ -24,6 +24,7 @@ import { notifyError, notifySuccess } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
 import SubModal from "@component/modal/SubModal";
 import addingToCart from 'public/addingToCart.svg'
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const MyOrders = () => {
   const router = useRouter();
@@ -169,7 +170,7 @@ const MyOrders = () => {
       router.push("/checkout");
     } catch (error) {
       console.error("Failed to restore order:", error);
-      notifyError("Failed to restore order. Please try again later.");
+      notifyApiResponse(error, false);
     }
   };
 

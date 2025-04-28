@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// shapira-store/src/pages/user/change-password.js
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 
@@ -7,10 +8,11 @@ import Error from "@component/form/Error";
 import Dashboard from "@pages/user/dashboard";
 import InputArea from "@component/form/InputArea";
 import CustomerServices from "@services/CustomerServices";
-import { notifyError, notifySuccess } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useTranslation from "next-translate/useTranslation";
+import notifyApiResponse from "@utils/notifyApiResponse";
+import { UserContext } from "@context/UserContext";
 
 const ChangePassword = () => {
   const {
@@ -18,6 +20,7 @@ const ChangePassword = () => {
     handleSubmit,
     setValue,
     formState: { errors },
+    reset,
   } = useForm();
   const [loading, setLoading] = useState(false);
 
@@ -31,21 +34,23 @@ const ChangePassword = () => {
     setLoading(true);
     CustomerServices.changePassword({ email, currentPassword, newPassword })
       .then((res) => {
-        notifySuccess(res.message);
+        notifyApiResponse(res, true);
         setLoading(false);
+        reset({ currentPassword: "", newPassword: "" });
       })
       .catch((err) => {
         setLoading(false);
-        notifyError(err ? err.response.data.message : err.message);
+        notifyApiResponse(err, false);
       });
   };
 
+  const { state: { userInfo } } = useContext(UserContext);
+
   useEffect(() => {
-    if (Cookies.get("userInfo")) {
-      const user = JSON.parse(Cookies.get("userInfo"));
-      setValue("email", user.email);
+    if (userInfo) {
+      setValue("email", userInfo.E_Mail);
     }
-  });
+  }, [userInfo, setValue]);
 
   return (
     <Dashboard
@@ -112,13 +117,12 @@ const ChangePassword = () => {
             </div>
           </div>
         </div>
-        <div className="mt-5 text-right">
+        <div className="mt-5 flex justify-end">
           {loading ? (
             <button
               disabled={loading}
               type="submit"
-              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
-            >
+              className="opacity-50 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]">
               <img
                 src="/loader/spinner.gif"
                 alt="Loading"
@@ -130,8 +134,7 @@ const ChangePassword = () => {
           ) : (
             <button
               type="submit"
-              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
-            >
+              className="flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]">
               {showingTranslateValue(
                 storeCustomizationSetting?.dashboard?.change_password
               )}

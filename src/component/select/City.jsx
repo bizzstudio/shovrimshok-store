@@ -1,9 +1,9 @@
-
+// shapira-store/src/component/select/City.jsx
 import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import useTranslation from "next-translate/useTranslation";
 
-const City = ({ setValue, placeholder }) => {
+const City = ({ setValue, placeholder, value }) => {
   const { t } = useTranslation();
 
   const [cities, setCities] = useState([]);
@@ -27,10 +27,15 @@ const City = ({ setValue, placeholder }) => {
     label: city.city_name_he
   }));
 
+  // מצא את האופציה המתאימה לערך הנוכחי
+  const selectedOption = value
+    ? options.find(opt => opt.label.trim() === value.trim())
+    : null;
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      borderColor: state.isFocused ? '#e7191f' : provided.borderColor,
+      borderColor: state.isFocused ? '#e7191f' : '#e5e7eb',
       boxShadow: state.isFocused ? '0 0 0 1px #e7191f' : provided.boxShadow,
       '&:hover': {
         borderColor: state.isFocused ? '#e7191f' : provided.borderColor,
@@ -47,7 +52,7 @@ const City = ({ setValue, placeholder }) => {
     option: (provided, state) => ({
       ...provided,
       textAlign: 'right',
-      backgroundColor: state.isSelected ? '#e7191f' : state.isFocused ? 'rgb(252, 255, 244)' : provided.backgroundColor,
+      backgroundColor: state.isSelected ? '#e7191f' : state.isFocused ? '#ffdbdb' : provided.backgroundColor,
       '&:active': {
         backgroundColor: '#e7191f', // צבע הרקע כאשר לוחצים על האופציות
         color: 'white',
@@ -63,7 +68,8 @@ const City = ({ setValue, placeholder }) => {
   return (
     <Select
       options={options}
-      onChange={(selectedOption) => setValue(selectedOption ? selectedOption.value : null)}
+      value={selectedOption}
+      onChange={(selectedOption) => setValue(selectedOption ? selectedOption.value.city_name_he : "")}
       placeholder={placeholder ? JSON.parse(placeholder).city_name_he : t("common:selectCity")}
       styles={customStyles}
       noOptionsMessage={() => t("common:noOptions")}

@@ -62,7 +62,7 @@ const useLoginSubmit = (setModalOpen) => {
               localStorage.setItem("firstTime", true);
             }
             router.push(redirect || "/");
-            notifySuccess(t("common:loginSuccess"));
+            notifyApiResponse(res, true);
             dispatch({ type: "USER_LOGIN", payload: res });
             Cookies.set("userInfo", JSON.stringify(res), {
               expires: cookieTimeOut,
@@ -133,7 +133,7 @@ const useLoginSubmit = (setModalOpen) => {
       CustomerServices.signUpWithProvider(user?.credential)
         .then((res) => {
           setModalOpen(false);
-          notifySuccess(t("common:loginSuccess"));
+          notifyApiResponse(res, true);
           router.push(redirect || "/");
           dispatch({ type: "USER_LOGIN", payload: res });
           Cookies.set("userInfo", JSON.stringify(res), {

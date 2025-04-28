@@ -18,6 +18,7 @@ import useTranslation from "next-translate/useTranslation";
 import useCart from "./useCart";
 import useAddToCart from "./useAddToCart";
 import { SidebarContext } from "@context/SidebarContext";
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const useCheckoutSubmit = () => {
   const {
@@ -321,7 +322,7 @@ const useCheckoutSubmit = () => {
       //   setIsCheckoutSubmit(false);
       // }
     } catch (err) {
-      notifyError(err?.response?.data?.message || err.message);
+      notifyApiResponse(err, false);
       setIsCheckoutSubmit(false);
     }
   };

@@ -11,12 +11,11 @@ import Dashboard from "@pages/user/dashboard";
 import InputArea from "@component/form/InputArea";
 import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
-import Uploader from "@component/image-uploader/Uploader";
-import { notifySuccess, notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import City from "@component/select/City";
 import initializeAddressTitle from "public/titles/finishRgisterTitle.svg";
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const UserAddressInitialize = () => {
   const [imageUrl, setImageUrl] = useState("");
@@ -111,14 +110,14 @@ const UserAddressInitialize = () => {
       .then((res) => {
         if (res) {
           setLoading(false);
-          notifySuccess(t("common:success"));
+          notifyApiResponse(res, true);
           Cookies.set("userInfo", JSON.stringify(res));
           window.location.reload();
         }
       })
       .catch((err) => {
         setLoading(false);
-        notifyError(err?.response?.data?.message || err?.message);
+        notifyApiResponse(err, false);
       });
   };
 

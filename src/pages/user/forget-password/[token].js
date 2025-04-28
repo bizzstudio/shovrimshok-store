@@ -11,6 +11,7 @@ import InputArea from "@component/form/InputArea";
 import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
 import { notifyError, notifySuccess } from "@utils/toast";
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const ForgetPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -40,12 +41,12 @@ const ForgetPassword = () => {
         .then((res) => {
           setLoading(false);
           setShowLogin(true);
-          notifySuccess(res.message);
+          notifyApiResponse(res, true);
           setValue("newPassword");
         })
         .catch((err) => {
           setLoading(false);
-          notifyError(err ? err?.response?.data?.message : err.message);
+          notifyApiResponse(err, false);
         });
     }
 
@@ -57,13 +58,13 @@ const ForgetPassword = () => {
         .then((res) => {
           setLoading(false);
           router.push("/");
-          notifySuccess("Login Success!");
+          notifyApiResponse(res, true);
           dispatch({ type: "USER_LOGIN", payload: res });
           Cookies.set("userInfo", JSON.stringify(res));
         })
         .catch((err) => {
           setLoading(false);
-          notifyError(err ? err?.response?.data?.message : err.message);
+          notifyApiResponse(err, false);
         });
     }
   };

@@ -9,6 +9,7 @@ import CustomerServices from "@services/CustomerServices";
 import { UserContext } from "@context/UserContext";
 import Loading from "@component/preloader/Loading";
 import useTranslation from "next-translate/useTranslation";
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const EmailVerification = ({ params }) => {
   const [success, setSuccess] = useState("");
@@ -28,7 +29,7 @@ const EmailVerification = ({ params }) => {
         router.push("/");
         setLoading(false);
         setSuccess(res.message);
-        notifySuccess(t("common:registerSuccess"));
+        notifyApiResponse(res, true);
         dispatch({ type: "USER_LOGIN", payload: res });
         Cookies.set("userInfo", JSON.stringify(res));
       })

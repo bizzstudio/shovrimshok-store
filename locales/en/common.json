@@ -460,6 +460,7 @@
   "open": "Open",
   "close": "Close",
   "cardName": "Customer Name",
+  "cardCode": "Card Code",
   "address": "Address",
   "zipCode": "ZIP Code",
   "streetNo": "Street Number",
@@ -472,6 +473,7 @@
   "phone1": "Phone 1",
   "phone2": "Phone 2",
   "cellular": "Cellular",
+  "image": "Image",
 
   "/=================* Search * =================/": "",
 

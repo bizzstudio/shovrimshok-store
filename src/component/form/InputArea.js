@@ -13,6 +13,7 @@ const InputArea = ({
   placeholder,
   onChange = () => { },
   isRequired = true,
+  disabled = false,
 }) => {
   let currentLang = Cookies.get('_lang');
 
@@ -43,7 +44,7 @@ const InputArea = ({
 
   return (
     <>
-      <Label label={label} htmlFor={name} />
+      <Label label={label} htmlFor={name} isRequired={isRequired} />
       <div className="relative">
         {Icon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -61,6 +62,7 @@ const InputArea = ({
           type={type}
           pattern={type === 'tel' ? '[0-9]*' : undefined} // אפשור של מספרים בלבד
           name={name}
+          disabled={disabled}
           defaultValue={defaultValue}
           placeholder={placeholder}
           autoComplete={autocomplete}
@@ -70,8 +72,8 @@ const InputArea = ({
           }}
           className={
             Icon
-              ? "py-2 px-4 pl-10 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-customRed h-11 md:h-12 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              : "py-2 px-4 md:px-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-customRed h-11 md:h-12 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              ? `${disabled ? 'bg-gray-100 cursor-not-allowed text-gray-500' : 'bg-white'} py-2 px-4 pl-10 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out border-gray-200 focus:outline-none focus:border-customRed h-11 md:h-12 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`
+              : `${disabled ? 'bg-gray-100 cursor-not-allowed text-gray-500' : 'bg-white'} py-2 px-4 md:px-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out border-gray-200 focus:outline-none focus:border-customRed h-11 md:h-12 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`
           }
         />
       </div>

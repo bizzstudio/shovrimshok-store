@@ -9,7 +9,6 @@ import useTranslation from "next-translate/useTranslation";
 import { RiCustomerServiceFill } from "react-icons/ri";
 
 // Internal import
-import { notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import Category from "@component/category/Category";
 import { SidebarContext } from "@context/SidebarContext";
@@ -29,6 +28,7 @@ import { UserContext } from "@context/UserContext";
 import LoginModal from "@component/modal/LoginModal";
 import { BsWhatsapp } from "react-icons/bs";
 import { FaWheelchair } from "react-icons/fa";
+import notifyApiResponse from "@utils/notifyApiResponse";
 
 const NavbarPromo = () => {
   const [languages, setLanguages] = useState([]);
@@ -83,7 +83,7 @@ const NavbarPromo = () => {
           setCurrentLang(result);
           handleLanguage(result);
         } catch (err) {
-          notifyError(err);
+          notifyApiResponse(err, false);
           console.log("error on getting lang", err);
         }
       }
