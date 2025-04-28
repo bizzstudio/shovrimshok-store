@@ -22,8 +22,8 @@ const RegisterSuccess = ({ setShowResetPassword, setModalOpen }) => {
 
   return (
     <>
-      <div className="text-center mb-4">
-        <ShapiraTitle text={t("common:registerSuccess")} height={70} key="registerSuccess" />
+      <div className="text-center mb-3">
+        <ShapiraTitle text={t("common:registerSuccess")} height={50} key="registerSuccess" />
       </div>
       <div className="flex flex-col justify-center gap-3">
         <p className="text-center"><b>{t("common:registerMessage1")}</b> {t("common:registerMessage2")}</p>

@@ -14,7 +14,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
 
   return (
     <>
-      <div className="text-center mb-4">
+      <div className="text-center mb-6">
         <ShapiraTitle text={t("common:loginTitle")} height={70} key="loginTitle" />
       </div>
       <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col justify-center">

@@ -29,35 +29,68 @@ const useLoginSubmit = (setModalOpen) => {
     setError,
   } = useForm();
 
-  const submitHandler = ({
-    username,
-    lastName,
-    email,
-    registerEmail,
-    verifyEmail,
-    password,
-    phone
-  }) => {
+  const submitHandler = (data) => {
     setLoading(true);
     const cookieTimeOut = 10;
 
-    if (username && password) {
+    // הרשמה חדשה עם כל השדות
+    if (
+      data.CardName
+      && data.Address
+      && data.City
+      && data.E_Mail
+      && data.Phone1
+      && data.password
+      && data.LicTradNum
+    ) {
+      CustomerServices.verifyEmailAddress({
+        CardName: data.CardName,
+        Address: data.Address,
+        City: data.City,
+        ZipCode: data.ZipCode,
+        // Country: data.Country,
+        E_Mail: data.E_Mail,
+        Phone1: data.Phone1,
+        LicTradNum: data.LicTradNum,
+        password: data.password,
+      })
+        .then((res) => {
+          if (res.waitingForVerification) {
+            localStorage.setItem("waitingForVerification", res.waitingForVerification);
+            // מחיקת האימייל מהלוקל סטורג' תוך רבע שעה
+            setTimeout(() => {
+              localStorage.removeItem("waitingForVerification");
+              // אחרי רבע שעה החלפת ההודעה לנא להרשם מחדש
+              localStorage.setItem("plsRegisterAgain", true);
+            }, 1000 * 60 * 15);
+          }
+          setLoading(false);
+          setModalOpen(false);
+          localStorage.setItem("showRegisterSuccess", true); // פופאפ הצלחה
+        })
+        .catch((err) => {
+          setLoading(false);
+          notifyApiResponse(err, false);
+        });
+      return;
+    }
+
+    // התחברות רגילה
+    if (data.username && data.password) {
       if (localStorage.getItem("plsRegisterAgain")) {
         setLoading(false);
         notifyError(t("common:pls_register_again"));
         return;
       } else {
         CustomerServices.customerLogin({
-          username,                       // שינוי מ-phone ל-username
-          password,
+          username: data.username,
+          password: data.password,
         })
           .then((res) => {
-            console.log(res);
             setLoading(false);
             setModalOpen(false);
             localStorage.removeItem("plsRegisterAgain");
             localStorage.removeItem("waitingForVerification");
-            // גרימה לפופאפ הזנת כתובת לקפוץ אם אין לו כתובת
             if (!res.city) {
               localStorage.setItem("firstTime", true);
             }
@@ -71,7 +104,7 @@ const useLoginSubmit = (setModalOpen) => {
           .catch((err) => {
             console.error(err);
             // בדיקה אם המשתמש כבר נרשם וממתין לאימות
-            if (localStorage.getItem("waitingForVerification") == username) {
+            if (localStorage.getItem("waitingForVerification") == data.username) {
               setLoading(false);
               notifyError(t("common:waiting_for_verification"));
               return;
@@ -81,39 +114,12 @@ const useLoginSubmit = (setModalOpen) => {
             }
           });
       }
+      return;
     }
-    if (name && email && password) {
-      // ווידוא שהשם משתמש הוא 2 מילים לפחות
-      // const usernameWords = name.trim().split(" ");
-      // if (usernameWords.length < 2) {
-      //   setLoading(false);
-      //   notifyError(t("common:username_at_least_two_words"));
-      //   return;
-      // }
-      CustomerServices.verifyEmailAddress({ name, lastName, email, password, phone })
-        .then((res) => {
-          if (res.waitingForVerification) {
-            localStorage.setItem("waitingForVerification", res.waitingForVerification);
-            // מחיקת האימייל מהלוקל סטורג' תוך רבע שעה
-            setTimeout(() => {
-              localStorage.removeItem("waitingForVerification");
-              // אחרי רבע שעה החלפת ההודעה לנא להרשם מחדש
-              localStorage.setItem("plsRegisterAgain", true);
-            }, 1000 * 60 * 15);
-          }
-          setLoading(false);
-          setModalOpen(false);
-          // notifySuccess(res.message);
-          localStorage.setItem("showRegisterSuccess", true); // פופאפ במקום נוטיפיי
-        })
-        .catch((err) => {
-          console.log(err)
-          setLoading(false);
-          notifyApiResponse(err, false);
-        });
-    }
-    if (verifyEmail) {
-      CustomerServices.forgetPassword({ verifyEmail })
+
+    // איפוס סיסמה
+    if (data.verifyEmail) {
+      CustomerServices.forgetPassword({ verifyEmail: data.verifyEmail })
         .then((res) => {
           setLoading(false);
           notifyApiResponse(res, true);
@@ -157,6 +163,7 @@ const useLoginSubmit = (setModalOpen) => {
     loading,
     watch,
     setError,
+    setValue,
   };
 };
 

@@ -1,5 +1,5 @@
-// shapira-store/src/component/login/Register.js
-import { FiLock, FiMail, FiPhone, FiUser } from "react-icons/fi";
+// shapira-store/src/component/login/Register.jsx
+import { FiLock, FiMail, FiPhone, FiUser, FiMapPin, FiHome, FiGlobe, FiHash } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
 
@@ -9,13 +9,24 @@ import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";
 import registerTitle from 'public/titles/registerTitle.svg';
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import City from "@component/select/City";
 
 const Register = ({ setShowResetPassword, setModalOpen }) => {
-  const { handleSubmit, submitHandler, register, errors, loading, watch, setError } =
-    useLoginSubmit(setModalOpen);
+  const {
+    handleSubmit,
+    submitHandler,
+    register,
+    errors,
+    loading,
+    watch,
+    setError,
+    setValue,
+  } = useLoginSubmit(setModalOpen);
   const { t } = useTranslation();
 
   const [notMatch, setNotMatch] = useState({ message: '' });
+  const [cityValue, setCityValue] = useState("");
+  const [mailCityValue, setMailCityValue] = useState("");
 
   const comparePasswords = (value) => {
     if (value !== watch("password")) {
@@ -26,26 +37,32 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
   };
 
   const validateInput = (data) => {
-    const { name, lastName, phone } = data;
-
-    // בדיקת רווחים בשדות שם ושם משפחה
-    if (!name.trim()) {
-      setError('name', { type: 'manual', message: t('common:invalidName') });
+    // שדות חובה לפי UpdateProfile
+    if (!data.CardName?.trim()) {
+      setError('CardName', { type: 'manual', message: t('common:invalidName') });
       return false;
     }
-
-    if (!lastName.trim()) {
-      setError('lastName', { type: 'manual', message: t('common:invalidLastName') });
+    if (!data.Address?.trim()) {
+      setError('Address', { type: 'manual', message: t('common:invalidStreet') });
       return false;
     }
-
-    // בדיקת מספר טלפון - מתחיל ב־05 וכולל 10 ספרות בדיוק
-    const phoneRegex = /^05\d{8}$/;
-    if (!phoneRegex.test(phone)) {
-      setError('phone', { type: 'manual', message: t('common:invalidPhone') });
+    if (!data.City?.trim()) {
+      setError('City', { type: 'manual', message: t('common:invalidCity') });
       return false;
     }
-
+    if (!data.E_Mail?.trim()) {
+      setError('E_Mail', { type: 'manual', message: t('common:invalidEmail') });
+      return false;
+    }
+    if (!data.Phone1?.trim()) {
+      setError('Phone1', { type: 'manual', message: t('common:invalidPhone') });
+      return false;
+    }
+    // בדיקת סיסמאות
+    if (data.password !== data.confirmPassword) {
+      setNotMatch({ message: t('common:passwordsDoNotMatch') });
+      return false;
+    }
     return true;
   };
 
@@ -57,7 +74,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
 
   return (
     <>
-      <div className="text-center mb-4">
+      <div className="text-center mb-6">
         <ShapiraTitle text={t("common:signingUp")} height={70} key="signingUp" />
       </div>
       <form
@@ -65,93 +82,129 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
         className="flex flex-col justify-center w-full"
       >
         <div className="grid grid-cols-2 gap-5">
-          <div className="col-span-1">
-            <InputArea
-              register={register}
-              // label={t("common:name")}
-              name="name"
-              type="text"
-              placeholder={t("common:name")}
-              Icon={FiUser}
-            />
-            <Error errorName={errors.name} />
-          </div>
-
-          <div className="col-span-1">
-            <InputArea
-              register={register}
-              // label={t("common:lastName")}
-              name="lastName"
-              type="text"
-              placeholder={t("common:lastName")}
-              Icon={FiUser}
-            />
-            <Error errorName={errors.lastName} />
-          </div>
-
+          {/* CardName (שם מלא) */}
           <div className="col-span-2 sm:col-span-1">
             <InputArea
               register={register}
-              // label={t("common:email")}
-              name="email"
+              name="CardName"
+              type="text"
+              placeholder={t("common:cardName")}
+              Icon={FiUser}
+            />
+            <Error errorName={errors.CardName} />
+          </div>
+
+          {/* LicTradNum (ת.ז/עוסק) */}
+          <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="LicTradNum"
+              type="text"
+              placeholder={t("common:idNumberOrLicense")}
+              Icon={FiHash}
+            />
+            <Error errorName={errors.LicTradNum} />
+          </div>
+
+          {/* Address */}
+          <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="Address"
+              type="text"
+              placeholder={t("common:address")}
+              Icon={FiMapPin}
+            />
+            <Error errorName={errors.Address} />
+          </div>
+
+          {/* City */}
+          <div className="col-span-2 sm:col-span-1">
+            <City
+              setValue={(cityName) => {
+                setValue("City", cityName);
+                setCityValue(cityName);
+              }}
+              value={cityValue}
+              placeholder={JSON.stringify({ city_name_he: t("common:city") })}
+            />
+            <Error errorName={errors.City} />
+          </div>
+
+          {/* ZipCode */}
+          <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="ZipCode"
+              type="text"
+              placeholder={t("common:zipCode")}
+              Icon={FiHash}
+            />
+            <Error errorName={errors.ZipCode} />
+          </div>
+
+          {/* Country */}
+          {/* <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="Country"
+              type="text"
+              placeholder={t("common:country")}
+              Icon={FiGlobe}
+            />
+            <Error errorName={errors.Country} />
+          </div> */}
+
+          {/* E_Mail */}
+          <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="E_Mail"
               type="email"
               placeholder={t("common:email")}
               Icon={FiMail}
             />
-            <Error errorName={errors.email} />
+            <Error errorName={errors.E_Mail} />
           </div>
 
+          {/* Phone1 */}
           <div className="col-span-2 sm:col-span-1">
             <InputArea
               register={register}
-              // label={t("common:phone")}
-              name="phone"
-              type="tel"
+              name="Phone1"
+              type="text"
               placeholder={t("common:phone")}
               Icon={FiPhone}
             />
-            <Error errorName={errors.phone} />
+            <Error errorName={errors.Phone1} />
           </div>
 
-          <div className="col-span-2 flex gap-3 flex-col sm:flex-row">
-            <div className="form-group w-full">
-              <InputArea
-                register={register}
-                // label={t("common:password")}
-                name="password"
-                type="password"
-                placeholder={t("common:password")}
-                Icon={FiLock}
-              />
-              <Error errorName={errors.password} />
-            </div>
-
-            {/* אימות סיסמה */}
-            <div className="form-group w-full">
-              <InputArea
-                register={register}
-                // label={t('common:confirmPassword')}
-                name="confirmPassword"
-                type="password"
-                placeholder={t('common:confirmPassword')}
-                Icon={FiLock}
-                onChange={(e) => comparePasswords(e.target.value)}
-              />
-              <Error errorName={notMatch} />
-            </div>
+          {/* סיסמה */}
+          <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="password"
+              type="password"
+              placeholder={t("common:password")}
+              Icon={FiLock}
+            />
+            <Error errorName={errors.password} />
           </div>
 
-          {/* <div className="flex items-center justify-between">
-            <div className="flex ms-auto">
-              <button
-                type="button"
-                onClick={() => setShowResetPassword(true)}
-                className="text-end text-sm text-heading ps-3 underline hover:no-underline focus:outline-none"
-              >
-                {t("common:forgotPassword")}
-              </button>
-            </div>
-          </div> */}
+          {/* אימות סיסמה */}
+          <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="confirmPassword"
+              type="password"
+              placeholder={t('common:confirmPassword')}
+              Icon={FiLock}
+              onChange={(e) => comparePasswords(e.target.value)}
+            />
+            <Error errorName={notMatch} />
+          </div>
+
+          {/* כפתור */}
           {loading ? (
             <button
               disabled={loading}

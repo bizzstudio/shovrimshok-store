@@ -36,13 +36,15 @@ const City = ({ setValue, placeholder, value }) => {
     control: (provided, state) => ({
       ...provided,
       borderColor: state.isFocused ? '#e7191f' : '#e5e7eb',
-      boxShadow: state.isFocused ? '0 0 0 1px #e7191f' : provided.boxShadow,
+      boxShadow: state.isFocused ? '0 0 0 0.05px #e7191f' : provided.boxShadow,
       '&:hover': {
         borderColor: state.isFocused ? '#e7191f' : provided.borderColor,
       },
       padding: '5px',
       direction: 'rtl',
       textAlign: 'right',
+      borderRadius: '6px',
+      fontSize: '14px', // גודל טקסט placeholder
     }),
     menu: (provided) => ({
       ...provided,
@@ -61,6 +63,8 @@ const City = ({ setValue, placeholder, value }) => {
     placeholder: (provided) => ({
       ...provided,
       textAlign: 'right',
+      color: '#9ca3af', // צבע placeholder
+      fontSize: '14px', // גודל טקסט placeholder
     }),
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
   };

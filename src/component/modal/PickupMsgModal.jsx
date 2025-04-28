@@ -57,7 +57,7 @@ const PickupMsgModal = ({ closeModal = () => { } }) => {
 
   return (
     <div className="w-52">
-      <div className="text-center mb-4">
+      <div className="text-center mb-6">
         <ShapiraTitle text={t("common:pickupMsgTitle")} height={70} key="pickupMsgTitle" />
       </div>
       <div className="flex flex-col justify-center gap-3">

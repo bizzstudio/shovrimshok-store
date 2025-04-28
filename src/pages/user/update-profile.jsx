@@ -79,7 +79,7 @@ const UpdateProfile = () => {
       Address: data.Address,
       City: data.City,
       ZipCode: data.ZipCode,
-      Country: data.Country,
+      // Country: data.Country,
       StreetNo: data.StreetNo,
       Block: data.Block,
       MailAddres: data.MailAddres,
@@ -116,7 +116,7 @@ const UpdateProfile = () => {
       setValue("Address", userInfo.Address || "");
       setValue("City", userInfo.City || "");
       setValue("ZipCode", userInfo.ZipCode || "");
-      setValue("Country", userInfo.Country || "");
+      // setValue("Country", userInfo.Country || "");
       setValue("StreetNo", userInfo.StreetNo || "");
       setValue("Block", userInfo.Block || "");
       setValue("MailAddres", userInfo.MailAddres || "");
@@ -251,7 +251,7 @@ const UpdateProfile = () => {
                       </div>
 
                       {/* מדינה */}
-                      <div className="col-span-6 sm:col-span-3">
+                      {/* <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
                           label={t("common:country")}
@@ -260,7 +260,7 @@ const UpdateProfile = () => {
                           placeholder={t("common:country")}
                         />
                         <Error errorName={errors.Country} />
-                      </div>
+                      </div> */}
 
                       {/* מספר רחוב */}
                       <div className="col-span-6 sm:col-span-3">

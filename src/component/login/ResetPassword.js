@@ -17,7 +17,7 @@ const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
 
   return (
     <>
-      <div className="text-center mb-4">
+      <div className="text-center mb-6">
         <ShapiraTitle text={t("common:forgotPassword")} height={70} key="forgotPassword" />
       </div>
       <form

@@ -45,8 +45,6 @@ const Common = ({ setModalOpen }) => {
           />
         )}
 
-
-
         <div>
           {storeSetting?.google_login_status && !showRegister && (
             <>
