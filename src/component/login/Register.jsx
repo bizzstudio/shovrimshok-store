@@ -1,3 +1,4 @@
+// shapira-store/src/component/login/Register.js
 import { FiLock, FiMail, FiPhone, FiUser } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";

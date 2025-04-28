@@ -1,3 +1,4 @@
+// shapira-store/src/component/login/Common.jsx
 import React, { useState } from "react";
 import { ImFacebook, ImGoogle } from "react-icons/im";
 
