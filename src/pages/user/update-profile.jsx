@@ -27,7 +27,7 @@ const UpdateProfile = () => {
   const {
     state: { userInfo },
   } = useContext(UserContext);
-  console.log('userInfo :>> ', userInfo);
+  // console.log('userInfo :>> ', userInfo);
 
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();

@@ -28,11 +28,15 @@ const ChangePassword = () => {
   const { showingTranslateValue } = useUtilsFunction();
   const { t } = useTranslation();
 
-  const onSubmit = ({ email, currentPassword, newPassword }) => {
+  const onSubmit = ({ 
+    // email,
+     currentPassword, newPassword }) => {
     // return notifySuccess("This Feature is disabled for demo!");
 
     setLoading(true);
-    CustomerServices.changePassword({ email, currentPassword, newPassword })
+    CustomerServices.changePassword({ 
+      // email,
+       currentPassword, newPassword })
       .then((res) => {
         notifyApiResponse(res, true);
         setLoading(false);
@@ -69,7 +73,7 @@ const ChangePassword = () => {
           <div className="md:mt-0 md:col-span-2">
             <div className="lg:mt-6 bg-white">
               <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-6">
+                {/* <div className="col-span-6 sm:col-span-6">
                   <InputArea
                     register={register}
                     label={showingTranslateValue(
@@ -82,7 +86,7 @@ const ChangePassword = () => {
                     )}
                   />
                   <Error errorName={errors.email} />
-                </div>
+                </div> */}
                 <div className="col-span-6 sm:col-span-6">
                   <InputArea
                     register={register}

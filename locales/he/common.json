@@ -250,6 +250,10 @@
     "facebookLogin": "המשך עם Facebook",
     "googleLogin": "המשך עם Google",
     "loginSuccess": "התחברת בהצלחה!",
+
+    "setupPassword": "הגדרת סיסמה",
+    "newUserPasswordSetup": "עליך להגדיר סיסמה לחשבונך כדי להמשיך",
+    "savePassword": "שמור סיסמה",
   
     "/=================* Signing Up * =================/": "",
   

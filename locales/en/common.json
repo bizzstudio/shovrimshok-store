@@ -249,6 +249,10 @@
   "googleLogin": "Login With Google",
   "loginSuccess": "Login Success!",
 
+  "setupPassword": "Setup Password",
+  "newUserPasswordSetup": "You need to set a password for your account to continue",
+  "savePassword": "Save Password",
+
   "/=================* Signing Up * =================/": "",
 
   "signingUp": "Signing Up",

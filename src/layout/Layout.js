@@ -15,6 +15,7 @@ import FeatureCard from "@component/feature-card/FeatureCard";
 import MainModal from "@component/modal/MainModal";
 import UserAddressInitialize from "@component/userAddressInitialize/UserAddressInitialize";
 import RegisterSuccess from "@component/login/RegisterSuccess";
+import SetupPassword from "@component/login/SetupPassword";
 import PopupServices from "@services/PopupServices";
 import useAsync from "@hooks/useAsync";
 import DynamicPopup from "@component/modal/DynamicPopup";
@@ -28,6 +29,8 @@ const Layout = ({ title, description, children }) => {
     state: { userInfo },
   } = useContext(UserContext);
 
+  console.log('Layout userInfo :>> ', userInfo);
+
   let currentLang = Cookies.get('_lang');
 
   switch (currentLang) {
@@ -40,7 +43,7 @@ const Layout = ({ title, description, children }) => {
     default:
       currentLang = false;
       break;
-  }
+  };
 
   const router = useRouter();
   const { pathname } = router;
@@ -96,6 +99,16 @@ const Layout = ({ title, description, children }) => {
     };
   }, []);
 
+  // State for the password setup popup
+  const [showPasswordSetup, setShowPasswordSetup] = useState(false);
+  
+  // Check if user needs to set up password
+  useEffect(() => {
+    if (userInfo && userInfo.isWithoutPassword) {
+      setShowPasswordSetup(true);
+    }
+  }, [userInfo]);
+
   useEffect(() => {
     const originalSetItem = localStorage.setItem;
     localStorage.setItem = function (key, value) {
@@ -114,7 +127,7 @@ const Layout = ({ title, description, children }) => {
     if (userInfo) return;
 
     // אם כבר יש פופאפ דינאמי או addressPopup וכו' -> חכה עם זה
-    if (currentPopup || addressPopup || showRegisterSuccess) return;
+    if (currentPopup || addressPopup || showRegisterSuccess || showPasswordSetup) return;
 
     // אם כבר ראינו את הפופאפ
     if (sessionStorage.getItem("beforeStartPopupShown")) return;
@@ -127,6 +140,7 @@ const Layout = ({ title, description, children }) => {
     currentPopup,
     addressPopup,
     showRegisterSuccess,
+    showPasswordSetup,
     // וכל State אחר שמבטיח שלא תקפוץ כפילות
   ]);
 
@@ -149,9 +163,18 @@ const Layout = ({ title, description, children }) => {
           </div>
         </MainModal>
       )}
+      
+      {/* Password Setup Popup */}
+      {showPasswordSetup && userInfo && (
+        <MainModal modalOpen={showPasswordSetup} setModalOpen={setShowPasswordSetup}>
+          <div className="px-3 sm:px-11 py-8 max-w-md">
+            <SetupPassword userInfo={userInfo} setModalOpen={setShowPasswordSetup} />
+          </div>
+        </MainModal>
+      )}
 
       {/* פופאפ דינאמי */}
-      {!loading && !error && currentPopup && !addressPopup && !showRegisterSuccess
+      {!loading && !error && currentPopup && !addressPopup && !showRegisterSuccess && !showPasswordSetup
         // && !showBeforeStartPopup 
         && (
           <MainModal modalOpen={true} setModalOpen={() => setCurrentPopup(null)}>
