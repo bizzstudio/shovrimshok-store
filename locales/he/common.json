@@ -232,6 +232,8 @@
     "clientCode": "קוד לקוח",
     "clientCodeOrEmail": "קוד לקוח או אימייל",
     "idNumberOrLicense": "תעודת זהות / מספר עוסק / ח.פ",
+    "passwordIdNumberOrLicense": "סיסמה (בפעם הראשונה אפשר ת.ז/מספר עוסק/ח.פ)",
+    "loginPasswordNote": "במידה ואתם לקוחות קיימים ואין לכם סיסמה - בפעם הראשונה אפשר להזין תעודת זהות/מספר עוסק/ח.פ במקום.",
     "password": "סיסמה",
     "forgotPassword": "שכחת סיסמה?",
     "resetPassword": "אפס/י את הסיסמה שלך",

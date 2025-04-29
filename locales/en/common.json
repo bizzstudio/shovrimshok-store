@@ -231,6 +231,7 @@
   "clientCode": "Client Code",
   "clientCodeOrEmail": "Client Code or Email",
   "idNumberOrLicense": "ID or License Number",
+  "loginPasswordNote": "If you are an existing customer and you don't have a password - for the first time you can enter an ID/business number/PO instead.",
   "password": "Password",
   "forgotPassword": "Forgot password?",
   "resetPassword": "Reset Your Password",

@@ -1,9 +1,9 @@
+// src/utils/notifyApiResponse.js
 import Cookies from "js-cookie";
 import { notifyError, notifySuccess } from "./toast";
-import useUtilsFunction from "@hooks/useUtilsFunction";
 
 const notifyApiResponse = (response, success = Boolean) => {
-    const { lang } = useUtilsFunction();
+    const lang = Cookies.get("_lang");
 
     const message = response?.data?.message || response?.response?.data?.message || response?.message;
 

@@ -34,11 +34,12 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
               register={register}
               name="password"
               type="password"
-              placeholder={t("common:idNumberOrLicense")} // שינוי placeholder לסיסמה
+              placeholder={t("common:password")} // שינוי placeholder לסיסמה
               Icon={FiLock}
             />
             <Error errorName={errors.password} />
           </div>
+          <p className="-mt-2 -mb-1 text-sm text-start text-customRed-leaf">{t("common:loginPasswordNote")}</p>
 
           <div className="flex items-center justify-between">
             <div className="flex ms-auto">
