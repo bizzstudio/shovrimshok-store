@@ -1,10 +1,9 @@
 import Cookies from "js-cookie";
 import { notifyError, notifySuccess } from "./toast";
+import useUtilsFunction from "@hooks/useUtilsFunction";
 
 const notifyApiResponse = (response, success = Boolean) => {
-    // קבלת השפה מ-Cookies במקרה ואין context
-    let lang = Cookies.get("i18next") || "en";
-    if (lang === "he-IL") lang = "he";
+    const { lang } = useUtilsFunction();
 
     const message = response?.data?.message || response?.response?.data?.message || response?.message;
 
