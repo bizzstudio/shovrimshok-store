@@ -178,6 +178,19 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             <Error errorName={errors.Phone1} />
           </div>
 
+          {/* Phone2 */}
+          <div className="col-span-2 sm:col-span-1">
+            <InputArea
+              register={register}
+              name="Phone2"
+              type="text"
+              placeholder={t("common:phone2")}
+              Icon={FiPhone}
+              isRequired={false}
+            />
+            <Error errorName={errors.Phone2} />
+          </div>
+
           {/* סיסמה */}
           <div className="col-span-2 sm:col-span-1">
             <InputArea

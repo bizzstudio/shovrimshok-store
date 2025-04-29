@@ -51,6 +51,7 @@ const useLoginSubmit = (setModalOpen) => {
         // Country: data.Country,
         E_Mail: data.E_Mail,
         Phone1: data.Phone1,
+        Phone2: data.Phone2,
         LicTradNum: data.LicTradNum,
         password: data.password,
       })
