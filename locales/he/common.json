@@ -218,7 +218,7 @@
     "closeBtn": "סגור",
     "cartEmptyTitle": "העגלה עדיין ריקה",
     "cartEmptyText": "לא נוספו פריטים לעגלת הקניות שלך. אנא הוסף מוצרים לעגלה שלך.",
-    "proceedToCheckoutBtn": "המשך לתשלום",
+    "proceedToCheckoutBtn": "המשך לסיכום הזמנה",
     "addedToCart!": "נוסף לעגלה!",
     "additonalLikut": "(המחיר כולל התייקרות 10% עבור ליקוט)",
     "calculating": "מחשב פריטים...",
@@ -280,11 +280,18 @@
     "invalidHouseNumber": "מספר בית לא תקין",
     "invalidCity": "יש להזין עיר",
     "invalidApartmentNumber": "מספר דירה לא תקין",
+
+    "/=================* Forget Password * =================/": "",
+
+    "loginWithNewPassword": "נא להיכנס עם הסיסמה החדשה",
+    "resetYourPassword": "איפוס של הסיסמה שלך",
+    "passwordRequired": "חובה להזין סיסמה",
+    "passwordMinLength": "הסיסמה חייבת להכיל לפחות 8 תווים",
   
     "/=================* checkout * =================/": "",
   
     "pickup": "איסוף עצמי",
-    "shipping": "משלוח עד הבית (בתוספת תשלום)",
+    "shipping": "משלוח עד העסק (בתוספת תשלום)",
     "noProductsInCart": "העגלה שלך ריקה!",
     "missingProductsAre": "נמצאו {{count}} מוצרים שלא זמינים יותר",
     "priceUpdatedForProducts": "ל-{{count}} מוצרים עודכן המחיר:",
@@ -363,6 +370,10 @@
 
     "storeClose": "מצטערים, האתר סגור כעת.",
     "storeCloseMessage": "האתר סגור כעת להזמנות עקב עומס. אנא נסו שנית בעוד כמה שעות.",
+
+    "updateAddressTitle": "עדכון פרטים",
+    "pleaseNoteAddress": "יש להזין כתובת למשלוח",
+    "freeAbove1500": "חינם בהזמנה מעל 1500₪",
   
     "/=================* Invoice * =================/": "",
   
@@ -427,27 +438,27 @@
     "next": "הבא",
     "previous": "הקודם",
   
-    "dashboardText": "This is User Dashboard",
-    "totalOrder": "Total Order",
-    "pendingOrder": "Pending Order",
-    "ProcessingOrder": "Processing Order",
-    "completeOrder": "Complete Order",
+    "dashboardText": "זהו לוח דירות המשתמש",
+    "totalOrder": "סה\"כ הזמנות",
+    "pendingOrder": "הזמנות ממתינות",
+    "ProcessingOrder": "הזמנות בטיפול",
+    "completeOrder": "הזמנות שהושלמו",
   
-    "recentOrder": "Recent Order",
+    "recentOrder": "הזמנות אחרונות",
     "notes": "הערות",
   
-    "photo": "Photo",
+    "photo": "תמונה",
     "fullName": "שם מלא",
     "yourAddress": "הכתובת שלך",
     "phoneMobile": "מספר טלפון",
     "yourMobile": "מספר הטלפון שלך",
-    "updateProfileBtn": "Update Profile",
-    "dragYourImageHere": "Drag your image here",
-    "currentPassword": "Current Password",
-    "yourCurrentPassword": "Your Current Password",
-    "newPassword": "New Password",
-    "yourNewPassword": "Your New Password",
-    "changePasswordBtn": "Change Password",
+    "updateProfileBtn": "עדכן פרופיל",
+    "dragYourImageHere": "גרור את התמונה שלך כאן",
+    "currentPassword": "סיסמה נוכחית",
+    "yourCurrentPassword": "סיסמה נוכחית שלך",
+    "newPassword": "סיסמה חדשה",
+    "yourNewPassword": "סיסמה חדשה שלך",
+    "changePasswordBtn": "שינוי סיסמה",
     "success": "הפרופיל עודכן בהצלחה!",
 
     "street": "רחוב",

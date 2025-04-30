@@ -45,7 +45,7 @@ const Common = ({ setModalOpen }) => {
           />
         )}
 
-        <div>
+        {/* <div>
           {storeSetting?.google_login_status && !showRegister && (
             <>
               <div className="mt-7 mb-6 after:bg-gray-100 before:bg-gray-100 fo10t-sans text-center font-medium">
@@ -66,7 +66,7 @@ const Common = ({ setModalOpen }) => {
               </div>
             </>
           )}
-        </div>
+        </div> */}
         <div className="text-center text-sm text-gray-900 mt-4">
           <div className="text-gray-500 mt-2.5">
             {showRegister ? t("common:alreadyHaveAccount") : t("common:notAccount")}

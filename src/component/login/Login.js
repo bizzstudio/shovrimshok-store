@@ -7,6 +7,7 @@ import Error from "@component/form/Error";
 import useLoginSubmit from "@hooks/useLoginSubmit";
 import InputArea from "@component/form/InputArea";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import MainBT from "@component/button/MainBT";
 
 const Login = ({ setShowResetPassword, setModalOpen }) => {
   const { handleSubmit, submitHandler, register, errors, loading } = useLoginSubmit(setModalOpen);
@@ -54,22 +55,22 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {loading ? (
-            <button
-              disabled={loading}
+            <MainBT
+              disabled={true}
               type="submit"
-              className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+              // className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
             >
-              <img src="/loader/spinner.gif" alt="Loading" width={20} height={10} />
-              <span className="font-serif ml-2 font-light mr-1">{t("common:processing")}</span>
-            </button>
+              <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
+              <span className="ms-1">{t("common:processing")}</span>
+            </MainBT>
           ) : (
-            <button
+            <MainBT
               disabled={loading}
               type="submit"
-              className="flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+              // className="flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
             >
               {t("common:loginTitle")}
-            </button>
+            </MainBT>
           )}
         </div>
       </form>

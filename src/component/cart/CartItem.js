@@ -135,22 +135,20 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
           style={{ aspectRatio: 1, objectFit: 'contain' }}
         />
       </div>
-      <div className="flex flex-col w-full overflow-hidden">
+      <div className="flex justify-between items-center w-full overflow-hidden">
         <Link
           href={`/product/${item?.ItemCode}`}
           onClick={closeCartDrawer}
-          className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1"
+          className="text-sm font-medium text-gray-700 text-heading line-clamp-2"
         >
           {item.ItemName ? item.ItemName : currentLang ? item.title?.he : item.title?.en}
         </Link>
         {/* <span className="text-xs text-gray-400 mb-1">
           Item Price ${item.price}
         </span> */}
-        <div className="flex items-center justify-between">
-          <div className="font-bold text-sm md:text-base text-heading leading-5">
+        <div className="flex items-center justify-end">
+          {/* <div className="font-bold text-sm md:text-base text-heading leading-5">
             <span>
-              {/* {(item.price * item.quantity).toFixed(2)} */}
-              {/* אם יש הנחה מופיע בקטן המחיר המקורי */}
               {totalPrice < (item.prices?.price ?? 0) * item.quantity &&
                 <del className="text-xs font-normal text-gray-400 mr-1">
                   {((item.prices?.price ?? 0) * item.quantity).toFixed(2)}
@@ -158,13 +156,12 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
               {currency}
               {totalPrice.toFixed(2)}
             </span>
-            {/* פירוט ההצעות שחלו על המוצר */}
             <div className="mt-0.5">
               <div className="text-xs text-gray-500">
                 {offerTitle}
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex gap-2 flex-row-reverse mt-auto">
             <div className="h-8 flex items-center p-1 border border-gray-100 bg-white text-gray-600 rounded-md">

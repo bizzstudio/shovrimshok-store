@@ -42,14 +42,13 @@ const Navbar = () => {
   // console.log("storeCustomizationSetting", storeCustomizationSetting);
 
   // אם דף התשלום פתוח החיפוש נעלם
-  useEffect(() => {
-    if (location.pathname == "/checkout") {
-      setIsPaymentPageOpen(true);
-    } else {
-      setIsPaymentPageOpen(false);
-    }
-  }, [location.pathname])
-
+  // useEffect(() => {
+  //   if (location.pathname == "/checkout") {
+  //     setIsPaymentPageOpen(true);
+  //   } else {
+  //     setIsPaymentPageOpen(false);
+  //   }
+  // }, [location.pathname])
 
   const {
     state: { userInfo },

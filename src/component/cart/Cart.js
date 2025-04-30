@@ -15,6 +15,8 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import useCart from "@hooks/useCart";
 import { FiInfo } from "react-icons/fi";
 import Calculating from "./Calculating";
+import MainBT from "@component/button/MainBT";
+import { MdShoppingCartCheckout } from "react-icons/md";
 
 const Cart = () => {
   const router = useRouter();
@@ -24,7 +26,7 @@ const Cart = () => {
   const { currency } = useUtilsFunction();
   const { t } = useTranslation();
   const buttonRef = useRef(null);
-  
+
   const {
     state: { userInfo },
   } = useContext(UserContext);
@@ -42,16 +44,16 @@ const Cart = () => {
 
   const handleCheckoutClick = (e) => {
     e.stopPropagation(); // Prevent event propagation
-    closeCartDrawer(); // Call the closeCartDrawer function
     if (!userInfo) {
       handleOpenLogin(); // Handle login if user is not logged in
     } else {
-      if (!userInfo?.address?.city) {
-        localStorage.setItem("firstTime", true);
-      } else {
+      // if (!userInfo?.address?.city) {
+      //   localStorage.setItem("firstTime", true);
+      // } else {
         router.push("/checkout"); // Redirect to checkout page
-      }
+      // }
     }
+    closeCartDrawer(); // Call the closeCartDrawer function
   };
 
   const handleMouseEnter = () => {
@@ -80,7 +82,6 @@ const Cart = () => {
             </>
             : <Calculating />}
         </span>
-        {/* <FiInfo title={t("common:additonalLikut")} className="cursor-pointer mb-0.5"/> */}
         <small className="text-sm">{t("common:additonalLikut")}</small>
       </span>
       <span
@@ -140,8 +141,8 @@ const Cart = () => {
             <CartItem key={i + 1} item={item} currency={currency} />
           ))}
         </div>
-        <div className="mx-5 my-3">
-          {items.length <= 0 ? (
+        <div className="p-4 text-end">
+          {/* {items.length <= 0 ? (
             checkoutClass
           ) : (
             <span>
@@ -153,7 +154,11 @@ const Cart = () => {
                 // }</Link>
               )}
             </span>
-          )}
+          )} */}
+          <MainBT className="bg-white w-full !py-4 text-xl" onClick={handleCheckoutClick}>
+            <MdShoppingCartCheckout className="me-2" size={22} />
+            {t("common:proceedToCheckoutBtn")}
+          </MainBT>
         </div>
       </div>
     </>

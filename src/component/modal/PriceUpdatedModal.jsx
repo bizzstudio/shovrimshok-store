@@ -4,6 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 // אפשר להחליף בתמונה אחרת לבחירתך
 import newPriceImage from "public/update product.svg";
 import CartItemPreview from "@component/cart/CartItemPreview";
+import MainBT from "@component/button/MainBT";
 
 const PriceUpdatedModal = ({ priceUpdatedItems = [], closeModal = () => { } }) => {
     const { t } = useTranslation();
@@ -23,10 +24,9 @@ const PriceUpdatedModal = ({ priceUpdatedItems = [], closeModal = () => { } }) =
                     <CartItemPreview key={index} item={conflictItem.product} />
                 ))}
             </ul>
-            <button onClick={closeModal}
-                className="w-full mt-3 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap">
+            <MainBT onClick={closeModal}>
                 {t("common:ok")}
-            </button>
+            </MainBT>
         </div>
     );
 };

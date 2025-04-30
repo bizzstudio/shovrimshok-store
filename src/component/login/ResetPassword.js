@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { FiMail } from "react-icons/fi";
+import { FiMail, FiLock } from "react-icons/fi";
 
 // Internal import
 import Error from "@component/form/Error";
@@ -9,11 +9,12 @@ import useLoginSubmit from "@hooks/useLoginSubmit";
 import forgetPassTitle from "public/titles/forgetPassTitle.svg";
 import useTranslation from "next-translate/useTranslation";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import MainBT from "@component/button/MainBT";
 
 const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
   const { handleSubmit, submitHandler, register, errors, loading } =
     useLoginSubmit(setModalOpen);
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -38,27 +39,26 @@ const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {loading ? (
-            <button
-              disabled={loading}
+            <MainBT
+              disabled={true}
               type="submit"
-              className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
             >
               <img
                 src="/loader/spinner.gif"
+                className="saturate-0"
                 alt="Loading"
                 width={20}
                 height={10}
               />
-              <span className="font-serif ml-2 font-light">{t("common:processing")}</span>
-            </button>
+              <span className="ms-1">{t("common:processing")}</span>
+            </MainBT>
           ) : (
-            <button
+            <MainBT
               disabled={loading}
               type="submit"
-              className="w-full text-center py-3 rounded bg-customRed text-white hover:bg-customRed-dark transition-all focus:outline-none my-1"
             >
               {t("common:recoverPassword")}
-            </button>
+            </MainBT>
           )}
         </div>
       </form>

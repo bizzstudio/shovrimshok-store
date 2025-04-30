@@ -1,8 +1,10 @@
+// src/component/userAddressUpdate/UserAddressUpdate.jsx
 import dynamic from "next/dynamic";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
 import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
+import { RxUpdate } from "react-icons/rx";
 
 // Internal import
 import Label from "@component/form/Label";
@@ -18,11 +20,13 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import City from "@component/select/City";
 import updateProfileTitle from "public/titles/updateProfileTitle.svg"
 import notifyApiResponse from "@utils/notifyApiResponse";
+import MainBT from "@component/button/MainBT";
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
 const UserAddressUpdate = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [chosenCity, setChosenCity] = useState();
+  const [cityValue, setCityValue] = useState("");
   const {
     state: { userInfo },
   } = useContext(UserContext);
@@ -39,47 +43,26 @@ const UserAddressUpdate = () => {
   } = useForm();
 
   const validateInput = (data) => {
-    const { name, lastName, phone, street, houseNumber, apartmentNumber } = data;
-
-    // בדיקת רווחים בשדות שם פרטי ושם משפחה
-    if (!name.trim()) {
-      setError('name', { type: 'manual', message: t('common:invalidName') });
+    if (!data.CardName?.trim()) {
+      setError('CardName', { type: 'manual', message: t('common:invalidName') });
       return false;
     }
-
-    if (!lastName.trim()) {
-      setError('lastName', { type: 'manual', message: t('common:invalidLastName') });
+    if (!data.Address?.trim()) {
+      setError('Address', { type: 'manual', message: t('common:invalidStreet') });
       return false;
     }
-
-    // בדיקת רווחים בשדות כתובת
-    if (!street.trim()) {
-      setError('street', { type: 'manual', message: t('common:invalidStreet') });
+    if (!data.City?.trim()) {
+      setError('City', { type: 'manual', message: t('common:invalidCity') });
       return false;
     }
-
-    if (!houseNumber.trim()) {
-      setError('houseNumber', { type: 'manual', message: t('common:invalidHouseNumber') });
+    if (!data.E_Mail?.trim()) {
+      setError('E_Mail', { type: 'manual', message: t('common:invalidEmail') });
       return false;
     }
-
-    if (!chosenCity) {
-      setError('city', { type: 'manual', message: t('common:invalidCity') });
+    if (!data.Phone1?.trim()) {
+      setError('Phone1', { type: 'manual', message: t('common:invalidPhone') });
       return false;
     }
-
-    if (!apartmentNumber.trim()) {
-      setError('apartmentNumber', { type: 'manual', message: t('common:invalidApartmentNumber') });
-      return false;
-    }
-
-    // בדיקת מספר טלפון - מתחיל ב־05 וכולל 10 ספרות בדיוק
-    const phoneRegex = /^05\d{8}$/;
-    if (!phoneRegex.test(phone)) {
-      setError('phone', { type: 'manual', message: t('common:invalidPhone') });
-      return false;
-    }
-
     return true;
   };
 
@@ -92,23 +75,17 @@ const UserAddressUpdate = () => {
     }
 
     const userData = {
-      name: data.name,
-      lastName: data.lastName,
-      email: data.email,
-      address: {
-        city: chosenCity,
-        street: data.street,
-        houseNumber: data.houseNumber,
-        apartmentNumber: data.apartmentNumber,
-        floor: data.floor,
-        entryCode: data.entryCode,
-        postalCode: data.postalCode,
-      },
-      phone: data.phone,
-      image: imageUrl,
+      CardName: data.CardName,
+      Address: data.Address,
+      City: data.City,
+      ZipCode: data.ZipCode,
+      E_Mail: data.E_Mail,
+      Phone1: data.Phone1,
+      Phone2: data.Phone2,
+      LicTradNum: data.LicTradNum,
     };
 
-    CustomerServices.updateCustomer(userInfo._id, userData)
+    CustomerServices.updateCustomer(userInfo.CardCode, userData)
       .then((res) => {
         if (res) {
           setLoading(false);
@@ -119,217 +96,161 @@ const UserAddressUpdate = () => {
       })
       .catch((err) => {
         setLoading(false);
-        notifyError(err?.response?.data?.message || err?.message);
+        notifyApiResponse(err, false);
       });
   };
 
   useEffect(() => {
-    if (Cookies.get("userInfo")) {
-      const user = JSON.parse(Cookies.get("userInfo"));
-      setValue("name", user.name);
-      setValue("lastName", user.lastName);
-      setValue("email", user.email);
-      if (user.address) {
-        setValue("street", user.address.street);
-        setValue("houseNumber", user.address.houseNumber);
-        setValue("apartmentNumber", user.address.apartmentNumber);
-        setValue("floor", user.address.floor);
-        setValue("entryCode", user.address.entryCode);
-        setValue("postalCode", user.address.postalCode);
-        setChosenCity(user.address.city);
-      }
-      setValue("phone", user.phone);
-      setImageUrl(user.Picture);
+    if (userInfo) {
+      setValue("CardName", userInfo.CardName || "");
+      setValue("Address", userInfo.Address || "");
+      setValue("City", userInfo.City || "");
+      setValue("ZipCode", userInfo.ZipCode || "");
+      setValue("E_Mail", userInfo.E_Mail || "");
+      setValue("Phone1", userInfo.Phone1 || "");
+      setValue("Phone2", userInfo.Phone2 || "");
+      setValue("LicTradNum", userInfo.LicTradNum || "");
+      setCityValue(userInfo.City || "");
     }
-  }, [setValue]);
+  }, [setValue, userInfo]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <img src={updateProfileTitle.src} alt="login" className="h-28 mx-auto -mt-4 -mb-7" />
-      <div className="mt-5 md:mt-0 md:col-span-2">
-        <div className="mt-10 sm:mt-0">
-          <div className="md:grid-cols-6 md:gap-6">
-            <div className="mt-5 md:mt-0 md:col-span-2">
-              <div className="lg:mt-6 mt-4 bg-white">
-                <div className="grid grid-cols-6 gap-6">
-                  {/* name and last name */}
-                  <div className="flex gap-4 col-span-3">
-                    <div className="w-full">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.full_name
-                        )}
-                        name="name"
-                        type="text"
-                        placeholder={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.full_name
-                        )}
-                      />
-                      <Error errorName={errors.name} />
-                    </div>
-                    <div className="w-full">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.last_name
-                        )}
-                        name="lastName"
-                        type="text"
-                        placeholder={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.last_name
-                        )}
-                      />
-                      <Error errorName={errors.lastName} />
-                    </div>
-                  </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-4 sm:gap-6">
+      <ShapiraTitle text={t("common:updateAddressTitle")} height={70} key="updateAddressTitle" />
+      <div className="w-full grid grid-cols-6 gap-4">
+        {/* שם כרטיס לקוח */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:cardName")}
+            name="CardName"
+            type="text"
+            placeholder={t("common:cardName")}
+          />
+          <Error errorName={errors.CardName} />
+        </div>
 
-                  <div className="col-span-3 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label={showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.user_phone
-                      )}
-                      name="phone"
-                      type="tel"
-                      placeholder={showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.user_phone
-                      )}
-                    />
-                    <Error errorName={errors.phone} />
-                  </div>
+        {/* מספר ת.ז או מספר עוסק */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:idNumberOrLicense")}
+            name="LicTradNum"
+            type="text"
+            placeholder={t("common:idNumberOrLicense")}
+          />
+          <Error errorName={errors.LicTradNum} />
+        </div>
 
-                  <div className="col-span-3 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label={showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.user_email
-                      )}
-                      name="email"
-                      type="email"
-                      placeholder={showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.user_email
-                      )}
-                    />
-                    <Error errorName={errors.email} />
-                  </div>
+        {/* כתובת */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:address")}
+            name="Address"
+            type="text"
+            placeholder={t("common:address")}
+          />
+          <Error errorName={errors.Address} />
+        </div>
 
-                  <div className="col-span-3 sm:col-span-3">
-                    <Label label={t("common:city")} />
-                    <City
-                      setValue={setChosenCity}
-                      placeholder={JSON.stringify(chosenCity)}
-                    />
-                  </div>
+        {/* עיר */}
+        <div className="col-span-6 sm:col-span-3">
+          <Label label={t("common:city")} isRequired className="mb-0" />
+          <City
+            setValue={(cityName) => {
+              setValue("City", cityName);
+              setCityValue(cityName);
+            }}
+            value={cityValue}
+            placeholder={JSON.stringify({ city_name_he: t("common:city") })}
+          />
+          <Error errorName={errors.City} />
+        </div>
 
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
+        {/* מיקוד */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:zipCode")}
+            name="ZipCode"
+            type="text"
+            placeholder={t("common:zipCode")}
+            isRequired={false}
+          />
+          <Error errorName={errors.ZipCode} />
+        </div>
 
-                      label={t("common:street")}
-                      name="street"
-                      type="text"
-                      placeholder={t("common:street")}
-                    />
-                    <Error errorName={errors.street} />
-                  </div>
+        {/* כתובת אימייל */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:email")}
+            name="E_Mail"
+            type="email"
+            placeholder={t("common:email")}
+          />
+          <Error errorName={errors.E_Mail} />
+        </div>
 
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:houseNumber")}
-                      name="houseNumber"
-                      type="text"
-                      placeholder={t("common:houseNumber")}
-                    />
-                    <Error errorName={errors.houseNumber} />
-                  </div>
+        {/* טלפון 1 */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:phone1")}
+            name="Phone1"
+            type="text"
+            placeholder={t("common:phone1")}
+          />
+          <Error errorName={errors.Phone1} />
+        </div>
 
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:apartmentNumber")}
-                      name="apartmentNumber"
-                      type="text"
-                      placeholder={t("common:apartmentNumber")}
-                    />
-                    <Error errorName={errors.apartmentNumber} />
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:floor")}
-                      name="floor"
-                      type="number"
-                      placeholder={t("common:floor")}
-                      isRequired={false}
-                    />
-                    <Error errorName={errors.floor} />
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:entryCode")}
-                      name="entryCode"
-                      type="text"
-                      placeholder={t("common:entryCode")}
-                      isRequired={false}
-                    />
-                    <Error errorName={errors.entryCode} />
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:postalCode")}
-                      name="postalCode"
-                      type="text"
-                      placeholder={t("common:postalCode")}
-                      isRequired={false}
-                    />
-                    <Error errorName={errors.postalCode} />
-                  </div>
-
-
-                </div>
-                <div className="w-full mt-7">
-                  {loading ? (
-                    <button
-                      disabled={loading}
-                      type="submit"
-                      className="w-full md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 text-sm lg:text-sm"
-                    >
-                      <img
-                        src="/loader/spinner.gif"
-                        alt="Loading"
-                        width={20}
-                        height={10}
-                      />
-                      <span className="font-serif ml-2 font-light">
-                        {t("common:processing")}
-                      </span>
-                    </button>
-                  ) : (
-                    <button
-                      disabled={loading}
-                      type="submit"
-                      className="w-full md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 text-sm lg:text-sm"
-                    >
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.update_button
-                      )}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* טלפון 2 */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:phone2")}
+            name="Phone2"
+            type="text"
+            placeholder={t("common:phone2")}
+            isRequired={false}
+          />
+          <Error errorName={errors.Phone2} />
         </div>
       </div>
+
+      <div className="w-full">
+        {loading ? (
+          <MainBT
+            disabled={true}
+            type="submit"
+            className="w-full"
+          >
+            <img
+              src="/loader/spinner.gif"
+              alt="Loading"
+              width={20}
+              height={10}
+              className="saturate-0"
+            />
+            <span className="ms-0.5">
+              {t("common:processing")}
+            </span>
+          </MainBT>
+        ) : (
+          <MainBT
+            disabled={loading}
+            type="submit"
+            className="w-full"
+          >
+            <RxUpdate className="me-1 mt-[1px]" size={17} />
+            {showingTranslateValue(
+              storeCustomizationSetting?.dashboard?.update_button
+            )}
+          </MainBT>
+        )}
+      </div>
     </form>
-    // <></>
   );
 };
 

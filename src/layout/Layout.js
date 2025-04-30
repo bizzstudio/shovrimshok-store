@@ -146,7 +146,7 @@ const Layout = ({ title, description, children }) => {
 
   return (
     <>
-      <ToastContainer rtl={currentLang} />
+      <ToastContainer rtl={true || currentLang} />
 
       {/* {addressPopup && (
         <MainModal modalOpen={addressPopup} setModalOpen={setAddressPopup}>

@@ -1,4 +1,6 @@
 // PickupMsgModal.jsx
+import MainBT from '@component/button/MainBT';
+import ShapiraTitle from '@component/shapira-title/ShapiraTitle';
 import dayjs from 'dayjs';
 import 'dayjs/locale/he';
 import useTranslation from "next-translate/useTranslation";
@@ -64,12 +66,9 @@ const PickupMsgModal = ({ closeModal = () => { } }) => {
         <p className="text-center text-lg">
           {finalMessage}
         </p>
-        <button
-          onClick={closeModal}
-          className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
-        >
+        <MainBT onClick={closeModal}>
           {t("common:ok")}
-        </button>
+        </MainBT>
       </div>
     </div>
   );

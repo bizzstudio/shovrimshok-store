@@ -11,10 +11,9 @@ const InputShipping = ({
   value,
   time,
   cost = 0,
-  currency,
   handleShippingCost,
   icon = <FiTruck />,
-  isDeliverable,
+  isDeliverable = true,
   note = '',
   nextTime = null,
   isDeliveryOpen = true,
@@ -54,14 +53,20 @@ const InputShipping = ({
               <h6 className={`flex items-center gap-1 font-serif font-medium text-base ${isDeliverable && isDeliveryOpen ? "text-gray-600" : "text-gray-400"} `}>
                 {value == 1 ? t("common:pickup") : t("common:shipping")} {note && <span className="text-base text-gray-400" title={note}><FiInfo /></span>}
               </h6>
-              {!isDeliveryOpen ?
+              {value == 2 &&
+                <p className="text-sm text-gray-400 -mt-1">
+                  {t("common:freeAbove1500")}
+                </p>
+              }
+
+              {/* {!isDeliveryOpen ?
                 <p className={nextTime ? "text-sm text-red-500 -mt-1 pl-3" : "text-sm text-gray-400 -mt-1"}>
                   {t("common:deliveriesNotAvailable")}
                 </p>
                 :
                 !isDeliverable && <p className={nextTime ? "text-sm text-red-500 -mt-1 pl-3" : "text-sm text-gray-400 -mt-1"}>
                   {nextTime ? `${t("common:nextAvailable")} ${formatDate(nextTime)}` : t("common:cannotDeliver")}
-                </p>}
+                </p>} */}
             </div>
           </div>
           <input

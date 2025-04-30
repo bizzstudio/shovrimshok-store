@@ -9,6 +9,7 @@ import City from "@component/select/City";
 import DeliveryServices from "@services/DeliveryServices";
 import dayjs from "dayjs";
 import "dayjs/locale/he";
+import MainBT from "@component/button/MainBT";
 dayjs.locale("he"); // עברית עבור dayjs
 
 // הלוגיקה המלאה לחישוב מתי המשלוח הבא, מועתקת (או דומה) לזו שיש ב-DeliveryMsgModal
@@ -232,12 +233,9 @@ const BeforeStartPopup = ({ onClose }) => {
             )}
 
             {/* הכפתור התחתון – סוגר את הפופאפ תמיד */}
-            <button
-                onClick={handleButtonClick}
-                className="w-full flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
-            >
+            <MainBT onClick={handleButtonClick}>
                 {buttonText}
-            </button>
+            </MainBT>
         </div>
     );
 };

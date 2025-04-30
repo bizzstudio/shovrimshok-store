@@ -37,6 +37,7 @@ import ImageCarousel from "@component/carousel/ImageCarousel";
 import relatedTitle from 'public/titles/relatedProducts.svg'
 import useCart from "@hooks/useCart";
 import getOfferNames from "@component/offer/getOfferNames";
+import MainBT from "@component/button/MainBT";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const router = useRouter();
@@ -472,12 +473,12 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                               </span>
                             </button>
                           </div>
-                          <button
+                          <MainBT
                             onClick={() => handleAddToCart(product)}
-                            className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none text-white px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white bg-customRed hover:bg-customRed-dark w-full h-12"
+                            className="w-full h-12"
                           >
                             {t("common:addToCart")}
-                          </button>
+                          </MainBT>
                         </div>
                       </div>
 

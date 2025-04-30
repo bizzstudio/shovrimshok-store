@@ -217,7 +217,7 @@
   "closeBtn": "Close",
   "cartEmptyTitle": "Your cart is empty",
   "cartEmptyText": " No items added in your cart. Please add product to your cart list.",
-  "proceedToCheckoutBtn": "Proceed To Checkout",
+  "proceedToCheckoutBtn": "Proceed To Order Summary",
   "addedToCart!": "added to cart!",
   "additonalLikut": "(Includes an additional 10% collection fee)",
   "calculating": "Calculating...",
@@ -278,6 +278,13 @@
   "invalidHouseNumber": "Invalid house number",
   "invalidCity": "Please enter a city",
   "invalidApartmentNumber": "Invalid apartment number",
+
+  "/=================* Forget Password * =================/": "",
+
+  "loginWithNewPassword": "Please login with your new password",
+  "resetYourPassword": "Reset your password",
+  "passwordRequired": "You must specify a password",
+  "passwordMinLength": "Password must have at least 8 characters",
 
   "/=================* checkout * =================/": "",
 
@@ -360,6 +367,10 @@
   
   "storeClose": "Sorry, the website is closed now.",
   "storeCloseMessage": "The site is currently closed for orders due to load. Please try again in a few hours.",
+
+  "updateAddressTitle": "Update details",
+  "pleaseNoteAddress": "You need to enter an address for delivery",
+  "freeAbove1500": "Free above 1500₪",
 
   "/=================* Invoice * =================/": "",
 

@@ -18,7 +18,6 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { LiaTruckPickupSolid } from "react-icons/lia";
 
-
 // Internal import
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
@@ -48,6 +47,7 @@ import Image from "next/image";
 import Calculating from "@component/cart/Calculating";
 import PriceUpdatedModal from "@component/modal/PriceUpdatedModal";
 import { SidebarContext } from "@context/SidebarContext";
+import MainBT from "@component/button/MainBT";
 
 const Checkout = () => {
   const {
@@ -91,7 +91,7 @@ const Checkout = () => {
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
 
   const { state: { userInfo } } = useContext(UserContext);
-  const city = userInfo?.address?.city?.city_name_he;
+  const city = userInfo?.City;
   const [isDeliverable, setIsDeliverable] = useState(null);
   const [availableDays, setAvailableDays] = useState([]);
   const [nextTime, setNextTime] = useState(null);
@@ -154,13 +154,14 @@ const Checkout = () => {
   useEffect(() => {
     if (!userInfo) {
       router.push("/");
-    } else {
-      if (!userInfo.address.city) {
-        localStorage.setItem("firstTime", true);
-        router.push("/");
-      } else {
-        setLoading(false);
-      }
+    }
+    else {
+      // if (!userInfo?.Address) {
+      //   localStorage.setItem("firstTime", true);
+      //   router.push("/");
+      // } else {
+      setLoading(false);
+      // }
     }
   }, [userInfo]);
 
@@ -173,18 +174,19 @@ const Checkout = () => {
   // עדכון פונקציית submitHandler
   const handleSubmitWithAddressCheck = async () => {
     if (items <= 0) return notifyError(t("common:noProductsInCart"));
-    if (city) {
-      handleShippingCost(deliveryPrice); // עדכון עלות המשלוח
-      setDeliveryMsg(true);
-    } else {
-      notifyError("יש להזין כתובת");
+    if (!userInfo?.Address) {
+      notifyError(t("common:pleaseNoteAddress"));
     }
+    // else {
+    //   handleShippingCost(deliveryPrice); // עדכון עלות המשלוח
+    //   setDeliveryMsg(true);
+    // }
   };
 
   const handleSubmitWithPickup = () => {
     if (items <= 0) return notifyError(t("common:noProductsInCart"));
-    setPickupMsg(true)
-    handleShippingCost(0);
+    // setPickupMsg(true)
+    // handleShippingCost(0);
   };
 
   // פונקציית בדיקה האם יש משלוח היום או מחר ואם לא מתי המשלוח הבא
@@ -309,14 +311,14 @@ const Checkout = () => {
       )}
       {modalOpen && (
         <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-          <div className="px-11 py-8 max-w-xl">
+          <div className="inline-block sm:w-screen w-full max-w-xl px-10 py-8 overflow-hidden align-middle transition-all transform bg-white shadow-xl rounded-2xl">
             <UserAddressUpdate />
           </div>
         </MainModal>
       )}
       <Layout title="Checkout" description="this is checkout page">
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-          <div className="py-0 md:py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
+          <div className="sm:py-8 py-3 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">
               {isCheckoutOpen ?
                 (paymentSrc ?
@@ -333,22 +335,19 @@ const Checkout = () => {
                   //     className="max-w-[800px] w-3/4 h-[550px] flex items-center justify-center"
                   //   />
                   // </div>
-                  : <div className="mt-5 md:mt-0 md:col-span-2">
-                    <h1 className="text-3xl font-bold text-customRed w-full my-3 text-center bg-white border border-gray-200 p-3 rounded-md">{t("common:likutMessage")}</h1>
+                  : <div className="md:col-span-2">
                     <form onSubmit={handleSubmit(submitHandler)}>
                       <div className="w-full flex flex-col 2xl:flex-row items-center pb-3 gap-3.5">
                         {/* פרטים אישיים */}
                         <div className="w-full 2xl:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
-                          <CiUser className="text-[41px] text-customRed group-hover:text-white transition ease-in-out duration-300" />
+                          <CiUser className="text-[41px] text-customBlue group-hover:text-white transition ease-in-out duration-300" />
                           <div className="flex flex-col items-start">
                             <h2 className="text-xl">{userInfo?.CardName}</h2>
                             {city &&
-                              <p className="text-base text-gray-400 -mt-1">{city}, {userInfo?.address?.street}, {userInfo?.address?.houseNumber}{
-                                userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''
-                              }</p>
+                              <p className="text-base text-gray-400 -mt-1">{city}, {userInfo?.Address}</p>
                             }
                           </div>
-                          <button type="button" className="underline mr-auto" onClick={() => setModalOpen(true)}>
+                          <button type="button" className="underline mr-auto hover:text-customRed transition ease-in-out duration-200" onClick={() => setModalOpen(true)}>
                             {t("common:changeAddress")}
                           </button>
                         </div>
@@ -359,11 +358,10 @@ const Checkout = () => {
                               <Error errorName={errors.shippingOption} />
                             </span>}
                             <InputShipping
-                              currency={currency}
                               handleShippingCost={handleSubmitWithAddressCheck}
                               register={register}
                               value={2}
-                              isDeliverable={isDeliverable}
+                              // isDeliverable={isDeliverable}
                               nextTime={null}
                               isDeliveryOpen={isDeliveryOpen}
                             />
@@ -374,11 +372,10 @@ const Checkout = () => {
                               <Error errorName={errors.shippingOption} />
                             </span>
                             <InputShipping
-                              currency={currency}
                               handleShippingCost={handleSubmitWithPickup}
                               register={register}
                               value={1}
-                              isDeliverable
+                              // isDeliverable
                               icon={<LiaTruckPickupSolid />}
                             />
                           </div>
@@ -414,8 +411,7 @@ const Checkout = () => {
                           </div>
 
                           {/* קוד קופון */}
-                          <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
-                            {/* <form className="w-full"> */}
+                          {/* <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
                             {couponInfo.couponCode ? (
                               <span className="bg-customRed-superLight px-4 py-3 leading-tight w-full rounded-md flex justify-between">
                                 {" "}
@@ -449,11 +445,10 @@ const Checkout = () => {
                                 </button>
                               </div>
                             )}
-                            {/* </form> */}
-                          </div>
+                          </div> */}
 
                           {/* עלות ההזמנה */}
-                          <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                          {/* <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.sub_total
                             )}
@@ -465,10 +460,10 @@ const Checkout = () => {
                                 </>
                                 : <Calculating />}
                             </span>
-                          </div>
+                          </div> */}
 
                           {/* מחיר משלוח */}
-                          <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                          {/* <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.shipping_cost
                             )}
@@ -479,10 +474,10 @@ const Checkout = () => {
                             <span className="ml-auto flex-shrink-0 text-customRed font-bold">
                               {typeof customCartTotal === 'number' && <>({shippingPercentageIncrease?.toFixed(2)}%)</>}
                             </span>
-                          </div>
+                          </div> */}
 
                           {/* הנחה */}
-                          <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                          {/* <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.discount
                             )}
@@ -490,10 +485,10 @@ const Checkout = () => {
                               {currency}
                               {discountAmount?.toFixed(2)}
                             </span>
-                          </div>
+                          </div> */}
 
                           {/* סה"כ */}
-                          <div className="border-t mt-4">
+                          {/* <div className="border-t mt-4">
                             <div className="flex items-center font-bold font-serif justify-between pt-5 text-sm uppercase">
                               {showingTranslateValue(
                                 storeCustomizationSetting?.checkout?.total_cost
@@ -507,7 +502,7 @@ const Checkout = () => {
                                   : <Calculating />}
                               </span>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
 
@@ -519,7 +514,7 @@ const Checkout = () => {
                             <h2 className="font-semibold font-serif text-lg">
                               {t("common:customerNote")}
                             </h2>
-                            <button type="button" className="text-customRed">
+                            <button type="button" className="text-customBlue">
                               <MdKeyboardArrowDown size={30} className={`transform ${isNoteOpen ? 'rotate-180' : ''}`} />
                             </button>
                           </div>
@@ -553,42 +548,35 @@ const Checkout = () => {
                           </Link>
                         </div>
                         <div className="col-span-6 sm:col-span-3">
-                          <button
+                          <MainBT
                             onClick={() => isDeliveryMetod ? {} : (notifyError(t("common:selectDeliveryMethod")), scrollUp())}
                             type="submit"
                             disabled={isEmpty || isCheckoutSubmit || typeof customCartTotal !== 'number'}
-                            className="bg-customRed hover:bg-customRed-dark border border-customRed transition-all rounded py-3 text-center text-sm font-serif font-medium text-white flex justify-center w-full"
-                          >
+                            className={`w-full ${isCheckoutSubmit ? '!bg-customRed !text-white' : ''}`}>
                             {typeof customCartTotal !== 'number' ? (
                               <Calculating />
                             ) : isCheckoutSubmit ? (
-                              <span className="flex flex-row-reverse justify-center text-center">
-                                {" "}
+                              <>
                                 <img
                                   src="/loader/spinner.gif"
                                   alt="Loading"
                                   width={20}
                                   height={10}
-                                />{" "}
-                                <span className="ml-2">
+                                  className="saturate-0"
+                                />
+                                <span className="ms-0.5">
                                   {t("common:processing")}
                                 </span>
-                              </span>
+                              </>
                             ) : (
-                              <span className={currentLang ? "flex justify-center gap-2 text-center" : "flex flex-row-reverse justify-center gap-2 text-center"}>
-                                {showingTranslateValue(
-                                  storeCustomizationSetting?.checkout
-                                    ?.confirm_button
-                                )}
+                              <span className={currentLang ? "flex justify-center items-center gap-2 text-center" : "flex flex-row-reverse justify-center items-center gap-2 text-center"}>
+                                {showingTranslateValue(storeCustomizationSetting?.checkout?.confirm_button)}
                                 <span className="text-xl">
-                                  {" "}
-                                  <IoArrowForward
-                                    className={currentLang ? "transform scale-x-[-1]" : ""}
-                                  />
+                                  <IoArrowForward className={currentLang ? "transform scale-x-[-1]" : ""} />
                                 </span>
                               </span>
                             )}
-                          </button>
+                          </MainBT>
                         </div>
                       </div>
                     </form>
@@ -607,8 +595,8 @@ const Checkout = () => {
                 )}
             </div>
           </div>
-        </div>
-      </Layout>
+        </div >
+      </Layout >
     </>
   );
 };

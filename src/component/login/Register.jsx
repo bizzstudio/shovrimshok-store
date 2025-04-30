@@ -10,6 +10,7 @@ import useLoginSubmit from "@hooks/useLoginSubmit";
 import registerTitle from 'public/titles/registerTitle.svg';
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import City from "@component/select/City";
+import MainBT from "@component/button/MainBT";
 
 const Register = ({ setShowResetPassword, setModalOpen }) => {
   const {
@@ -218,10 +219,10 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
 
           {/* כפתור */}
           {loading ? (
-            <button
-              disabled={loading}
+            <MainBT
+              disabled={true}
               type="submit"
-              className="col-span-2 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+              className="col-span-2"
             >
               <img
                 src="/loader/spinner.gif"
@@ -229,16 +230,16 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
                 width={20}
                 height={10}
               />
-              <span className="font-serif ml-2 font-light">{t("common:processing")}</span>
-            </button>
+              <span className="ms-1">{t("common:processing")}</span>
+            </MainBT>
           ) : (
-            <button
+            <MainBT
               disabled={loading}
               type="submit"
-              className="col-span-2 flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
+              className="col-span-2"
             >
               {t("common:signingUp")}
-            </button>
+            </MainBT>
           )}
         </div>
       </form>

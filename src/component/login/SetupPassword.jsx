@@ -12,6 +12,7 @@ import CustomerServices from "@services/CustomerServices";
 import notifyApiResponse from "@utils/notifyApiResponse";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import { UserContext } from "@context/UserContext";
+import MainBT from "@component/button/MainBT";
 
 const SetupPassword = ({ userInfo, setModalOpen }) => {
     const {
@@ -49,16 +50,16 @@ const SetupPassword = ({ userInfo, setModalOpen }) => {
         })
             .then((res) => {
                 notifyApiResponse(res, true);
-                
+
                 // Update userInfo in context and cookies
                 const updatedUserInfo = {
                     ...userInfo,
                     isWithoutPassword: false
                 };
-                
+
                 dispatch({ type: 'USER_LOGIN', payload: updatedUserInfo });
                 Cookies.set('userInfo', JSON.stringify(updatedUserInfo));
-                
+
                 setLoading(false);
                 setModalOpen(false);
                 reset();
@@ -101,26 +102,20 @@ const SetupPassword = ({ userInfo, setModalOpen }) => {
                 </div>
 
                 {loading ? (
-                    <button
+                    <MainBT
+                        disabled={true}
+                        type="submit"
+                    >
+                        <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
+                        <span className="ms-1">{t("common:processing")}</span>
+                    </MainBT>
+                ) : (
+                    <MainBT
                         disabled={loading}
                         type="submit"
-                        className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
-                    >
-                        <img
-                            src="/loader/spinner.gif"
-                            alt="Loading"
-                            width={20}
-                            height={10}
-                        />
-                        <span className="font-serif ml-2 font-light">{t("common:processing")}</span>
-                    </button>
-                ) : (
-                    <button
-                        type="submit"
-                        className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
                     >
                         {t("common:savePassword")}
-                    </button>
+                    </MainBT>
                 )}
             </form>
         </>
