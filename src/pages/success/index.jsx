@@ -13,6 +13,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import Cookies from "js-cookie";
 import useCart from "@hooks/useCart";
 import scrollUp from "src/functions/scrollUp";
+import MainBT from "@component/button/MainBT";
 
 const Success = () => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
@@ -44,10 +45,22 @@ const Success = () => {
           <div className='w-full mx-auto flex flex-col justify-center items-center gap-5 py-20 px-10 lg:px-0'>
             <img className="md:w-1/5 w-2/3 mr-8" src={cartSuccess.src} alt="הרכישה הושלמה בהצלחה" />
             <h1 className="text-4xl text-center font-bold">{t("common:thankYouForPurchase")}</h1>
-            {/* <h3 className="text-xl font-bold text-center">{t("common:orsderInProcess")}</h3> */}
+            <h3 className="text-xl font-bold text-center">{t("common:orsderInProcess")}</h3>
             <div className="flex items-center justify-center flex-wrap gap-3 mt-3 h-11">
-              <Link className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap" href="/" target="_top"><IoHome /> {t("common:backToHome")}</Link>
-              <Link className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap" href="/user/my-orders" target="_top"><PiListMagnifyingGlassBold size={20} /> {t("common:viewOrder")}</Link>
+              <Link href="/" target="_top">
+                <MainBT>
+                  <span className="flex items-center gap-2">
+                    <IoHome /> {t("common:backToHome")}
+                  </span>
+                </MainBT>
+              </Link>
+              <Link href="/user/my-orders" target="_top">
+                <MainBT>
+                  <span className="flex items-center gap-2">
+                    <PiListMagnifyingGlassBold size={20} /> {t("common:viewOrder")}
+                  </span>
+                </MainBT>
+              </Link>
             </div>
           </div>
         )}

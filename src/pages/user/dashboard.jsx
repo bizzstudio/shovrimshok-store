@@ -54,7 +54,7 @@ const Dashboard = ({ title, description, children }) => {
       // limit: 8,
     })
       .then((res) => {
-        // console.log("res: ", res);
+        console.log("orders: ", res);
         setData(res);
         setLoading(false);
       })
@@ -198,7 +198,7 @@ const Dashboard = ({ title, description, children }) => {
                       <Card
                         title={t("common:balance")}
                         Icon={PiCoins}
-                        quantity={data?.balance}
+                        quantity={data?.balance ?? 0}
                         className="text-customBlue bg-blue-100"
                       />
                     </div>

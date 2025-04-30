@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { IoHome } from "react-icons/io5";
 import { LuShoppingCart } from "react-icons/lu";
+import MainBT from "@component/button/MainBT";
 
 // Internal import
 import failedImg from "public/failedImg2.svg"
@@ -25,8 +26,20 @@ const Failed = () => {
             <h1 className="text-4xl text-center font-bold">{t("common:purchaseFailed")}</h1>
             <p className="text-gray-400 text-lg text-center">{t("common:orderFaildText")}</p>
             <div className="flex items-center justify-center flex-wrap gap-3 mt-3 h-11">
-              <Link className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap" href="/" target="_top"><IoHome /> {t("common:backToHome")}</Link>
-              <Link className="flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap" href="/checkout" target="_top"><LuShoppingCart size={19} /> {t("common:tryAgain")}</Link>
+              <Link href="/" target="_top">
+                <MainBT>
+                  <span className="flex items-center gap-2">
+                    <IoHome /> {t("common:backToHome")}
+                  </span>
+                </MainBT>
+              </Link>
+              <Link href="/checkout" target="_top">
+                <MainBT>
+                  <span className="flex items-center gap-2">
+                    <LuShoppingCart size={19} /> {t("common:tryAgain")}
+                  </span>
+                </MainBT>
+              </Link>
             </div>
           </div>
         )}

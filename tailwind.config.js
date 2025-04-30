@@ -36,8 +36,8 @@ module.exports = {
         },
         customGreen: {
           superLight: 'rgb(252, 255, 244)',
-          light: 'rgb(244, 252, 223)',
-          DEFAULT: '#3c6d16',
+          light: '#87bd41',
+          DEFAULT: '#55833d',
           dark: '#2c510f',
           leaf: '#afdc34'
         },
@@ -49,6 +49,7 @@ module.exports = {
           leaf: '#ffa073'
         },
         customBlue: {
+          light: '#002863ba',
           DEFAULT: '#002863',
         },
       },

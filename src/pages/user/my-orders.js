@@ -47,8 +47,8 @@ const MyOrders = () => {
 
   useEffect(() => {
     OrderServices.getOrderCustomer({
-      page: currentPage,
-      limit: 8,
+      // page: currentPage,
+      // limit: 8,
     })
       .then((res) => {
         setData(res);
@@ -323,7 +323,7 @@ const MyOrders = () => {
                           ))}
                         </tbody>
                       </table>
-                      {data?.totalDoc > 10 && (
+                      {/* {data?.totalDoc > 10 && (
                         <div className="paginationOrder">
                           <ReactPaginate
                             breakLabel="..."
@@ -345,7 +345,7 @@ const MyOrders = () => {
                             activeClassName="activePagination"
                           />
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>

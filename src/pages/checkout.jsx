@@ -177,16 +177,16 @@ const Checkout = () => {
     if (!userInfo?.Address) {
       notifyError(t("common:pleaseNoteAddress"));
     }
-    // else {
-    //   handleShippingCost(deliveryPrice); // עדכון עלות המשלוח
-    //   setDeliveryMsg(true);
-    // }
+    else {
+      handleShippingCost(deliveryPrice); // עדכון עלות המשלוח
+      // setDeliveryMsg(true);
+    }
   };
 
   const handleSubmitWithPickup = () => {
     if (items <= 0) return notifyError(t("common:noProductsInCart"));
-    // setPickupMsg(true)
-    // handleShippingCost(0);
+    handleShippingCost(0);
+    // setPickupMsg(true);
   };
 
   // פונקציית בדיקה האם יש משלוח היום או מחר ואם לא מתי המשלוח הבא
@@ -222,36 +222,36 @@ const Checkout = () => {
     return { isTodayDeliverable, nextDeliverableDate };
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const check = await isAddressDeliverable(city);
-        console.log('check :>> ', check);
-        const { isTodayDeliverable, nextDeliverableDate } = canOrderToday(check.days);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const check = await isAddressDeliverable(city);
+  //       console.log('check :>> ', check);
+  //       const { isTodayDeliverable, nextDeliverableDate } = canOrderToday(check.days);
 
-        if (check?.days?.length > 0) {
-          setIsDeliverable(true);
-          setAvailableDays(check.days.map(d => d.value));
-        } else {
-          setIsDeliverable(false);
-          setAvailableDays([]);
-          setNextTime(nextDeliverableDate);
-        }
-        setDeliveryPrice(check.price);
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          setIsDeliverable(false);
-        } else {
-          alert("משהו השתבש, נסה שוב");
-          console.error(error);
-        }
-      }
-    };
+  //       if (check?.days?.length > 0) {
+  //         setIsDeliverable(true);
+  //         setAvailableDays(check.days.map(d => d.value));
+  //       } else {
+  //         setIsDeliverable(false);
+  //         setAvailableDays([]);
+  //         setNextTime(nextDeliverableDate);
+  //       }
+  //       setDeliveryPrice(check.price);
+  //     } catch (error) {
+  //       if (error.response && error.response.status === 404) {
+  //         setIsDeliverable(false);
+  //       } else {
+  //         alert("משהו השתבש, נסה שוב");
+  //         console.error(error);
+  //       }
+  //     }
+  //   };
 
-    if (city) {
-      fetchData();
-    }
-  }, [city]);
+  //   if (city) {
+  //     fetchData();
+  //   }
+  // }, [city]);
 
   const navToPaymentPage = () => {
     router.push(paymentSrc)
@@ -535,7 +535,7 @@ const Checkout = () => {
                         <div className="col-span-6 sm:col-span-3">
                           <Link
                             href="/"
-                            className={currentLang ? "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center gap-2 font-serif w-full" : "bg-customBrown-light border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex flex-row-reverse justify-center gap-2 font-serif w-full"}
+                            className={currentLang ? "bg-customBrown-light border border-indigo-100 rounded-lg py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center gap-2 font-serif w-full" : "bg-customBrown-light border border-indigo-100 rounded-lg py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex flex-row-reverse justify-center gap-2 font-serif w-full"}
                           >
                             <span className="text-xl">
                               <IoReturnUpBackOutline
@@ -552,7 +552,7 @@ const Checkout = () => {
                             onClick={() => isDeliveryMetod ? {} : (notifyError(t("common:selectDeliveryMethod")), scrollUp())}
                             type="submit"
                             disabled={isEmpty || isCheckoutSubmit || typeof customCartTotal !== 'number'}
-                            className={`w-full ${isCheckoutSubmit ? '!bg-customRed !text-white' : ''}`}>
+                            className={`w-full h-full ${isCheckoutSubmit ? '!bg-customRed !text-white' : ''}`}>
                             {typeof customCartTotal !== 'number' ? (
                               <Calculating />
                             ) : isCheckoutSubmit ? (

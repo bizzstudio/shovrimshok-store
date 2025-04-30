@@ -80,7 +80,7 @@ const useCheckoutSubmit = () => {
     default:
       currentLang = false;
       break;
-  }
+  };
 
   useEffect(() => {
     if (Cookies.get("couponInfo")) {
@@ -92,7 +92,7 @@ const useCheckoutSubmit = () => {
     }
   }, [isCouponApplied]);
 
-  //remove coupon if total value less then minimum amount of coupon
+  // remove coupon if total value less then minimum amount of coupon
   useEffect(() => {
     if (minimumAmount - discountAmount > total || isEmpty) {
       setDiscountPercentage(0);
@@ -164,12 +164,6 @@ const useCheckoutSubmit = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (readyToSubmit) {
-  //     submitHandler(readyToSubmit)
-  //   };
-  // }, [readyToSubmit])
-
   // שליחת ההזמנה לשרת
   const submitHandler = async (data) => {
     try {
@@ -207,7 +201,9 @@ const useCheckoutSubmit = () => {
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
       const dbOrder = await OrderServices.addOrder(orderInfo)
         .then((res) => {
-          setPaymentSrc(res.paymentUrl);
+          console.log('success :>> ', res);
+          router.push('/success')
+          // setPaymentSrc(res.paymentUrl);
         }).catch((error) => {
           // בדיקת מוצרים חסרים
           if (error?.response?.status === 409) {
@@ -219,108 +215,7 @@ const useCheckoutSubmit = () => {
           }
         }).finally(() => {
           setIsCheckoutSubmit(false);
-        })
-
-      // const cardcomObj = {
-      //   TerminalNumber: process.env.NEXT_PUBLIC_TERMINAL_NUMBER,
-      //   ApiName: process.env.NEXT_PUBLIC_API_NAME,
-      //   ReturnValue: dbOrder._id,
-      //   Amount: orderInfo.total,
-      //   SuccessRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/success",
-      //   FailedRedirectUrl: process.env.NEXT_PUBLIC_STORE_DOMAIN + "/failed",
-      //   // WebHookUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/orders/" + dbOrder._id,
-      //   WebHookUrl: "https://backend.meshek-kirshner.co.il/api" + "/orders/" + dbOrder._id + `?key=${process.env.NEXT_PUBLIC_CARDCOM_KEY}&secret=${process.env.NEXT_PUBLIC_CARDCOM_SECRET}`,
-      //   Document: {
-      //     To: userInfo.CardName,
-      //     Email: userInfo.email,
-      //     Products: [...orderInfo.cart.map(p => {
-      //       return {
-      //         // ProductID: p._id,
-      //         Description: p.title.he,
-      //         Quantity: p.quantity,
-      //         UnitCost: p.discountedPrice ? p.discountedPrice / p.quantity : p.itemTotal / p.quantity,
-      //         TotalLineCost: p.discountedPrice ? p.discountedPrice : p.itemTotal,
-      //         IsVatFree: p.isVatFree !== undefined ? p.isVatFree : true,
-      //       }
-      //     }), { Description: "10% התייקרות על הליקוט", UnitCost: Number((orderInfo.subTotal / 11).toFixed(2)), IsVatFree: true },
-      //     shippingCost > 0 ? {
-      //       Description: "התייקרות בגין משלוח ל" + userInfo?.address?.city?.city_name_he + ", " + userInfo?.address?.street + " " + userInfo?.address?.houseNumber + (userInfo?.address?.apartmentNumber ? "/" + userInfo?.address?.apartmentNumber : ''),
-      //       UnitCost: shippingCost,
-      //       IsVatFree: true,
-      //     } : null,
-      //     discountAmount > 0 ? {
-      //       Description: "הנחה",
-      //       UnitCost: -discountAmount,
-      //       IsVatFree: true,
-      //     } : null,
-      //     ].filter(Boolean)
-      //   }
-      // }
-      // // console.log('cardcomObj: ', cardcomObj)
-      // const response = await fetch('https://secure.cardcom.solutions/api/v11/LowProfile/Create', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(cardcomObj)
-      // });
-
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
-
-      // const result = await response.json();
-
-      // if (data.paymentMethod === "Card") {
-      //   // if (!elements) {
-      //   //   return;
-      //   // }
-
-      //   // const { error, paymentMethod } = await stripe.createPaymentMethod({
-      //   //   type: "card",
-      //   //   card: elements.getElement(CardElement),
-      //   // });
-
-      //   // console.log('error', error);
-
-      //   if (error && !paymentMethod) {
-      //     setError(error.message);
-      //     setIsCheckoutSubmit(false);
-      //   } else {
-      //     setError("");
-      //     const orderData = {
-      //       ...orderInfo,
-      //       cardInfo: paymentMethod,
-      //     };
-
-      //     // handlePaymentWithStripe(orderData);
-
-      //     // console.log('cardInfo', orderData);
-      //     return;
-      //   }
-      // }
-      // if (data.paymentMethod === "Cash") {
-      //   const res = await OrderServices.addOrder(orderInfo);
-
-      //   // notification info
-      //   const notificationInfo = {
-      //     orderId: res._id,
-      //     message: `${res.user_info.name}, Placed ${currency}${parseFloat(
-      //       res.total
-      //     ).toFixed(2)} order!`,
-      //     image:
-      //       "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
-      //   };
-      //   // notification api call
-      //   await NotificationServices.addNotification(notificationInfo);
-
-      //   router.push(`/order/${res._id}`);
-      //   notifySuccess("Your Order Confirmed!");
-      //   Cookies.remove("couponInfo");
-      //   sessionStorage.removeItem("products");
-      //   emptyCart();
-      //   setIsCheckoutSubmit(false);
-      // }
+        });
     } catch (err) {
       notifyApiResponse(err, false);
       setIsCheckoutSubmit(false);
@@ -477,51 +372,6 @@ const useCheckoutSubmit = () => {
         break;
     }
   };
-
-  // const handlePaymentWithStripe = async (order) => {
-  //   try {
-  //     // console.log('try goes here!', order);
-  //     // const updatedOrder = {
-  //     //   ...order,
-  //     //   currency: 'usd',
-  //     // };
-  //     const res = await OrderServices.createPaymentIntent(order);
-  //     // console.log("res", res);
-  //     stripe.confirmCardPayment(res.client_secret, {
-  //       payment_method: {
-  //         card: elements.getElement(CardElement),
-  //       },
-  //     });
-
-  //     const orderData = {
-  //       ...order,
-  //       cardInfo: res,
-  //     };
-  //     const resOrder = await OrderServices.addOrder(orderData);
-  //     // notification info
-  //     const notificationInfo = {
-  //       orderId: resOrder._id,
-  //       message: `${resOrder.user_info.name}, Placed ${currency}${parseFloat(
-  //         resOrder.total
-  //       ).toFixed(2)} order!`,
-  //       image:
-  //         "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
-  //     };
-  //     // notification api call
-  //     await NotificationServices.addNotification(notificationInfo);
-
-  //     router.push(`/order/${resOrder._id}`);
-  //     notifySuccess("Your Order Confirmed!");
-  //     Cookies.remove("couponInfo");
-  //     emptyCart();
-  //     sessionStorage.removeItem("products");
-  //     setIsCheckoutSubmit(false);
-  //   } catch (err) {
-  //     // console.log("err", err?.message);
-  //     notifyError(err?.response?.data?.message || err?.message);
-  //     setIsCheckoutSubmit(false);
-  //   }
-  // };
 
   const handleShippingCost = (value) => {
     setShippingCost(value);

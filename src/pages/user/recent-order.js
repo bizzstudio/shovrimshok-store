@@ -1,6 +1,7 @@
+// src/pages/user/recent-order.js
 import React, { useContext } from "react";
 import { IoBagHandle } from "react-icons/io5";
-import ReactPaginate from "react-paginate";
+// import ReactPaginate from "react-paginate";
 import { SidebarContext } from "@context/SidebarContext";
 import { useRouter } from "next/router";
 
@@ -13,7 +14,7 @@ import useTranslation from "next-translate/useTranslation";
 
 const RecentOrder = ({ data, loading, error }) => {
   const router = useRouter();
-  const { handleChangePage } = useContext(SidebarContext);
+  // const { handleChangePage } = useContext(SidebarContext);
 
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
@@ -98,7 +99,7 @@ const RecentOrder = ({ data, loading, error }) => {
                         ))}
                       </tbody>
                     </table>
-                    {data?.totalDoc > 10 && (
+                    {/* {data?.totalDoc > 10 && (
                       <div className="paginationOrder">
                         <ReactPaginate
                           breakLabel="..."
@@ -120,7 +121,7 @@ const RecentOrder = ({ data, loading, error }) => {
                           activeClassName="activePagination"
                         />
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
