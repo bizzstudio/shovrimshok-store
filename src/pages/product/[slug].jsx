@@ -40,6 +40,7 @@ import getOfferNames from "@component/offer/getOfferNames";
 import MainBT from "@component/button/MainBT";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
+  console.log('product :>> ', product);
   const router = useRouter();
 
   const { lang, showingTranslateValue, getNumber, currency } = useUtilsFunction();
