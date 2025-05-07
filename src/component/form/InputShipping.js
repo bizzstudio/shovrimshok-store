@@ -55,7 +55,7 @@ const InputShipping = ({
               </h6>
               {value == 2 &&
                 <p className="text-sm text-gray-400 -mt-1">
-                  {t("common:freeAbove1500")}
+                  {t("common:onlyAbove1500")}
                 </p>
               }
 

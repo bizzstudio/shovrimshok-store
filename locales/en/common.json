@@ -370,7 +370,7 @@
 
   "updateAddressTitle": "Update details",
   "pleaseNoteAddress": "You need to enter an address for delivery",
-  "freeAbove1500": "Free above 1500₪",
+  "onlyAbove1500": "For orders over 1500₪ only",
 
   "/=================* Invoice * =================/": "",
 

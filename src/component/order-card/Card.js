@@ -13,8 +13,8 @@ const Card = ({ title, Icon, quantity, className }) => {
           <h5 className="leading-none mb-2 text-base font-medium font-serif text-gray-700">
             {title}
           </h5>
-          <p dir='ltr' className={`text-end text-xl font-bold font-serif leading-none ${quantity < 0 ? 'text-red-500' : 'text-gray-800'}`}>
-            {quantity}
+          <p dir='ltr' className={`text-end text-xl font-bold font-serif leading-none ${quantity < 0 ? 'text-red-500' : 'text-green-500'}`}>
+            {Math.abs(quantity)}
           </p>
         </div>
       </div>
