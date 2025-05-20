@@ -27,6 +27,7 @@
 
     "customerService": "שירות לקוחות",
     "accessibility": "נגישות",
+    "newCustomers": "לקוחות חדשים",
   
     "/=================*Top Slider*=================/": "",
   
@@ -187,13 +188,32 @@
   
     "contact-page-form-input-name": "Your Name",
     "contact-page-form-plaholder-name": "Enter Your Name",
-    "contact-page-form-input-email": "Your Email",
     "contact-page-form-plaholder-email": "Enter Your Email",
     "contact-page-form-input-subject": "Subject",
     "contact-page-form-plaholder-subject": "Enter Your Subject",
     "contact-page-form-input-message": "Message",
     "contact-page-form-plaholder-message": "Write your message here",
-    "contact-page-form-send-btn": "Send Message",
+
+    "contact-page-form-input-contact-name": "שם איש קשר",
+    "contact-page-form-placeholder-contact-name": "הזן שם איש קשר",
+    "contact-page-form-input-business-name": "שם העסק",
+    "contact-page-form-placeholder-business-name": "הזן את שם העסק",
+    "contact-page-form-input-business-field": "תחום עיסוק",
+    "contact-page-form-placeholder-business-field": "הזן את תחום העיסוק",
+    "contact-page-form-input-business-location": "מיקום העסק (עיר/אזור)",
+    "contact-page-form-placeholder-business-location": "הזן את מיקום העסק",
+    "contact-page-form-input-phone": "מספר טלפון",
+    "contact-page-form-placeholder-phone": "הזן מספר טלפון",
+    "contact-page-form-input-email": "דוא״ל",
+    "contact-page-form-placeholder-email": "הזן דוא״ל לקבלת הצעה במייל",
+    "contact-page-form-input-special-requests": "הערות או בקשות מיוחדות",
+    "contact-page-form-placeholder-special-requests": "הזן הערות או בקשות מיוחדות",
+    "terms-required": "יש לאשר את תנאי השימוש ומדיניות הפרטיות",
+    "accept": "אני מאשר/ת את",
+    "terms-of-use": "תנאי השימוש",
+    "and": "ו",
+    "privacy-policy": "מדיניות הפרטיות",
+    "contact-page-form-send-btn": "שלח",
   
     "/=================* Single Product More Info* =================/": "",
   

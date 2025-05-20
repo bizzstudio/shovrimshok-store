@@ -1,3 +1,4 @@
+// src/component/preloader/CMSkeleton.js
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -16,6 +17,28 @@ const CMSkeleton = ({
   isIimage = false,
 }) => {
   const { showingTranslateValue } = useUtilsFunction();
+
+  // Function to handle line breaks and text formatting
+  const formatTextWithLineBreaks = (text) => {
+    return text.split('\n').map((line, index) => {
+      // Process bold text (text surrounded by asterisks)
+      const parts = line.split(/(\*[^*]+\*)/g);
+      const formattedLine = parts.map((part, i) => {
+        if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+          // Remove asterisks and wrap in <strong> tag
+          return <strong key={i}>{part.slice(1, -1)}</strong>;
+        }
+        return part;
+      });
+
+      return (
+        <React.Fragment key={index}>
+          {formattedLine}
+          {index !== text.split('\n').length - 1 && <br />}
+        </React.Fragment>
+      );
+    });
+  };
 
   return (
     <>
@@ -38,7 +61,7 @@ const CMSkeleton = ({
           html ? (
             parse(showingTranslateValue(data))
           ) : (
-            showingTranslateValue(data)
+            formatTextWithLineBreaks(showingTranslateValue(data))
           )
       ) : null}
     </>

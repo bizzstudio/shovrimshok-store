@@ -26,6 +26,7 @@
 
   "customerService": "Customer Service",
   "accessibility": "Accessibility",
+  "newCustomers": "New Customers",
 
   "/=================*Top Slider*=================/": "",
 
@@ -186,13 +187,32 @@
 
   "contact-page-form-input-name": "Your Name",
   "contact-page-form-plaholder-name": "Enter Your Name",
-  "contact-page-form-input-email": "Your Email",
   "contact-page-form-plaholder-email": "Enter Your Email",
   "contact-page-form-input-subject": "Subject",
   "contact-page-form-plaholder-subject": "Enter Your Subject",
   "contact-page-form-input-message": "Message",
   "contact-page-form-plaholder-message": "Write your message here",
-  "contact-page-form-send-btn": "Send Message",
+  
+  "contact-page-form-input-contact-name": "Contact Name",
+  "contact-page-form-placeholder-contact-name": "Enter contact name",
+  "contact-page-form-input-business-name": "Business Name",
+  "contact-page-form-placeholder-business-name": "Enter business name",
+  "contact-page-form-input-business-field": "Business Field",
+  "contact-page-form-placeholder-business-field": "Enter business field",
+  "contact-page-form-input-business-location": "Business Location (City/Region)",
+  "contact-page-form-placeholder-business-location": "Enter business location",
+  "contact-page-form-input-phone": "Phone Number",
+  "contact-page-form-placeholder-phone": "Enter phone number",
+  "contact-page-form-input-email": "Email",
+  "contact-page-form-placeholder-email": "Enter email to receive offer details by email",
+  "contact-page-form-input-special-requests": "Notes or Special Requests",
+  "contact-page-form-placeholder-special-requests": "Enter any notes or special requests",
+  "terms-required": "You must accept the terms and privacy policy",
+  "accept": "I accept the",
+  "terms-of-use": "Terms of Use",
+  "and": "and ",
+  "privacy-policy": "Privacy Policy",
+  "contact-page-form-send-btn": "Send",
 
   "/=================* Single Product More Info* =================/": "",
 

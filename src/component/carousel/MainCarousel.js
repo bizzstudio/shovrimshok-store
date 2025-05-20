@@ -34,8 +34,7 @@ const MainCarousel = () => {
       ),
       url: showingUrl(storeCustomizationSetting?.slider?.first_link),
       image:
-        showingImage(storeCustomizationSetting?.slider?.first_img) ||
-        "/slider/slider-1.jpg",
+        showingImage(storeCustomizationSetting?.slider?.first_img)
     },
     {
       id: 2,
@@ -50,8 +49,7 @@ const MainCarousel = () => {
       ),
       url: showingUrl(storeCustomizationSetting?.slider?.second_link),
       image:
-        showingImage(storeCustomizationSetting?.slider?.second_img) ||
-        "/slider/slider-2.jpg",
+        showingImage(storeCustomizationSetting?.slider?.second_img)
     },
     {
       id: 3,
@@ -66,8 +64,7 @@ const MainCarousel = () => {
       ),
       url: showingUrl(storeCustomizationSetting?.slider?.third_link),
       image:
-        showingImage(storeCustomizationSetting?.slider?.third_img) ||
-        "/slider/slider-3.jpg",
+        showingImage(storeCustomizationSetting?.slider?.third_img)
     },
     {
       id: 4,
@@ -82,8 +79,7 @@ const MainCarousel = () => {
       ),
       url: showingUrl(storeCustomizationSetting?.slider?.four_link),
       image:
-        showingImage(storeCustomizationSetting?.slider?.four_img) ||
-        "/slider/slider-1.jpg",
+        showingImage(storeCustomizationSetting?.slider?.four_img)
     },
     {
       id: 5,
@@ -98,10 +94,9 @@ const MainCarousel = () => {
       ),
       url: showingUrl(storeCustomizationSetting?.slider?.five_link),
       image:
-        showingImage(storeCustomizationSetting?.slider?.five_img) ||
-        "/slider/slider-2.jpg",
+        showingImage(storeCustomizationSetting?.slider?.five_img)
     },
-  ];
+  ].filter(item => item.image);
 
   return (
     <div className="w-full aspect-[1578/246]">
