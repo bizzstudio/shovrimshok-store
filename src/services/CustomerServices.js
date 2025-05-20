@@ -33,6 +33,10 @@ const CustomerServices = {
   updateCustomer: async (id, body) => {
     return requests.put(`/customer/${id}`, body);
   },
+
+  sendContactUsMessage: async (body) => {
+    return requests.post("/customer/contact-us", body);
+  },
 };
 
 export default CustomerServices;

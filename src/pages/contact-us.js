@@ -1,5 +1,5 @@
 // src/pages/contact-us.js
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
@@ -16,23 +16,35 @@ import useGetSetting from "@hooks/useGetSetting";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import Link from "next/link";
+import CustomerServices from "@services/CustomerServices";
+import notifyApiResponse from "@utils/notifyApiResponse";
+import MainBT from "@component/button/MainBT";
 
 const ContactUs = () => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const { showingTranslateValue } = useUtilsFunction();
-  const { storeCustomizationSetting, loading, error } = useGetSetting();
-  console.log('storeCustomizationSetting :>> ', storeCustomizationSetting);
+  const { storeCustomizationSetting, loading: settingsLoading, error } = useGetSetting();
 
-  const submitHandler = () => {
-    notifySuccess(
-      "your message sent successfully. We will contact you shortly."
-    );
+  const submitHandler = async (data) => {
+    setLoading(true);
+    try {
+      const res = await CustomerServices.sendContactUsMessage(data);
+      notifyApiResponse(res, true);
+      reset(); // ריקון הטופס לאחר שליחה מוצלחת
+    } catch (error) {
+      console.log("error :>> ", error);
+      notifyApiResponse(error, false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,7 +73,7 @@ const ContactUs = () => {
                       count={1}
                       height={50}
                       // error={error}
-                      loading={loading}
+                      loading={settingsLoading}
                       data={storeCustomizationSetting?.contact_us?.form_title}
                     />
                   </h3>
@@ -70,7 +82,7 @@ const ContactUs = () => {
                       count={2}
                       height={20}
                       // error={error}
-                      loading={loading}
+                      loading={settingsLoading}
                       data={
                         storeCustomizationSetting?.contact_us?.form_description
                       }
@@ -191,12 +203,22 @@ const ContactUs = () => {
 
                   {/* שלח */}
                   <div className="relative col-span-2 flex justify-end md:-mt-5 -mt-2">
-                    <button
-                      data-variant="flat"
-                      className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-md placeholder-white focus-visible:outline-none focus:outline-none bg-customRed text-white px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 hover:text-white hover:bg-customRed-dark h-12 mt-1 text-sm lg:text-base w-full sm:w-auto"
-                    >
-                      {t("common:contact-page-form-send-btn")}
-                    </button>
+                    {loading ? (
+                      <MainBT
+                        disabled={true}
+                        type="submit"
+                      >
+                        <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
+                        <span className="ms-1">{t("common:processing")}</span>
+                      </MainBT>
+                    ) : (
+                      <MainBT
+                        disabled={loading}
+                        type="submit"
+                      >
+                        {t("common:contact-page-form-send-btn")}
+                      </MainBT>
+                    )}
                   </div>
                 </div>
               </form>
@@ -216,48 +238,40 @@ const ContactUs = () => {
               />
 
               {/* פרטי החנות */}
-              <div className="flex flex-col gap-5 mt-6">
-                {loading ? (
-                  <CMSkeleton
-                    count={10}
-                    height={20}
-                    error={error}
-                    loading={loading}
-                  />
-                ) : (
-                  <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
-                    <span className="flex justify-center text-4xl text-customRed">
-                      <FiMail />
-                    </span>
-                    <div className="flex flex-col sm:flex-row sm:items-center items-start justify-start gap-0 sm:gap-2">
-                      <h5 className="text-xl font-bold">
+              <div className="flex flex-col gap-5 mt-6">                {settingsLoading ? (<CMSkeleton count={10} height={20} error={error} loading={settingsLoading} />) : (
+                <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
+                  <span className="flex justify-center text-4xl text-customRed">
+                    <FiMail />
+                  </span>
+                  <div className="flex flex-col sm:flex-row sm:items-center items-start justify-start gap-0 sm:gap-2">
+                    <h5 className="text-xl font-bold">
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.contact_us?.email_box_title
+                      )}
+                    </h5>
+                    <p className="text-base opacity-90">
+                      <a
+                        href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
+                        className="text-customRed"
+                      >
                         {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.email_box_title
+                          storeCustomizationSetting?.contact_us?.email_box_email
                         )}
-                      </h5>
-                      <p className="text-base opacity-90">
-                        <a
-                          href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-                          className="text-customRed"
-                        >
-                          {showingTranslateValue(
-                            storeCustomizationSetting?.contact_us?.email_box_email
-                          )}
-                        </a>{" "}
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.email_box_text
-                        )}
-                      </p>
-                    </div>
+                      </a>{" "}
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.contact_us?.email_box_text
+                      )}
+                    </p>
                   </div>
-                )}
+                </div>
+              )}
 
-                {loading ? (
+                {settingsLoading ? (
                   <CMSkeleton
                     count={10}
                     height={20}
                     error={error}
-                    loading={loading}
+                    loading={settingsLoading}
                   />
                 ) : (
                   <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
@@ -286,12 +300,12 @@ const ContactUs = () => {
                     </div>
                   </div>
                 )}
-                {loading ? (
+                {settingsLoading ? (
                   <CMSkeleton
                     count={10}
                     height={20}
                     error={error}
-                    loading={loading}
+                    loading={settingsLoading}
                   />
                 ) : (
                   <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">

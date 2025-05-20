@@ -58,7 +58,6 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
             <MainBT
               disabled={true}
               type="submit"
-              // className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
             >
               <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
               <span className="ms-1">{t("common:processing")}</span>
@@ -67,7 +66,6 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
             <MainBT
               disabled={loading}
               type="submit"
-              // className="flex items-center justify-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
             >
               {t("common:loginTitle")}
             </MainBT>
