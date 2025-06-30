@@ -1,4 +1,4 @@
-// shapira-store/src/pages/user/email-verification/[token].js
+// src/pages/user/email-verification/[token].js
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
@@ -16,6 +16,7 @@ const EmailVerification = ({ params }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { dispatch } = useContext(UserContext);
+  const currentLang = Cookies.get('_lang');
 
   useEffect(() => {
     setLoading(true);
@@ -24,14 +25,14 @@ const EmailVerification = ({ params }) => {
         localStorage.setItem("firstTime", true);
         router.push("/");
         setLoading(false);
-        setSuccess(res.message);
+        setSuccess(res.message?.[currentLang || 'he']);
         notifyApiResponse(res, true);
         dispatch({ type: "USER_LOGIN", payload: res });
         Cookies.set("userInfo", JSON.stringify(res));
       })
       .catch((err) => {
         setLoading(false);
-        setError(err ? err.response.data.message : err.message);
+        setError(err ? err.response.data.message?.[currentLang || 'he'] : err.message?.[currentLang || 'he']);
       });
   }, []);
 

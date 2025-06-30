@@ -1,8 +1,9 @@
+// src/pages/user/forget-password/[token].js
 import { useRouter } from "next/router";
 import React, { useState, useContext, useRef } from "react";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
-import { FiLock, FiMail } from "react-icons/fi";
+import { FiHash, FiLock, FiMail } from "react-icons/fi";
 import { ToastContainer } from "react-toastify";
 import useTranslation from "next-translate/useTranslation";
 
@@ -14,6 +15,7 @@ import { UserContext } from "@context/UserContext";
 import { notifyError, notifySuccess } from "@utils/toast";
 import notifyApiResponse from "@utils/notifyApiResponse";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import MainBT from "@component/button/MainBT";
 
 const ForgetPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,7 @@ const ForgetPassword = () => {
 
   password.current = watch("newPassword");
 
-  const submitHandler = ({ registerEmail, password, newPassword }) => {
+  const submitHandler = ({ registerEmail, password, newPassword, FederalTaxID }) => {
     // notifySuccess("This Feature is disabled for demo!");
 
     setLoading(true);
@@ -57,6 +59,7 @@ const ForgetPassword = () => {
       CustomerServices.customerLogin({
         username: registerEmail,
         password,
+        FederalTaxID: FederalTaxID,
       })
         .then((res) => {
           setLoading(false);
@@ -104,6 +107,17 @@ const ForgetPassword = () => {
                     />
                     <Error errorName={errors.registerEmail} />
                   </div>
+                  {/* <div className="form-group">
+                    <InputArea
+                      register={register}
+                      label={t("common:idNumberOrLicense")}
+                      name="FederalTaxID"
+                      type="text"
+                      placeholder={t("common:idNumberOrLicense")}
+                      Icon={FiHash}
+                    />
+                    <Error errorName={errors.FederalTaxID} />
+                  </div> */}
                   <div className="form-group">
                     <InputArea
                       register={register}
@@ -155,11 +169,10 @@ const ForgetPassword = () => {
                 </>
               )}
 
-              <button
+              <MainBT
                 disabled={loading}
                 type="submit"
-                className="flex items-center justify-center font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] whitespace-nowrap"
-                >
+              >
                 {loading ? (
                   <>
                     <img src="/loader/spinner.gif" alt="Loading" width={20} height={10} />
@@ -168,7 +181,7 @@ const ForgetPassword = () => {
                 ) : (
                   showLogin ? t("common:login") : t("common:resetPassword")
                 )}
-              </button>
+              </MainBT>
             </div>
           </form>
         </div>

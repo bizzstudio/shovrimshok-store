@@ -512,6 +512,9 @@
   "cellular": "Cellular",
   "image": "Image",
 
+  "billingAddress": "Billing Address",
+  "shippingAddress": "Shipping Address",
+
   "/=================* Search * =================/": "",
 
   "loadMoreBtn": "Load More",
