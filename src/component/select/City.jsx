@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import useTranslation from "next-translate/useTranslation";
 
-const City = ({ setValue, placeholder, value }) => {
+const City = ({ setValue, placeholder, value, disabled }) => {
   const { t } = useTranslation();
 
   const [cities, setCities] = useState([]);
@@ -80,6 +80,7 @@ const City = ({ setValue, placeholder, value }) => {
       isRtl={true}
       menuPortalTarget={typeof window !== "undefined" ? document.body : null}
       menuPosition="absolute"
+      isDisabled={disabled}
     />
   );
 };

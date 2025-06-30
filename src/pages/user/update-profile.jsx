@@ -45,14 +45,14 @@ const UpdateProfile = () => {
       setError('CardName', { type: 'manual', message: t('common:invalidName') });
       return false;
     }
-    if (!data.BillToAddress?.trim()) {
-      setError('BillToAddress', { type: 'manual', message: t('common:invalidStreet') });
-      return false;
-    }
-    if (!data.BillToCity?.trim()) {
-      setError('BillToCity', { type: 'manual', message: t('common:invalidCity') });
-      return false;
-    }
+    // if (!data.BillToAddress?.trim()) {
+    //   setError('BillToAddress', { type: 'manual', message: t('common:invalidStreet') });
+    //   return false;
+    // }
+    // if (!data.BillToCity?.trim()) {
+    //   setError('BillToCity', { type: 'manual', message: t('common:invalidCity') });
+    //   return false;
+    // }
     if (!data.EmailAddress?.trim()) {
       setError('EmailAddress', { type: 'manual', message: t('common:invalidEmail') });
       return false;
@@ -78,18 +78,18 @@ const UpdateProfile = () => {
       EmailAddress: data.EmailAddress,
       Phone1: data.Phone1,
       Cellular: data.Cellular,
-      BillToAddress: {
-        Address: data.BillToAddress,
-        City: data.BillToCity,
-        ZipCode: data.BillToZipCode,
-        // Country: data.BillToCountry || "IL"
-      },
-      ShipToAddress: {
-        Address: data.ShipToAddress,
-        City: data.ShipToCity,
-        ZipCode: data.ShipToZipCode,
-        // Country: data.ShipToCountry || "IL"
-      },
+      // BillToAddress: {
+      //   Address: data.BillToAddress,
+      //   City: data.BillToCity,
+      //   ZipCode: data.BillToZipCode,
+      //   // Country: data.BillToCountry || "IL"
+      // },
+      // ShipToAddress: {
+      //   Address: data.ShipToAddress,
+      //   City: data.ShipToCity,
+      //   ZipCode: data.ShipToZipCode,
+      //   // Country: data.ShipToCountry || "IL"
+      // },
       FederalTaxID: data.FederalTaxID,
       Picture: imageUrl,
     };
@@ -263,6 +263,7 @@ const UpdateProfile = () => {
                           name="BillToAddress"
                           type="text"
                           placeholder={t("common:address")}
+                          disabled={true}
                         />
                         <Error errorName={errors.BillToAddress} />
                       </div>
@@ -271,6 +272,7 @@ const UpdateProfile = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <Label label={t("common:city")} isRequired className="mb-0" />
                         <City
+                          disabled={true}
                           setValue={(cityName) => {
                             setValue("BillToCity", cityName);
                             setBillToCityValue(cityName);
@@ -290,6 +292,7 @@ const UpdateProfile = () => {
                           type="text"
                           placeholder={t("common:zipCode")}
                           isRequired={false}
+                          disabled={true}
                         />
                         <Error errorName={errors.BillToZipCode} />
                       </div>
@@ -323,6 +326,7 @@ const UpdateProfile = () => {
                           type="text"
                           placeholder={t("common:mailAddress")}
                           isRequired={false}
+                          disabled={true}
                         />
                         <Error errorName={errors.ShipToAddress} />
                       </div>
@@ -331,6 +335,7 @@ const UpdateProfile = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <Label label={t("common:mailCity")} isRequired={false} className="mb-0" />
                         <City
+                          disabled={true}
                           setValue={(cityName) => {
                             setValue("ShipToCity", cityName);
                             setShipToCityValue(cityName);
@@ -350,6 +355,7 @@ const UpdateProfile = () => {
                           type="text"
                           placeholder={t("common:mailZipCode")}
                           isRequired={false}
+                          disabled={true}
                         />
                         <Error errorName={errors.ShipToZipCode} />
                       </div>
