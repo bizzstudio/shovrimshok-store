@@ -18,8 +18,6 @@ const ImageWithFallback = ({
     setError(null);
   }, [src]);
 
-  console.log('src: ', src);
-
   return (
     <Image
       alt={alt}
