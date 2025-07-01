@@ -1,4 +1,4 @@
-// shapira-store/src/component/resultWindow/resultWindow.jsx
+// src/component/resultWindow/resultWindow.jsx
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IoAdd, IoBagAddSharp, IoRemove } from 'react-icons/io5';
 import { notifyError } from "@utils/toast";
@@ -14,6 +14,7 @@ import Discount from '@component/common/Discount';
 import useCart from '@hooks/useCart';
 import getOfferNames from '@component/offer/getOfferNames';
 import { SidebarContext } from '@context/SidebarContext';
+import dayjs from "dayjs";
 
 export default function ResultWindow({ products = [], attributes, clearInput, closeResultWindow }) {
     // console.log('products: ', products)
@@ -50,15 +51,18 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
     }, [products, clearInput, closeResultWindow, modalOpen]);
 
     const handleAddToCart = (product) => {
-        // if (product.stock < 1 || product.OnHand < 1) return notifyError(t("common:productStockOut"));
+        const inStock = product?.stock > 0 || product?.OnHand > 0;
+        // const arrivalDate = product?.purchaseOrderInfo?.arrivalDate ? dayjs(product?.purchaseOrderInfo?.arrivalDate).format("DD/MM/YYYY") : null;
+
+        // if (!inStock) return notifyError(arrivalDate ? t("common:productStockOutUntil", { date: arrivalDate }) : t("common:productStockOutNow"));
 
         const { slug, variants, categories, description, ...updatedProduct } = product;
         const newItem = {
             ...updatedProduct,
             id: (product._id ?? product.ItemCode),
             title: product.ItemName || product.title,
-            price: product.prices?.price,
-            originalPrice: product.prices?.originalPrice,
+            price: product?.Price ?? product.prices?.price,
+            originalPrice: product?.Price ?? product.prices?.originalPrice,
             image: product.image?.[0],
             slug: product.ItemCode,  // Ensure slug is included
         };
@@ -104,10 +108,10 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                 <div className="p-1">
                     <h2 className="text-right text-xl p-4">{products.length} {t("common:itemsFound")}</h2>
                     <div className="overflow-y-auto sm:max-h-[570px] max-h-[450px]">
-                        {products.slice(0, 10).map((product) => (
+                        {products.slice(0, 10).map((product, i) => (
                             <Link
                                 href={`/product/${product.ItemCode}`} onClick={() => clearInput()}
-                                key={(product._id ?? product.ItemCode)}>
+                                key={(product._id ?? product.ItemCode) + i}>
                                 <div className="flex items-center justify-between border-t p-4 hover:bg-gray-100">
                                     {/* תמונה כותרת ומחיר */}
                                     <div className="flex items-center gap-2">
@@ -132,12 +136,18 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                             <h3 className="font-bold">{product.ItemName || showingTranslateValue(product?.title)}</h3>
                                             {/* <Price
                                                 product={product}
-                                                price={product.prices.price}
-                                                originalPrice={product.prices.originalPrice}
+                                                price={product?.Price ?? product.prices.price}
+                                                originalPrice={product?.Price ?? product.prices.originalPrice}
                                                 currency={currency}
                                                 card={true}
                                             />
+                                            <Discount product={product} search />
                                             {isProductWithDiscount(product)} */}
+                                            {product?.purchaseOrderInfo && (
+                                                <div className="text-xs text-gray-500">
+                                                    {t("common:backInStock")} {dayjs(product?.purchaseOrderInfo?.arrivalDate).format("DD/MM/YYYY")}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                     {/* ProductCard-כפתורים דינאמיים כמו ב */}
@@ -197,12 +207,11 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                                                 </button>
                                             ) : (
                                                 <button
-                                                    // disabled={product.stock < 1 || product.OnHand < 1}
+                                                    // disabled={!(product?.stock > 0 || product?.OnHand > 0)}
                                                     type='button'
                                                     onClick={() => handleAddToCart(product)}
                                                     aria-label="cart"
-                                                    // className={product.stock < 1 || product.OnHand < 1 ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
-                                                    className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"
+                                                    className={!(product?.stock > 0 || product?.OnHand > 0) ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
                                                 >
                                                     <span className="text-xl">
                                                         <IoBagAddSharp />
@@ -230,4 +239,4 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
             </div>
         </>
     );
-}
+};

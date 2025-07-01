@@ -1,3 +1,4 @@
+// src/hooks/useGetSetting.js
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +30,10 @@ const useGetSetting = () => {
 
   const storeCustomizationSetting = settings.find(
     (value) => value.name === "storeCustomizationSetting"
+  );
+
+  const storeSetting = settings.find(
+    (value) => value.name === "storeSetting"
   );
 
   // useEffect(() => {
@@ -93,6 +98,21 @@ const useGetSetting = () => {
       }
     };
 
+    const fetchStoreSetting = async () => {
+      try {
+        const res = await SettingServices.getStoreSetting();
+        const storeSettingData = {
+          ...res,
+          name: "storeSetting",
+        };
+
+        dispatch(addSetting(storeSettingData));
+      } catch (err) {
+        setError(err.message);
+        console.log("Error on getting storeSetting setting", err);
+      }
+    };
+
     // Check if the setting is not in the store and fetch it
     if (!storeCustomizationSetting) {
       fetchAndAddSetting();
@@ -102,8 +122,12 @@ const useGetSetting = () => {
       fetchGlobalSetting();
     }
 
+    if (!storeSetting) {
+      fetchStoreSetting();
+    }
+
     // Check if the "lang" value is not set and set a default value
-    if (!lang) {
+    if (!lang || lang === "" || lang === "null" || lang === "undefined") {
       Cookies.set("_lang", "he", {
         sameSite: "None",
         secure: true,
@@ -111,12 +135,16 @@ const useGetSetting = () => {
     }
   }, [lang]);
 
+  // console.log('storeCustomizationSetting :>> ', storeCustomizationSetting);
+  // console.log('storeSetting :>> ', storeSetting);
+
   return {
     lang,
     error,
     loading,
     globalSetting,
     storeCustomizationSetting,
+    storeSetting,
   };
 };
 

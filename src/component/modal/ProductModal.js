@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { FiMinus, FiPlus } from "react-icons/fi";
+import { FiChevronLeft, FiMinus, FiPlus } from "react-icons/fi";
+import dayjs from "dayjs";
 
 // Internal import
 import Price from "@component/common/Price";
@@ -19,6 +20,8 @@ import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { handleLogEvent } from "@utils/analytics";
 import MainBT from "@component/button/MainBT";
+import ProductDescription from "@component/product/ProductDescription";
+import ImageCarousel from "@component/carousel/ImageCarousel";
 
 const ProductModal = ({
   modalOpen,
@@ -43,8 +46,8 @@ const ProductModal = ({
   const [price, setPrice] = useState(0);
   const [img, setImg] = useState("");
   const [originalPrice, setOriginalPrice] = useState(0);
-  // const [stock, setStock] = useState(0);
-  const [stock, setStock] = useState(Infinity);
+  const [stock, setStock] = useState(0);
+  // const [stock, setStock] = useState(Infinity);
   const [discount, setDiscount] = useState(0);
   const [selectVariant, setSelectVariant] = useState({});
   const [selectVa, setSelectVa] = useState({});
@@ -61,6 +64,8 @@ const ProductModal = ({
       setModalOpen(false);
     }, 300); // תואם למשך זמן האנימציה (duration-200)
   };
+
+  const inStock = product?.stock > 0 || product?.OnHand > 0;
 
   useEffect(() => {
     // console.log('value', value, product);
@@ -137,10 +142,10 @@ const ProductModal = ({
       setPrice(price);
       setOriginalPrice(originalPrice);
     } else {
-      // setStock(product?.stock ?? product?.OnHand ?? 0);
+      setStock(product?.stock ?? 0);
       setImg(product?.image?.[0]);
-      const price = getNumber(product?.prices?.price ?? product?.LastPurPrc ?? 0);
-      const originalPrice = getNumber(product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
+      const price = getNumber(product?.Price ?? product?.prices?.price ?? product?.LastPurPrc ?? 0);
+      const originalPrice = getNumber(product?.Price ?? product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
       const discountPercentage = getNumber(
         ((originalPrice - price) / originalPrice) * 100
       );
@@ -152,7 +157,8 @@ const ProductModal = ({
     product?.prices?.discount,
     product?.prices?.originalPrice,
     product?.prices?.price,
-    // product?.stock,
+    product?.Price,
+    product?.stock,
     product.variants,
     selectVa,
     selectVariant,
@@ -211,11 +217,11 @@ const ProductModal = ({
     //     variant: selectVariant || {},
     //     price:
     //       p.variants.length === 0
-    //         ? getNumber(p.prices.price)
+    //         ? getNumber(p?.Price ?? p.prices.price)
     //         : getNumber(price),
     //     originalPrice:
     //       p.variants.length === 0
-    //         ? getNumber(p.prices.originalPrice)
+    //         ? getNumber(p?.Price ?? p.prices.originalPrice)
     //         : getNumber(originalPrice),
     //   };
 
@@ -226,6 +232,10 @@ const ProductModal = ({
     // } else {
     //   return notifyError("Please select all variant first!");
     // }
+
+
+    // const arrivalDate = product?.purchaseOrderInfo?.arrivalDate ? dayjs(product?.purchaseOrderInfo?.arrivalDate).format("DD/MM/YYYY") : null;
+    // if (!inStock) return notifyError(arrivalDate ? t("common:productStockOutUntil", { date: arrivalDate }) : t("common:productStockOutNow"));
 
     const newItem = {
       ...p,
@@ -247,116 +257,94 @@ const ProductModal = ({
     handleLogEvent("product", `opened ${ItemCode} product details`);
   };
 
-  // const category_name = showingTranslateValue(product?.category?.name)
-  //   ?.toLowerCase()
-  // ?.replace(/[^A-Z0-9]+/gi, "-");
   const categoryId = product?.ItemCode?.slice(0, 4);
-  const category_name = categories?.find((cat) => cat.code === categoryId)?.name;
+  const subCategoryId = product?.ItemCode?.slice(0, 8);
+  const category = categories?.find((cat) => cat.code == categoryId);
+  const subCategory = categories?.find((cat) => cat.code == categoryId)?.children?.find((child) => child.code == subCategoryId);
+
+  // הוספת פונקציה לטיפול בשינוי תמונות
+  const handleChangeImage = (img) => {
+    setImg(img);
+  };
 
   return (
     <>
       <MainModal modalOpen={modalOpen && !isClosing} setModalOpen={setModalOpen}>
-        <div className="inline-block overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+        <div className="inline-block w-full overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl">
           <div className="flex flex-col items-center justify-center lg:flex-row md:flex-row w-full max-w-4xl overflow-hidden">
-            <Link href={`/product/${product.ItemCode}`} passHref className="border-none outline-none">
-              <div
-                onClick={() => handleClose()}
-                className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer p-5 pl-0"
-              >
-                <Discount
+            <div className="w-fit max-w-full flex flex-col items-center justify-center h-auto p-5 md:pl-0">
+              <div className="w-full relative flex flex-col items-center justify-center">
+                {/* <Discount
                   product={product}
-                  discount={discount}
                   modal
-                  title={title}
-                // title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
-                //   selectVariant.offers.reduce((title, obj) => (
-                //     <>
-                //       {title}
-                //       {title && <br />}
-                //       {obj.name}
-                //     </>
-                //   ), null)
-                // ) : '') : (product?.prices?.offers?.length > 0 ? (
-                //   product?.prices?.offers.reduce((title, obj) => (
-                //     <>
-                //       {title}
-                //       {title && <br />}
-                //       {obj.name}
-                //     </>
-                //   ), null)
-                // ) : '')}
-                />
+                /> */}
 
-                {product.image?.[0] ? (
-                  <Image
-                    src={img || product.image?.[0]}
-                    width={420}
-                    height={420}
-                    alt="product"
-                    className="max-h-[400px] object-contain"
-                  />
-                ) : (
-                  <Image
-                    src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                    width={420}
-                    height={420}
-                    alt="product Image"
-                  />
-                )}
+                {/* התמונה הראשית - קליקה לניווט לדף מוצר */}
+                <Link href={`/product/${product.ItemCode}`} passHref className="border-none outline-none w-full h-[220px] max-w-[400px] flex items-center justify-center select-none">
+                  <div
+                    onClick={() => handleClose()}
+                    className="cursor-pointer w-full flex flex-col items-center justify-center"
+                  >
+                    {product.image?.[0] ? (
+                      <Image
+                        src={img || product.image?.[0]}
+                        width={420}
+                        height={420}
+                        alt="product"
+                        className="w-full sm:min-w-[300px] min-w-[70vw] max-h-[220px] object-contain"
+                      />
+                    ) : (
+                      <Image
+                        src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                        width={420}
+                        height={420}
+                        alt="product Image"
+                        className="w-full sm:min-w-[300px] min-w-[70vw] max-h-[220px] object-contain"
+                      />
+                    )}
+                  </div>
+                </Link>
               </div>
-            </Link>
+
+              {/* קרוסלת תמונות - רק להחלפת התמונה הראשית */}
+              {product?.image?.length > 1 && (
+                <div className="w-full max-w-full flex flex-row flex-wrap mt-4 border-t">
+                  <ImageCarousel
+                    images={product.image}
+                    handleChangeImage={handleChangeImage}
+                  />
+                </div>
+              )}
+            </div>
 
             <div className="w-full flex flex-col p-5 md:p-8 text-left">
               <div className="flex flex-col gap-0.5 mb-1 -mt-1.5">
                 <Link href={`/product/${product.ItemCode}`} passHref>
                   <h1
                     onClick={() => handleClose()}
-                    className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif hover:text-black cursor-pointer text-right mb-1"
+                    className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif hover:text-black cursor-pointer text-right mb-1 hover:underline"
                   >
                     {product?.ItemName || product?.title}
                   </h1>
                 </Link>
-                {/* <div
-                  className={`${stock <= 0 ? "relative py-1 mb-2 text-right" : "relative text-right"
-                    }`}
-                >
-                  <Stock stock={stock} />
-                </div> */}
+                {!inStock && (
+                  <div className="py-1 mb-2 text-right">
+                    <Stock
+                      product={product}
+                      arrivalDate={product?.purchaseOrderInfo?.arrivalDate}
+                      stock={product.stock ?? product.OnHand}
+                      card={false}
+                    />
+                  </div>
+                )}
               </div>
               {/* {showingTranslateValue(product?.description)} */}
-              {showingTranslateValue(product?.description) &&
-                <p className="text-sm leading-6 text-gray-500 md:leading-6 text-right">
-                  {isReadMore
-                    ? <>{showingTranslateValue(
-                      product?.description
-                    )?.slice(0, 274)}{product?.description[lang]?.length > 274 && '...'}</>
-                    : showingTranslateValue(product?.description)}
-                  <br />
-                  {Object?.keys(product?.description)?.includes(lang)
-                    ? product?.description[lang]?.length > 274 && (
-                      <span
-                        onClick={() => setIsReadMore(!isReadMore)}
-                        className="read-or-hide"
-                      >
-                        {isReadMore
-                          ? t("common:moreInfo")
-                          : t("common:showLess")}
-                      </span>
-                    )
-                    : product?.description?.en?.length > 274 && (
-                      <span
-                        onClick={() => setIsReadMore(!isReadMore)}
-                        className="read-or-hide"
-                      >
-                        {isReadMore
-                          ? t("common:moreInfo")
-                          : t("common:showLess")}
-                      </span>
-                    )}
-                </p>}
+              {product?.description && (
+                <ProductDescription description={product.description} />
+              )}
 
               {/* מחיר */}
-              {/* <div className="flex items-center my-4">
+              {/* <div className="flex items-center my-1">
                 <Price
                   product={product}
                   price={price}
@@ -364,6 +352,8 @@ const ProductModal = ({
                   originalPrice={originalPrice}
                 />
               </div> */}
+
+              <span className="text-start text-sm truncate">{t("common:itemCode")}: {product?.ItemCode}</span>
 
               {/* אופציות מוצר (גדול קטן בינוני וכו') */}
               {/* <div className="mb-1">
@@ -428,42 +418,43 @@ const ProductModal = ({
               </div>
 
               <div className="flex items-center mt-4">
-                <div className="flex justify-between space-s-3 sm:space-s-4 w-full">
+                <div className="flex flex-col sm:flex-row sm:justify-between items-center space-s-3 gap-3 w-full">
                   {/* קטגוריה */}
                   <div className="flex flex-col items-start gap-2">
-                    <span className="font-serif font-semibold text-sm d-block">
-                      <span className="text-gray-700">
+                    <div className="flex items-center gap-1 text-sm text-gray-700">
+                      <span className="font-serif font-semibold">
                         {t("common:category")}:
-                      </span>{" "}
-                      <Link
-                        href={`/category/${categoryId}`}
-                      // href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                      >
-                        <button
-                          type="button"
-                          className="text-gray-600 font-serif font-medium underline ml-2 hover:text-customRed"
-                          onClick={() => {
-                            // setIsLoading(!isLoading);
-                            handleClose();
-                            clearInput();
-                          }}
-                        >
-                          {category_name}
-                        </button>
-                      </Link>
-                    </span>
+                      </span>
+                      <ol className="flex items-center gap-1 font-serif">
+                        <li>
+                          <Link
+                            href={`/category/${category?.code}`}
+                            className="text-gray-600 hover:text-customRed underline"
+                            onClick={() => setIsLoading(!isLoading)}
+                          >
+                            {category?.name}
+                          </Link>
+                        </li>
+                        {subCategory?.code && (
+                          <>
+                            <li className="flex items-center">
+                              <FiChevronLeft />
+                            </li>
+                            <li>
+                              <Link
+                                href={`/category/${category?.code}?sub=${subCategory?.code}`}
+                                className="text-gray-600 hover:text-customRed underline"
+                                onClick={() => setIsLoading(!isLoading)}
+                              >
+                                {subCategory.name}
+                              </Link>
+                            </li>
+                          </>
+                        )}
+                      </ol>
+                    </div>
 
                     <Tags product={product} />
-                  </div>
-
-                  {/* מידע נוסף */}
-                  <div>
-                    <button
-                      onClick={() => handleMoreInfo(product.ItemCode)}
-                      className="font-sans font-medium text-sm text-customRed hover:underline whitespace-nowrap"
-                    >
-                      {t("common:moreInfo")}
-                    </button>
                   </div>
                 </div>
               </div>

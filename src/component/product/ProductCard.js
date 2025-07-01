@@ -3,9 +3,9 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import { IoAdd, IoBagAddSharp, IoRemove } from "react-icons/io5";
+import dayjs from "dayjs";
 
 // Internal import
-
 import Price from "@component/common/Price";
 import Stock from "@component/common/Stock";
 import { notifyError } from "@utils/toast";
@@ -20,6 +20,7 @@ import { SidebarContext } from "@context/SidebarContext";
 import useTranslation from "next-translate/useTranslation";
 import getOfferNames from "@component/offer/getOfferNames";
 import useCart from "@hooks/useCart";
+import { LiaCartPlusSolid } from "react-icons/lia";
 
 const ProductCard = ({ product, attributes, offers = [] }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,7 +37,8 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
   // console.log('attributes in product cart',attributes)
 
   const handleAddItem = (p) => {
-    // if (!inStock) return notifyError(t("common:productStockOut"));
+    // const arrivalDate = product?.purchaseOrderInfo?.arrivalDate ? dayjs(product?.purchaseOrderInfo?.arrivalDate).format("DD/MM/YYYY") : null;
+    // if (!inStock) return notifyError(arrivalDate ? t("common:productStockOutUntil", { date: arrivalDate }) : t("common:productStockOutNow"));
 
     if (p?.variants?.length > 0) {
       setModalOpen(!modalOpen);
@@ -47,9 +49,9 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
       ...updatedProduct,
       title: p.title,
       id: p._id ?? p.ItemCode,
-      variant: p.prices || 0,
-      price: p.prices?.price || 0,
-      originalPrice: product.prices?.originalPrice || 0,
+      variant: p.prices ?? 0,
+      price: p.Price ?? p.prices?.price ?? 0,
+      originalPrice: p.Price ?? p.prices?.originalPrice ?? 0,
       slug: p.ItemCode,
     };
     addItem(newItem);
@@ -65,24 +67,6 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
   };
 
   const offerName = getOfferNames(offers, product, <br />);
-  // פונקציות מבצעים ישנים
-  // const getOfferName = (product) => {
-  //   if (product.isCombination) {
-  //     return getFirstOfferName(product?.variants);
-  //   } else {
-  //     return product?.prices?.offers[0]?.name;
-  //   }
-  // }
-
-  // const getFirstOfferName = (variants) => {
-  //   for (let variant of variants) {
-  //     let offer = variant.offers?.find(offer => offer.name);
-  //     if (offer) {
-  //       return offer.name;
-  //     }
-  //   }
-  //   return null; // במקרה שאין אף offer עם שם
-  // };
 
   return (
     <>
@@ -97,11 +81,13 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
         />
       )}
 
-      <div className="group box-border overflow-hidden flex justify-between rounded-md shadow-sm pe-0 flex-col items-center bg-white relative">
+      <div className={`group h-full box-border overflow-hidden flex justify-between rounded-md shadow-sm pe-0 flex-col items-center bg-white relative`}>
         <div className="w-full flex justify-between">
-          {/* {!inStock && <Stock product={product} stock={product.stock ?? product.OnHand} card right={2} top={2} />} */}
+          {/* {!inStock && <Stock product={product} arrivalDate={product?.purchaseOrderInfo?.arrivalDate} stock={product.stock ?? product.OnHand} card right={2} top={2} />} */}
           {/* אם אין מלאי למוצר מופיע אזל מהמלאי */}
-          <Discount product={product} title={offerName} />
+          {/* <Discount product={product} card
+          //  title={offerName}
+          /> */}
         </div>
         <div
           onClick={() => {
@@ -141,23 +127,27 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
             </h2>
           </div>
 
-          <div className="flex justify-between items-center gap-1 text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl">
-            {/* <Price
-              card
-              product={product}
-              currency={currency}
-              price={
-                product?.isCombination
-                  ? product?.variants[0]?.price
-                  : product?.prices?.price
-              }
-              originalPrice={
-                product?.isCombination
-                  ? product?.variants[0]?.originalPrice
-                  : product?.prices?.originalPrice
-              }
-            /> */}
-            <span className="text-sm truncate">{t("common:itemCode")}: {product?.ItemCode}</span>
+          <div className="flex justify-between items-center gap-1 text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl mt-1.5">
+            <div className="flex flex-col">
+              {/* <Price
+                card
+                product={product}
+                currency={currency}
+                price={
+                  product?.hasSpecialPrice && product?.specialPrice
+                    ? product.specialPrice.price
+                    : product?.isCombination
+                      ? product?.variants[0]?.price
+                      : product?.Price ?? product?.prices?.price
+                }
+                originalPrice={
+                  product?.isCombination
+                    ? product?.variants[0]?.originalPrice
+                    : product?.Price ?? product?.prices?.originalPrice
+                }
+              /> */}
+              <div className="text-xs font-bold text-gray-500 truncate max-w-[126px] -mt-0.5">{t("common:itemCode")}: {product?.ItemCode}</div>
+            </div>
 
             {inCart((product._id ?? product.ItemCode)) ? (
               <div>
@@ -166,10 +156,10 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                     item.id === (product._id ?? product.ItemCode) && (
                       <div
                         key={item.id}
-                        className="h-9 w-auto flex items-center justify-evenly py-1 px-2 bg-customRed text-white rounded"
+                        className="h-9 w-auto flex items-center justify-evenly bg-customRed text-white rounded"
                       >
                         <button
-                          className="pl-1"
+                          className="py-1 px-1 pr-2"
                           onClick={() =>
                             updateItemQuantity(item.id, item.quantity - 1)
                           }
@@ -178,11 +168,11 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                             <IoRemove />
                           </span>
                         </button>
-                        <p className="text-sm text-dark px-1 font-serif font-semibold">
+                        <p className="text-sm text-dark py-1 px-1 font-serif font-semibold">
                           {item.quantity}
                         </p>
                         <button
-                          className="pr-1"
+                          className="py-1 px-1 pl-2"
                           onClick={() =>
                             item?.variants?.length > 0
                               ? handleAddItem(item)
@@ -211,8 +201,8 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                     {t("common:options")}
                   </span>
                   :
-                  <span className="text-xl">
-                    <IoBagAddSharp />
+                  <span className="text-2xl">
+                    <LiaCartPlusSolid />
                   </span>}
               </button>
             )}

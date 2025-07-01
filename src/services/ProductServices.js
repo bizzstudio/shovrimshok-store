@@ -67,6 +67,11 @@ const ProductServices = {
     const encodedSlug = encodeURIComponent(slug);
     return requests.get(`/products/product/${encodedSlug}`);
   },
+
+  // משיכת מוצרים פופולריים
+  getPopularProducts: async () => {
+    return requests.get("/products/popular-products");
+  },
 };
 
 export default ProductServices;

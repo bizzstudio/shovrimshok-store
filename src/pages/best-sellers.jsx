@@ -1,5 +1,5 @@
-// shapira-store/pages/best-sellers.jsx
-import React, { useContext, useEffect, useState } from "react";
+// pages/best-sellers.jsx
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 
@@ -12,84 +12,136 @@ import AttributeServices from "@services/AttributeServices";
 import ProductCard from "@component/product/ProductCard";
 import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
+import { UserContext } from "@context/UserContext";
+import ProductCardSkeleton from "@component/preloader/ProductCardSkeleton";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
-const BestSellersPage = ({ allProd, attributes }) => {
+const BestSellersPage = () => {
     const { t } = useTranslation();
     const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
+    const { state: { userInfo } } = useContext(UserContext);
 
     // נשמור כאן את כל המוצרים מכל העמודים
-    const [allProducts, setAllProducts] = useState(allProd || []);
+    const [allProducts, setAllProducts] = useState([]);
     const [isLoadMore, setIsLoadMore] = useState(false);
-    console.log('all Products :>> ', allProducts);
+    const [attributes, setAttributes] = useState([]);
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
 
     // state לניהול page = עמוד נוכחי
     const [page, setPage] = useState(1);
+    const [sapSkip, setSapSkip] = useState(0);
 
     // האם יש עוד מוצרים בעמוד הבא?
     const [hasMore, setHasMore] = useState(true);
-
-    // ודא שה‑spinner הראשי לא נתקע
-    useEffect(() => setIsLoading(false), [allProducts, setIsLoading]);
 
     // מיון / סינון (לפי useFilter הקיים)
     const { productData } = useFilter(allProducts);
 
     const layoutTitle = t("common:bestSellers");
 
+    // נוסיף ref לאלמנט האחרון
+    const observerTarget = useRef(null);
+
+    // הוספת Intersection Observer עם תלויות מעודכנות
+    useEffect(() => {
+        if (!hasMore || isLoadMore || isInitialLoading) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const firstEntry = entries[0];
+                if (firstEntry.isIntersecting) {
+                    handleLoadMore();
+                }
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            }
+        );
+
+        const currentTarget = observerTarget.current;
+        if (currentTarget) {
+            observer.observe(currentTarget);
+        }
+
+        return () => {
+            if (currentTarget) {
+                observer.unobserve(currentTarget);
+            }
+        };
+    }, [hasMore, isLoadMore, page, allProducts, isInitialLoading]);
+
     // טעינת עמודים נוספים
     const handleLoadMore = async () => {
+        if (isLoadMore || !hasMore) return; // הגנה נוספת מפני קריאות כפולות
+
         const nextPage = page + 1;
         setIsLoadMore(true);
         try {
-            const res = await ProductServices.getShowingStoreProducts({
-                page: nextPage,
-            });
-            // אם אין מוצרים בעמוד הבא, סוגרים hasMore
+            const res = await ProductServices.getPopularProducts({ token: userInfo?.token });
+
             if (!res.products || res.products.length < 36) {
                 setHasMore(false);
             } else {
                 // מוסיפים את המוצרים החדשים למערך
-                setAllProducts([...allProducts, ...res.products]);
+                setAllProducts(prev => [...prev, ...res.products]);
                 setPage(nextPage);
+                setSapSkip(res.nextSapSkip ?? 0);
             }
         } catch (err) {
             console.error("Load More error: ", err);
+            setHasMore(false); // במקרה של שגיאה, נפסיק את הטעינה
         } finally {
             setIsLoadMore(false);
         }
     };
 
-    // רענון בעת פתיחת העמוד (או ריענון ידני בעתיד)
+    // טעינה ראשונית
     useEffect(() => {
-        const fetchProducts = async () => {
-            setIsLoading(true);
-            setPage(1); // התחלה מחדש
+        const fetchInitialData = async () => {
+            setIsInitialLoading(true);
+            setPage(1);
+            setAllProducts([]); // נקה מוצרים קודמים מיידי
+
             try {
-                const res = await ProductServices.getShowingStoreProducts({
-                    page: 1,
-                    limit: 36,
-                });
-                setAllProducts(res?.products || []);
-                setHasMore(res?.products?.length === 36); // אם יש פחות מ־36, אין עוד עמוד
+                // טען מוצרים ו-attributes במקביל
+                const [productsRes, attributesRes] = await Promise.all([
+                    ProductServices.getPopularProducts({ token: userInfo?.token }),
+                    AttributeServices.getShowingAttributes({})
+                ]);
+
+                setAllProducts(productsRes?.products || []);
+                setAttributes(attributesRes || []);
+                setSapSkip(productsRes.nextSapSkip ?? 0);
+                setHasMore(productsRes?.products?.length === 36);
             } catch (err) {
-                console.error("Reload products error: ", err);
+                console.error("Fetch initial data error: ", err);
+                setAllProducts([]);
+                setHasMore(false);
             } finally {
+                setIsInitialLoading(false);
                 setIsLoading(false);
             }
         };
 
-        fetchProducts();
-    }, []);
+        fetchInitialData();
+    }, [userInfo?.token]);
 
     return (
         <Layout title={layoutTitle} description="Best-sellers page">
             <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                 <div className="flex py-5">
                     <div className="w-full">
-                        {isLoading && page === 1 ? (
-                            // ספינר ראשוני רק בעמוד הראשון
-                            <Loading loading={isLoading} />
+                        {/* הכותרת מוצגת מיידי! */}
+                        <h2 className="text-center text-xl sm:text-2xl font-semibold mb-5 mt-6">
+                            <ShapiraTitle text={layoutTitle} height={70} key={layoutTitle} />
+                        </h2>
+
+                        {isInitialLoading ? (
+                            // <ProductCardSkeleton count={18} />
+                            // ספינר רק בטעינה ראשונית
+                            <Loading loading={isInitialLoading} />
                         ) : productData?.length === 0 ? (
                             <div className="flex flex-col items-center text-center mx-auto p-5 my-5">
                                 <Image
@@ -105,10 +157,6 @@ const BestSellersPage = ({ allProd, attributes }) => {
                             </div>
                         ) : (
                             <>
-                                {/* כותרת דינאמית עם תרגום / ברירת‑מחדל */}
-                                <h2 className="text-center text-xl sm:text-2xl font-semibold mb-5 mt-6">
-                                    <ShapiraTitle text={layoutTitle} height={70} key={layoutTitle} />
-                                </h2>
                                 <div
                                     className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3 ${productData?.length < 6 ? "justify-center" : ""
                                         }`}
@@ -125,27 +173,26 @@ const BestSellersPage = ({ allProd, attributes }) => {
                                     }}
                                 >
                                     {productData.map((product, i) => (
-                                        <ProductCard
-                                            key={product.ItemCode || i}
-                                            product={product}
-                                            attributes={attributes}
-                                            offers={offers}
-                                        />
+                                        <div
+                                            key={product.ItemCode + i}
+                                            ref={i === productData.length - 7 ? observerTarget : null}
+                                        >
+                                            <ProductCard
+                                                product={product}
+                                                attributes={attributes}
+                                                offers={offers}
+                                            />
+                                        </div>
                                     ))}
                                 </div>
 
-                                {hasMore && productData?.length > 0 && (
-                                    isLoadMore ? (
-                                        <Loading loading={isLoadMore} />
-                                    ) : (
-                                        <button
-                                            onClick={handleLoadMore}
-                                            className="w-auto mx-auto mt-6 flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
-                                        >
-                                            {t("common:loadMoreBtn")}
-                                        </button>
-                                    )
-                                )}
+                                {/* שיפור אלמנט המעקב */}
+                                <div
+                                    className="w-full py-4 mt-4"
+                                    style={{ minHeight: '100px' }}
+                                >
+                                    {isLoadMore && <Loading loading={isLoadMore} />}
+                                </div>
                             </>
                         )}
                     </div>
@@ -156,23 +203,3 @@ const BestSellersPage = ({ allProd, attributes }) => {
 };
 
 export default BestSellersPage;
-
-/* ===============================
-   =       getServerSideProps    =
-   =============================== */
-export const getServerSideProps = async () => {
-    const [data, attributes] = await Promise.all([
-        ProductServices.getShowingStoreProducts({
-            page: 1,
-            limit: 36,
-        }),
-        AttributeServices.getShowingAttributes({}),
-    ]);
-
-    return {
-        props: {
-            allProd: data?.products || [],
-            attributes,
-        },
-    };
-};

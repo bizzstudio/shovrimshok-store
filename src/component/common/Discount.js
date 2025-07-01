@@ -1,67 +1,36 @@
+// src/component/common/Discount.js
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useTranslation from "next-translate/useTranslation";
+import { FaGift } from "react-icons/fa6";
 
-const Discount = ({ discount, product, slug, modal, title = '', search, noMargin = false }) => {
+const Discount = ({ discount, product, slug, modal, card, title = '', search, noMargin = false }) => {
   const { getNumber } = useUtilsFunction();
   const { t } = useTranslation();
 
-  const price = product?.isCombination
-    ? getNumber(product?.variants[0]?.price)
-    : getNumber(product?.prices?.price);
-  const originalPrice = product?.isCombination
-    ? getNumber(product?.variants[0]?.originalPrice)
-    : getNumber(product?.prices?.originalPrice);
-
-  // const discountPercentage = price > 0 ? getNumber(
-  //   ((originalPrice - price) / originalPrice) * 100
-  // ) : null;
-  const discountPercentage = getNumber(
-    ((originalPrice - price) / originalPrice) * 100
-  );
+  // Check if product has special price discount
+  const discountPercent = product?.hasSpecialPrice && product?.specialPrice?.discountPercent;
 
   return (
     <>
-      {title ? <span className={
-        modal
-          ? "absolute text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
-          : slug
-            ? "text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
-            : search 
-            ? "text-customRed-darker text-sm text-center font-medium py-0.5 px-2"
-            : `text-center text-customRed-dark text-xs bg-customRed-light text-customRed-darker py-2 px-3 ${noMargin ? "" : "m-2"} rounded font-medium`
-      }  >
-        {title}
-      </span> :
+      {title ? (
+        <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-white bg-gradient-to-r from-mainColor-glow to-mainColor rounded-lg shadow-sm">
+          <FaGift size={12} />
+          {title}
+        </span>
+      ) : (
         <>
-          {discount > 1 && (
-            <span
-              className={
-                modal
-                  ? "absolute text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
-                  : slug
-                    ? "text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
-                    : `w-full flex items-center justify-center text-center text-customRed-dark text-xs bg-customRed-light text-customRed-darker py-2 px-2 ${noMargin ? "" : "m-2"} rounded font-medium`
-              }
-            >
-
-              {discount}% {t("common:off")}
+          {typeof discountPercent === 'number' && discountPercent > 1 && (
+            <span className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-white bg-gradient-to-r from-mainColor to-mainColor-glow rounded-lg shadow-sm ${modal ? 'absolute end-0 -top-2 outline outline-[8px] outline-white' :
+              slug ? 'absolute -start-2 -top-1 outline outline-[8px] outline-white' :
+                search ? 'mt-1' :
+                  card ? 'absolute start-3 top-3 z-10 outline outline-[7px] outline-white'
+                    : ''}`}>
+              <FaGift size={12} />
+              {Number(Number(discountPercent).toFixed(2))}% {t("common:off")}
             </span>
           )}
-          {discount === undefined && discountPercentage > 1 && (
-            <span
-              className={
-                modal
-                  ? "absolute text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 left-4 top-4"
-                  : slug
-                    ? "text-dark text-sm bg-customRed text-white text-center py-1 px-2 rounded font-medium z-10 flex w-fit"
-                    : `w-full flex items-center justify-center text-center text-customRed-dark text-xs bg-customRed-light text-customRed-darker py-2 px-2 ${noMargin ? "" : "m-2"} rounded font-medium`
-              }
-            >
-              {/* {Number(product.prices.discount).toFixed(0)}% Off */}
-              {discountPercentage} % {t("common:off")}
-            </span>
-          )}
-        </>}
+        </>
+      )}
     </>
   );
 };

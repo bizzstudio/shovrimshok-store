@@ -1,5 +1,5 @@
-// shapira-store/pages/category/[categoryId].jsx
-import React, { useContext, useEffect, useState } from "react";
+// pages/category/[categoryId].jsx
+import React, { useContext, useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 
@@ -14,33 +14,27 @@ import ProductCard from "@component/product/ProductCard";
 import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@component/preloader/Loading";
 import { useRouter } from "next/router";
+import ProductCardSkeleton from "@component/preloader/ProductCardSkeleton";
 
 // import categories titles
-import fruitTitle from "public/titles/fruitTitle.svg";
-import herbsTitle from "public/titles/herbsTitle.svg";
-import leguTitle from "public/titles/leguTitle.svg";
-import ourOffers from "public/titles/ourOffers.svg";
-import vegTitle from "public/titles/vegTitle.svg";
-import honeyTitle from "public/titles/honeyTitle.svg";
-import eggsTitle from "public/titles/eggsTitle.svg";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import { UserContext } from "@context/UserContext";
+import SortDropdown from "@component/common/SortDropdown";
 
-/*
- * עמוד קטגוריה שמקבל מה-SSR:
- *  - props.allProd (מוצרים בעמוד הראשון)
- *  - props.attributes
-*/
-const CategoryPage = ({ allProd, attributes }) => {
+const CategoryPage = () => {
     const { t } = useTranslation();
     const { isLoading, setIsLoading, offers, categories } = useContext(SidebarContext);
+    const { state: { userInfo } } = useContext(UserContext);
 
     // נשמור כאן את כל המוצרים מכל העמודים
-    const [allProducts, setAllProducts] = useState(allProd || []);
+    const [allProducts, setAllProducts] = useState([]);
     const [isLoadMore, setIsLoadMore] = useState(false);
-    // console.log('all Products :>> ', allProducts);
+    const [attributes, setAttributes] = useState([]);
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
 
     // state לניהול page = עמוד נוכחי
     const [page, setPage] = useState(1);
+    const [sapSkip, setSapSkip] = useState(0);
 
     // האם יש עוד מוצרים בעמוד הבא?
     const [hasMore, setHasMore] = useState(true);
@@ -58,19 +52,13 @@ const CategoryPage = ({ allProd, attributes }) => {
         childName = foundChild?.name || sub;
     }
 
-    // כדי לוודא שאין ספינר
-    useEffect(() => {
-        setIsLoading(false);
-    }, [allProducts, setIsLoading]);
-
     // useFilter עדיין יכול לעבוד: למשל אם צריך למיין מוצרים
-    // אבל צריך להזין את כל המוצרים שיש (allProducts):
-    const { productData } = useFilter(allProducts);
+    const { productData, setSortedField, sortedField } = useFilter(allProducts);
 
-    // בוחרים איזו תמונה להציג לפי parentName
+    // בוחרים איזו תמונה להציג לפי categoryName - מיידי!
     const [fallbackTitle, setFallbackTitle] = useState("");
 
-    // הגדרות לוגיקה לתמונה
+    // הגדרות לוגיקה לתמונה - מיידי!
     useEffect(() => {
         if (!parentName) return;
         let catName = parentName;
@@ -86,8 +74,43 @@ const CategoryPage = ({ allProd, attributes }) => {
     // title ל-Layout
     const layoutTitle = childName ? `${parentName} / ${childName}` : parentName;
 
-    // פונקציה לטעינת עמוד נוסף
+    // נוסיף ref לאלמנט האחרון
+    const observerTarget = useRef(null);
+
+    // הוספת Intersection Observer עם תלויות מעודכנות
+    useEffect(() => {
+        if (!hasMore || isLoadMore || isInitialLoading) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const firstEntry = entries[0];
+                if (firstEntry.isIntersecting) {
+                    handleLoadMore();
+                }
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            }
+        );
+
+        const currentTarget = observerTarget.current;
+        if (currentTarget) {
+            observer.observe(currentTarget);
+        }
+
+        return () => {
+            if (currentTarget) {
+                observer.unobserve(currentTarget);
+            }
+        };
+    }, [hasMore, isLoadMore, page, allProducts, isInitialLoading]);
+
+    // טעינת עמודים נוספים
     const handleLoadMore = async () => {
+        if (isLoadMore || !hasMore) return; // הגנה נוספת מפני קריאות כפולות
+
         const nextPage = page + 1;
         setIsLoadMore(true);
         try {
@@ -95,47 +118,65 @@ const CategoryPage = ({ allProd, attributes }) => {
                 category: categoryId,
                 subcategories: sub,
                 page: nextPage,
+                sapSkip: sapSkip,
+                token: userInfo?.token,
             });
             // אם אין מוצרים בעמוד הבא, סוגרים hasMore
             if (!res.products || res.products.length < 36) {
                 setHasMore(false);
             } else {
                 // מוסיפים את המוצרים החדשים למערך
-                setAllProducts([...allProducts, ...res.products]);
+                setAllProducts(prev => [...prev, ...res.products]);
                 setPage(nextPage);
+                setSapSkip(res.nextSapSkip ?? 0);
             }
         } catch (err) {
             console.error("Load More error: ", err);
+            setHasMore(false); // במקרה של שגיאה, נפסיק את הטעינה
         } finally {
             setIsLoadMore(false);
         }
     };
 
-    // משיכת המוצרים בעת שינוי קטגוריה
+    // משיכת המוצרים בעת שינוי קטגוריה - רק כאן יש טעינה
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchInitialData = async () => {
             if (!categoryId) return;
 
-            setIsLoading(true);
-            setPage(1); // התחלה מחדש
+            setIsInitialLoading(true);
+            setPage(1);
+            setAllProducts([]); // נקה מוצרים קודמים מיידי
+
             try {
-                const res = await ProductServices.getShowingStoreProducts({
-                    category: categoryId,
-                    subcategories: sub,
-                    page: 1,
-                    limit: 36,
-                });
-                setAllProducts(res?.products || []);
-                setHasMore(res?.products?.length === 36); // אם יש פחות מ־36, אין עוד עמוד
+                // טען מוצרים ו-attributes במקביל
+                const [productsRes, attributesRes] = await Promise.all([
+                    ProductServices.getShowingStoreProducts({
+                        category: categoryId,
+                        subcategories: sub,
+                        page: 1,
+                        limit: 36,
+                        sapSkip: 0,
+                        token: userInfo?.token,
+                    }),
+                    AttributeServices.getShowingAttributes({})
+                ]);
+
+                setAllProducts(productsRes?.products || []);
+                setAttributes(attributesRes || []);
+                setSapSkip(productsRes.nextSapSkip ?? 0);
+                setHasMore(productsRes?.products?.length === 36);
             } catch (err) {
-                console.error("Reload products error: ", err);
+                console.error("Fetch initial data error: ", err);
+                setAllProducts([]);
+                setHasMore(false);
             } finally {
+                setIsInitialLoading(false);
                 setIsLoading(false);
             }
         };
 
-        fetchProducts();
-    }, [categoryId, sub]);
+        fetchInitialData();
+    }, [categoryId, sub, userInfo?.token]);
 
     return (
         <Layout title={layoutTitle || "קטגוריה"} description="This is category page">
@@ -143,7 +184,28 @@ const CategoryPage = ({ allProd, attributes }) => {
                 <div className="flex sm:py-5 py-3">
                     <div className="flex w-full">
                         <div className="w-full">
-                            {productData?.length === 0 ? (
+                            {/* הכותרת מוצגת מיידי! */}
+                            {fallbackTitle && (
+                                <div className="flex justify-center items-center mb-3">
+                                    <ShapiraTitle text={fallbackTitle} height={70} key={fallbackTitle} />
+                                </div>
+                            )}
+
+                            {/* הוספת רכיב המיון */}
+                            {!isInitialLoading && productData?.length > 0 && (
+                                <div className="flex justify-end mb-4">
+                                    <SortDropdown
+                                        sortedField={sortedField}
+                                        setSortedField={setSortedField}
+                                    />
+                                </div>
+                            )}
+
+                            {isInitialLoading ? (
+                                // ספינר רק בטעינה ראשונית
+                                // <ProductCardSkeleton count={18} />
+                                <Loading loading={isInitialLoading} />
+                            ) : productData?.length === 0 ? (
                                 <div className="flex flex-col items-center text-center align-middle mx-auto p-5 my-5">
                                     <Image
                                         className="my-4"
@@ -156,17 +218,6 @@ const CategoryPage = ({ allProd, attributes }) => {
                                         {t("common:sorryText")}
                                     </h2>
                                 </div>
-                            ) : (
-                                // אחרת מציגים כותרת "קטגוריה / תת קטגוריה" מעוצבת
-                                <div className="flex justify-center items-center mb-3">
-                                    {/* <h6 className="text-sm font-serif">{fallbackTitle}</h6> */}
-                                    <ShapiraTitle text={fallbackTitle} height={70} key={fallbackTitle} />
-                                </div>
-                            )}
-
-                            {isLoading && page === 1 ? (
-                                // ספינר ראשוני רק בעמוד הראשון
-                                <Loading loading={isLoading} />
                             ) : (
                                 <>
                                     <div
@@ -185,25 +236,28 @@ const CategoryPage = ({ allProd, attributes }) => {
                                         }}
                                     >
                                         {productData.map((product, i) => (
-                                            <ProductCard
-                                                key={product.ItemCode || i}
-                                                product={product}
-                                                attributes={attributes}
-                                                offers={offers}
-                                            />
+                                            <div
+                                                key={product.ItemCode + i}
+                                            >
+                                                <ProductCard
+                                                    product={product}
+                                                    attributes={attributes}
+                                                    offers={offers}
+                                                />
+                                            </div>
                                         ))}
                                     </div>
 
-                                    {/* כפתור "Load More" – נטען עמוד נוסף מהשרת */}
-                                    {hasMore && productData?.length > 0 && (
-                                        isLoadMore ? <Loading loading={isLoadMore} /> :
-                                            <button
-                                                onClick={handleLoadMore}
-                                                className="w-auto mx-auto mt-6 flex items-center gap-2 font-semibold cursor-pointer transition-all bg-customRed text-white px-6 py-1.5 h-11 rounded-lg border-customRed-dark border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
-                                            >
-                                                {t("common:loadMoreBtn")}
-                                            </button>
-                                    )}
+
+                                    <div ref={observerTarget} />
+
+                                    {/* שיפור אלמנט המעקב */}
+                                    <div
+                                        className="w-full py-4 mt-4"
+                                        style={{ minHeight: '100px' }}
+                                    >
+                                        {isLoadMore && <Loading loading={isLoadMore} />}
+                                    </div>
                                 </>
                             )}
                         </div>
@@ -215,28 +269,3 @@ const CategoryPage = ({ allProd, attributes }) => {
 };
 
 export default CategoryPage;
-
-// ===============================
-// =       getServerSideProps    =
-// ===============================
-export const getServerSideProps = async (context) => {
-    const { categoryId, sub } = context.query;
-
-    // 1) נטען את העמוד הראשון (page=1)
-    const [data, attributes] = await Promise.all([
-        ProductServices.getShowingStoreProducts({
-            category: categoryId,
-            subcategories: sub,
-            page: 1,
-            limit: 36,
-        }),
-        AttributeServices.getShowingAttributes({}),
-    ]);
-
-    return {
-        props: {
-            allProd: data?.products || [],
-            attributes,
-        },
-    };
-};

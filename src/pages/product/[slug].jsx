@@ -17,6 +17,7 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
+import dayjs from "dayjs";
 
 // Internal import
 import Price from "@component/common/Price";
@@ -38,9 +39,12 @@ import relatedTitle from 'public/titles/relatedProducts.svg'
 import useCart from "@hooks/useCart";
 import getOfferNames from "@component/offer/getOfferNames";
 import MainBT from "@component/button/MainBT";
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import ProductDescription from "@component/product/ProductDescription";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   console.log('product :>> ', product);
+  // console.log('relatedProducts :>> ', relatedProducts);
   const router = useRouter();
 
   const { lang, showingTranslateValue, getNumber, currency } = useUtilsFunction();
@@ -52,8 +56,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const [price, setPrice] = useState(0);
   const [img, setImg] = useState("");
   const [originalPrice, setOriginalPrice] = useState(0);
-  // const [stock, setStock] = useState(0);
-  const [stock, setStock] = useState(Infinity);
+  const [stock, setStock] = useState(0);
+  // const [stock, setStock] = useState(Infinity);
   const [discount, setDiscount] = useState(0);
   const [selectVariant, setSelectVariant] = useState({});
   const [isReadMore, setIsReadMore] = useState(true);
@@ -63,6 +67,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   const { items } = useCart();
   const [offerTitle, setOfferTitle] = useState();
+
+  const inStock = product?.stock > 0 || product?.OnHand > 0;
 
   // עדכון מחיר המוצר על סמך המבצע שלו
   useEffect(() => {
@@ -147,10 +153,10 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     //   setPrice(price);
     //   setOriginalPrice(originalPrice);
     // } else {
-    // setStock(product?.OnHand ?? product?.stock ?? 0);
+    setStock(product?.stock ?? 0);
     setImg(product?.image?.[0]);
-    const price = getNumber(product?.prices?.price ?? product?.LastPurPrc ?? 0);
-    const originalPrice = getNumber(product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
+    const price = getNumber(product?.Price ?? product?.prices?.price ?? product?.LastPurPrc ?? 0);
+    const originalPrice = getNumber(product?.Price ?? product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
     const discountPercentage = getNumber(
       ((originalPrice - price) / originalPrice) * 100
     );
@@ -162,7 +168,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     product?.prices?.discount,
     product?.prices?.originalPrice,
     product?.prices?.price,
-    // product?.stock,
+    product?.Price,
+    product?.stock,
     product.variants,
     selectVa,
     selectVariant,
@@ -189,7 +196,10 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     // if (p.variants.length === 1 && p.variants[0].quantity < 1)
     //   return notifyError(t("common:productStockOut"));
     // if (notAvailable) return notifyError('This Variation Not Available Now!');
-    // if (stock <= 0) return notifyError(t("common:productStockOut"));
+
+    // const arrivalDate = product?.purchaseOrderInfo?.arrivalDate ? dayjs(product?.purchaseOrderInfo?.arrivalDate).format("DD/MM/YYYY") : null;
+    // if (!inStock) return notifyError(arrivalDate ? t("common:productStockOutUntil", { date: arrivalDate }) : t("common:productStockOutNow"));
+
     // console.log('selectVariant', selectVariant);
 
     // if (
@@ -264,12 +274,14 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const { t } = useTranslation();
 
   // category name slug
-  // const category_name = showingTranslateValue(product?.category?.name)
+  // const categoryName = showingTranslateValue(product?.category?.name)
   //   .toLowerCase()
   // .replace(/[^A-Z0-9]+/gi, "-");
 
   const categoryId = product?.ItemCode?.slice(0, 4);
-  const category_name = categories?.find((cat) => cat.code === categoryId)?.name;
+  const subCategoryId = product?.ItemCode?.slice(0, 8);
+  const category = categories?.find((cat) => cat.code == categoryId);
+  const subCategory = categories?.find((cat) => cat.code == categoryId)?.children?.find((child) => child.code == subCategoryId);
 
   return (
     <>
@@ -284,30 +296,52 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
             <div className="mx-auto px-3 lg:px-10 max-w-screen-2xl">
               <div className="flex items-center pb-4">
                 <ol className="flex items-center w-full overflow-hidden font-serif">
+
                   <li className="text-sm pr-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold">
                     <Link href="/">{t("common:HOME")}</Link>
                   </li>
+
                   <li className="text-sm mt-[1px]">
                     {" "}
                     <FiChevronLeft />{" "}
                   </li>
+
                   <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold ">
-                    <Link
-                      href={`/category/${categoryId}`}
-                    // href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                    >
+                    <Link href={`/category/${categoryId}`}>
                       <button
                         type="button"
                         onClick={() => setIsLoading(!isLoading)}
                       >
-                        {category_name}
+                        {category?.name}
                       </button>
                     </Link>
                   </li>
+
                   <li className="text-sm mt-[1px]">
                     {" "}
                     <FiChevronLeft />{" "}
                   </li>
+
+                  {subCategory?.code && subCategory?.name && (
+                    <>
+                      <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold ">
+                        <Link href={`/category/${categoryId}?sub=${subCategory?.code}`}>
+                          <button
+                            type="button"
+                            onClick={() => setIsLoading(!isLoading)}
+                          >
+                            {subCategory?.name}
+                          </button>
+                        </Link>
+                      </li>
+
+                      <li className="text-sm mt-[1px]">
+                        {" "}
+                        <FiChevronLeft />{" "}
+                      </li>
+                    </>
+                  )}
+
                   <li className="text-sm px-1 transition duration-200 ease-in ">
                     {product?.ItemName ?? showingTranslateValue(product?.title)}
                   </li>
@@ -315,47 +349,34 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
               </div>
               {/* <div className="rounded-lg p-3 lg:p-12 bg-white"> */}
               <div className="w-full flex flex-col items-center justify-center lg:flex-row rounded-lg p-3 lg:p-12 bg-white">
-                <div className="max-w-lg flex-shrink-0 lg:block md:w-6/12">
-                  <Discount slug product={product} discount={discount} title={offerTitle}
-                  // title={product.isCombination ? (selectVariant?.offers?.length > 0 ? (
-                  //   selectVariant.offers.reduce((title, obj) => (
-                  //     <>
-                  //       {title}
-                  //       {title && <br />}
-                  //       {obj.name}
-                  //     </>
-                  //   ), null)
-                  // ) : '') : (product?.prices?.offers?.length > 0 ? (
-                  //   product?.prices?.offers.reduce((title, obj) => (
-                  //     <>
-                  //       {title}
-                  //       {title && <br />}
-                  //       {obj.name}
-                  //     </>
-                  //   ), null)
-                  // ) : '')}
-                  />
+                <div className="w-fit max-w-full flex flex-col items-center justify-center relative">
+                  {/* <Discount slug product={product} /> */}
 
                   {product.image?.[0] ? (
-                    <Image
-                      src={img || product.image?.[0]}
-                      alt="product"
-                      width={650}
-                      height={650}
-                      priority
-                      className="max-h-[400px] object-contain"
-                    />
+                    <div className="w-full h-[300px] max-w-[400px] flex items-center justify-center select-none">
+                      <Image
+                        src={img || product.image?.[0]}
+                        alt="product"
+                        width={650}
+                        height={650}
+                        priority
+                        className="w-full sm:min-w-[300px] min-w-[70vw] max-h-[300px] object-contain"
+                      />
+                    </div>
                   ) : (
-                    <Image
-                      src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                      width={650}
-                      height={650}
-                      alt="product Image"
-                    />
+                    <div className="w-full h-[300px] max-w-[400px] flex items-center justify-center select-none">
+                      <Image
+                        src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                        width={650}
+                        height={650}
+                        alt="product Image"
+                        className="w-full sm:min-w-[300px] min-w-[70vw] max-h-[300px] object-contain"
+                      />
+                    </div>
                   )}
 
                   {product?.image?.length > 1 && (
-                    <div className="flex flex-row flex-wrap mt-4 border-t">
+                    <div className="flex flex-row flex-wrap mt-4 border-t w-full">
                       <ImageCarousel
                         images={product.image}
                         handleChangeImage={handleChangeImage}
@@ -379,9 +400,16 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                         </span>
                       </p>
 
-                      {/* <div className="pt-2">
-                        <Stock stock={stock} card={false} />
-                      </div> */}
+                      {/* {!inStock && (
+                        <div className="pt-2">
+                          <Stock
+                            product={product}
+                            arrivalDate={product?.purchaseOrderInfo?.arrivalDate}
+                            stock={product.stock ?? product.OnHand}
+                            card={false}
+                          />
+                        </div>
+                      )} */}
                     </div>
 
                     {/* מחיר */}
@@ -416,37 +444,10 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                       ))}
                     </div> */}
 
-                    <div>
-                      {showingTranslateValue(product?.description) &&
-                        <div className="text-sm leading-6 text-gray-500 md:leading-7">
-                          {isReadMore
-                            ? <>{showingTranslateValue(
-                              product?.description
-                            )?.slice(0, 220)}{product?.description[lang]?.length > 220 && '...'}</>
-                            : showingTranslateValue(product?.description)}
-                          <br />
-                          {Object?.keys(product?.description)?.includes(lang)
-                            ? product?.description[lang]?.length > 230 && (
-                              <span
-                                onClick={() => setIsReadMore(!isReadMore)}
-                                className="read-or-hide"
-                              >
-                                {isReadMore
-                                  ? t("common:moreInfo")
-                                  : t("common:showLess")}
-                              </span>
-                            )
-                            : product?.description?.en?.length > 230 && (
-                              <span
-                                onClick={() => setIsReadMore(!isReadMore)}
-                                className="read-or-hide"
-                              >
-                                {isReadMore
-                                  ? t("common:moreInfo")
-                                  : t("common:showLess")}
-                              </span>
-                            )}
-                        </div>}
+                    <div className="whitespace-pre-line">
+                      {product?.description && (
+                        <ProductDescription description={product.description} />
+                      )}
 
                       <div className="flex items-center mt-4">
                         <div className="flex items-center justify-start space-s-3 sm:space-s-4 w-full gap-3">
@@ -483,24 +484,40 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                         </div>
                       </div>
 
-                      <div className="flex flex-col mt-4">
-                        <span className="font-serif font-semibold py-1 text-sm d-block">
-                          <span className="text-gray-800">
+                      <div className="flex flex-col items-start gap-2 mt-4">
+                        <div className="flex items-center gap-1 text-sm text-gray-700">
+                          <span className="font-serif font-semibold">
                             {t("common:category")}:
-                          </span>{" "}
-                          <Link
-                            href={`/category/${categoryId}`}
-                          // href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                          >
-                            <button
-                              type="button"
-                              className="text-gray-600 font-serif font-medium underline ml-2 hover:text-teal-600"
-                              onClick={() => setIsLoading(!isLoading)}
-                            >
-                              {category_name}
-                            </button>
-                          </Link>
-                        </span>
+                          </span>
+                          <ol className="flex items-center gap-1 font-serif">
+                            <li>
+                              <Link
+                                href={`/category/${category?.code}`}
+                                className="text-gray-600 hover:text-mainColor underline"
+                                onClick={() => setIsLoading(!isLoading)}
+                              >
+                                {category?.name}
+                              </Link>
+                            </li>
+                            {subCategory?.code && (
+                              <>
+                                <li className="flex items-center">
+                                  <FiChevronLeft />
+                                </li>
+                                <li>
+                                  <Link
+                                    href={`/category/${category?.code}?sub=${subCategory?.code}`}
+                                    className="text-gray-600 hover:text-mainColor underline"
+                                    onClick={() => setIsLoading(!isLoading)}
+                                  >
+                                    {subCategory.name}
+                                  </Link>
+                                </li>
+                              </>
+                            )}
+                          </ol>
+                        </div>
+
                         <Tags product={product} />
                       </div>
 
@@ -585,13 +602,14 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   {/* <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold font-serif hover:text-gray-600">
                     {t("common:relatedProducts")}
                   </h3> */}
-                  <img src={relatedTitle.src} alt="Related products" className="h-24 mx-auto animate-fadeIn" />
-                  <div className="flex">
+                  {/* <img src={relatedTitle.src} alt="Related products" className="h-24 mx-auto animate-fadeIn" /> */}
+                  <ShapiraTitle text={t("common:relatedProducts")} height={70} key={t("common:relatedProducts")} />
+                  <div className="flex mt-5">
                     <div className="w-full">
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
                         {relatedProducts?.slice(1, 13).map((product, i) => (
                           <ProductCard
-                            key={(product._id ?? product.ItemCode)}
+                            key={(product._id ?? product.ItemCode) + i}
                             product={product}
                             attributes={attributes}
                             offers={offers}
@@ -613,12 +631,16 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 // you can use getServerSideProps alternative for getStaticProps and getStaticPaths
 export const getServerSideProps = async (context) => {
   const { slug } = context.params;
+  const { cookies } = context.req;
+
+  const token = cookies.userInfo ? JSON.parse(cookies.userInfo).token : null;
 
   const [data, attributes] = await Promise.all([
     ProductServices.getShowingStoreProducts({
       itemCode: slug,
       subcategories: slug.slice(0, 8), // תת הקטגוריה של המוצר
       limit: 13, // כדי שיהיה מקום ל־related
+      token,
     }),
     AttributeServices.getShowingAttributes({}),
   ]);
