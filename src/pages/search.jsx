@@ -24,6 +24,7 @@ const Search = () => {
 
   // שמירה של כל המוצרים שכבר נטענו
   const [allProducts, setAllProducts] = useState([]);
+  console.log('allProducts: ', allProducts);
   const [isLoadMore, setIsLoadMore] = useState(false);
   const [attributes, setAttributes] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
