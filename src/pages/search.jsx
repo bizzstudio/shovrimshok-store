@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 // אם תרצה (לא חובה), תוכל להוסיף כאן import לתמונות כמו fruitTitle, etc.
 
 const Search = ({ products, attributes, totalDoc }) => {
+  console.log('products: ', products)
   const { t } = useTranslation();
   const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
 
