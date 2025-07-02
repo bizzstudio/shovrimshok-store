@@ -119,12 +119,15 @@ const useLoginSubmit = (setModalOpen) => {
     }
 
     // איפוס סיסמה
-    if (data.verifyEmail) {
-      CustomerServices.forgetPassword({ verifyEmail: data.verifyEmail })
+    if (data.companyCodeOrEmail) {
+      CustomerServices.forgetPassword({
+        userInput: data.companyCodeOrEmail,
+        // FederalTaxID: data.FederalTaxID,
+      })
         .then((res) => {
           setLoading(false);
           notifyApiResponse(res, true);
-          setValue("verifyEmail");
+          setValue("companyCodeOrEmail");
         })
         .catch((err) => {
           setLoading(false);

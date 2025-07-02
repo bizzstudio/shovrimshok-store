@@ -1,19 +1,17 @@
-import Link from "next/link";
+// src/component/login/ResetPassword.js 
 import React from "react";
-import { FiMail, FiLock } from "react-icons/fi";
+import { FiMail } from "react-icons/fi";
 
 // Internal import
 import Error from "@component/form/Error";
 import InputArea from "@component/form/InputArea";
 import useLoginSubmit from "@hooks/useLoginSubmit";
-import forgetPassTitle from "public/titles/forgetPassTitle.svg";
 import useTranslation from "next-translate/useTranslation";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import MainBT from "@component/button/MainBT";
 
 const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
-  const { handleSubmit, submitHandler, register, errors, loading } =
-    useLoginSubmit(setModalOpen);
+  const { handleSubmit, submitHandler, register, errors, loading } = useLoginSubmit(setModalOpen);
   const { t } = useTranslation();
 
   return (
@@ -29,6 +27,15 @@ const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
           <div className="form-group">
             <InputArea
               register={register}
+              label={t("common:companyCodeOrEmail")}
+              name="companyCodeOrEmail"
+              type="text"
+              placeholder={t("common:enterCompanyCodeOrEmail")}
+              Icon={FiMail}
+            />
+            <Error errorName={errors.companyCodeOrEmail} />
+            {/* <InputArea
+              register={register}
               label={t("common:email")}
               name="verifyEmail"
               type="email"
@@ -36,6 +43,18 @@ const ResetPassword = ({ setShowResetPassword, setModalOpen }) => {
               Icon={FiMail}
             />
             <Error errorName={errors.verifyEmail} />
+
+            <div className="mt-3">
+              <InputArea
+                register={register}
+                label={t("common:idNumberOrLicense")}
+                name="FederalTaxID"
+                type="text"
+                placeholder={t("common:idNumberOrLicense")}
+                Icon={FiHash}
+              />
+              <Error errorName={errors.FederalTaxID} />
+            </div> */}
           </div>
 
           {loading ? (

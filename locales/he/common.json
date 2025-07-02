@@ -571,6 +571,8 @@
     "partiallyPaid": "שולם חלקית",
     "downloadPDF": "הורדה/צפייה במסמך",
     "orderNotFound": "ההזמנה לא נמצאה",
+    "billingAddress": "כתובת לחיוב",
+    "shippingAddress": "כתובת למשלוח",
   
   "/=================* Search * =================/": "",
 

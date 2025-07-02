@@ -43,7 +43,7 @@ import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import ProductDescription from "@component/product/ProductDescription";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
-  console.log('product :>> ', product);
+  // console.log('product :>> ', product);
   // console.log('relatedProducts :>> ', relatedProducts);
   const router = useRouter();
 

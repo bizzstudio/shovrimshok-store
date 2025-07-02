@@ -615,6 +615,8 @@
   "partiallyPaid": "Partially Paid",
   "downloadPDF": "Download/View Document",
   "orderNotFound": "Order Not Found",
+  "billingAddress": "Billing Address",
+  "shippingAddress": "Shipping Address",
 
   "/=================* Search * =================/": "",
 

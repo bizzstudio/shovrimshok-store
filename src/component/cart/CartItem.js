@@ -122,17 +122,19 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
   //   }
   // }, [item.quantity, item?.prices?.offers, item.prices.price]);
 
+  console.log(item);
+
   return (
     <div className="group w-full h-auto flex gap-4 justify-start items-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0">
       <div onClick={() => router.push(`/product/${item?.ItemCode}`)} className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0 cursor-pointer"
       >
         <img
           key={item.id}
-          src={item.image || "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"}
+          src={Array.isArray(item.image) && item.image?.[0] ? item.image[0] : "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"}
           width={60}
           height={60}
           alt={item.ItemName?.slice(0, 15) || item.title}
-          style={{ aspectRatio: 1, objectFit: 'contain' }}
+          className="max-w-[60px] max-h-[60px] min-w-[60px] min-h-[60px] aspect-square object-contain"
         />
       </div>
       <div className="flex justify-between items-center w-full overflow-hidden">
