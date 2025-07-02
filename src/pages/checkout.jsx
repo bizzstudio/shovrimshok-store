@@ -1,4 +1,4 @@
-// checkout.jsx
+// src/pages/checkout.jsx
 import React, { useContext, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { CardElement } from "@stripe/react-stripe-js";
