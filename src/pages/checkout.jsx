@@ -347,12 +347,12 @@ const Checkout = () => {
                         <div className="w-full 2xl:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
                           <CiUser className="text-[41px] text-customBlue group-hover:text-white transition ease-in-out duration-300" />
                           <div className="flex flex-col items-start">
-                            <h2 className="text-xl">{userInfo?.CardName}</h2>
+                            <h2 className="text-xl truncate max-w-[90%]" title={userInfo?.CardName}>{userInfo?.CardName}</h2>
                             {city && address &&
-                              <p className="text-base text-gray-400 -mt-1">{city}, {address}</p>
+                              <p className="text-base text-gray-400 -mt-1 truncate max-w-[200px]" title={`${city}, ${address}`}>{city}, {address}</p>
                             }
                           </div>
-                          <button type="button" className="underline mr-auto hover:text-customRed transition ease-in-out duration-200" onClick={() => setModalOpen(true)}>
+                          <button type="button" className="underline w-max mr-auto hover:text-customRed transition ease-in-out duration-200" onClick={() => setModalOpen(true)}>
                             {t("common:changeAddress")}
                           </button>
                         </div>

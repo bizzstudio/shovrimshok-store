@@ -2,14 +2,46 @@ import dayjs from "dayjs";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+
 // Internal import
 import OrderTable from "@component/order/OrderTable";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import newLogo from "public/newlogo.svg"
 import useTranslation from "next-translate/useTranslation";
 import Cookies from "js-cookie";
 import 'dayjs/locale/he'; // ייבוא תאריכים בעברית
 import useGetSetting from "@hooks/useGetSetting";
+import { getStatusColor, getStatusText, shouldShowPrice } from "@component/order/OrderHistory";
+
+// פונקציה לעיבוד הערות הלקוח וחילוץ שיטת איסוף
+const processComments = (comments) => {
+  if (!comments) {
+    return { cleanedComments: null, deliveryMethod: null };
+  }
+
+  // חיפוש המשפט האחרון שמתחיל ב"שיטת איסוף:"
+  const lines = comments.trim().split('\n');
+  const lastLine = lines[lines.length - 1].trim();
+
+  let deliveryMethod = null;
+  let cleanedComments = comments;
+
+  if (lastLine.includes('שיטת איסוף:')) {
+    // מחיקת השורה האחרונה
+    cleanedComments = lines.slice(0, -1).join('\n').trim();
+
+    // קביעת שיטת האיסוף
+    if (lastLine.includes('איסוף עצמי')) {
+      deliveryMethod = 'pickup';
+    } else if (lastLine.includes('משלוח')) {
+      deliveryMethod = 'shipping';
+    }
+  }
+
+  return {
+    cleanedComments: cleanedComments || null,
+    deliveryMethod
+  };
+};
 
 const Invoice = ({ data, printRef, globalSetting, currency }) => {
   // console.log('invoice data',data)
@@ -32,23 +64,40 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
       break;
   };
 
+  // עיבוד הערות הלקוח
+  const { cleanedComments, deliveryMethod } = processComments(data?.Comments);
+
   return (
     <div ref={printRef} className="print:bg-white print:p-0 print:shadow-none">
       <div className="bg-white p-4 rounded-t-md print:rounded-none print:p-2 print:border-none">
         <div className="flex flex-row justify-between items-start pb-2 border-b border-gray-200 print:pb-1 print:mb-2 print:border-b print:border-gray-300">
           <div>
             <h1 className="font-bold font-serif text-base uppercase print:text-sm">{t("common:order")}</h1>
-            <h6 className="text-gray-700 text-xs print:text-xs">
+            <h6 className="text-gray-700 text-xs print:text-xs mb-1">
               <b>{t("common:DocStatus")}: </b>
-              <span className={data?.DocStatus === "O" ? "text-green-600" : "text-red-500"}>
-                {data?.DocStatus === "O" ? t("common:open") : t("common:close")}
+              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(data?.DocumentStatus)}`}>
+                {getStatusText(data?.DocumentStatus, t)}
               </span>
             </h6>
-            {/* הערות הלקוח להזמנה */}
-            {data?.Comments && (
+            {/* הערות הלקוח להזמנה - מנוקות משיטת איסוף */}
+            {cleanedComments && (
               <div>
-                <h6 className="text-gray-700 text-xs print:text-xs"><b>{t("common:notes")}: </b>{data?.Comments}</h6>
+                <h6 className="text-gray-700 text-xs print:text-xs">
+                  <b>{t("common:notes")}: </b>{cleanedComments}
+                </h6>
               </div>
+            )}
+            
+            {/* אפשרויות הזמנה - מבוסס על הערות הלקוח */}
+            {deliveryMethod && (
+              <h6 className="text-gray-700 text-xs print:text-xs">
+                <b>{t("common:orderOptions")}: </b>
+                {
+                  deliveryMethod === 'shipping' ? t("common:shipping") :
+                    deliveryMethod === 'pickup' ? t("common:pickup") :
+                      "-"
+                }
+              </h6>
             )}
           </div>
           <div className="text-right">
@@ -113,36 +162,49 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
                 <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-center print:px-1 print:py-0.5">
                   {t("common:itemPrice")}
                 </th>
-                <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-right print:px-1 print:py-0.5">
+                <th className="font-serif font-semibold px-2 py-1 text-gray-700 uppercase tracking-wider text-center print:px-1 print:py-0.5">
                   {t("common:amount")}
                 </th>
               </tr>
             </thead>
-            <OrderTable data={data} currency={currency} compact />
+            <OrderTable data={data} currency={currency} />
           </table>
         </div>
       </div>
       {/* סיכום תשלום */}
-      <div className="bg-red-100 border-t border-b border-gray-200 p-4 print:p-2 print:border-t print:border-b print:border-gray-300">
-        <div className="flex flex-row justify-between pt-2 print:pt-1 gap-2">
-          <div className="flex flex-col">
-            <span className="mb-0.5 font-bold font-serif text-xs uppercase text-gray-600 block">
-              {t("common:VatSum")}
+      <div className="bg-mainColor-light border-t border-b border-gray-200 p-4 print:p-2 print:border-t print:border-b print:border-gray-300">
+        <div className="flex flex-col space-y-3 pt-2 print:pt-1">
+          <div className="flex flex-row justify-between items-center">
+            <span className="font-bold font-serif text-xs uppercase text-gray-600">
+              {t("common:costsBeforeVAT")}
             </span>
-            <span className="text-xs text-gray-500 font-semibold font-serif block">
-              {getNumberTwo(data?.VatSum)}
-              {" "}
-              {currency}
+            <span className="text-xs text-gray-500 font-semibold font-serif">
+              {shouldShowPrice(data?.DocumentStatus)
+                ? `${getNumberTwo(data?.DocTotal - data?.VatSum)} ${currency}`
+                : "-"
+              }
             </span>
           </div>
-          <div className="flex flex-col">
-            <span className="mb-0.5 font-bold font-serif text-xs uppercase text-gray-600 block">
+          <div className="flex flex-row justify-between items-center">
+            <span className="font-bold font-serif text-xs uppercase text-gray-600">
+              {t("common:VatSum")}
+            </span>
+            <span className="text-xs text-gray-500 font-semibold font-serif">
+              {shouldShowPrice(data?.DocumentStatus)
+                ? `${getNumberTwo(data?.VatSum)} ${currency}`
+                : "-"
+              }
+            </span>
+          </div>
+          <div className="flex flex-row justify-between items-center border-t border-gray-300 pt-2">
+            <span className="font-bold font-serif text-sm uppercase text-gray-700">
               {t("common:DocTotal")}
             </span>
-            <span className="text-base font-serif font-bold text-red-500 block print:text-xs">
-              {getNumberTwo(data?.DocTotal)}
-              {" "}
-              {currency}
+            <span className="text-base font-serif font-bold text-mainColor print:text-xs">
+              {shouldShowPrice(data?.DocumentStatus)
+                ? `${getNumberTwo(data?.DocTotal)} ${currency}`
+                : "-"
+              }
             </span>
           </div>
         </div>

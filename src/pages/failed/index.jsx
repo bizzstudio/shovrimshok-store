@@ -1,3 +1,4 @@
+// src/pages/failed/index.jsx
 import React, { useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { IoHome } from "react-icons/io5";

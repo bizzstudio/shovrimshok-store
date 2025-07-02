@@ -1,4 +1,4 @@
-// shapira-store/src/pages/user/dashboard.jsx
+// avrahami-store/src/pages/user/dashboard.jsx
 import Cookies from "js-cookie";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -17,7 +17,8 @@ import {
 } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 import { PiCoins } from "react-icons/pi";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 // Internal import
 import Layout from "@layout/Layout";
@@ -30,6 +31,9 @@ import Loading from "@component/preloader/Loading";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import MyOrders from "./my-orders";
+import UserDetailsCard from "@component/user/UserDetailsCard";
+import useCart from "@hooks/useCart";
+import { OrderContext } from "@context/OrderContext";
 
 const Dashboard = ({ title, description, children }) => {
   const router = useRouter();
@@ -39,30 +43,18 @@ const Dashboard = ({ title, description, children }) => {
     dispatch,
     state: { userInfo },
   } = useContext(UserContext);
+
+  if (process.env.NEXT_PUBLIC_ENV === "dev") {
+    console.log('Dashboard user :>> ', userInfo);
+  }
+
   const { isLoading, setIsLoading, currentPage } = useContext(SidebarContext);
+  const { orderData, loading, error } = useContext(OrderContext);
 
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
 
-  const [data, setData] = useState({});
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    OrderServices.getOrderCustomer({
-      // page: currentPage,
-      // limit: 8,
-    })
-      .then((res) => {
-        console.log("orders: ", res);
-        setData(res);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(err?.response?.data?.message || err.message);
-      });
-  }, [currentPage]);
+  // console.log('orderData :>> ', orderData);
 
   const handleLogOut = () => {
     dispatch({ type: "USER_LOGOUT" });
@@ -168,7 +160,9 @@ const Dashboard = ({ title, description, children }) => {
                           storeCustomizationSetting?.dashboard?.total_order
                         )}
                         Icon={FiShoppingCart}
-                        quantity={data?.totalDoc}
+                        quantity={
+                          loading ? <Skeleton width={60} height={20} /> : orderData?.totalDoc
+                        }
                         className="text-customRed-dark bg-red-100"
                       />
                       {/* <Card
@@ -184,7 +178,9 @@ const Dashboard = ({ title, description, children }) => {
                           storeCustomizationSetting?.dashboard?.processing_order
                         )}
                         Icon={FiTruck}
-                        quantity={data?.processing}
+                        quantity={
+                          loading ? <Skeleton width={60} height={20} /> : orderData?.processing
+                        }
                         className="text-amber-600 bg-amber-100"
                       />
                       <Card
@@ -192,17 +188,24 @@ const Dashboard = ({ title, description, children }) => {
                           storeCustomizationSetting?.dashboard?.complete_order
                         )}
                         Icon={FiCheck}
-                        quantity={data?.delivered}
+                        quantity={
+                          loading ? <Skeleton width={60} height={20} /> : orderData?.delivered
+                        }
                         className="text-green-600 bg-green-100"
                       />
                       <Card
                         title={t("common:balance")}
                         Icon={PiCoins}
-                        quantity={data?.balance ?? 0}
-                        className="text-customBlue bg-blue-100"
+                        quantity={
+                          loading ? <Skeleton width={60} height={20} /> : (orderData?.balance ?? 0)
+                        }
+                        className="text-blue-600 bg-blue-100"
+                        quantityColor={orderData?.balance < 0 ? "text-red-500" : orderData?.balance > 0 ? "text-green-500" : ""}
                       />
                     </div>
-                    <RecentOrder data={data} loading={loading} error={error} />
+                    {/* <RecentOrder data={data} loading={loading} error={error} /> */}
+                    {/* פרטי הלקוח */}
+                    <UserDetailsCard />
                   </div>
                 )}
                 {children}

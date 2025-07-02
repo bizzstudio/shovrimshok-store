@@ -22,6 +22,7 @@ import DefaultSeo from "@component/common/DefaultSeo";
 import { SidebarProvider } from "@context/SidebarContext";
 import SettingServices from "@services/SettingServices";
 import { handlePageView } from "@utils/analytics";
+import OrderProvider from "@context/OrderContext";
 // import { Assistant } from 'next/font/google';
 
 // const assistant = Assistant({
@@ -113,18 +114,20 @@ function MyApp({ Component, pageProps }) {
 
       <GoogleOAuthProvider clientId={storeSetting?.google_client_id || ""}>
         <UserProvider>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <SidebarProvider>
-                {/* <Elements stripe={stripePromise}> */}
-                <CartProvider>
-                  <DefaultSeo />
-                  <Component {...pageProps} />
-                </CartProvider>
-                {/* </Elements> */}
-              </SidebarProvider>
-            </PersistGate>
-          </Provider>
+          <OrderProvider>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
+                <SidebarProvider>
+                  {/* <Elements stripe={stripePromise}> */}
+                  <CartProvider>
+                    <DefaultSeo />
+                    <Component {...pageProps} />
+                  </CartProvider>
+                  {/* </Elements> */}
+                </SidebarProvider>
+              </PersistGate>
+            </Provider>
+          </OrderProvider>
         </UserProvider>
       </GoogleOAuthProvider>
     </div>

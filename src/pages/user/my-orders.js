@@ -1,7 +1,7 @@
-// shapira-store/src/pages/user/my-orders.js
+// avrahami-store/src/pages/user/my-orders.js
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { IoBagHandle } from "react-icons/io5";
 import ReactPaginate from "react-paginate";
 import { FiZoomIn } from "react-icons/fi";
@@ -25,47 +25,34 @@ import useAddToCart from "@hooks/useAddToCart";
 import SubModal from "@component/modal/SubModal";
 import addingToCart from 'public/addingToCart.svg'
 import notifyApiResponse from "@utils/notifyApiResponse";
+import { OrderContext } from "@context/OrderContext";
+import OrderCard from "@component/order/OrderCard";
+import getCustomPrice from "@utils/getCustomPrice";
 
 const MyOrders = () => {
+  // todo: לבטל את החלק הזה אם רוצים להחזיר
+  // useEffect(() => {
+  //   Router.replace("/user/dashboard");
+  // }, []);
+  // return null;
+  // // עד כאן
+
   const router = useRouter();
   const { state: { userInfo } } = useContext(UserContext);
   const { currentPage, handleChangePage, isLoading, setIsLoading } = useContext(SidebarContext);
+  const { orderData, loading, error } = useContext(OrderContext);
+  console.log('all orders :>> ', orderData);
   const { emptyCart, items } = useCart();
   const { handleAddItem } = useAddToCart();
 
-  const { storeCustomizationSetting } = useGetSetting();
+  const { storeCustomizationSetting, storeSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
   const { t } = useTranslation();
 
-  const [data, setData] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
   const [loadingRestore, setLoadingRestore] = useState(false);
   const [totalItems, setTotalItems] = useState(0); // המספר הכולל של הפריטים
   const { totalItems: addedItems } = useCart(); // מספר הפריטים שנוספו כבר לעגלה
 
-
-  useEffect(() => {
-    OrderServices.getOrderCustomer({
-      // page: currentPage,
-      // limit: 8,
-    })
-      .then((res) => {
-        setData(res);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        // בדיקת התגובה מהשרת להצגת ההודעה בעברית
-        if (err.response && err.response.data && err.response.data.message) {
-          setError(err.response.data.message);
-        } else {
-          setError(err.message);
-        }
-      });
-  }, [currentPage]);
-
-  const pageCount = Math.ceil(data?.totalDoc / 8);
 
   useEffect(() => {
     setIsLoading(false);
@@ -75,25 +62,30 @@ const MyOrders = () => {
   }, [userInfo]);
 
   const restoreOrder = async (order) => {
+    // return notifyError("הכפתור בפיתוח")
     try {
       setLoadingRestore(true);
-      const itemsNotInCartYet = order?.cart?.filter(oldItem => !items.some(item => item.sku === oldItem.sku));
-      setTotalItems(addedItems + itemsNotInCartYet.reduce((acc, item) => acc + item.quantity, 0));
+
+      const orderData = await OrderServices.getOrderById(order.DocEntry);
+      console.log('orderData :>> ', orderData);
+
+      const itemsNotInCartYet = orderData?.items?.filter(oldItem => !items.some(item => item.ItemCode === oldItem.ItemCode));
+      setTotalItems(addedItems + itemsNotInCartYet.reduce((acc, item) => acc + item.Quantity, 0));
       const missingProducts = [];
 
       // מעבר על כל מוצר בעגלה של ההזמנה הישנה (חוץ מאלו שכבר נמצאים בעגלה הנוכחית)
       for (const item of itemsNotInCartYet) {
-        const productSku = item.sku;
+        const productCode = item.ItemCode;
 
         // משיכת פרטי המוצר המעודכנים מהדטאבייס
         const [data] = await Promise.all([
           ProductServices.getShowingStoreProducts({
-            category: "",
-            sku: productSku,
+            itemCode: productCode,
+            token: userInfo?.token,
           }),
         ]);
 
-        const product = data?.products?.find((p) => p.sku === productSku);
+        const product = data?.products?.find((p) => p.ItemCode === productCode);
 
         if (!product) {
           missingProducts.push(item);
@@ -102,8 +94,11 @@ const MyOrders = () => {
 
         let selectVariant = null;
         let stock = product.stock;
-        let price = product.prices.price;
-        let originalPrice = product.prices.originalPrice;
+
+        // שימוש בgetCustomPrice במקום הקוד הישן
+        const { price: customPrice } = getCustomPrice(product, userInfo, storeSetting);
+        let price = customPrice || product?.Price || product.prices?.price || 0;
+        let originalPrice = customPrice || product?.Price || product.prices?.originalPrice || 0;
         let img = product.image?.[0];
 
         if (
@@ -155,11 +150,22 @@ const MyOrders = () => {
             originalPrice: originalPrice,
           };
 
-          // if (stock >= item.quantity) {
-          handleAddItem(newItem, item.quantity);
-          // } else {
-          //   notifyError(`Not enough stock for ${showingTranslateValue(product.title)}.`);
-          // }
+          if (stock >= item.Quantity) {
+            handleAddItem(newItem, item.Quantity);
+          } else {
+            notifyError(`Not enough stock for ${showingTranslateValue(product.title)}.`);
+          }
+        } else {
+          const newItem = {
+            ...product,
+            title: product.ItemName ?? product.title,
+            id: product._id ?? product.ItemCode,
+            variant: product.prices ?? 0,
+            price: product.price,
+            originalPrice: product.originalPrice,
+            slug: product.ItemCode,
+          }
+          handleAddItem(newItem, item.Quantity);
         }
       }
 
@@ -171,11 +177,9 @@ const MyOrders = () => {
     } catch (error) {
       console.error("Failed to restore order:", error);
       notifyApiResponse(error, false);
+    } finally {
+      setLoadingRestore(false);
     }
-  };
-
-  const handleRowClick = (orderId) => {
-    router.push(`/order/${orderId}`);
   };
 
   return (
@@ -185,7 +189,10 @@ const MyOrders = () => {
           <div className="px-9 pb-10 pt-7 flex flex-col gap-4">
             <img src={addingToCart.src} alt="Adding to cart image" className="h-56 mr-[13%] up-down-animation" />
             <h2 className="text-xl font-serif font-semibold text-center">
-              {t("common:addingItemsToCart", { x: addedItems, y: totalItems })}
+              {totalItems ?
+                t("common:addingItemsToCart", { x: addedItems, y: totalItems }) :
+                t("common:addingItems")
+              }
             </h2>
           </div>
         </SubModal>
@@ -204,7 +211,7 @@ const MyOrders = () => {
               <h2 className="text-xl text-center my-10 mx-auto w-11/12 text-red-400">
                 {error}
               </h2>
-            ) : data?.orders?.length === 0 ? (
+            ) : orderData?.orders?.length === 0 ? (
               <div className="text-center">
                 <span className="flex justify-center my-30 pt-16 text-customRed font-semibold text-6xl">
                   <IoBagHandle />
@@ -218,134 +225,134 @@ const MyOrders = () => {
                 <h2 className="text-xl font-serif font-semibold mb-5">
                   {t("common:footer-my-account-myOrders")}
                 </h2>
-                <div className="flex md:hidden gap-2 justify-between w-full mb-5">
-                  <div
-                    className="flex flex-grow gap-1 items-center justify-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customBlue font-semibold rounded-full cursor-auto text-center"
-                  >
-                    <MdPayment size={17} /> <span>=</span>
-                    {t("common:payNow")}
-                  </div>
-                  <div
-                    className="flex flex-grow gap-1 items-center justify-center px-3 py-1 bg-customBrown-light text-xs text-customBlue font-semibold rounded-full cursor-auto text-center"
-                  >
-                    <MdRestore size={17} /> <span>=</span>
-                    {t("common:Reorder")}
-                  </div>
+
+                {/* תצוגת מלבנים למסכים קטנים */}
+                <div className="md:hidden">
+                  {orderData?.orders?.map((order) => (
+                    <OrderCard
+                      key={order.DocEntry}
+                      order={order}
+                      restoreOrder={restoreOrder}
+                      loadingRestore={loadingRestore}
+                    />
+                  ))}
                 </div>
-                <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="align-middle inline-block border border-gray-100 rounded-md min-w-full pb-2 sm:px-6 lg:px-8">
-                    <div className="overflow-hidden border-b last:border-b-0 border-gray-100 rounded-md">
-                      <table className="table-auto min-w-full border border-gray-100 divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                          <tr className="bg-gray-100">
-                            <th
-                              scope="col"
-                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
-                            >
-                              {t("common:DocNum")}
-                            </th>
-                            <th
-                              scope="col"
-                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
-                            >
-                              {t("common:CreateDate")}
-                            </th>
-                            <th
-                              scope="col"
-                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
-                            >
-                              {t("common:DocTotal")}
-                            </th>
-                            <th
-                              scope="col"
-                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
-                            >
-                              {t("common:VatSum")}
-                            </th>
-                            <th
-                              scope="col"
-                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
-                            >
-                              {t("common:DocStatus")}
-                            </th>
-                            <th
-                              scope="col"
-                              className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
-                            >
-                              {t("common:action")}
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {data?.orders?.map((order) => (
-                            <tr key={order.DocEntry} onClick={() => handleRowClick(order.DocEntry)} className="cursor-pointer hover:bg-gray-50">
-                              <OrderHistory order={order} />
-                              <td className="px-1 md:px-5 py-3 whitespace-nowrap text-center text-sm">
-                                {order?.status?.name === "Pending" ? (
-                                  <>
+
+                {/* תצוגת טבלה למסכים גדולים */}
+                <div className="hidden md:block">
+                  <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="align-middle inline-block border border-gray-100 rounded-md min-w-full pb-2 sm:px-6 lg:px-8">
+                      <div className="overflow-hidden border-b last:border-b-0 border-gray-100 rounded-md">
+                        <table className="table-auto min-w-full border border-gray-100 divide-y divide-gray-200">
+                          <thead className="bg-gray-50">
+                            <tr className="bg-gray-100">
+                              <th
+                                scope="col"
+                                className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              >
+                                {t("common:DocNum")}
+                              </th>
+                              <th
+                                scope="col"
+                                className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              >
+                                {t("common:CreateDate")}
+                              </th>
+                              <th
+                                scope="col"
+                                className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              >
+                                {t("common:DocTotalBeforeVAT")}
+                              </th>
+                              <th
+                                scope="col"
+                                className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              >
+                                {t("common:VatSum")}
+                              </th>
+                              <th
+                                scope="col"
+                                className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              >
+                                {t("common:DocTotal")}
+                              </th>
+                              <th
+                                scope="col"
+                                className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              >
+                                {t("common:DocStatus")}
+                              </th>
+                              <th
+                                scope="col"
+                                className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider"
+                              >
+                                {t("common:action")}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {orderData?.orders?.map((order) => (
+                              <tr key={order.DocEntry}>
+                                <OrderHistory order={order} />
+                                <td className="px-1 md:px-5 py-3 whitespace-nowrap text-center text-sm">
+                                  {order?.status?.name === "Pending" ? (
                                     <button
                                       disabled={loadingRestore}
-                                      className="hidden md:flex gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
+                                      className="flex gap-1 items-center mx-auto px-3 py-1 bg-customRed-superLight text-xs text-customRed hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                       onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
                                     >
                                       <MdPayment size={17} />
                                       {t("common:payNow")}
                                     </button>
-                                    <button
-                                      disabled={loadingRestore}
-                                      className="flex md:hidden gap-1 items-center mx-auto px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
-                                      onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
-                                    >
-                                      <MdPayment size={17} />
-                                    </button>
-                                  </>
-                                ) : (
-                                  <div className="flex gap-2 items-center justify-center">
-                                    <button
-                                      disabled={loadingRestore}
-                                      className="hidden md:flex gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
-                                      onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
-                                    >
-                                      <MdRestore size={17} />
-                                      {t("common:Reorder")}
-                                    </button>
-                                    <button
-                                      disabled={loadingRestore}
-                                      className="flex md:hidden gap-1 items-center px-3 py-1 bg-customBrown-light text-xs text-customBlue hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
-                                      onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
-                                    >
-                                      <MdRestore size={17} />
-                                    </button>
-                                  </div>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {/* {data?.totalDoc > 10 && (
-                        <div className="paginationOrder">
-                          <ReactPaginate
-                            breakLabel="..."
-                            nextLabel={t("common:next")}
-                            onPageChange={(e) => handleChangePage(e.selected + 1)}
-                            pageRangeDisplayed={3}
-                            pageCount={pageCount}
-                            previousLabel={t("common:previous")}
-                            renderOnZeroPageCount={null}
-                            pageClassName="page--item"
-                            pageLinkClassName="page--link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-previous-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-next-link"
-                            breakClassName="page--item"
-                            breakLinkClassName="page--link"
-                            containerClassName="pagination"
-                            activeClassName="activePagination"
-                          />
-                        </div>
-                      )} */}
+                                  ) : (
+                                    <div className="flex gap-3 items-center justify-center">
+                                      <button
+                                        disabled={loadingRestore}
+                                        className="flex gap-1 items-center px-3 py-1 bg-gray-100 text-xs text-gray-700 hover:bg-gray-600 hover:text-white transition-all font-semibold rounded-full"
+                                        onClick={(e) => { e.stopPropagation(); restoreOrder(order); }}
+                                      >
+                                        <MdRestore size={17} />
+                                        {t("common:Reorder")}
+                                      </button>
+                                      <Link
+                                        href={`/order/${order.DocEntry}`}
+                                        className="w-fit flex gap-1 items-center justify-center px-3 py-1 bg-customRed-superLight text-xs text-customRed hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
+                                      >
+                                        <FiZoomIn size={17} />
+                                        {t("common:view")}
+                                      </Link>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+
+                          {/* {data?.totalDoc > 10 && (
+                            <div className="paginationOrder">
+                              <ReactPaginate
+                                breakLabel="..."
+                                nextLabel={t("common:next")}
+                                onPageChange={(e) => handleChangePage(e.selected + 1)}
+                                pageRangeDisplayed={3}
+                                pageCount={pageCount}
+                                previousLabel={t("common:previous")}
+                                renderOnZeroPageCount={null}
+                                pageClassName="page--item"
+                                pageLinkClassName="page--link"
+                                previousClassName="page-item"
+                                previousLinkClassName="page-previous-link"
+                                nextClassName="page-item"
+                                nextLinkClassName="page-next-link"
+                                breakClassName="page--item"
+                                breakLinkClassName="page--link"
+                                containerClassName="pagination"
+                                activeClassName="activePagination"
+                              />
+                            </div>
+                          )} */}
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>

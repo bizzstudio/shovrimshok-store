@@ -1,3 +1,4 @@
+import { shouldShowPrice } from "@component/order/OrderHistory";
 import {
   Document,
   Font,
@@ -390,8 +391,10 @@ const InvoiceForDownload = ({
                   <Text style={styles.tableCell}>
                     {" "}
                     <Text style={styles.quantity}>
-                      {currency}
-                      {getNumberTwo(item.price)}
+                      {shouldShowPrice(data?.status) 
+                        ? `${currency}${getNumberTwo(item?.Price ?? item.price)}`
+                        : "-"
+                      }
                     </Text>{" "}
                   </Text>
                 </View>
@@ -399,8 +402,10 @@ const InvoiceForDownload = ({
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>
                     <Text style={styles.amount}>
-                      {currency}
-                      {getNumberTwo(item.itemTotal)}
+                      {shouldShowPrice(data?.status) 
+                        ? `${currency}${getNumberTwo(item.itemTotal)}`
+                        : "-"
+                      }
                     </Text>{" "}
                   </Text>
                 </View>
@@ -416,24 +421,30 @@ const InvoiceForDownload = ({
             <View>
               <Text style={styles.title}>Shipping Cost</Text>
               <Text style={styles.info}>
-                {currency}
-                {getNumberTwo(data.shippingCost)}
+                {shouldShowPrice(data?.status) 
+                  ? `${currency}${getNumberTwo(data.shippingCost)}`
+                  : "-"
+                }
               </Text>
             </View>
             <View>
               <Text style={styles.title}>Discount</Text>
               <Text style={styles.info}>
                 {" "}
-                {currency}
-                {getNumberTwo(data.discount)}
+                {shouldShowPrice(data?.status) 
+                  ? `${currency}${getNumberTwo(data.discount)}`
+                  : "-"
+                }
               </Text>
             </View>
 
             <View>
               <Text style={styles.title}>Total Amount</Text>
               <Text style={styles.amount}>
-                {currency}
-                {getNumberTwo(data.total)}
+                {shouldShowPrice(data?.status) 
+                  ? `${currency}${getNumberTwo(data.total)}`
+                  : "-"
+                }
               </Text>
             </View>
           </View>

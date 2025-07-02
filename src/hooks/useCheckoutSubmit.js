@@ -19,6 +19,7 @@ import useCart from "./useCart";
 import useAddToCart from "./useAddToCart";
 import { SidebarContext } from "@context/SidebarContext";
 import notifyApiResponse from "@utils/notifyApiResponse";
+import { OrderContext } from "@context/OrderContext";
 
 const useCheckoutSubmit = () => {
   const {
@@ -57,6 +58,7 @@ const useCheckoutSubmit = () => {
   // const elements = useElements();
   const couponRef = useRef("");
   const { isEmpty, emptyCart, items, customCartTotal, removeItem, addItem, inCart } = useCart();
+  const { fetchOrderData, fetchDocumentData } = useContext(OrderContext);
 
   const {
     register,
@@ -137,15 +139,15 @@ const useCheckoutSubmit = () => {
       router.push("/");
     }
 
-    setValue("firstName", shippingAddress.firstName);
-    setValue("lastName", shippingAddress.lastName);
-    setValue("address", shippingAddress.address);
-    setValue("contact", shippingAddress.contact);
-    setValue("email", shippingAddress.email);
-    setValue("city", shippingAddress.city);
-    setValue("country", shippingAddress.country);
-    setValue("zipCode", shippingAddress.zipCode);
-  }, []);
+    // התאמה למבנה החדש של userInfo
+    setValue("cardName", userInfo?.CardName || '');
+    setValue("address", userInfo?.ShipToAddress?.Address || userInfo?.BillToAddress?.Address || '');
+    setValue("contact", userInfo?.Phone1 || userInfo?.Cellular || '');
+    setValue("email", userInfo?.EmailAddress || '');
+    setValue("city", userInfo?.ShipToAddress?.City || userInfo?.BillToAddress?.City || '');
+    setValue("country", userInfo?.ShipToAddress?.Country || userInfo?.BillToAddress?.Country || 'IL');
+    setValue("zipCode", userInfo?.ShipToAddress?.ZipCode || userInfo?.BillToAddress?.ZipCode || '');
+  }, [userInfo, setValue]);
 
   // פונקציה חדשה: ריענון מבצעים + שליחה לשרת
   const submitWithRefreshOffers = async (data) => {
@@ -167,21 +169,27 @@ const useCheckoutSubmit = () => {
   // שליחת ההזמנה לשרת
   const submitHandler = async (data) => {
     try {
-      console.log("submitHandler called!")
-      
+      // console.log('items :>> ', items);
+
       dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
       Cookies.set("shippingAddress", JSON.stringify(data));
       setIsCheckoutSubmit(true);
       setError("");
 
+      // התאמה למבנה החדש של userInfo
       const userDetails = {
-        name: userInfo.CardName,
-        lastName: userInfo.lastName || '',
-        contact: userInfo.phone,
-        email: userInfo.email,
-        address: userInfo.address,
-        country: 'Isral',
-        zipCode: userInfo?.address?.postalCode,
+        CardName: userInfo?.CardName || '',
+        contact: userInfo?.Phone1 || userInfo?.Cellular || '',
+        email: userInfo?.EmailAddress || '',
+        address: userInfo?.ShipToAddress?.Address || userInfo?.BillToAddress?.Address || '',
+        city: userInfo?.ShipToAddress?.City || userInfo?.BillToAddress?.City || '',
+        country: userInfo?.ShipToAddress?.Country || userInfo?.BillToAddress?.Country || 'IL',
+        zipCode: userInfo?.ShipToAddress?.ZipCode || userInfo?.BillToAddress?.ZipCode || '',
+        cardCode: userInfo?.CardCode || '',
+        federalTaxID: userInfo?.FederalTaxID || '',
+        groupCode: userInfo?.GroupCode || '',
+        priceListNum: userInfo?.PriceListNum || '',
+        currency: userInfo?.Currency || currency,
       };
 
       const orderInfo = {
@@ -199,26 +207,27 @@ const useCheckoutSubmit = () => {
       };
 
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
-      console.log('orderInfo :>> ', orderInfo);
       const dbOrder = await OrderServices.addOrder(orderInfo)
-        .then((res) => {
-          console.log('success :>> ', res);
-          router.push('/success')
-          // setPaymentSrc(res.paymentUrl);
-        }).catch((error) => {
-          // בדיקת מוצרים חסרים
-          if (error?.response?.status === 409) {
-            const errorData = error?.response?.data;
-            handleConflicts(errorData);
-            return;
-          } else {
-            notifyError(error?.response?.data?.message || "שגיאה ביצירת ההזמנה. מומלץ לרוקן את העגלה ולנסות שוב.");
-          }
-        }).finally(() => {
-          setIsCheckoutSubmit(false);
-        });
-    } catch (err) {
-      notifyApiResponse(err, false);
+      console.log('success :>> ', dbOrder);
+      router.push({
+        pathname: '/success',
+        query: { orderNumber: dbOrder.DocNum }
+      });
+      notifyApiResponse(dbOrder, true);
+      await fetchOrderData(true);
+      // await fetchDocumentData(true);
+      // setPaymentSrc(res.paymentUrl);
+    } catch (error) {
+      console.error('error :>> ', error);
+      if (error?.response?.status === 409) {
+        const errorData = error?.response?.data;
+        handleConflicts(errorData);
+        return;
+      } else {
+        notifyApiResponse(error, false);
+        // notifyError(error?.response?.data?.message || "שגיאה ביצירת ההזמנה. מומלץ לרוקן את העגלה ולנסות שוב.");
+      }
+    } finally {
       setIsCheckoutSubmit(false);
     }
   };
@@ -233,8 +242,8 @@ const useCheckoutSubmit = () => {
 
         let selectVariant = null;
         let stock = product.stock;
-        let price = product.prices.price;
-        let originalPrice = product.prices.originalPrice;
+        let price = product?.Price ?? product.prices.price;
+        let originalPrice = product?.Price ?? product.prices.originalPrice;
         let img = product.image?.[0];
 
         if (

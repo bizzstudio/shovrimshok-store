@@ -1,6 +1,7 @@
-// shapira-store/src/component/order/OrderTable.js
+// src/component/order/OrderTable.js
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import React from "react";
+import { shouldShowPrice } from "./OrderHistory";
 
 const OrderTable = ({ data, currency }) => {
   const { getNumberTwo } = useUtilsFunction();
@@ -12,22 +13,24 @@ const OrderTable = ({ data, currency }) => {
           <th className="px-6 py-1 whitespace-nowrap font-normal text-gray-500 text-center">
             {i + 1}
           </th>
-          <td className="px-2 py-1 whitespace-nowrap font-normal text-gray-500 text-start">
-            {item.Dscription}
+          <td className="px-2 py-1 font-normal text-gray-500 text-start break-words min-w-0">
+            {item.ItemDescription}
           </td>
           <td className="px-6 py-1 whitespace-nowrap font-bold text-center">
             {item.Quantity}
           </td>
           <td className="px-6 py-1 whitespace-nowrap font-bold text-center font-DejaVu">
-            {getNumberTwo(item.Price)}
-            {" "}
-            {currency}
+            {shouldShowPrice(data?.DocumentStatus) 
+              ? `${getNumberTwo(item?.Price)} ${currency}`
+              : "-"
+            }
           </td>
 
-          <td className="px-6 py-1 whitespace-nowrap text-right font-bold font-DejaVu k-grid text-red-500">
-            {getNumberTwo(item.LineTotal)}
-            {" "}
-            {currency}
+          <td className="px-6 py-1 whitespace-nowrap text-center font-bold font-DejaVu k-grid text-red-500">
+            {shouldShowPrice(data?.DocumentStatus) 
+              ? `${getNumberTwo(item.LineTotal)} ${currency}`
+              : "-"
+            }
           </td>
         </tr>
       ))}

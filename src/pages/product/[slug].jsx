@@ -493,7 +493,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             <li>
                               <Link
                                 href={`/category/${category?.code}`}
-                                className="text-gray-600 hover:text-mainColor underline"
+                                className="text-gray-600 hover:text-customRed underline"
                                 onClick={() => setIsLoading(!isLoading)}
                               >
                                 {category?.name}
@@ -507,7 +507,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                                 <li>
                                   <Link
                                     href={`/category/${category?.code}?sub=${subCategory?.code}`}
-                                    className="text-gray-600 hover:text-mainColor underline"
+                                    className="text-gray-600 hover:text-customRed underline"
                                     onClick={() => setIsLoading(!isLoading)}
                                   >
                                     {subCategory.name}

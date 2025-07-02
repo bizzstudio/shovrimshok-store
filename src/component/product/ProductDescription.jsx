@@ -83,7 +83,7 @@ const ProductDescription = ({ description }) => {
                     <div className="mt-0.5">
                         <span
                             onClick={() => setIsReadMore(!isReadMore)}
-                            className="read-or-hide cursor-pointer text-mainColor hover:text-mainColor-dark transition-colors duration-200 font-medium"
+                            className="read-or-hide cursor-pointer text-customRed hover:text-customRed-dark transition-colors duration-200 font-medium"
                         >
                             {isReadMore
                                 ? t('common:moreInfo')
