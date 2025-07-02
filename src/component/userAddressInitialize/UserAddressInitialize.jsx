@@ -1,3 +1,4 @@
+// src/component/userAddressInitialize/UserAddressInitialize.jsx
 import dynamic from "next/dynamic";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
@@ -20,7 +21,8 @@ import notifyApiResponse from "@utils/notifyApiResponse";
 const UserAddressInitialize = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [chosenCity, setChosenCity] = useState();
+  const [billToCityValue, setBillToCityValue] = useState("");
+  const [shipToCityValue, setShipToCityValue] = useState("");
   const {
     state: { userInfo },
   } = useContext(UserContext);
@@ -37,44 +39,35 @@ const UserAddressInitialize = () => {
   } = useForm();
 
   const validateInput = (data) => {
-    const { name, lastName, phone, street, houseNumber, apartmentNumber } = data;
-
-    // בדיקת רווחים בשדות שם פרטי ושם משפחה
-    if (!name.trim()) {
-      setError('name', { type: 'manual', message: t('common:invalidName') });
+    if (!data.CardName?.trim()) {
+      setError('CardName', { type: 'manual', message: t('common:invalidName') });
       return false;
     }
 
-    if (!lastName.trim()) {
-      setError('lastName', { type: 'manual', message: t('common:invalidLastName') });
+    if (!data.EmailAddress?.trim()) {
+      setError('EmailAddress', { type: 'manual', message: t('common:invalidEmail') });
       return false;
     }
 
-    // בדיקת רווחים בשדות כתובת
-    if (!street.trim()) {
-      setError('street', { type: 'manual', message: t('common:invalidStreet') });
+    if (!data.Phone1?.trim()) {
+      setError('Phone1', { type: 'manual', message: t('common:invalidPhone') });
       return false;
     }
 
-    if (!houseNumber.trim()) {
-      setError('houseNumber', { type: 'manual', message: t('common:invalidHouseNumber') });
-      return false;
-    }
+    // if (!data.BillToAddress?.trim()) {
+    //   setError('BillToAddress', { type: 'manual', message: t('common:invalidStreet') });
+    //   return false;
+    // }
 
-    if (!chosenCity) {
-      setError('city', { type: 'manual', message: t('common:invalidCity') });
-      return false;
-    }
-
-    if (!apartmentNumber.trim()) {
-      setError('apartmentNumber', { type: 'manual', message: t('common:invalidApartmentNumber') });
-      return false;
-    }
+    // if (!billToCityValue) {
+    //   setError('BillToCity', { type: 'manual', message: t('common:invalidCity') });
+    //   return false;
+    // }
 
     // בדיקת מספר טלפון - מתחיל ב־05 וכולל 10 ספרות בדיוק
     const phoneRegex = /^05\d{8}$/;
-    if (!phoneRegex.test(phone)) {
-      setError('phone', { type: 'manual', message: t('common:invalidPhone') });
+    if (!phoneRegex.test(data.Phone1)) {
+      setError('Phone1', { type: 'manual', message: t('common:invalidPhone') });
       return false;
     }
 
@@ -90,23 +83,27 @@ const UserAddressInitialize = () => {
     }
 
     const userData = {
-      name: data.name,
-      lastName: data.lastName,
-      email: data.email,
-      address: {
-        city: chosenCity,
-        street: data.street,
-        houseNumber: data.houseNumber,
-        apartmentNumber: data.apartmentNumber,
-        floor: data.floor,
-        entryCode: data.entryCode,
-        postalCode: data.postalCode,
+      CardName: data.CardName,
+      EmailAddress: data.EmailAddress,
+      Phone1: data.Phone1,
+      Cellular: data.Cellular,
+      // BillToAddress: {
+      //   Address: data.BillToAddress,
+      //   City: billToCityValue,
+      //   ZipCode: data.BillToZipCode,
+      //   Country: "IL"
+      // },
+      ShipToAddress: {
+        Address: data.ShipToAddress || data.BillToAddress,
+        City: shipToCityValue || billToCityValue,
+        ZipCode: data.ShipToZipCode || data.BillToZipCode,
+        Country: "IL"
       },
-      phone: data.phone,
-      image: imageUrl,
+      FederalTaxID: data.FederalTaxID,
+      Picture: imageUrl,
     };
 
-    CustomerServices.updateCustomer(userInfo._id, userData)
+    CustomerServices.updateCustomer(userInfo.CardCode, userData)
       .then((res) => {
         if (res) {
           setLoading(false);
@@ -122,31 +119,36 @@ const UserAddressInitialize = () => {
   };
 
   useEffect(() => {
-    if (Cookies.get("userInfo")) {
-      const user = JSON.parse(Cookies.get("userInfo"));
-      setValue("name", user.name);
-      setValue("lastName", user.lastName);
-      setValue("email", user.email);
-      if (user.address) {
-        setValue("street", user.address.street);
-        setValue("houseNumber", user.address.houseNumber);
-        setValue("apartmentNumber", user.address.apartmentNumber);
-        setValue("floor", user.address.floor);
-        setValue("entryCode", user.address.entryCode);
-        setValue("postalCode", user.address.postalCode);
-        setChosenCity(user.address.city);
+    if (userInfo) {
+      setValue("CardName", userInfo.CardName || "");
+      setValue("EmailAddress", userInfo.EmailAddress || "");
+      setValue("Phone1", userInfo.Phone1 || "");
+      setValue("Cellular", userInfo.Cellular || "");
+      setValue("FederalTaxID", userInfo.FederalTaxID || "");
+
+      // Bill To Address
+      if (userInfo.BillToAddress) {
+        setValue("BillToAddress", userInfo.BillToAddress.Address || "");
+        setValue("BillToZipCode", userInfo.BillToAddress.ZipCode || "");
+        setBillToCityValue(userInfo.BillToAddress.City || "");
       }
-      setValue("phone", user.phone);
-      setImageUrl(user.Picture);
+
+      // Ship To Address  
+      if (userInfo.ShipToAddress) {
+        setValue("ShipToAddress", userInfo.ShipToAddress.Address || "");
+        setValue("ShipToZipCode", userInfo.ShipToAddress.ZipCode || "");
+        setShipToCityValue(userInfo.ShipToAddress.City || "");
+      }
+
+      setImageUrl(userInfo.Picture || "");
     }
-  }, [setValue]);
+  }, [setValue, userInfo]);
 
   useEffect(() => {
     return () => {
       localStorage.removeItem("firstTime");
     }
-  }, [localStorage.firstTime])
-
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -161,126 +163,140 @@ const UserAddressInitialize = () => {
               <div className="lg:mt-6 mt-4 bg-white">
                 <div className="grid grid-cols-6 gap-6">
 
-                  <div className="flex gap-4 col-span-6">
-                    <div className="w-full">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.full_name
-                        )}
-                        name="name"
-                        type="text"
-                        placeholder={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.full_name
-                        )}
-                      />
-                      <Error errorName={errors.name} />
-                    </div>
-                    <div className="w-full">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.last_name
-                        )}
-                        name="lastName"
-                        type="text"
-                        placeholder={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.last_name
-                        )}
-                      />
-                      <Error errorName={errors.lastName} />
-                    </div>
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-3">
-                    <Label label={t("common:city")} />
-                    <City
-                      setValue={setChosenCity}
-                      placeholder={JSON.stringify(chosenCity)}
-                    />
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-3">
+                  {/* שם כרטיס לקוח */}
+                  <div className="col-span-6 sm:col-span-3">
                     <InputArea
                       register={register}
-
-                      label={t("common:street")}
-                      name="street"
+                      label={t("common:cardName")}
+                      name="CardName"
                       type="text"
-                      placeholder={t("common:street")}
+                      placeholder={t("common:cardName")}
                     />
-                    <Error errorName={errors.street} />
+                    <Error errorName={errors.CardName} />
                   </div>
 
-                  <div className="col-span-3 sm:col-span-2">
+                  {/* מספר ת.ז או מספר עוסק */}
+                  <div className="col-span-6 sm:col-span-3">
                     <InputArea
                       register={register}
-                      label={t("common:houseNumber")}
-                      name="houseNumber"
+                      label={t("common:idNumberOrLicense")}
+                      name="FederalTaxID"
                       type="text"
-                      placeholder={t("common:houseNumber")}
-                    />
-                    <Error errorName={errors.houseNumber} />
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:apartmentNumber")}
-                      name="apartmentNumber"
-                      type="text"
-                      placeholder={t("common:apartmentNumber")}
-                    />
-                    <Error errorName={errors.apartmentNumber} />
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:floor")}
-                      name="floor"
-                      type="number"
-                      placeholder={t("common:floor")}
+                      placeholder={t("common:idNumberOrLicense")}
                       isRequired={false}
                     />
-                    <Error errorName={errors.floor} />
+                    <Error errorName={errors.FederalTaxID} />
                   </div>
 
-                  <div className="col-span-3 sm:col-span-2">
+                  {/* כתובת אימייל */}
+                  <div className="col-span-6 sm:col-span-3">
                     <InputArea
                       register={register}
-                      label={t("common:entryCode")}
-                      name="entryCode"
-                      type="text"
-                      placeholder={t("common:entryCode")}
-                      isRequired={false}
+                      label={t("common:email")}
+                      name="EmailAddress"
+                      type="email"
+                      placeholder={t("common:email")}
                     />
-                    <Error errorName={errors.entryCode} />
+                    <Error errorName={errors.EmailAddress} />
                   </div>
 
-                  <div className="col-span-3 sm:col-span-2">
-                    <InputArea
-                      register={register}
-                      label={t("common:postalCode") + " " + t("common:optional")}
-                      name="postalCode"
-                      type="text"
-                      placeholder={t("common:postalCode")}
-                      isRequired={false}
-                    />
-                    <Error errorName={errors.postalCode} />
-                  </div>
-
-                  <div className="col-span-3 sm:col-span-2">
+                  {/* טלפון */}
+                  <div className="col-span-6 sm:col-span-3">
                     <InputArea
                       register={register}
                       label={t("common:phone")}
-                      name="phone"
+                      name="Phone1"
                       type="tel"
                       placeholder={t("common:phone")}
                     />
-                    <Error errorName={errors.phone} />
+                    <Error errorName={errors.Phone1} />
                   </div>
 
+                  {/* טלפון נייד */}
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label={t("common:cellular")}
+                      name="Cellular"
+                      type="text"
+                      placeholder={t("common:cellular")}
+                      isRequired={false}
+                    />
+                    <Error errorName={errors.Cellular} />
+                  </div>
+
+                  {/* כתובת חיוב */}
+                  {/* <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label={t("common:address")}
+                      name="BillToAddress"
+                      type="text"
+                      placeholder={t("common:address")}
+                    />
+                    <Error errorName={errors.BillToAddress} />
+                  </div> */}
+
+                  {/* עיר חיוב */}
+                  {/* <div className="col-span-6 sm:col-span-3">
+                    <Label label={t("common:city")} />
+                    <City
+                      setValue={setBillToCityValue}
+                      value={billToCityValue}
+                      placeholder={JSON.stringify({ city_name_he: t("common:city") })}
+                    />
+                    <Error errorName={errors.BillToCity} />
+                  </div> */}
+
+                  {/* מיקוד חיוב */}
+                  {/* <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label={t("common:zipCode")}
+                      name="BillToZipCode"
+                      type="text"
+                      placeholder={t("common:zipCode")}
+                      isRequired={false}
+                    />
+                    <Error errorName={errors.BillToZipCode} />
+                  </div> */}
+
+                  {/* עיר משלוח */}
+                  <div className="col-span-6 sm:col-span-3">
+                    <Label label={t("common:mailCity")} isRequired={false} />
+                    <City
+                      setValue={setShipToCityValue}
+                      value={shipToCityValue}
+                      placeholder={JSON.stringify({ city_name_he: t("common:mailCity") })}
+                    />
+                    <Error errorName={errors.ShipToCity} />
+                  </div>
+
+                  {/* כתובת משלוח */}
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label={t("common:mailAddress")}
+                      name="ShipToAddress"
+                      type="text"
+                      placeholder={t("common:mailAddress")}
+                      isRequired={false}
+                    />
+                    <Error errorName={errors.ShipToAddress} />
+                  </div>
+
+                  {/* מיקוד משלוח */}
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label={t("common:mailZipCode")}
+                      name="ShipToZipCode"
+                      type="text"
+                      placeholder={t("common:mailZipCode")}
+                      isRequired={false}
+                    />
+                    <Error errorName={errors.ShipToZipCode} />
+                  </div>
 
                 </div>
                 <div className="w-full mt-7">

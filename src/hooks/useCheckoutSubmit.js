@@ -167,8 +167,8 @@ const useCheckoutSubmit = () => {
   // שליחת ההזמנה לשרת
   const submitHandler = async (data) => {
     try {
-      // console.log('items :>> ', items);
-
+      console.log("submitHandler called!")
+      
       dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
       Cookies.set("shippingAddress", JSON.stringify(data));
       setIsCheckoutSubmit(true);
@@ -199,6 +199,7 @@ const useCheckoutSubmit = () => {
       };
 
       // יצירת ההזמנה בדטאבייס עם סטטוס Pending
+      console.log('orderInfo :>> ', orderInfo);
       const dbOrder = await OrderServices.addOrder(orderInfo)
         .then((res) => {
           console.log('success :>> ', res);

@@ -91,7 +91,12 @@ const Checkout = () => {
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
 
   const { state: { userInfo } } = useContext(UserContext);
-  const city = userInfo?.City;
+
+  const city = userInfo?.ShipToAddress?.City || userInfo?.BillToAddress?.City;
+  const address = userInfo?.ShipToAddress?.Address || userInfo?.BillToAddress?.Address;
+  const zipCode = userInfo?.ShipToAddress?.ZipCode || userInfo?.BillToAddress?.ZipCode;
+  const country = userInfo?.ShipToAddress?.Country || userInfo?.BillToAddress?.Country;
+
   const [isDeliverable, setIsDeliverable] = useState(null);
   const [availableDays, setAvailableDays] = useState([]);
   const [nextTime, setNextTime] = useState(null);
@@ -174,7 +179,7 @@ const Checkout = () => {
   // עדכון פונקציית submitHandler
   const handleSubmitWithAddressCheck = async () => {
     if (items <= 0) return notifyError(t("common:noProductsInCart"));
-    if (!userInfo?.Address) {
+    if (!city || !address) {
       notifyError(t("common:pleaseNoteAddress"));
     }
     else {
@@ -343,14 +348,15 @@ const Checkout = () => {
                           <CiUser className="text-[41px] text-customBlue group-hover:text-white transition ease-in-out duration-300" />
                           <div className="flex flex-col items-start">
                             <h2 className="text-xl">{userInfo?.CardName}</h2>
-                            {city &&
-                              <p className="text-base text-gray-400 -mt-1">{city}, {userInfo?.Address}</p>
+                            {city && address &&
+                              <p className="text-base text-gray-400 -mt-1">{city}, {address}</p>
                             }
                           </div>
                           <button type="button" className="underline mr-auto hover:text-customRed transition ease-in-out duration-200" onClick={() => setModalOpen(true)}>
                             {t("common:changeAddress")}
                           </button>
                         </div>
+
                         {/* שיטת משלוח */}
                         <div className="w-full h-auto flex flex-col items-center gap-1.5 md:h-20 md:flex-row">
                           <div className="w-full h-full relative">

@@ -26,7 +26,8 @@ import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 const UserAddressUpdate = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [cityValue, setCityValue] = useState("");
+  const [billToCityValue, setBillToCityValue] = useState("");
+  const [shipToCityValue, setShipToCityValue] = useState("");
   const {
     state: { userInfo },
   } = useContext(UserContext);
@@ -47,16 +48,16 @@ const UserAddressUpdate = () => {
       setError('CardName', { type: 'manual', message: t('common:invalidName') });
       return false;
     }
-    if (!data.Address?.trim()) {
-      setError('Address', { type: 'manual', message: t('common:invalidStreet') });
+    if (!data.BillToAddress?.trim()) {
+      setError('BillToAddress', { type: 'manual', message: t('common:invalidStreet') });
       return false;
     }
-    if (!data.City?.trim()) {
-      setError('City', { type: 'manual', message: t('common:invalidCity') });
+    if (!data.BillToCity?.trim()) {
+      setError('BillToCity', { type: 'manual', message: t('common:invalidCity') });
       return false;
     }
-    if (!data.E_Mail?.trim()) {
-      setError('E_Mail', { type: 'manual', message: t('common:invalidEmail') });
+    if (!data.EmailAddress?.trim()) {
+      setError('EmailAddress', { type: 'manual', message: t('common:invalidEmail') });
       return false;
     }
     if (!data.Phone1?.trim()) {
@@ -76,13 +77,23 @@ const UserAddressUpdate = () => {
 
     const userData = {
       CardName: data.CardName,
-      Address: data.Address,
-      City: data.City,
-      ZipCode: data.ZipCode,
-      E_Mail: data.E_Mail,
+      EmailAddress: data.EmailAddress,
       Phone1: data.Phone1,
-      Phone2: data.Phone2,
-      LicTradNum: data.LicTradNum,
+      Cellular: data.Cellular,
+      // BillToAddress: {
+      //   Address: data.BillToAddress,
+      //   City: data.BillToCity,
+      //   ZipCode: data.BillToZipCode,
+      //   Country: "IL"
+      // },
+      ShipToAddress: {
+        Address: data.ShipToAddress,
+        City: data.ShipToCity,
+        ZipCode: data.ShipToZipCode,
+        Country: "IL"
+      },
+      FederalTaxID: data.FederalTaxID,
+      Picture: imageUrl,
     };
 
     CustomerServices.updateCustomer(userInfo.CardCode, userData)
@@ -103,20 +114,39 @@ const UserAddressUpdate = () => {
   useEffect(() => {
     if (userInfo) {
       setValue("CardName", userInfo.CardName || "");
-      setValue("Address", userInfo.Address || "");
-      setValue("City", userInfo.City || "");
-      setValue("ZipCode", userInfo.ZipCode || "");
-      setValue("E_Mail", userInfo.E_Mail || "");
+      setValue("EmailAddress", userInfo.EmailAddress || "");
       setValue("Phone1", userInfo.Phone1 || "");
-      setValue("Phone2", userInfo.Phone2 || "");
-      setValue("LicTradNum", userInfo.LicTradNum || "");
-      setCityValue(userInfo.City || "");
+      setValue("Cellular", userInfo.Cellular || "");
+      setValue("FederalTaxID", userInfo.FederalTaxID || "");
+
+      // Bill To Address
+      setValue("BillToAddress", userInfo.BillToAddress?.Address || "");
+      setValue("BillToCity", userInfo.BillToAddress?.City || "");
+      setValue("BillToZipCode", userInfo.BillToAddress?.ZipCode || "");
+      setBillToCityValue(userInfo.BillToAddress?.City || "");
+
+      // Ship To Address
+      setValue("ShipToAddress", userInfo.ShipToAddress?.Address || "");
+      setValue("ShipToCity", userInfo.ShipToAddress?.City || "");
+      setValue("ShipToZipCode", userInfo.ShipToAddress?.ZipCode || "");
+      setShipToCityValue(userInfo.ShipToAddress?.City || "");
+
+      setImageUrl(userInfo.Picture || "");
     }
   }, [setValue, userInfo]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-4 sm:gap-6">
       <ShapiraTitle text={t("common:updateAddressTitle")} height={70} key="updateAddressTitle" />
+
+      {/* תמונה */}
+      <div className="w-full">
+        <Label label={t("common:image")} />
+        <div className="mt-1 flex items-center">
+          <Uploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
+        </div>
+      </div>
+
       <div className="w-full grid grid-cols-6 gap-4">
         {/* שם כרטיס לקוח */}
         <div className="col-span-6 sm:col-span-3">
@@ -135,50 +165,11 @@ const UserAddressUpdate = () => {
           <InputArea
             register={register}
             label={t("common:idNumberOrLicense")}
-            name="LicTradNum"
+            name="FederalTaxID"
             type="text"
             placeholder={t("common:idNumberOrLicense")}
           />
-          <Error errorName={errors.LicTradNum} />
-        </div>
-
-        {/* כתובת */}
-        <div className="col-span-6 sm:col-span-3">
-          <InputArea
-            register={register}
-            label={t("common:address")}
-            name="Address"
-            type="text"
-            placeholder={t("common:address")}
-          />
-          <Error errorName={errors.Address} />
-        </div>
-
-        {/* עיר */}
-        <div className="col-span-6 sm:col-span-3">
-          <Label label={t("common:city")} isRequired className="mb-0" />
-          <City
-            setValue={(cityName) => {
-              setValue("City", cityName);
-              setCityValue(cityName);
-            }}
-            value={cityValue}
-            placeholder={JSON.stringify({ city_name_he: t("common:city") })}
-          />
-          <Error errorName={errors.City} />
-        </div>
-
-        {/* מיקוד */}
-        <div className="col-span-6 sm:col-span-3">
-          <InputArea
-            register={register}
-            label={t("common:zipCode")}
-            name="ZipCode"
-            type="text"
-            placeholder={t("common:zipCode")}
-            isRequired={false}
-          />
-          <Error errorName={errors.ZipCode} />
+          <Error errorName={errors.FederalTaxID} />
         </div>
 
         {/* כתובת אימייל */}
@@ -186,11 +177,11 @@ const UserAddressUpdate = () => {
           <InputArea
             register={register}
             label={t("common:email")}
-            name="E_Mail"
+            name="EmailAddress"
             type="email"
             placeholder={t("common:email")}
           />
-          <Error errorName={errors.E_Mail} />
+          <Error errorName={errors.EmailAddress} />
         </div>
 
         {/* טלפון 1 */}
@@ -205,17 +196,96 @@ const UserAddressUpdate = () => {
           <Error errorName={errors.Phone1} />
         </div>
 
-        {/* טלפון 2 */}
+        {/* טלפון נייד */}
         <div className="col-span-6 sm:col-span-3">
           <InputArea
             register={register}
-            label={t("common:phone2")}
-            name="Phone2"
+            label={t("common:cellular")}
+            name="Cellular"
             type="text"
-            placeholder={t("common:phone2")}
+            placeholder={t("common:cellular")}
             isRequired={false}
           />
-          <Error errorName={errors.Phone2} />
+          <Error errorName={errors.Cellular} />
+        </div>
+
+        {/* כתובת חיוב */}
+        {/* <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:address")}
+            name="BillToAddress"
+            type="text"
+            placeholder={t("common:address")}
+          />
+          <Error errorName={errors.BillToAddress} />
+        </div> */}
+
+        {/* עיר חיוב */}
+        {/* <div className="col-span-6 sm:col-span-3">
+          <Label label={t("common:city")} isRequired className="mb-0" />
+          <City
+            setValue={(cityName) => {
+              setValue("BillToCity", cityName);
+              setBillToCityValue(cityName);
+            }}
+            value={billToCityValue}
+            placeholder={JSON.stringify({ city_name_he: t("common:city") })}
+          />
+          <Error errorName={errors.BillToCity} />
+        </div> */}
+
+        {/* מיקוד חיוב */}
+        {/* <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:zipCode")}
+            name="BillToZipCode"
+            type="text"
+            placeholder={t("common:zipCode")}
+            isRequired={false}
+          />
+          <Error errorName={errors.BillToZipCode} />
+        </div> */}
+
+        {/* עיר משלוח */}
+        <div className="col-span-6 sm:col-span-3">
+          <Label label={t("common:mailCity")} isRequired={false} className="mb-0" />
+          <City
+            setValue={(cityName) => {
+              setValue("ShipToCity", cityName);
+              setShipToCityValue(cityName);
+            }}
+            value={shipToCityValue}
+            placeholder={JSON.stringify({ city_name_he: t("common:mailCity") })}
+          />
+          <Error errorName={errors.ShipToCity} />
+        </div>
+
+        {/* כתובת משלוח */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:mailAddress")}
+            name="ShipToAddress"
+            type="text"
+            placeholder={t("common:mailAddress")}
+            isRequired={false}
+          />
+          <Error errorName={errors.ShipToAddress} />
+        </div>
+
+        {/* מיקוד משלוח */}
+        <div className="col-span-6 sm:col-span-3">
+          <InputArea
+            register={register}
+            label={t("common:mailZipCode")}
+            name="ShipToZipCode"
+            type="text"
+            placeholder={t("common:mailZipCode")}
+            isRequired={false}
+          />
+          <Error errorName={errors.ShipToZipCode} />
         </div>
       </div>
 

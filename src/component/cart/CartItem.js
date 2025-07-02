@@ -122,8 +122,6 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
   //   }
   // }, [item.quantity, item?.prices?.offers, item.prices.price]);
 
-  console.log(item);
-
   return (
     <div className="group w-full h-auto flex gap-4 justify-start items-center bg-white py-3 px-6 border-b hover:bg-gray-50 transition-all border-gray-100 relative last:border-b-0">
       <div onClick={() => router.push(`/product/${item?.ItemCode}`)} className="relative flex justify-between rounded-full border border-gray-100 shadow-sm overflow-hidden flex-shrink-0 cursor-pointer"

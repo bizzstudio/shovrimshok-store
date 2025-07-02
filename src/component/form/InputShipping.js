@@ -5,6 +5,7 @@ import React from "react";
 import { FiInfo, FiTruck } from "react-icons/fi";
 import dayjs from 'dayjs';
 import 'dayjs/locale/he';
+import CheckInput from './checkInput';
 
 const InputShipping = ({
   register,
@@ -69,7 +70,7 @@ const InputShipping = ({
                 </p>} */}
             </div>
           </div>
-          <input
+          {/* <input
             onClick={() => {
               handleShippingCost(cost)
             }}
@@ -81,7 +82,23 @@ const InputShipping = ({
             disabled={!isDeliveryOpen || !isDeliverable}
             value={value}
             className={`form-radio outline-none focus:ring-0 text-customRed bg-transparent cursor-pointer ${!isDeliverable || !isDeliveryOpen ? "cursor-not-allowed" : ""}`}
+          /> */}
+
+          <CheckInput
+            id={`shipping-option-${value}`}
+            type="radio"
+            onClick={() => {
+              handleShippingCost(cost)
+            }}
+            {...register(`shippingOption`, {
+              required: `Shipping Option is required!`,
+            })}
+            name="shippingOption"
+            disabled={!isDeliveryOpen || !isDeliverable}
+            value={value}
+          // className={`form-radio outline-none focus:ring-0 text-customRed bg-transparent cursor-pointer ${!isDeliverable || !isDeliveryOpen ? "cursor-not-allowed" : ""}`}
           />
+
         </div>
       </label>
     </div>

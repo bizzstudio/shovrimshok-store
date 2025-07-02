@@ -461,7 +461,7 @@ const Footer = () => {
       </div>
 
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10 flex justify-center py-4">
-        <p className="flex sm:flex-row flex-col items-center sm:gap-2 gap-1 text-sm text-gray-500 leading-6">
+        <div className="flex sm:flex-row flex-col items-center sm:gap-2 gap-1 text-sm text-gray-500 leading-6">
           <span className="flex items-center gap-1">
             <FaRegCopyright /> כל הזכויות שמורות{" "}
             <Link
@@ -483,7 +483,7 @@ const Footer = () => {
               className="text-customRed"
             > Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
           </span>
-        </p>
+        </div>
       </div>
 
     </div>

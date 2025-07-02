@@ -29,7 +29,7 @@ const Layout = ({ title, description, children }) => {
     state: { userInfo },
   } = useContext(UserContext);
 
-  console.log('Layout userInfo :>> ', userInfo);
+  // console.log('Layout userInfo :>> ', userInfo);
 
   let currentLang = Cookies.get('_lang');
 

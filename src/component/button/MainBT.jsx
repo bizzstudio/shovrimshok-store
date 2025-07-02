@@ -5,9 +5,9 @@ const MainBT = ({ children, className, ...props }) => {
     return (
         <button
             className={`font-bold relative px-4 py-1.5 text-center text-lg tracking-wider 
-            text-customRed bg-transparent cursor-pointer transition-all duration-500 
+            text-customRed bg-transparent transition-all duration-500 
             border-2 border-customRed rounded-lg overflow-hidden
-            hover:text-white active:scale-90 group ${className || ''}`}
+            hover:text-white active:scale-90 group ${className || ''} ${props.disabled ? 'opacity-40 cursor-not-allowed pointer-events-none' : 'cursor-pointer'}`}
             {...props}
         >
             <span className="flex items-center justify-center relative z-10">{children}</span>
