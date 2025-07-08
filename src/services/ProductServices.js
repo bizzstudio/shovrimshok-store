@@ -72,6 +72,12 @@ const ProductServices = {
   getPopularProducts: async () => {
     return requests.get("/products/popular-products");
   },
+
+  // משיכת מוצרים שנרכשו
+  getPurchasedProducts: async ({ page = 1, limit = 36 }) => {
+    let queryString = `?page=${page}&limit=${limit}`;
+    return requests.get(`/products/purchased-products${queryString}`);
+  },
 };
 
 export default ProductServices;
