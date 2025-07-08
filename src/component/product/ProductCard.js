@@ -127,8 +127,8 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
             </h2>
           </div>
 
-          <div className="flex justify-between items-center gap-1 text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl mt-1.5">
-            <div className="flex flex-col">
+          <div className="w-full overflow-hidden flex justify-between items-center gap-2 text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl mt-1.5">
+            <div className="flex flex-col flex-1 min-w-0">
               {/* <Price
                 card
                 product={product}
@@ -146,11 +146,11 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                     : product?.Price ?? product?.prices?.originalPrice
                 }
               /> */}
-              <div className="text-xs font-bold text-gray-500 truncate max-w-[126px] -mt-0.5">{t("common:itemCode")}: {product?.ItemCode}</div>
+              <div className="text-xs font-bold text-gray-500 truncate -mt-0.5">{t("common:itemCode")}: {product?.ItemCode}</div>
             </div>
 
             {inCart((product._id ?? product.ItemCode)) ? (
-              <div>
+              <div className="flex-shrink-0">
                 {items.map(
                   (item) =>
                     item.id === (product._id ?? product.ItemCode) && (
@@ -193,7 +193,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                 onClick={() => handleAddItem(product)}
                 aria-label="cart"
                 // className={!inStock ? "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-gray-400" : "h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"}
-                className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all"
+                className="h-9 px-2 flex items-center justify-center border border-gray-200 rounded text-customRed hover:border-customRed hover:bg-customRed hover:text-white transition-all flex-shrink-0"
               >
                 {" "}
                 {product?.variants?.length > 0 ?

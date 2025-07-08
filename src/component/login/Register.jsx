@@ -79,11 +79,11 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
       </div>
       <form
         onSubmit={handleSubmit(customSubmitHandler)}
-        className="flex flex-col justify-center w-full"
+        className="flex flex-col justify-center"
       >
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 mb-5">
           {/* CardName (שם מלא) */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="CardName"
@@ -95,7 +95,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* LicTradNum (ת.ז/עוסק) */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="LicTradNum"
@@ -107,7 +107,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* Address */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="Address"
@@ -119,7 +119,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* City */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <City
               setValue={(cityName) => {
                 setValue("City", cityName);
@@ -132,7 +132,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* ZipCode */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="ZipCode"
@@ -144,7 +144,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* Country */}
-          {/* <div className="col-span-2 sm:col-span-1">
+          {/* <div className="w-full">
             <InputArea
               register={register}
               name="Country"
@@ -156,7 +156,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div> */}
 
           {/* E_Mail */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="E_Mail"
@@ -168,7 +168,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* Phone1 */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="Phone1"
@@ -180,7 +180,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* Phone2 */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="Phone2"
@@ -193,7 +193,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* סיסמה */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="password"
@@ -205,7 +205,7 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {/* אימות סיסמה */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="w-full">
             <InputArea
               register={register}
               name="confirmPassword"
@@ -216,32 +216,30 @@ const Register = ({ setShowResetPassword, setModalOpen }) => {
             />
             <Error errorName={notMatch} />
           </div>
-
-          {/* כפתור */}
-          {loading ? (
-            <MainBT
-              disabled={true}
-              type="submit"
-              className="col-span-2"
-            >
-              <img
-                src="/loader/spinner.gif"
-                alt="Loading"
-                width={20}
-                height={10}
-              />
-              <span className="ms-1">{t("common:processing")}</span>
-            </MainBT>
-          ) : (
-            <MainBT
-              disabled={loading}
-              type="submit"
-              className="col-span-2"
-            >
-              {t("common:signingUp")}
-            </MainBT>
-          )}
         </div>
+
+        {/* כפתור */}
+        {loading ? (
+          <MainBT
+            disabled={true}
+            type="submit"
+          >
+            <img
+              src="/loader/spinner.gif"
+              alt="Loading"
+              width={20}
+              height={10}
+            />
+            <span className="ms-1">{t("common:processing")}</span>
+          </MainBT>
+        ) : (
+          <MainBT
+            disabled={loading}
+            type="submit"
+          >
+            {t("common:signingUp")}
+          </MainBT>
+        )}
       </form>
     </>
   );

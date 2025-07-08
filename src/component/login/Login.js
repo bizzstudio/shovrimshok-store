@@ -20,7 +20,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
       </div>
       <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col justify-center">
         <div className="grid grid-cols-1 gap-5">
-          <div className="form-group">
+          <div className="w-full">
             <InputArea
               register={register}
               name="username"                             // שינוי מ-phone ל-username
@@ -30,7 +30,7 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
             />
             <Error errorName={errors.username} />
           </div>
-          <div className="form-group">
+          <div className="w-full">
             <InputArea
               register={register}
               name="password"

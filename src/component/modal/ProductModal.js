@@ -381,8 +381,8 @@ const ProductModal = ({
 
               {/* בחירת כמות והוספה */}
               <div className="flex items-center mt-4">
-                <div className="flex items-center gap-3 justify-between space-s-3 sm:space-s-4 w-full">
-                  <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 md:h-12 border-gray-300">
+                <div className="flex sm:flex-row flex-col items-center gap-3 justify-between space-s-3 sm:space-s-4 w-full">
+                  <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 md:h-12 border-gray-300 w-full sm:w-auto">
                     <button
                       onClick={() => setItem(item - 1)}
                       disabled={item === 1}

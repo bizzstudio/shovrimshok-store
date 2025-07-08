@@ -266,10 +266,10 @@ const NavbarPromo = () => {
                 {t("common:bestSellers")}
               </Link>
 
-              <hr className="w-[1px] bg-gray-300 h-3/4" />
+              {/* <hr className="w-[1px] bg-gray-300 h-3/4" /> */}
 
               {/* about-us */}
-              {storeCustomizationSetting?.navbar?.about_menu_status && (
+              {/* {storeCustomizationSetting?.navbar?.about_menu_status && (
                 <Link
                   href="/about-us"
                   onClick={() => setIsLoading(true)}
@@ -279,6 +279,21 @@ const NavbarPromo = () => {
                     storeCustomizationSetting?.navbar?.about_us
                   )}
                 </Link>
+              )} */}
+
+              {userInfo && (
+                <>
+                  <hr className="w-[1px] bg-gray-300 h-3/4" />
+
+                  {/* purchased-products */}
+                  <Link
+                    href="/purchased-products"
+                    // onClick={() => setIsLoading(true)}
+                    className="flex-grow font-serif mx-4 p-3 text-lg font-medium text-customBlue hover:text-customRed"
+                  >
+                    {t("common:purchasedProducts")}
+                  </Link>
+                </>
               )}
 
               <hr className="w-[1px] bg-gray-300 h-3/4" />

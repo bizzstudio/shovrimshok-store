@@ -13,12 +13,15 @@ import CategoryCard from "./CategoryCard";
 import useGetSetting from "@hooks/useGetSetting";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { UserContext } from "@context/UserContext";
 
 const Category = ({ onLinkClick }) => {
   const { categoryDrawerOpen, closeCategoryDrawer, categories, setIsLoading } = useContext(SidebarContext);
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
   const { t } = useTranslation();
+
+  const { state: { userInfo } } = useContext(UserContext);
 
   // console.log('categoies :>> ', categories);
 
@@ -119,7 +122,13 @@ const Category = ({ onLinkClick }) => {
 
             {/* עמודים */}
             <div className="relative grid gap-1 p-6">
-              {pages.map((item) => (
+              {pages.filter((item) => {
+                if (!userInfo) {
+                  return item.title !== "purchasedProducts";
+                } else {
+                  return true;
+                }
+              }).map((item) => (
                 <Link
                   key={item.title}
                   href={item.href}

@@ -23,7 +23,7 @@ const MainModal = ({ modalOpen, setModalOpen, children, z = null, onClose }) => 
           initialFocus={cancelButtonRef}
           style={{ zIndex: z ? z : 30 }}
         >
-          <div className="min-h-screen p-4">
+          <div className="min-h-screen px-8">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -48,7 +48,9 @@ const MainModal = ({ modalOpen, setModalOpen, children, z = null, onClose }) => 
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block overflow-hidden text-left align-middle transition-all transform bg-white rounded-2xl xl:max-w-6xl shadow-popup">
+              <div
+                className="inline-block w-full max-w-none sm:w-auto sm:max-w-6xl overflow-hidden text-left align-middle transition-all transform bg-white rounded-2xl xl:max-w-6xl shadow-popup my-8"
+              >
                 {children}
                 <div className="absolute right-5 top-5">
                   <button

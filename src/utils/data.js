@@ -16,7 +16,10 @@ import {
   FiSettings,
   FiList,
   FiPhoneIncoming,
+  FiTrendingUp,
+  FiShoppingCart,
 } from "react-icons/fi";
+import { TbShoppingCartHeart } from "react-icons/tb";
 
 const pages = [
   // {
@@ -34,6 +37,16 @@ const pages = [
   //   href: "/checkout",
   //   icon: FiShoppingBag,
   // },
+  {
+    title: "bestSellers",
+    href: "/best-sellers",
+    icon: FiTrendingUp,
+  },
+  {
+    title: "purchasedProducts",
+    href: "/purchased-products",
+    icon: TbShoppingCartHeart,
+  },
   {
     title: "faq-page",
     href: "/faqs",

@@ -21,7 +21,7 @@ const AccessibilityStatement = () => {
     <Layout title="הצהרת נגישות" description="This is Accessibility Statement page">
       <PageHeader
         headerBg={storeCustomizationSetting?.contact_us?.header_bg}
-        title={<img src={accessibilityTitle.src} alt={t("common:paymentMethod")} className="h-32 -my-5 mx-auto" />}
+        title={storeCustomizationSetting?.footer?.block1_sub_title4}
       />
 
       <div className="bg-white flex">

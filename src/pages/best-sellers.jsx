@@ -15,6 +15,7 @@ import Loading from "@component/preloader/Loading";
 import { UserContext } from "@context/UserContext";
 import ProductCardSkeleton from "@component/preloader/ProductCardSkeleton";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import SortDropdown from "@component/common/SortDropdown";
 
 const BestSellersPage = () => {
     const { t } = useTranslation();
@@ -35,7 +36,7 @@ const BestSellersPage = () => {
     const [hasMore, setHasMore] = useState(true);
 
     // מיון / סינון (לפי useFilter הקיים)
-    const { productData } = useFilter(allProducts);
+    const { productData, setSortedField, sortedField } = useFilter(allProducts);
 
     const layoutTitle = t("common:bestSellers");
 
@@ -137,6 +138,16 @@ const BestSellersPage = () => {
                         <h2 className="text-center text-xl sm:text-2xl font-semibold mb-5 mt-6">
                             <ShapiraTitle text={layoutTitle} height={70} key={layoutTitle} />
                         </h2>
+
+                        {/* הוספת רכיב המיון */}
+                        {!isInitialLoading && productData?.length > 0 && (
+                            <div className="flex justify-end mb-4">
+                                <SortDropdown
+                                    sortedField={sortedField}
+                                    setSortedField={setSortedField}
+                                />
+                            </div>
+                        )}
 
                         {isInitialLoading ? (
                             // <ProductCardSkeleton count={18} />

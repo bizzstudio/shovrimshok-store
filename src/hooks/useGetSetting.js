@@ -137,6 +137,7 @@ const useGetSetting = () => {
 
   // console.log('storeCustomizationSetting :>> ', storeCustomizationSetting);
   // console.log('storeSetting :>> ', storeSetting);
+  // console.log('globalSetting :>> ', globalSetting);
 
   return {
     lang,

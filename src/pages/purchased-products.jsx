@@ -15,11 +15,22 @@ import Loading from "@component/preloader/Loading";
 import { UserContext } from "@context/UserContext";
 import ProductCardSkeleton from "@component/preloader/ProductCardSkeleton";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import SortDropdown from "@component/common/SortDropdown";
+import { useRouter } from "next/router";
 
 const PurchasedProductsPage = () => {
     const { t } = useTranslation();
     const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
     const { state: { userInfo } } = useContext(UserContext);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        setIsLoading(false);
+        if (!userInfo) {
+            router.push("/");
+        }
+    }, [userInfo]);
 
     // נשמור כאן את כל המוצרים מכל העמודים
     const [allProducts, setAllProducts] = useState([]);
@@ -29,13 +40,15 @@ const PurchasedProductsPage = () => {
 
     // state לניהול page = עמוד נוכחי
     const [page, setPage] = useState(1);
-    const [sapSkip, setSapSkip] = useState(0);
+
+    // סך כל המוצרים שנרכשו (מהשרת)
+    const [totalDoc, setTotalDoc] = useState(0);
 
     // האם יש עוד מוצרים בעמוד הבא?
     const [hasMore, setHasMore] = useState(true);
 
     // מיון / סינון (לפי useFilter הקיים)
-    const { productData } = useFilter(allProducts);
+    const { productData, setSortedField, sortedField } = useFilter(allProducts);
 
     const layoutTitle = t("common:purchasedProducts");
 
@@ -79,15 +92,22 @@ const PurchasedProductsPage = () => {
         const nextPage = page + 1;
         setIsLoadMore(true);
         try {
-            const res = await ProductServices.getPurchasedProducts({ token: userInfo?.token });
+            const res = await ProductServices.getPurchasedProducts({
+                token: userInfo?.token,
+                page: nextPage,
+                limit: 20
+            });
 
-            if (!res.products || res.products.length < 36) {
-                setHasMore(false);
-            } else {
+            if (res.products && res.products.length > 0) {
                 // מוסיפים את המוצרים החדשים למערך
                 setAllProducts(prev => [...prev, ...res.products]);
                 setPage(nextPage);
-                setSapSkip(res.nextSapSkip ?? 0);
+
+                // בדיקה אם הגענו לסוף המוצרים
+                const currentTotal = allProducts.length + res.products.length;
+                setHasMore(currentTotal < res.totalDoc);
+            } else {
+                setHasMore(false);
             }
         } catch (err) {
             console.error("Load More error: ", err);
@@ -107,14 +127,18 @@ const PurchasedProductsPage = () => {
             try {
                 // טען מוצרים ו-attributes במקביל
                 const [productsRes, attributesRes] = await Promise.all([
-                    ProductServices.getPurchasedProducts({ token: userInfo?.token }),
+                    ProductServices.getPurchasedProducts({
+                        token: userInfo?.token,
+                        page: 1,
+                        limit: 20
+                    }),
                     AttributeServices.getShowingAttributes({})
                 ]);
 
                 setAllProducts(productsRes?.products || []);
                 setAttributes(attributesRes || []);
-                setSapSkip(productsRes.nextSapSkip ?? 0);
-                setHasMore(productsRes?.products?.length === 36);
+                setTotalDoc(productsRes?.totalDoc || 0);
+                setHasMore((productsRes?.products?.length || 0) < (productsRes?.totalDoc || 0));
             } catch (err) {
                 console.error("Fetch initial data error: ", err);
                 setAllProducts([]);
@@ -125,7 +149,9 @@ const PurchasedProductsPage = () => {
             }
         };
 
-        fetchInitialData();
+        if (userInfo?.token) {
+            fetchInitialData();
+        }
     }, [userInfo?.token]);
 
     return (
@@ -137,6 +163,16 @@ const PurchasedProductsPage = () => {
                         <h2 className="text-center text-xl sm:text-2xl font-semibold mb-5 mt-6">
                             <ShapiraTitle text={layoutTitle} height={70} key={layoutTitle} />
                         </h2>
+
+                        {/* הוספת רכיב המיון */}
+                        {!isInitialLoading && productData?.length > 0 && (
+                            <div className="flex justify-end mb-4">
+                                <SortDropdown
+                                    sortedField={sortedField}
+                                    setSortedField={setSortedField}
+                                />
+                            </div>
+                        )}
 
                         {isInitialLoading ? (
                             // <ProductCardSkeleton count={18} />
