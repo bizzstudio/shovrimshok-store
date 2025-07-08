@@ -19,6 +19,10 @@ import Link from "next/link";
 import CustomerServices from "@services/CustomerServices";
 import notifyApiResponse from "@utils/notifyApiResponse";
 import MainBT from "@component/button/MainBT";
+import FactoryStore from "public/new customers/FactoryStore.svg";
+import QuickDelivery from "public/new customers/QuickDelivery.svg";
+import ProductsVariety from "public/new customers/ProductsVariety.svg";
+import WholesalePrices from "public/new customers/WholesalePrices.svg";
 
 const ContactUs = () => {
   const { t } = useTranslation();
@@ -46,6 +50,8 @@ const ContactUs = () => {
       setLoading(false);
     }
   };
+
+  console.log('storeCustomizationSetting?.contact_us :>> ', storeCustomizationSetting?.contact_us);
 
   return (
     <Layout title="Contact Us" description="This is contact us page">
@@ -238,33 +244,34 @@ const ContactUs = () => {
               />
 
               {/* פרטי החנות */}
-              <div className="flex flex-col gap-5 mt-6">                {settingsLoading ? (<CMSkeleton count={10} height={20} error={error} loading={settingsLoading} />) : (
-                <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
-                  <span className="flex justify-center text-4xl text-customRed">
-                    <FiMail />
-                  </span>
-                  <div className="flex flex-col sm:flex-row sm:items-center items-start justify-start gap-0 sm:gap-2">
-                    <h5 className="text-xl font-bold">
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.contact_us?.email_box_title
-                      )}
-                    </h5>
-                    <p className="text-base opacity-90">
-                      <a
-                        href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-                        className="text-customRed"
-                      >
+              <div className="flex flex-col gap-5 mt-6">
+                {settingsLoading ? (<CMSkeleton count={10} height={20} error={error} loading={settingsLoading} />) : (
+                  <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
+                    <span className="flex justify-center text-4xl text-customRed">
+                      <FiMail />
+                    </span>
+                    <div className="flex flex-col sm:flex-row sm:items-center items-start justify-start gap-0 sm:gap-2">
+                      <h5 className="text-xl font-bold">
                         {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.email_box_email
+                          storeCustomizationSetting?.contact_us?.email_box_title
                         )}
-                      </a>{" "}
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.contact_us?.email_box_text
-                      )}
-                    </p>
+                      </h5>
+                      <p className="text-base opacity-90">
+                        <a
+                          href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
+                          className="text-customRed"
+                        >
+                          {showingTranslateValue(
+                            storeCustomizationSetting?.contact_us?.email_box_email
+                          )}
+                        </a>{" "}
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.contact_us?.email_box_text
+                        )}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
                 {settingsLoading ? (
                   <CMSkeleton
