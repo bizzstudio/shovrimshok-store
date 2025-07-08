@@ -3,19 +3,15 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
-import { FiMail, FiMapPin, FiBell } from "react-icons/fi";
 
 // Internal import
 import Layout from "@layout/Layout";
-import Label from "@component/form/Label";
 import Error from "@component/form/Error";
 import { notifySuccess } from "@utils/toast";
 import InputArea from "@component/form/InputArea";
 import PageHeader from "@component/header/PageHeader";
 import useGetSetting from "@hooks/useGetSetting";
-import CMSkeleton from "@component/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import Link from "next/link";
 import CustomerServices from "@services/CustomerServices";
 import notifyApiResponse from "@utils/notifyApiResponse";
 import MainBT from "@component/button/MainBT";
@@ -23,6 +19,7 @@ import FactoryStore from "public/new customers/FactoryStore.svg";
 import QuickDelivery from "public/new customers/QuickDelivery.svg";
 import ProductsVariety from "public/new customers/ProductsVariety.svg";
 import WholesalePrices from "public/new customers/WholesalePrices.svg";
+import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 
 const ContactUs = () => {
   const { t } = useTranslation();
@@ -42,7 +39,7 @@ const ContactUs = () => {
     try {
       const res = await CustomerServices.sendContactUsMessage(data);
       notifyApiResponse(res, true);
-      reset(); // ריקון הטופס לאחר שליחה מוצלחת
+      reset();
     } catch (error) {
       console.log("error :>> ", error);
       notifyApiResponse(error, false);
@@ -51,12 +48,12 @@ const ContactUs = () => {
     }
   };
 
-  console.log('storeCustomizationSetting?.contact_us :>> ', storeCustomizationSetting?.contact_us);
-
   return (
-    <Layout title="Contact Us" description="This is contact us page">
+    <Layout title={t("common:contact-us")} description={t("common:contact-us-description")}>
       {storeCustomizationSetting?.contact_us?.header_status && (
         <PageHeader
+          height={100}
+          // useShapiraTitle={false}
           headerBg={storeCustomizationSetting?.contact_us?.header_bg}
           title={showingTranslateValue(
             storeCustomizationSetting?.contact_us?.title
@@ -64,292 +61,129 @@ const ContactUs = () => {
         />
       )}
 
-      <div className="bg-white">
-        <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">
-          {/* contact form */}
-          <div className="px-0 mx-auto flex flex-col lg:flex-row w-full justify-between gap-16">
-            <div className="px-0 pb-2 w-full lg:w-6/12 flex flex-col md:flex-row">
-              <form
-                onSubmit={handleSubmit(submitHandler)}
-                className="w-full mx-auto flex flex-col justify-center"
-              >
-                <div className="mb-12">
-                  <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold font-serif mb-3">
-                    <CMSkeleton
-                      count={1}
-                      height={50}
-                      // error={error}
-                      loading={settingsLoading}
-                      data={storeCustomizationSetting?.contact_us?.form_title}
-                    />
-                  </h3>
-                  <p className="text-base opacity-90">
-                    <CMSkeleton
-                      count={2}
-                      height={20}
-                      // error={error}
-                      loading={settingsLoading}
-                      data={
-                        storeCustomizationSetting?.contact_us?.form_description
-                      }
-                    />
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-5">
-                  {/* שם איש קשר */}
-                  <div className="relative col-span-2 sm:col-span-1">
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-contact-name")}
-                      name="contactName"
-                      type="text"
-                      placeholder={t("common:contact-page-form-placeholder-contact-name")}
-                    />
-                    <Error errorName={errors.contactName} />
-                  </div>
-
-                  {/* שם החברה */}
-                  <div className="relative col-span-2 sm:col-span-1">
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-business-name")}
-                      name="businessName"
-                      type="text"
-                      placeholder={t("common:contact-page-form-placeholder-business-name")}
-                    />
-                    <Error errorName={errors.businessName} />
-                  </div>
-
-                  {/* שם התחום */}
-                  <div className="relative col-span-2 sm:col-span-1">
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-business-field")}
-                      name="businessField"
-                      type="text"
-                      placeholder={t("common:contact-page-form-placeholder-business-field")}
-                    />
-                    <Error errorName={errors.businessField} />
-                  </div>
-
-                  {/* מיקום החברה */}
-                  <div className="relative col-span-2 sm:col-span-1">
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-business-location")}
-                      name="businessLocation"
-                      type="text"
-                      placeholder={t("common:contact-page-form-placeholder-business-location")}
-                    />
-                    <Error errorName={errors.businessLocation} />
-                  </div>
-
-                  {/* טלפון */}
-                  <div className="relative col-span-2 sm:col-span-1">
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-phone")}
-                      name="phone"
-                      type="tel"
-                      placeholder={t("common:contact-page-form-placeholder-phone")}
-                    />
-                    <Error errorName={errors.phone} />
-                  </div>
-
-                  {/* דוא"ל */}
-                  <div className="relative col-span-2 sm:col-span-1">
-                    <InputArea
-                      register={register}
-                      isRequired={false}
-                      label={`${t("common:contact-page-form-input-email")} ${t("common:optional")}`}
-                      name="email"
-                      type="email"
-                      placeholder={t("common:contact-page-form-placeholder-email")}
-                    />
-                    <Error errorName={errors.email} />
-                  </div>
-
-                  {/* בקשה מיוחדת */}
-                  <div className="relative col-span-2">
-                    <Label
-                      label={t("common:contact-page-form-input-special-requests")}
-                    />
-                    <textarea
-                      {...register("specialRequests")}
-                      name="specialRequests"
-                      className="px-4 py-3 flex items-center w-full rounded appearance-none opacity-75 transition duration-300 ease-in-out text-sm focus:ring-0 bg-white border border-gray-300 focus:shadow-none focus:outline-none focus:border-gray-500 placeholder-body"
-                      autoComplete="off"
-                      spellCheck="false"
-                      rows="4"
-                      placeholder={t("common:contact-page-form-placeholder-special-requests")}
-                    ></textarea>
-                    <Error errorName={errors.specialRequests} />
-                  </div>
-
-                  {/* תקנון */}
-                  <div className="relative flex items-start col-span-2">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="terms"
-                        {...register("terms", {
-                          required: `${t("common:terms-required")}`,
-                        })}
-                        type="checkbox"
-                        className="focus:ring-customRed h-4 w-4 text-customRed border-gray-300 rounded"
-                      />
-                    </div>
-                    <div className="ms-3 text-sm flex flex-col">
-                      <label htmlFor="terms" className="font-medium text-gray-700">
-                        {t("common:accept")} <Link target="_blank" href="/terms-and-conditions" className="text-customRed hover:text-customRed-dark">{t("common:terms-of-use")}</Link> {t("common:and")}<Link target="_blank" href="/privacy-policy" className="text-customRed hover:text-customRed-dark">{t("common:privacy-policy")}</Link>
-                      </label>
-                      <Error errorName={errors.terms} />
-                    </div>
-                  </div>
-
-                  {/* שלח */}
-                  <div className="relative col-span-2 flex justify-end md:-mt-5 -mt-2">
-                    {loading ? (
-                      <MainBT
-                        disabled={true}
-                        type="submit"
-                      >
-                        <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
-                        <span className="ms-1">{t("common:processing")}</span>
-                      </MainBT>
-                    ) : (
-                      <MainBT
-                        disabled={loading}
-                        type="submit"
-                      >
-                        {t("common:contact-page-form-send-btn")}
-                      </MainBT>
-                    )}
-                  </div>
-                </div>
-              </form>
+      <div className="bg-gray-50 sm:py-20 py-10">
+        {/* Features Section - Full Width */}
+        <div className="w-full px-4 sm:px-6 lg:px-44 mb-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-16">
+            {/* חנות המפעל */}
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <Image src={FactoryStore} alt={t("common:factory-store")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
+              </div>
+              <h3 className="sm:text-3xl text-xl font-bold text-customRed mb-3">{t("common:factory-store")}</h3>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed px-2">
+                {t("common:factory-store-description")}
+              </p>
             </div>
 
-            {/* תמונה משמאל */}
-            <div className="w-full lg:w-5/12 flex flex-col h-full">
-              <Image
-                width={874}
-                height={874}
-                src={
-                  storeCustomizationSetting?.contact_us?.left_col_img ||
-                  "/contact-us.png"
-                }
-                alt="logo"
-                className="block w-auto"
-              />
+            {/* אספקה מהירה */}
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <Image src={QuickDelivery} alt={t("common:quick-delivery")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
+              </div>
+              <h3 className="sm:text-3xl text-xl font-bold text-customRed mb-3">{t("common:quick-delivery")}</h3>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed px-2">
+                {t("common:quick-delivery-description")}
+              </p>
+            </div>
 
-              {/* פרטי החנות */}
-              <div className="flex flex-col gap-5 mt-6">
-                {settingsLoading ? (<CMSkeleton count={10} height={20} error={error} loading={settingsLoading} />) : (
-                  <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
-                    <span className="flex justify-center text-4xl text-customRed">
-                      <FiMail />
-                    </span>
-                    <div className="flex flex-col sm:flex-row sm:items-center items-start justify-start gap-0 sm:gap-2">
-                      <h5 className="text-xl font-bold">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.email_box_title
-                        )}
-                      </h5>
-                      <p className="text-base opacity-90">
-                        <a
-                          href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-                          className="text-customRed"
-                        >
-                          {showingTranslateValue(
-                            storeCustomizationSetting?.contact_us?.email_box_email
-                          )}
-                        </a>{" "}
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.email_box_text
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                )}
+            {/* מגוון מוצרים */}
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <Image src={ProductsVariety} alt={t("common:products-variety")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
+              </div>
+              <h3 className="sm:text-3xl text-xl font-bold text-customRed mb-3">{t("common:products-variety")}</h3>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed px-2">
+                {t("common:products-variety-description")}
+              </p>
+            </div>
 
-                {settingsLoading ? (
-                  <CMSkeleton
-                    count={10}
-                    height={20}
-                    error={error}
-                    loading={settingsLoading}
+            {/* מחירי סיטונאות */}
+            <div className="text-center">
+              <div className="flex justify-center mb-3">
+                <Image src={WholesalePrices} alt={t("common:wholesale-prices")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
+              </div>
+              <h3 className="sm:text-3xl text-xl font-bold text-customRed mb-3">{t("common:wholesale-prices")}</h3>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed px-2">
+                {t("common:wholesale-prices-description")}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content - Centered */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            {/* <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-customRed mb-6">
+              {t("common:contact-main-title")}
+            </h1> */}
+              <ShapiraTitle text={t("common:contact-main-title")} height={70} className="!mb-5" />
+            <p className="text-xl text-gray-700 mb-8">
+              {t("common:contact-main-subtitle")}
+            </p>
+          </div>
+
+          {/* Contact Form */}
+          <div className="max-w-4xl mx-auto">
+            <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* שם איש קשר */}
+                <div className="relative">
+                  <input
+                    {...register("contactName", { required: t("common:contact-name-required") })}
+                    type="text"
+                    placeholder={t("common:contact-name-placeholder")}
+                    className="w-full px-4 py-4 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-customRed focus:border-transparent outline-none transition-all duration-200"
                   />
-                ) : (
-                  <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
-                    <span className="flex justify-center text-4xl text-customRed">
-                      <FiBell />
-                    </span>
-                    <div className="flex flex-col sm:flex-row sm:items-center items-start justify-start gap-0 sm:gap-2">
-                      <h5 className="text-xl font-bold">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.call_box_title
-                        )}
-                      </h5>
-                      <p className="text-base opacity-90">
-                        <a
-                          href={`mailto:${storeCustomizationSetting?.contact_us?.call_box_phone}`}
-                          className="text-customRed"
-                        >
-                          {showingTranslateValue(
-                            storeCustomizationSetting?.contact_us?.call_box_phone
-                          )}
-                        </a>{" "}
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.call_box_text
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {settingsLoading ? (
-                  <CMSkeleton
-                    count={10}
-                    height={20}
-                    error={error}
-                    loading={settingsLoading}
+                  <Error errorName={errors.contactName} />
+                </div>
+
+                {/* טלפון */}
+                <div className="relative">
+                  <input
+                    {...register("phone", { required: t("common:phone-required") })}
+                    type="tel"
+                    dir="rtl"
+                    placeholder={t("common:phone-placeholder")}
+                    className="w-full px-4 py-4 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-customRed focus:border-transparent outline-none transition-all duration-200"
                   />
+                  <Error errorName={errors.phone} />
+                </div>
+
+                {/* שם העסק */}
+                <div className="relative">
+                  <input
+                    {...register("businessName", { required: t("common:business-name-required") })}
+                    type="text"
+                    placeholder={t("common:business-name-placeholder")}
+                    className="w-full px-4 py-4 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-customRed focus:border-transparent outline-none transition-all duration-200"
+                  />
+                  <Error errorName={errors.businessName} />
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="text-center">
+                {loading ? (
+                  <MainBT
+                    disabled={true}
+                    type="submit"
+                    className='w-full'
+                  >
+                    <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
+                    <span className="ms-1">{t("common:processing")}</span>
+                  </MainBT>
                 ) : (
-                  <div className="flex justify-start items-center gap-4 border p-5 rounded-lg text-center">
-                    <span className="flex justify-center text-4xl text-customRed">
-                      <FiMapPin />
-                    </span>
-                    <div className="flex flex-col sm:flex-row sm:items-center items-start justify-start gap-0 sm:gap-2">
-                      <h5 className="text-xl font-bold">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.contact_us?.address_box_title
-                        )}
-                      </h5>
-                      <p className="text-base opacity-90 text-customRed">
-                        <span>
-                          {showingTranslateValue(
-                            storeCustomizationSetting?.contact_us
-                              ?.address_box_address_one
-                          )}
-                        </span>
-                        {/* {" "}
-                      <br />
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.contact_us
-                          ?.address_box_address_two
-                      )}
-                      {" "}
-                      <br />
-                      {showingTranslateValue(
-                        storeCustomizationSetting?.contact_us
-                          ?.address_box_address_three
-                      )} */}
-                      </p>
-                    </div>
-                  </div>
+                  <MainBT
+                    disabled={loading}
+                    type="submit"
+                    className='w-full'
+                  >
+                    {t("common:send")}
+                  </MainBT>
                 )}
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
