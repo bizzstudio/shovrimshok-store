@@ -309,7 +309,7 @@
     "orGoogle": "או היכנס/י עם גוגל",
     "notAccount": "אין לך חשבון עדיין?",
     "alreadyHaveAccount": "כבר יש לך חשבון?",
-    "register": "הרשמה",
+    "register": "לפתיחת חשבון",
     "requiredField": "שדה זה נדרש",
     "invalidEmail": "אימייל לא תקין",
     "facebookLogin": "המשך עם Facebook",
@@ -331,7 +331,7 @@
   
   "/=================* Signing Up * =================/": "",
 
-    "signingUp": "הרשמה",
+    "signingUp": "פתיחת חשבון",
     "createAccount": "יצירת חשבון עם אימייל וסיסמה",
     "name": "שם פרטי",
     "lastName": "שם משפחה",

@@ -382,19 +382,20 @@ export const getServerSideProps = async (context) => {
   const { cookies } = context.req;
   const { query, _id } = context.query;
 
-  const [data, attributes] = await Promise.all([
+  const [data, attributes, popularProductsData] = await Promise.all([
     ProductServices.getShowingStoreProducts({
       category: _id ? _id : "",
       title: query ? query : "",
     }),
-
     AttributeServices.getShowingAttributes(),
+    // הוספת קריאה למוצרים הפופולריים האמיתיים
+    ProductServices.getPopularProducts(),
   ]);
 
   console.log('data: ', data)
 
-  // const sortedPopularProducts = sortProducts(data.popularProducts);
-  const sortedPopularProducts = data.products;
+  // שימוש במוצרים הפופולריים האמיתיים במקום מוצרים כלליים
+  const sortedPopularProducts = popularProductsData.products || [];
 
   // שינוי המוצרים במבצע למוצרים עם מבצעי הצעות במקום מבצעים של סתם מחיר זול יותר
   const sortedDiscountProducts = data.products;
