@@ -200,7 +200,7 @@ const Dashboard = ({ title, description, children }) => {
                           loading ? <Skeleton width={60} height={20} /> : (orderData?.balance ?? 0)
                         }
                         className="text-blue-600 bg-blue-100"
-                        quantityColor={orderData?.balance < 0 ? "text-red-500" : orderData?.balance > 0 ? "text-green-500" : ""}
+                        quantityColor={orderData?.balance > 0 ? "text-red-500" : orderData?.balance < 0 ? "text-green-500" : ""}
                       />
                     </div>
                     {/* <RecentOrder data={data} loading={loading} error={error} /> */}

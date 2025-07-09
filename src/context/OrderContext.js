@@ -56,6 +56,7 @@ export const OrderProvider = ({ children }) => {
             setLastDocumentsFetched(Date.now());
             setDocumentsError("");
         } catch (err) {
+            console.error('err :>> ', err);
             if (err.response && err.response.data && err.response.data.message) {
                 setDocumentsError(err.response.data.message);
             } else {
@@ -70,7 +71,7 @@ export const OrderProvider = ({ children }) => {
     useEffect(() => {
         if (userInfo) {
             fetchOrderData();
-            // fetchDocumentData();
+            fetchDocumentData();
         } else {
             // Reset all data when user logs out
             setOrderData(null);

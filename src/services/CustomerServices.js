@@ -34,6 +34,10 @@ const CustomerServices = {
     return requests.put(`/customer/${id}`, body);
   },
 
+  getCustomerDocuments: async () => {
+    return requests.get("/customer/documents");
+  },
+
   sendContactUsMessage: async (body) => {
     return requests.post("/customer/contact-us", body);
   },

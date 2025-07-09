@@ -392,8 +392,6 @@ export const getServerSideProps = async (context) => {
     ProductServices.getPopularProducts(),
   ]);
 
-  console.log('data: ', data)
-
   // שימוש במוצרים הפופולריים האמיתיים במקום מוצרים כלליים
   const sortedPopularProducts = popularProductsData.products || [];
 

@@ -88,6 +88,7 @@ const useLoginSubmit = (setModalOpen) => {
           password: data.password,
         })
           .then((res) => {
+          console.log('res: ', res)
             setLoading(false);
             setModalOpen(false);
             localStorage.removeItem("plsRegisterAgain");

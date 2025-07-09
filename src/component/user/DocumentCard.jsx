@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { getStatusColor } from "@component/order/OrderHistory";
 import 'dayjs/locale/he';
-import PDFDownloadButton from "@component/PDFDownloadButton/PDFDownloadButton";
+// import PDFDownloadButton from "@component/PDFDownloadButton/PDFDownloadButton";
 
 const DocumentCard = ({ document, docType, PDFDownloadComponent }) => {
     const { t } = useTranslation();
@@ -189,13 +189,13 @@ const DocumentCard = ({ document, docType, PDFDownloadComponent }) => {
             </div>
 
             {/* כפתור PDF */}
-            <div className="flex justify-end pt-3 border-t border-gray-100">
+            {/* <div className="flex justify-end pt-3 border-t border-gray-100">
                 <PDFDownloadButton
                     type={document._docType}
                     DocNum={document.DocNum}
                     name={`${docType}_${document.DocNum}`}
                 />
-            </div>
+            </div> */}
         </div>
     );
 };
