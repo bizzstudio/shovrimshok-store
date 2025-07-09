@@ -61,12 +61,12 @@ const ContactUs = () => {
         />
       )}
 
-      <div className="bg-gray-50 sm:pt-16 pt-8">
+      <div className="bg-gray-50 sm:pt-20 pt-16">
         {/* Features Section - Full Width */}
-        <div className="w-full px-4 sm:px-6 xl:px-56 md:px-20 sm:mb-12 mb-8">
+        <div className="w-full px-4 sm:px-6 xl:px-56 md:px-20 sm:mb-20 mb-16">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-16">
             {/* חנות המפעל */}
-            <div className="text-center">
+            <div className="text-center shadow-lg p-5 pb-4 rounded-lg">
               <div className="flex justify-center sm:mb-3 mb-1">
                 <Image src={FactoryStore} alt={t("common:factory-store")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
@@ -77,7 +77,7 @@ const ContactUs = () => {
             </div>
 
             {/* אספקה מהירה */}
-            <div className="text-center">
+            <div className="text-center shadow-lg p-5 pb-4 rounded-lg">
               <div className="flex justify-center sm:mb-3 mb-1">
                 <Image src={QuickDelivery} alt={t("common:quick-delivery")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
@@ -88,7 +88,7 @@ const ContactUs = () => {
             </div>
 
             {/* מגוון מוצרים */}
-            <div className="text-center">
+            <div className="text-center shadow-lg p-5 pb-4 rounded-lg">
               <div className="flex justify-center sm:mb-3 mb-1">
                 <Image src={ProductsVariety} alt={t("common:products-variety")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
@@ -99,7 +99,7 @@ const ContactUs = () => {
             </div>
 
             {/* מחירי סיטונאות */}
-            <div className="text-center">
+            <div className="text-center shadow-lg p-5 pb-4 rounded-lg">
               <div className="flex justify-center sm:mb-3 mb-1">
                 <Image src={WholesalePrices} alt={t("common:wholesale-prices")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
