@@ -28,11 +28,18 @@ export default function ShapiraTitle({
         return () => window.removeEventListener("resize", handleResize);
     }, [height]);
 
+    const translatedTitle = (typeof text === "object" ? showingTranslateValue(text) : text)
+    const isContainNewLine = translatedTitle.includes('\\n') || translatedTitle.includes('\\r') || translatedTitle.includes('\\r\\n');
+    const finalTitle = translatedTitle
+        ?.replace(/\\r\\n/g, '<br />')
+        ?.replace(/\\n/g, '<br />')
+        ?.replace(/\\r/g, '<br />')
+
     return (
         <div
             className={`flex flex-col justify-between w-fit relative mx-auto select-none sm:gap-0 gap-2 ${className}`}
             style={{
-                height: isSmall ? 'fit-content' : currentHeight,
+                height: isSmall ? 'fit-content' : isContainNewLine ? currentHeight * 1.5 : currentHeight,
                 marginBottom: currentHeight * 0.1,
                 marginTop: currentHeight * 0.1,
             }}
@@ -56,14 +63,15 @@ export default function ShapiraTitle({
 
             {/* טקסט */}
             <span
-                className="flex flex-wrap w-fit font-popper tracking-[1px] text-red-600 leading-none items-center animate-fade-scale-in text-center"
+                className="flex flex-wrap w-fit font-popper font-light text-red-600 leading-none items-center animate-fade-scale-in text-center"
                 style={{
                     fontSize: `calc(${currentHeight}px * 0.55)`,
-                    marginTop: `calc(-${currentHeight * 0.11}px / 2)`,
+                    marginTop: `calc(-${currentHeight * (isContainNewLine ? 0.18 : 0.11)}px / 2)`,
                 }}
-            >
-                {typeof text === "object" ? showingTranslateValue(text) : text}
-            </span>
+                dangerouslySetInnerHTML={{
+                    __html: finalTitle
+                }}
+            />
 
             {/* פס תחתון */}
             <div

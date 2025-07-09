@@ -23,7 +23,7 @@ import StickyCart from "@component/cart/StickyCart";
 import { UserContext } from "@context/UserContext";
 import BeforeStartPopup from "@component/modal/BeforeStartPopup";
 
-const Layout = ({ title, description, children }) => {
+const Layout = ({ title, description, children, noFooterTop = false }) => {
 
   const {
     state: { userInfo },
@@ -212,7 +212,7 @@ const Layout = ({ title, description, children }) => {
         </div>
         <MobileFooter />
         <div className="w-full">
-          <FooterTop />
+          {!noFooterTop && <FooterTop />}
           {/* <div className="hidden relative lg:block mx-auto max-w-screen-2xl py-6 px-3 sm:px-10">
             <FeatureCard />
           </div> */}

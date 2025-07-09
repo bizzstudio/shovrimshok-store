@@ -6,7 +6,7 @@ const PageHeader = ({ title, headerBg, useShapiraTitle = true, className = "", h
   return (
     <div
       style={{ backgroundImage: `url(${headerBg || "/page-header-bg.jpg"})` }}
-      className={`flex justify-center py-10 lg:py-28 bg-indigo-100 w-full bg-cover bg-no-repeat bg-bottom`}
+      className={`flex justify-center py-10 lg:py-24 bg-indigo-100 w-full bg-cover bg-no-repeat bg-bottom`}
     >
       <div className="flex mx-auto w-full max-w-screen-2xl px-3 sm:px-10">
         <div className="w-full flex justify-center flex-col relative">
