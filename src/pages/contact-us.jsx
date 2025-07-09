@@ -71,7 +71,7 @@ const ContactUs = () => {
                 <Image src={FactoryStore} alt={t("common:factory-store")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
               <h3 className="sm:text-3xl text-xl font-bold text-customBlue mb-1.5">{t("common:factory-store")}</h3>
-              <p className="text-gray-600 text-sm sm:text-base !leading-snug px-2 max-w-[250px] text-center mx-auto">
+              <p className="text-gray-600 text-sm sm:text-base !leading-tight px-2 max-w-[250px] text-center mx-auto">
                 {t("common:factory-store-description")}
               </p>
             </div>
@@ -82,7 +82,7 @@ const ContactUs = () => {
                 <Image src={QuickDelivery} alt={t("common:quick-delivery")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
               <h3 className="sm:text-3xl text-xl font-bold text-customBlue mb-1.5">{t("common:quick-delivery")}</h3>
-              <p className="text-gray-600 text-sm sm:text-base !leading-snug px-2 max-w-[250px] text-center mx-auto">
+              <p className="text-gray-600 text-sm sm:text-base !leading-tight px-2 max-w-[250px] text-center mx-auto">
                 {t("common:quick-delivery-description")}
               </p>
             </div>
@@ -93,7 +93,7 @@ const ContactUs = () => {
                 <Image src={ProductsVariety} alt={t("common:products-variety")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
               <h3 className="sm:text-3xl text-xl font-bold text-customBlue mb-1.5">{t("common:products-variety")}</h3>
-              <p className="text-gray-600 text-sm sm:text-base !leading-snug px-2 max-w-[250px] text-center mx-auto">
+              <p className="text-gray-600 text-sm sm:text-base !leading-tight px-2 max-w-[250px] text-center mx-auto">
                 {t("common:products-variety-description")}
               </p>
             </div>
@@ -104,7 +104,7 @@ const ContactUs = () => {
                 <Image src={WholesalePrices} alt={t("common:wholesale-prices")} width={80} height={80} className="svg-red-filter sm:h-20 h-12" />
               </div>
               <h3 className="sm:text-3xl text-xl font-bold text-customBlue mb-1.5">{t("common:wholesale-prices")}</h3>
-              <p className="text-gray-600 text-sm sm:text-base !leading-snug px-2 max-w-[250px] text-center mx-auto">
+              <p className="text-gray-600 text-sm sm:text-base !leading-tight px-2 max-w-[250px] text-center mx-auto">
                 {t("common:wholesale-prices-description")}
               </p>
             </div>
@@ -119,15 +119,15 @@ const ContactUs = () => {
               {t("common:contact-main-title")}
             </h1> */}
               <ShapiraTitle text={t("common:contact-main-title")} height={70} className="!mb-5" />
-              <p className="sm:text-3xl text-xl text-gray-700">
+              {/* <p className="sm:text-3xl text-xl text-customBlue font-bold">
                 {t("common:contact-main-subtitle")}
-              </p>
+              </p> */}
             </div>
 
             {/* Contact Form */}
             <div className="max-w-4xl mx-auto">
               <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* שם איש קשר */}
                   <div className="relative">
                     <input
@@ -161,6 +161,7 @@ const ContactUs = () => {
                     />
                     <Error errorName={errors.businessName} />
                   </div>
+                  </div>
 
                   {/* Submit Button */}
                   <div className="text-center">
@@ -168,7 +169,7 @@ const ContactUs = () => {
                       <MainBT
                         disabled={true}
                         type="submit"
-                        className='w-full h-[62px] mt-[0.5px]'
+                        className='w-full'
                       >
                         <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
                         <span className="ms-1">{t("common:processing")}</span>
@@ -177,12 +178,11 @@ const ContactUs = () => {
                       <MainBT
                         disabled={loading}
                         type="submit"
-                        className='w-full h-[62px] mt-[0.5px]'
+                        className='w-full'
                       >
-                        {t("common:send")}
+                        {t("common:contact-main-subtitle")}
                       </MainBT>
                     )}
-                  </div>
                 </div>
               </form>
             </div>

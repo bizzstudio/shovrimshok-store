@@ -239,7 +239,7 @@
     "wholesale-prices": "מחירי סיטונאות",
     "wholesale-prices-description": "בזכות שילוב בין מקצוענות, שקיפות ומחירים נמוכים, האחים שפירא מאפשרים לכל לקוח לקנות כמו סיטונאי.",
     "contact-main-title": "רוצים לבדוק בדיוק כמה \\n זה משתלם לעסק שלכם?",
-    "contact-main-subtitle": "לקבלת הצעת מחיר מותאמת אישית עבורכם השאירו פה פרטים:",
+    "contact-main-subtitle": "לקבלת הצעת מחיר מותאמת אישית עבורכם השאירו פה פרטים",
     "contact-name-required": "שם איש קשר נדרש",
     "contact-name-placeholder": "שם איש קשר",
     "phone-required": "מספר טלפון נדרש",
@@ -247,6 +247,7 @@
     "business-name-required": "שם העסק נדרש",
     "business-name-placeholder": "שם העסק",
     "send": "שליחה",
+    "get-quote": "לקבלת הצעת מחיר",
   
   "/=================* Single Product More Info* =================/": "",
 

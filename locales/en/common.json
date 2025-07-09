@@ -255,7 +255,7 @@
   "wholesale-prices": "Wholesale Prices",
   "wholesale-prices-description": "Thanks to a combination of professionalism, transparency, and low prices, the Shapira Brothers make it possible for every customer to buy like a wholesaler.",
   "contact-main-title": "Want to see exactly how much \\n your business can save?",
-  "contact-main-subtitle": "Leave your details below to receive a personalized price quote:",
+  "contact-main-subtitle": "Leave your details below to receive a personalized price quote",
   "contact-name-required": "Contact name is required",
   "contact-name-placeholder": "Contact Name",
   "phone-required": "Phone number is required",
@@ -263,6 +263,7 @@
   "business-name-required": "Business name is required",
   "business-name-placeholder": "Business Name",
   "send": "Send",
+  "get-quote": "Get Quote",
 
   "/=================* Single Product More Info* =================/": "",
 
