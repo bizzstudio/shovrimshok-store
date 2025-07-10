@@ -38,6 +38,10 @@ const CustomerServices = {
     return requests.get("/customer/documents");
   },
 
+  getDocumentById: async (id, type) => {
+    return requests.get(`/customer/document/${id}?type=${type}`);
+  },
+
   sendContactUsMessage: async (body) => {
     return requests.post("/customer/contact-us", body);
   },

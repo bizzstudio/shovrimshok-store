@@ -21,8 +21,9 @@ import { UserContext } from "@context/UserContext";
 import OrderServices from "@services/OrderServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useAsync from "@hooks/useAsync";
-import notFoundImg from 'public/missingProducts.svg'
+import notFoundImg from 'public/notFoundDocImg.svg'
 import MainBT from "@component/button/MainBT";
+import { TbArrowBackUp } from "react-icons/tb";
 
 const Order = ({ params }) => {
   const { t } = useTranslation();
@@ -59,9 +60,7 @@ const Order = ({ params }) => {
       break;
   };
 
-  // console.log('order data :>> ', data);
-
-  // קומפוננטת סקלטון להזמנה
+  // קומפוננטת סקלטון להזמנה (ללא מחירים)
   const OrderSkeleton = () => (
     <div className="bg-white rounded-md shadow-sm">
       {/* כותרת ומידע עליון */}
@@ -103,7 +102,7 @@ const Order = ({ params }) => {
         </div>
       </div>
 
-      {/* טבלת מוצרים */}
+      {/* טבלת מוצרים ללא מחירים */}
       <div className="px-6 mb-7">
         <div className="-my-1 overflow-x-auto">
           <table className="table-auto min-w-full border border-gray-200 divide-y divide-gray-200">
@@ -117,15 +116,6 @@ const Order = ({ params }) => {
                 </th>
                 <th className="font-serif font-semibold px-2 py-1 text-center">
                   <Skeleton height={12} width={40} />
-                </th>
-                <th className="font-serif font-semibold px-2 py-1 text-center">
-                  <Skeleton height={12} width={60} />
-                </th>
-                <th className="font-serif font-semibold px-2 py-1 text-center">
-                  <Skeleton height={12} width={35} />
-                </th>
-                <th className="font-serif font-semibold px-2 py-1 text-center">
-                  <Skeleton height={12} width={50} />
                 </th>
               </tr>
             </thead>
@@ -141,33 +131,10 @@ const Order = ({ params }) => {
                   <td className="px-6 py-1 text-center">
                     <Skeleton height={14} width={20} />
                   </td>
-                  <td className="px-6 py-1 text-center">
-                    <Skeleton height={14} width={60} />
-                  </td>
-                  <td className="px-6 py-1 text-center">
-                    <Skeleton height={14} width={50} />
-                  </td>
-                  <td className="px-6 py-1 text-center">
-                    <Skeleton height={14} width={70} />
-                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* סיכום תשלום */}
-      <div className="bg-mainColor-light border-t border-b border-gray-200 p-4">
-        <div className="flex flex-row justify-between pt-2 gap-2">
-          <div className="flex flex-col">
-            <Skeleton height={12} width={50} className="mb-1" />
-            <Skeleton height={12} width={70} />
-          </div>
-          <div className="flex flex-col">
-            <Skeleton height={12} width={60} className="mb-1" />
-            <Skeleton height={16} width={90} />
-          </div>
         </div>
       </div>
 
@@ -187,10 +154,10 @@ const Order = ({ params }) => {
         <div className="flex flex-col items-center justify-center">
           <Image
             src={notFoundImg}
-            alt="Order not found"
-            width={200}
-            height={200}
-            className="mb-6"
+            alt={t("common:orderNotFound")}
+            width={270}
+            height={270}
+            className="mb-6 select-none"
           />
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             {t("common:orderNotFound")}
@@ -218,25 +185,13 @@ const Order = ({ params }) => {
         <ErrorDisplay />
       ) : (
         <div className="max-w-screen-2xl mx-auto py-10 px-3 sm:px-6">
-          {/* <div className="bg-mainColor-light rounded-md mb-5 px-4 py-3">
-            <label>
-              {showingTranslateValue(
-                storeCustomizationSetting?.dashboard?.invoice_message_first
-              )}{" "}
-              <span className="font-bold text-mainColor-dark">
-                {data?.user_info?.name},
-              </span>{" "}
-              {showingTranslateValue(
-                storeCustomizationSetting?.dashboard?.invoice_message_last
-              )}
-            </label>
-          </div> */}
           <div className="bg-white rounded-md shadow-sm">
             <Invoice
               data={data}
               printRef={printRef}
               currency={currency}
               globalSetting={globalSetting}
+              docType="order"
             />
             <div className="bg-white p-8 rounded-b-xl">
               <div className="flex lg:flex-row-reverse md:flex-row-reverse sm:flex-row-reverse flex-col justify-between invoice-btn">
@@ -252,9 +207,19 @@ const Order = ({ params }) => {
                     </MainBT>
                   )}
                   content={() => printRef.current}
-                  documentTitle="Order"
+                  documentTitle={`Order-${data?.DocNum}`}
                   pageStyle="@media print { body { direction: rtl; } }"
                 />
+                <Link
+                  href="/user/my-orders"
+                >
+                  <MainBT>
+                    <span className={`${currentLang ? "flex-row-reverse" : ""} flex items-center justify-center gap-2`}>
+                      {t("common:backToOrders")}
+                      <TbArrowBackUp className={`${currentLang ? "scale-x-[-1]" : ""}`} size={20} />
+                    </span>
+                  </MainBT>
+                </Link>
               </div>
             </div>
           </div>

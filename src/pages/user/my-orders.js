@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import { FiZoomIn } from "react-icons/fi";
 import { MdRestore } from "react-icons/md";
 import { MdPayment } from "react-icons/md";
+import Image from "next/image";
 
 // Internal import
 import Dashboard from "@pages/user/dashboard";
@@ -24,6 +25,7 @@ import { notifyError, notifySuccess } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
 import SubModal from "@component/modal/SubModal";
 import addingToCart from 'public/addingToCart.svg'
+import documentImg from 'public/documentImg.svg'
 import notifyApiResponse from "@utils/notifyApiResponse";
 import { OrderContext } from "@context/OrderContext";
 import OrderCard from "@component/order/OrderCard";
@@ -94,6 +96,32 @@ const MyOrders = () => {
 
   const handleTabChange = (tab) => setActiveTab(tab);
 
+  // פונקציה לקבלת כותרת דינאמית
+  const getPageTitle = () => {
+    return docTypeTranslation[activeTab] || t("common:footer-my-account-myOrders");
+  };
+
+  // פונקציה לקבלת טקסט "אין תוצאות"
+  const getNoResultsText = () => {
+    const docTypeMap = {
+      orders: t("common:orders"),
+      invoices: t("common:invoices"), 
+      creditNotes: t("common:creditNotes"),
+      deliveries: t("common:deliveries"),
+    };
+    return `אין עדיין ${docTypeMap[activeTab] || "מסמכים"}`;
+  };
+
+  // פונקציה לקבלת קישור למסמך
+  const getDocumentLink = (doc) => {
+    const linkMap = {
+      orders: `/order/${doc.DocEntry}`,
+      invoices: `/invoice/${doc.DocEntry}`,
+      creditNotes: `/credit-note/${doc.DocEntry}`,
+      deliveries: `/delivery/${doc.DocEntry}`,
+    };
+    return linkMap[activeTab] || `/order/${doc.DocEntry}`;
+  };
 
   useEffect(() => {
     setIsLoading(false);
@@ -248,7 +276,7 @@ const MyOrders = () => {
           <div className="overflow-hidden rounded-md font-serif">
 
             <h2 className="text-xl font-serif font-semibold mb-2">
-              {t("common:footer-my-account-myOrders")}
+              {getPageTitle()}
             </h2>
 
             {/* ---------- Tabs ---------- */}
@@ -273,13 +301,18 @@ const MyOrders = () => {
               <h2 className="text-xl text-center my-10 mx-auto w-11/12 text-red-400">
                 {error}
               </h2>
-            ) : orderData?.orders?.length === 0 ? (
+            ) : getActiveDocuments().length === 0 ? (
               <div className="text-center">
-                <span className="flex justify-center my-30 pt-16 text-customRed font-semibold text-6xl">
-                  <IoBagHandle />
-                </span>
-                <h2 className="font-medium text-md my-4 text-gray-600">
-                  {t("common:noOrder")}
+                <div className="flex justify-center my-30 pt-3 -mb-2">
+                  <Image 
+                    src={documentImg} 
+                    alt="No documents" 
+                    width={150} 
+                    height={150}
+                  />
+                </div>
+                <h2 className="font-medium text-xl mb-4 text-gray-600">
+                  {getNoResultsText()}
                 </h2>
               </div>
             ) : (
@@ -377,7 +410,7 @@ const MyOrders = () => {
                                             {t("common:Reorder")}
                                           </button>
                                           <Link
-                                            href={`/order/${order.DocEntry}`}
+                                            href={getDocumentLink(order)}
                                             className="w-fit flex gap-1 items-center justify-center px-3 py-1 bg-customRed-superLight text-xs text-customRed hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                           >
                                             <FiZoomIn size={17} />
@@ -430,7 +463,7 @@ const MyOrders = () => {
                                   <DocumentHistoryItem document={doc} docType={activeTab} />
                                   <td className="px-1 md:px-5 py-2 whitespace-nowrap text-center text-sm flex gap-3 items-center justify-center">
                                     <Link
-                                      href={`/order/${doc.DocEntry}`}
+                                      href={getDocumentLink(doc)}
                                       className="w-fit flex gap-1 items-center justify-center px-3 py-1 bg-customRed-superLight text-xs text-customRed hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"
                                     >
                                       <FiZoomIn size={17} />

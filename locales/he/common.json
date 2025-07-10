@@ -1,4 +1,15 @@
 {
+  "/=================*Documents & Orders*=================/": "",  
+  "invoiceDetails": "פרטי חשבונית",
+  "invoiceDetailsDescription": "עמוד פרטי החשבונית",
+  "invoiceNotFound": "חשבונית לא נמצאה",
+  "creditNoteDetails": "פרטי חשבונית זיכוי",
+  "creditNoteDetailsDescription": "עמוד פרטי חשבונית הזיכוי",
+  "creditNoteNotFound": "חשבונית זיכוי לא נמצאה",
+  "deliveryDetails": "פרטי תעודת משלוח",
+  "deliveryDetailsDescription": "עמוד פרטי תעודת המשלוח",
+  "deliveryNotFound": "תעודת משלוח לא נמצאה",
+  "backToOrders": "חזרה לטבלת הזמנות",
   
   "/=================*WhatsApp Button*=================/": "",
 

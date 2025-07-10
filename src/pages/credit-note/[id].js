@@ -1,4 +1,4 @@
-// src/pages/order/[id].js
+// src/pages/credit-note/[id].js
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -16,18 +16,18 @@ import Link from "next/link";
 import Layout from "@layout/Layout";
 import useGetSetting from "@hooks/useGetSetting";
 import Invoice from "@component/invoice/Invoice";
-import Loading from "@component/preloader/Loading";
 import { UserContext } from "@context/UserContext";
-import OrderServices from "@services/OrderServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useAsync from "@hooks/useAsync";
-import notFoundImg from 'public/missingProducts.svg'
+import notFoundImg from 'public/notFoundDocImg.svg'
 import MainBT from "@component/button/MainBT";
+import CustomerServices from "@services/CustomerServices";
+import { TbArrowBackUp } from "react-icons/tb";
 
-const Order = ({ params }) => {
+const CreditNotePage = ({ params }) => {
   const { t } = useTranslation();
   const printRef = useRef();
-  const orderId = params.id;
+  const creditNoteId = params.id;
   const router = useRouter();
 
   const {
@@ -36,8 +36,8 @@ const Order = ({ params }) => {
   const { showingTranslateValue, getNumberTwo, currency } = useUtilsFunction();
   const { storeCustomizationSetting, globalSetting } = useGetSetting();
 
-  const { data, loading, error } = useAsync(() => OrderServices.getOrderById(orderId));
-  console.log('order data :>> ', data);
+  const { data, loading, error } = useAsync(() => CustomerServices.getDocumentById(creditNoteId, "CreditNotes"));
+  console.log('credit note data :>> ', data);
 
   useEffect(() => {
     if (!userInfo) {
@@ -59,16 +59,14 @@ const Order = ({ params }) => {
       break;
   };
 
-  // console.log('order data :>> ', data);
-
-  // קומפוננטת סקלטון להזמנה
-  const OrderSkeleton = () => (
+  // קומפוננטת סקלטון לחשבונית זיכוי
+  const CreditNoteSkeleton = () => (
     <div className="bg-white rounded-md shadow-sm">
       {/* כותרת ומידע עליון */}
       <div className="bg-white p-4 rounded-t-md">
         <div className="flex flex-row justify-between items-start pb-2 border-b border-gray-200">
           <div>
-            <Skeleton height={18} width={60} className="mb-2" />
+            <Skeleton height={18} width={100} className="mb-2" />
             <div className="flex items-center gap-1 mb-1">
               <Skeleton height={12} width={40} />
               <Skeleton height={12} width={30} />
@@ -86,7 +84,7 @@ const Order = ({ params }) => {
           </div>
         </div>
 
-        {/* פרטי הזמנה */}
+        {/* פרטי חשבונית זיכוי */}
         <div className="flex flex-row justify-between pt-2">
           <div className="flex flex-col">
             <Skeleton height={12} width={70} className="mb-1" />
@@ -103,7 +101,7 @@ const Order = ({ params }) => {
         </div>
       </div>
 
-      {/* טבלת מוצרים */}
+      {/* טבלת מוצרים עם מחירים */}
       <div className="px-6 mb-7">
         <div className="-my-1 overflow-x-auto">
           <table className="table-auto min-w-full border border-gray-200 divide-y divide-gray-200">
@@ -120,9 +118,6 @@ const Order = ({ params }) => {
                 </th>
                 <th className="font-serif font-semibold px-2 py-1 text-center">
                   <Skeleton height={12} width={60} />
-                </th>
-                <th className="font-serif font-semibold px-2 py-1 text-center">
-                  <Skeleton height={12} width={35} />
                 </th>
                 <th className="font-serif font-semibold px-2 py-1 text-center">
                   <Skeleton height={12} width={50} />
@@ -145,9 +140,6 @@ const Order = ({ params }) => {
                     <Skeleton height={14} width={60} />
                   </td>
                   <td className="px-6 py-1 text-center">
-                    <Skeleton height={14} width={50} />
-                  </td>
-                  <td className="px-6 py-1 text-center">
                     <Skeleton height={14} width={70} />
                   </td>
                 </tr>
@@ -159,13 +151,17 @@ const Order = ({ params }) => {
 
       {/* סיכום תשלום */}
       <div className="bg-mainColor-light border-t border-b border-gray-200 p-4">
-        <div className="flex flex-row justify-between pt-2 gap-2">
-          <div className="flex flex-col">
-            <Skeleton height={12} width={50} className="mb-1" />
+        <div className="flex flex-col space-y-3 pt-2">
+          <div className="flex flex-row justify-between items-center">
+            <Skeleton height={12} width={80} />
             <Skeleton height={12} width={70} />
           </div>
-          <div className="flex flex-col">
-            <Skeleton height={12} width={60} className="mb-1" />
+          <div className="flex flex-row justify-between items-center">
+            <Skeleton height={12} width={60} />
+            <Skeleton height={12} width={60} />
+          </div>
+          <div className="flex flex-row justify-between items-center border-t border-gray-300 pt-2">
+            <Skeleton height={14} width={70} />
             <Skeleton height={16} width={90} />
           </div>
         </div>
@@ -187,18 +183,18 @@ const Order = ({ params }) => {
         <div className="flex flex-col items-center justify-center">
           <Image
             src={notFoundImg}
-            alt="Order not found"
-            width={200}
-            height={200}
-            className="mb-6"
+            alt={t("common:creditNoteNotFound")}
+            width={270}
+            height={270}
+            className="mb-6 select-none"
           />
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            {t("common:orderNotFound")}
+            {t("common:creditNoteNotFound")}
           </h2>
           <p className="text-gray-600 mb-6">
-            {error?.response?.data?.message?.[currentLang] || "אירעה שגיאה בטעינת ההזמנה"}
+            {error?.response?.data?.message?.[currentLang] || "אירעה שגיאה בטעינת חשבונית הזיכוי"}
           </p>
-          <Link href="/">
+          <Link href="/user/my-orders">
             <MainBT>
               {t("common:backToHome")}
             </MainBT>
@@ -209,34 +205,20 @@ const Order = ({ params }) => {
   );
 
   return (
-    <Layout title={t("common:order") + " " + (data?.DocNum || "")} description="order confirmation page">
-      {loading && !data?.DocEntry ? (
-        <div className="max-w-screen-2xl mx-auto py-10 px-3 sm:px-6">
-          <OrderSkeleton />
-        </div>
-      ) : error ? (
-        <ErrorDisplay />
-      ) : (
-        <div className="max-w-screen-2xl mx-auto py-10 px-3 sm:px-6">
-          {/* <div className="bg-mainColor-light rounded-md mb-5 px-4 py-3">
-            <label>
-              {showingTranslateValue(
-                storeCustomizationSetting?.dashboard?.invoice_message_first
-              )}{" "}
-              <span className="font-bold text-mainColor-dark">
-                {data?.user_info?.name},
-              </span>{" "}
-              {showingTranslateValue(
-                storeCustomizationSetting?.dashboard?.invoice_message_last
-              )}
-            </label>
-          </div> */}
+    <Layout title={t("common:creditNoteDetails")} description={t("common:creditNoteDetailsDescription")}>
+      <div className="max-w-screen-2xl mx-auto py-10 px-3 sm:px-6">
+        {loading ? (
+          <CreditNoteSkeleton />
+        ) : error ? (
+          <ErrorDisplay />
+        ) : (
           <div className="bg-white rounded-md shadow-sm">
             <Invoice
-              data={data}
               printRef={printRef}
-              currency={currency}
+              data={data}
               globalSetting={globalSetting}
+              currency={currency}
+              docType="creditNote"
             />
             <div className="bg-white p-8 rounded-b-xl">
               <div className="flex lg:flex-row-reverse md:flex-row-reverse sm:flex-row-reverse flex-col justify-between invoice-btn">
@@ -252,22 +234,30 @@ const Order = ({ params }) => {
                     </MainBT>
                   )}
                   content={() => printRef.current}
-                  documentTitle="Order"
+                  documentTitle={`CreditNote-${data?.DocNum}`}
                   pageStyle="@media print { body { direction: rtl; } }"
                 />
+                <Link
+                  href="/user/my-orders"
+                >
+                  <MainBT>
+                    <span className={`${currentLang ? "flex-row-reverse" : ""} flex items-center justify-center gap-2`}>
+                      {t("common:backToOrders")}
+                      <TbArrowBackUp className={`${currentLang ? "scale-x-[-1]" : ""}`} size={20} />
+                    </span>
+                  </MainBT>
+                </Link>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </Layout>
   );
 };
 
 export const getServerSideProps = ({ params }) => {
-  return {
-    props: { params },
-  };
+  return { props: { params } };
 };
 
-export default dynamic(() => Promise.resolve(Order), { ssr: false });
+export default dynamic(() => Promise.resolve(CreditNotePage), { ssr: false });

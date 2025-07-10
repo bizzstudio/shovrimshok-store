@@ -1,4 +1,16 @@
 {
+  "/=================*Documents & Orders*=================/": "",  
+  "invoiceDetails": "Invoice Details",
+  "invoiceDetailsDescription": "Invoice details page",
+  "invoiceNotFound": "Invoice not found",
+  "creditNoteDetails": "Credit note Details",
+  "creditNoteDetailsDescription": "Credit note details page",
+  "creditNoteNotFound": "Credit note not found",
+  "deliveryDetails": "Delivery Details",
+  "deliveryDetailsDescription": "Delivery details page",
+  "deliveryNotFound": "Delivery not found",
+  "backToOrders": "Back to orders",
+
   "/=================*WhatsApp Button*=================/": "",
 
   "whatsappDefaultMessage": "Hello, I came from Shapira Brothers website and would like to get professional help and consultation",
