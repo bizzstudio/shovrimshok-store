@@ -247,25 +247,23 @@ const MyOrders = () => {
         >
           <div className="overflow-hidden rounded-md font-serif">
 
-          <h2 className="text-xl font-serif font-semibold mb-2">
-                  {t("common:footer-my-account-myOrders")}
-                </h2>
+            <h2 className="text-xl font-serif font-semibold mb-2">
+              {t("common:footer-my-account-myOrders")}
+            </h2>
 
             {/* ---------- Tabs ---------- */}
             <div className="flex flex-wrap gap-2 mb-5">
               {Object.entries(docTypeTranslation).map(([key, label]) =>
-                docCounts[key] > 0 && (
-                  <button
-                    key={key}
-                    onClick={() => handleTabChange(key)}
-                    className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${activeTab === key
-                        ? "bg-customRed text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                  >
-                    {label} ({docCounts[key]})
-                  </button>
-                )
+                <button
+                  key={key}
+                  onClick={() => handleTabChange(key)}
+                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${activeTab === key
+                    ? "bg-customRed text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                >
+                  {label} ({docCounts[key]})
+                </button>
               )}
             </div>
 
@@ -409,9 +407,9 @@ const MyOrders = () => {
                                 <th className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider">
                                   {t("common:DocNum")}
                                 </th>
-                                <th className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider">
+                                {/* <th className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider">
                                   {t("common:DocType")}
-                                </th>
+                                </th> */}
                                 <th className="text-center text-xs font-serif font-semibold px-2 py-2 text-gray-700 uppercase tracking-wider">
                                   {t("common:DocDate")}
                                 </th>
@@ -430,7 +428,7 @@ const MyOrders = () => {
                               {getActiveDocuments().map((doc) => (
                                 <tr key={`${activeTab}-${doc.DocEntry}`}>
                                   <DocumentHistoryItem document={doc} docType={activeTab} />
-                                  <td className="px-1 md:px-5 py-2 whitespace-nowrap text-center text-sm">
+                                  <td className="px-1 md:px-5 py-2 whitespace-nowrap text-center text-sm flex gap-3 items-center justify-center">
                                     <Link
                                       href={`/order/${doc.DocEntry}`}
                                       className="w-fit flex gap-1 items-center justify-center px-3 py-1 bg-customRed-superLight text-xs text-customRed hover:bg-customRed hover:text-white transition-all font-semibold rounded-full"

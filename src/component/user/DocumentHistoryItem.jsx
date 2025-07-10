@@ -152,11 +152,11 @@ const DocumentHistoryItem = ({ document, docType }) => {
                     {displayValue(document.DocNum)}
                 </span>
             </td>
-            <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap">
+            {/* <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap">
                 <span className="text-sm">
                     {getDocTypeName()}
                 </span>
-            </td>
+            </td> */}
             <td className="px-1 md:px-5 py-3 leading-6 text-center whitespace-nowrap">
                 <span className="text-sm">
                     {formatDate(document.DocDate)}
