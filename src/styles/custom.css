@@ -1939,3 +1939,7 @@ p:not(:last-of-type) {
     background-image: none;
   }
 }
+
+button:has(span:empty) {
+  display: none;
+}
