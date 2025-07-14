@@ -159,8 +159,12 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                     )}
 
                     <FeatureCategory />
-{storeCustomizationSetting?.faq?.title && (
-  <HomeFAQ faqSettings={storeCustomizationSetting?.faq} />
+
+      {storeCustomizationSetting?.faq?.title && (
+        <HomeFAQ faqSettings={storeCustomizationSetting?.faq} />
+      )}
+    </div>
+  </div>
 )}
                     {storeCustomizationSetting?.faq?.title && (
                       <HomeFAQ faqSettings={storeCustomizationSetting?.faq} />
