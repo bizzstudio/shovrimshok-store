@@ -1940,6 +1940,3 @@ p:not(:last-of-type) {
   }
 }
 
-button:has(span:empty) {
-  display: none;
-}
