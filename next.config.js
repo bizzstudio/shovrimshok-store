@@ -71,6 +71,16 @@ module.exports = withPWA({
       },
     ],
   },
+  
+  // Generate sitemap after build
+  async rewrites() {
+    return [
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap',
+      },
+    ];
+  },
 
   webpack(config) {
     config.module.rules.push({
