@@ -13,7 +13,7 @@ const PrivacyPolicy = () => {
   // console.log("data", storeCustomizationSetting);
 
   return (
-    <Layout title="Privacy Policy" description="This is privacy policy page">
+    <Layout title="מדיניות פרטיות" description="עמוד מדיניות פרטיות - האחים שפירא י.ת.ר">
       <PageHeader
         headerBg={storeCustomizationSetting?.privacy_policy?.header_bg}
         title={showingTranslateValue(

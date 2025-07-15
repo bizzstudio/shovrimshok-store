@@ -32,7 +32,7 @@ const Layout = ({ title, description, children, noFooterTop = false }) => {
 
   const { storeCustomizationSetting } = useGetSetting() || {};
   const { seo } = storeCustomizationSetting || {};
-  const { favicon } = seo || {};
+  const { favicon, meta_title } = seo || {};
 
   // console.log('Layout userInfo :>> ', userInfo);
 
@@ -203,8 +203,8 @@ const Layout = ({ title, description, children, noFooterTop = false }) => {
         <Head>
           <title>
             {title
-              ? `אחים שפירא | ${title}`
-              : "אחים שפירא"}
+              ? `${meta_title} | ${title}`
+              : meta_title}
           </title>
           {description && <meta name="description" content={description} />}
           <link ref="icon" href={favicon || "/shapira_leaf.svg"} />

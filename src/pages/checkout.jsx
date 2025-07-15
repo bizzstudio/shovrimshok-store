@@ -321,7 +321,7 @@ const Checkout = () => {
           </div>
         </MainModal>
       )}
-      <Layout title="Checkout" description="this is checkout page">
+      <Layout title="סיכום הזמנה" description="עמוד סיכום הזמנה - האחים שפירא י.ת.ר">
         <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
           <div className="sm:py-8 py-3 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col items-center gap-8">
             <div className="w-full lg:w-3/4 flex h-full flex-col order-2 sm:order-1 lg:order-1">

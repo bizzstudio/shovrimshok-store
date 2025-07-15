@@ -25,7 +25,7 @@ const Faq = () => {
   ];
 
   return (
-    <Layout title="FAQ" description="This is faq page">
+    <Layout title="שאלות ותשובות" description="עמוד שאלות ותשובות - האחים שפירא י.ת.ר">
       <PageHeader
         headerBg={storeCustomizationSetting?.faq?.header_bg}
         title={showingTranslateValue(storeCustomizationSetting?.faq?.title)}

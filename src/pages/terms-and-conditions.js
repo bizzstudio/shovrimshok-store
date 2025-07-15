@@ -13,8 +13,8 @@ const TermAndConditions = () => {
 
   return (
     <Layout
-      title="Terms & Conditions"
-      description="This is terms and conditions page"
+      title="תנאים והגבלות"
+      description="עמוד תנאים והגבלות - האחים שפירא י.ת.ר"
     >
       <PageHeader
         headerBg={storeCustomizationSetting?.term_and_condition?.header_bg}

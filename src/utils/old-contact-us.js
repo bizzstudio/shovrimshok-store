@@ -48,7 +48,7 @@ const ContactUs = () => {
   };
 
   return (
-    <Layout title="Contact Us" description="This is contact us page">
+    <Layout title="אודות" description="עמוד אודות - האחים שפירא י.ת.ר">
       {storeCustomizationSetting?.contact_us?.header_status && (
         <PageHeader
           headerBg={storeCustomizationSetting?.contact_us?.header_bg}

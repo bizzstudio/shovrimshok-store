@@ -18,7 +18,7 @@ const AccessibilityStatement = () => {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
 
   return (
-    <Layout title="הצהרת נגישות" description="This is Accessibility Statement page">
+    <Layout title="הצהרת נגישות" description="עמוד הצהרת נגישות - האחים שפירא י.ת.ר">
       <PageHeader
         headerBg={storeCustomizationSetting?.contact_us?.header_bg}
         title={storeCustomizationSetting?.footer?.block1_sub_title4}
