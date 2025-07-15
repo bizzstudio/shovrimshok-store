@@ -2,6 +2,8 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
+import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 // Internal import
 import Layout from "@layout/Layout";
@@ -21,7 +23,7 @@ import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import { UserContext } from "@context/UserContext";
 import SortDropdown from "@component/common/SortDropdown";
 
-const CategoryPage = () => {
+const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDescription }) => {
     const { t } = useTranslation();
     const { isLoading, setIsLoading, offers, categories } = useContext(SidebarContext);
     const { state: { userInfo } } = useContext(UserContext);
@@ -42,8 +44,11 @@ const CategoryPage = () => {
     const router = useRouter();
     const { categoryId, sub } = router.query;
 
-    // שליפת שמות הקטגוריה ותת-הקטגוריה מהקונטקסט
-    const foundParent = categories?.find((cat) => cat.code === categoryId);
+    // נשתמש בקטגוריות מהשרת אם הן זמינות, אחרת מהקונטקסט
+    const categoriesData = serverCategories || categories;
+    
+    // חישוב הטיטל
+    const foundParent = categoriesData?.find((cat) => cat.code === categoryId);
     const parentName = foundParent?.name || categoryId;
 
     let childName = "";
@@ -52,6 +57,8 @@ const CategoryPage = () => {
         childName = foundChild?.name || sub;
     }
 
+    const layoutTitle = childName ? `${parentName} / ${childName}` : parentName;
+    
     // useFilter עדיין יכול לעבוד: למשל אם צריך למיין מוצרים
     const { productData, setSortedField, sortedField } = useFilter(allProducts);
 
@@ -70,9 +77,6 @@ const CategoryPage = () => {
 
         setFallbackTitle(catName);
     }, [parentName, childName]);
-
-    // title ל-Layout
-    const layoutTitle = childName ? `${parentName} / ${childName}` : parentName;
 
     // נוסיף ref לאלמנט האחרון
     const observerTarget = useRef(null);
@@ -179,93 +183,142 @@ const CategoryPage = () => {
     }, [categoryId, sub, userInfo?.token]);
 
     return (
-        <Layout title={layoutTitle || "קטגוריה"} description="This is category page">
-            <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                <div className="flex sm:py-5 py-3">
-                    <div className="flex w-full">
-                        <div className="w-full">
-                            {/* הכותרת מוצגת מיידי! */}
-                            {fallbackTitle && (
-                                <div className="flex justify-center items-center mb-3">
-                                    <ShapiraTitle text={fallbackTitle} height={70} key={fallbackTitle} />
-                                </div>
-                            )}
-
-                            {/* הוספת רכיב המיון */}
-                            {!isInitialLoading && productData?.length > 0 && (
-                                <div className="flex justify-end mb-4">
-                                    <SortDropdown
-                                        sortedField={sortedField}
-                                        setSortedField={setSortedField}
-                                    />
-                                </div>
-                            )}
-
-                            {isInitialLoading ? (
-                                // ספינר רק בטעינה ראשונית
-                                // <ProductCardSkeleton count={18} />
-                                <Loading loading={isInitialLoading} />
-                            ) : productData?.length === 0 ? (
-                                <div className="flex flex-col items-center text-center align-middle mx-auto p-5 my-5">
-                                    <Image
-                                        className="my-4"
-                                        src="/no-result.svg"
-                                        alt="no-result"
-                                        width={400}
-                                        height={380}
-                                    />
-                                    <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl text-center mt-2 font-medium font-serif text-gray-600">
-                                        {t("common:sorryText")}
-                                    </h2>
-                                </div>
-                            ) : (
-                                <>
-                                    <div
-                                        className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3 ${productData?.length < 6 ? "justify-center" : ""
-                                            }`}
-                                        style={{
-                                            gridTemplateColumns:
-                                                typeof window !== "undefined" && window.innerWidth < 640
-                                                    ? `repeat(2, minmax(150px, 1fr))`
-                                                    : productData?.length < 6
-                                                        ? `repeat(${Math.min(
-                                                            productData?.length,
-                                                            6
-                                                        )}, minmax(150px, 235px))`
-                                                        : "",
-                                        }}
-                                    >
-                                        {productData.map((product, i) => (
-                                            <div
-                                                key={product.ItemCode + i}
-                                            >
-                                                <ProductCard
-                                                    product={product}
-                                                    attributes={attributes}
-                                                    offers={offers}
-                                                />
-                                            </div>
-                                        ))}
+        <>
+            <NextSeo
+                title={categoryTitle || layoutTitle}
+                description={categoryDescription || `מוצרים בקטגוריה ${layoutTitle}`}
+                openGraph={{
+                    title: categoryTitle || layoutTitle,
+                    description: categoryDescription || `מוצרים בקטגוריה ${layoutTitle}`,
+                }}
+            />
+            <Layout title={layoutTitle || "קטגוריה"} description="This is category page">
+                <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+                    <div className="flex sm:py-5 py-3">
+                        <div className="flex w-full">
+                            <div className="w-full">
+                                {/* הכותרת מוצגת מיידי! */}
+                                {fallbackTitle && (
+                                    <div className="flex justify-center items-center mb-3">
+                                        <ShapiraTitle text={fallbackTitle} height={70} key={fallbackTitle} />
                                     </div>
+                                )}
 
-
-                                    <div ref={observerTarget} />
-
-                                    {/* שיפור אלמנט המעקב */}
-                                    <div
-                                        className="w-full py-4 mt-4"
-                                        style={{ minHeight: '100px' }}
-                                    >
-                                        {isLoadMore && <Loading loading={isLoadMore} />}
+                                {/* הוספת רכיב המיון */}
+                                {!isInitialLoading && productData?.length > 0 && (
+                                    <div className="flex justify-end mb-4">
+                                        <SortDropdown
+                                            sortedField={sortedField}
+                                            setSortedField={setSortedField}
+                                        />
                                     </div>
-                                </>
-                            )}
+                                )}
+
+                                {isInitialLoading ? (
+                                    // ספינר רק בטעינה ראשונית
+                                    // <ProductCardSkeleton count={18} />
+                                    <Loading loading={isInitialLoading} />
+                                ) : productData?.length === 0 ? (
+                                    <div className="flex flex-col items-center text-center align-middle mx-auto p-5 my-5">
+                                        <Image
+                                            className="my-4"
+                                            src="/no-result.svg"
+                                            alt="no-result"
+                                            width={400}
+                                            height={380}
+                                        />
+                                        <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl text-center mt-2 font-medium font-serif text-gray-600">
+                                            {t("common:sorryText")}
+                                        </h2>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div
+                                            className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3 ${productData?.length < 6 ? "justify-center" : ""
+                                                }`}
+                                            style={{
+                                                gridTemplateColumns:
+                                                    typeof window !== "undefined" && window.innerWidth < 640
+                                                        ? `repeat(2, minmax(150px, 1fr))`
+                                                        : productData?.length < 6
+                                                            ? `repeat(${Math.min(
+                                                                productData?.length,
+                                                                6
+                                                            )}, minmax(150px, 235px))`
+                                                            : "",
+                                            }}
+                                        >
+                                            {productData.map((product, i) => (
+                                                <div
+                                                    key={product.ItemCode + i}
+                                                >
+                                                    <ProductCard
+                                                        product={product}
+                                                        attributes={attributes}
+                                                        offers={offers}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+
+
+                                        <div ref={observerTarget} />
+
+                                        {/* שיפור אלמנט המעקב */}
+                                        <div
+                                            className="w-full py-4 mt-4"
+                                            style={{ minHeight: '100px' }}
+                                        >
+                                            {isLoadMore && <Loading loading={isLoadMore} />}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </Layout>
+            </Layout>
+        </>
     );
 };
+
+export async function getServerSideProps(context) {
+    const { categoryId, sub } = context.query;
+    
+    try {
+        // טעינת קטגוריות מהשרת
+        const categories = await CategoryServices.getShowingCategory();
+        
+        // חישוב הטיטל בשרת
+        const foundParent = categories?.find((cat) => cat.code === categoryId);
+        const parentName = foundParent?.name || categoryId;
+        
+        let childName = "";
+        if (sub && foundParent?.children?.length > 0) {
+            const foundChild = foundParent.children.find((child) => child.code === sub);
+            childName = foundChild?.name || sub;
+        }
+        
+        const categoryTitle = childName ? `${parentName} / ${childName}` : parentName;
+        const categoryDescription = `מוצרים בקטגוריה ${categoryTitle} - האחים שפירא י.ת.ר`;
+        
+        return {
+            props: {
+                categories,
+                categoryTitle,
+                categoryDescription,
+            },
+        };
+    } catch (error) {
+        console.error("Failed to fetch categories:", error);
+        return {
+            props: {
+                categories: [],
+                categoryTitle: "קטגוריה",
+                categoryDescription: "מוצרים בקטגוריה",
+            },
+        };
+    }
+}
 
 export default CategoryPage;
