@@ -44,6 +44,13 @@ class MyDocument extends Document {
         <Head>
           <link rel="icon" href={favicon || "/shapira_leaf.svg"} />
 
+          {/* Regular meta tags that Google prefers */}
+          <title>{meta_title || "האחים שפירא י.ת.ר"}</title>
+          <meta 
+            name="description" 
+            content={meta_description || 'האחים שפירא י.ת.ר - ספקי שיווק מזון מורשים, במכירה ישירה ללא פערי תיווך, משלוחים / איסוף עצמי - הזמינו אונליין'}
+          />
+
           {/* Google Tag Manager */}
           {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5FJVK2CGS"></script>
           <script
