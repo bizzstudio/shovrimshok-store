@@ -5,26 +5,21 @@ import { DefaultSeo as NextSeo } from "next-seo";
 // Internal import
 import useAsync from "@hooks/useAsync";
 import SettingServices from "@services/SettingServices";
+import useGetSetting from "@hooks/useGetSetting";
 
 const DefaultSeo = () => {
-  const {
-    data: globalSetting,
-    loading,
-    error,
-  } = useAsync(SettingServices.getGlobalSetting);
+  const { storeCustomizationSetting } = useGetSetting() || {};
+  const { seo } = storeCustomizationSetting || {};
+  const { favicon, meta_description, meta_img, meta_keywords, meta_title, meta_url } = seo || {};
+
   return (
     <NextSeo
-      title={
-        globalSetting?.meta_title ||
-        "אחים שפירא - ספקי וסיטונאי מזון"
-      }
+      title={meta_title || "האחים שפירא י.ת.ר"}
       openGraph={{
         type: "website",
-        locale: "en_IE",
-        url: globalSetting?.meta_url || "https://meshek-kirshner.co.il",
-        site_name:
-          globalSetting?.meta_title ||
-          "אחים שפירא - ספקי וסיטונאי מזון",
+        locale: "he_IL",
+        url: meta_url || "https://shapirabro.co.il",
+        site_name: meta_title || "האחים שפירא י.ת.ר",
       }}
       twitter={{
         handle: "@handle",

@@ -22,12 +22,17 @@ import DynamicPopup from "@component/modal/DynamicPopup";
 import StickyCart from "@component/cart/StickyCart";
 import { UserContext } from "@context/UserContext";
 import BeforeStartPopup from "@component/modal/BeforeStartPopup";
+import useGetSetting from "@hooks/useGetSetting";
 
 const Layout = ({ title, description, children, noFooterTop = false }) => {
 
   const {
     state: { userInfo },
   } = useContext(UserContext);
+
+  const { storeCustomizationSetting } = useGetSetting() || {};
+  const { seo } = storeCustomizationSetting || {};
+  const { favicon } = seo || {};
 
   // console.log('Layout userInfo :>> ', userInfo);
 
@@ -202,7 +207,7 @@ const Layout = ({ title, description, children, noFooterTop = false }) => {
               : "אחים שפירא"}
           </title>
           {description && <meta name="description" content={description} />}
-          <link ref="icon" href="/shapira_leaf.svg" />
+          <link ref="icon" href={favicon || "/shapira_leaf.svg"} />
         </Head>
         {/* <NavBarTop /> */}
         <Navbar />

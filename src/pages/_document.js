@@ -21,6 +21,8 @@ class MyDocument extends Document {
 
   render() {
     const { setting, error } = this.props;
+    const { seo } = setting || {};
+    const { favicon, meta_description, meta_img, meta_keywords, meta_title, meta_url } = seo || {};
 
     // Check if there was an error during data fetching
     if (error) {
@@ -40,7 +42,7 @@ class MyDocument extends Document {
     return (
       <Html lang="he" dir="rtl">
         <Head>
-          <link rel="icon" href={setting?.favicon || "/shapira_leaf.svg"} />
+          <link rel="icon" href={favicon || "/shapira_leaf.svg"} />
 
           {/* Google Tag Manager */}
           {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5FJVK2CGS"></script>
@@ -70,33 +72,33 @@ class MyDocument extends Document {
           <meta
             property="og:title"
             content={
-              setting?.meta_title ||
-              "אחים שפירא - ספקי וסיטונאי מזון"
+              meta_title ||
+              "האחים שפירא י.ת.ר"
             }
           />
           <meta property="og:type" content="eCommerce Website" />
           <meta
             property="og:description"
             content={
-              setting?.meta_description ||
-              "אחים שפירא - ספקי וסיטונאי מזון"
+              meta_description ||
+             'האחים שפירא י.ת.ר - ספקי שיווק מזון מורשים, במכירה ישירה ללא פערי תיווך, משלוחים / איסוף עצמי - הזמינו אונליין'
             }
           />
           <meta
             name="keywords"
-            content={setting?.meta_keywords || "אחים שפירא - ספקי וסיטונאי מזון"}
+            content={meta_keywords || "האחים שפירא י.ת.ר - ספקי שיווק מזון מורשים"}
           />
           <meta
             property="og:url"
             content={
-              setting?.meta_url || "https://meshek-kirshner.co.il/"
+              meta_url || "https://shapirabro.co.il/"
             }
           />
           <meta
             property="og:image"
             content={
-              setting?.meta_img ||
-              "https://meshek-kirshner.co.il/_next/static/media/newlogo.c452bf06.svg"
+              meta_img ||
+              'https://bizzstudio.s3.eu-north-1.amazonaws.com/seo/9229c1df-26a4-47d4-a1d2-22768161f6de_logo_shapira_brothers.png'
             }
           />
         </Head>
