@@ -109,6 +109,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
     }
   }, [fakeLoading, carouselRef.current]);
 
+
   if (storeCustomizationSetting?.home?.popular_products_status && popularProducts && discountProducts && attributes && Array.isArray(offers) && fakeLoading) {
     return (
       <>
@@ -124,21 +125,34 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                       <MainCarousel />
                     </div>
                     <div className="w-full hidden lg:flex">
-                      {storeCustomizationSetting?.home?.small_banner_img ?
-                        <Image
-                          src={storeCustomizationSetting?.home?.small_banner_img}
-                          alt="small banner"
-                          width={300}
-                          // height={300}
-                          height={carouselHeight}
-                          className="w-full h-full object-cover"
-                        /> :
+                      {storeCustomizationSetting?.home?.small_banner_img ? (
+                        storeCustomizationSetting?.home?.small_banner_link ?
+                          <Link href={storeCustomizationSetting?.home?.small_banner_link}>
+                            <Image
+                              src={storeCustomizationSetting?.home?.small_banner_img}
+                              alt="small banner"
+                              width={300}
+                              // height={300}
+                              height={carouselHeight}
+                              className="w-full h-full object-cover"
+                            />
+                          </Link> :
+                          <Image
+                            src={storeCustomizationSetting?.home?.small_banner_img}
+                            alt="small banner"
+                            width={300}
+                            // height={300}
+                            height={carouselHeight}
+                            className="w-full h-full object-cover"
+                          />
+                      ) : (
                         <OfferCard
                           discountProducts={discountProducts}
                           // קבלת הגובה של הבאנר המתחלף (קרוסלה)
                           height={carouselHeight}
                           attributes={attributes}
                         />
+                      )
                       }
                     </div>
                   </div>
@@ -288,7 +302,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                       )}
                     </div>
                   </div>
-                  
+
                   {/* כפתור לכל המוצרים המובילים */}
                   {!loading && popularProducts?.length > 0 && (
                     <div className="flex justify-center mt-8 mb-2">

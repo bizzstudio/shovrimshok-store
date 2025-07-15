@@ -475,13 +475,14 @@ const Footer = () => {
           </span>
           <hr className="sm:h-4 sm:w-[1px] h-[1px] w-7 bg-gray-400"/>
           <span>
-            האתר נבנה על ידי
+            {/* האתר נבנה על ידי */}
             <Link
-              href="https://bizzstudio.co.il/"
+              href="https://www.abudi-group.co.il"
               target="_blank"
               rel="noopener noreferrer"
               className="text-customRed"
-            > Bizz Studio</Link> בית תוכנה ובניית אתרים בע"מ
+            >עבודי - שיווק ופרסום</Link>
+            {/* בית תוכנה ובניית אתרים בע"מ */}
           </span>
         </div>
       </div>

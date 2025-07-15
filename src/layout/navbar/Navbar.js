@@ -132,8 +132,8 @@ const Navbar = () => {
                 width={290}
                 height={117}
                 src={
-                  storeCustomizationSetting?.navbar?.logo ||
-                  logo
+                  storeCustomizationSetting?.navbar?.logo
+                  || 'https://i.imgur.com/hlKKyn1.png'
                 }
                 alt="logo"
                 className="object-contain h-full"
