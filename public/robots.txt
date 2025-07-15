@@ -1,11 +1,6 @@
 # https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
-Allow: /
-
-# Sitemap location
-Sitemap: https://shapirabro.co.il/sitemap.xml
-
-# Disallow admin and private areas
 Disallow: /admin/
 Disallow: /api/
 Disallow: /user/dashboard
@@ -13,13 +8,5 @@ Disallow: /user/my-orders
 Disallow: /user/update-profile
 Disallow: /user/change-password
 
-# Allow important pages
-Allow: /
-Allow: /about-us
-Allow: /contact-us
-Allow: /category/
-Allow: /product/
-Allow: /search
-Allow: /offers
-Allow: /best-sellers
-Allow: /purchased-products
+# Sitemap location
+Sitemap: https://shapirabro.co.il/sitemap.xml
