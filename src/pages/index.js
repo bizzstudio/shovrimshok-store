@@ -4,6 +4,8 @@ import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from "swiper";
+import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 
 // Internal import
 import Layout from "@layout/Layout";
@@ -24,9 +26,13 @@ import popolarTitle from "public/titles/popolarTitle.svg";
 import logoGif from "public/shapira_loading_gif.gif";
 import Image from "next/image";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
+import MainBT from "@component/button/MainBT";
+import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+
   const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
   const [fakeLoading, setFakeLoading] = useState(false)
@@ -222,7 +228,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
               )}
 
               {/* popular products */}
-              {storeCustomizationSetting?.home?.popular_products_status && (
+              {storeCustomizationSetting?.home?.popular_products_status && popularProducts?.length && (
                 <div className="bg-gray-50 lg:py-10 py-3 mx-auto max-w-screen-2xl px-3 sm:px-10">
                   {/* {showTitles && ( */}
                   <div className="lg:mt-4 mt-9 mb-3 flex justify-center animate-fadeIn">
@@ -282,6 +288,20 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                       )}
                     </div>
                   </div>
+                  
+                  {/* כפתור לכל המוצרים המובילים */}
+                  {!loading && popularProducts?.length > 0 && (
+                    <div className="flex justify-center mt-8 mb-2">
+                      <Link href="/best-sellers">
+                        <MainBT>
+                          <div className="flex items-center gap-1">
+                            <span className="text-base">{t("common:toAllPopularProducts")}</span>
+                            <MdArrowBack className="text-lg" />
+                          </div>
+                        </MainBT>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               )}
 
