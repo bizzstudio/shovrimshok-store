@@ -123,7 +123,7 @@ class MyDocument extends Document {
           
           <Main />
           <NextScript />
-          <script src="https://cdn.enable.co.il/licenses/enable-L669sin2yb9r7u-1017-72359/init.js"></script>
+          <script src="https://cdn.enable.co.il/licenses/enable-L669sin2yb9r7u-1017-72360/init.js"></script>
         </body>
       </Html>
     );
