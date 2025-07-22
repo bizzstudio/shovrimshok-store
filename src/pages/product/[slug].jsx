@@ -461,9 +461,21 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                                 <FiMinus />
                               </span>
                             </button>
-                            <p className="font-semibold flex items-center justify-center h-full  transition-colors duration-250 ease-in-out cursor-default flex-shrink-0 text-base text-heading w-8  md:w-20 xl:w-24">
-                              {item}
-                            </p>
+                            <input
+                              type="number"
+                              min={1}
+                              max={9999}
+                              value={item}
+                              onChange={e => {
+                                // דואג שהערך יהיה בין 1 ל-9999 בלבד
+                                let val = Number(e.target.value);
+                                if (isNaN(val)) val = 1;
+                                val = Math.max(1, Math.min(9999, val));
+                                setItem(val);
+                              }}
+                              className="no-spinner font-semibold flex items-center justify-center h-full transition-colors duration-250 ease-in-out cursor-text flex-shrink-0 text-base text-heading w-8 md:w-20 xl:w-24 text-center outline-none"
+                              style={{ MozAppearance: 'textfield' }}
+                            />
                             <button
                               onClick={() => setItem(item + 1)}
                               // disabled={selectVariant?.quantity <= item}
