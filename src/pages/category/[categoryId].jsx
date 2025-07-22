@@ -30,7 +30,7 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
 
     // נשמור כאן את כל המוצרים מכל העמודים
     const [allProducts, setAllProducts] = useState([]);
-    console.log('allProducts :>> ', allProducts);
+    // console.log('allProducts :>> ', allProducts);
     const [isLoadMore, setIsLoadMore] = useState(false);
     const [attributes, setAttributes] = useState([]);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
