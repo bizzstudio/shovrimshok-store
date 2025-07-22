@@ -30,6 +30,7 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
 
     // נשמור כאן את כל המוצרים מכל העמודים
     const [allProducts, setAllProducts] = useState([]);
+    console.log('allProducts :>> ', allProducts);
     const [isLoadMore, setIsLoadMore] = useState(false);
     const [attributes, setAttributes] = useState([]);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -125,14 +126,16 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
                 sapSkip: sapSkip,
                 token: userInfo?.token,
             });
-            // אם אין מוצרים בעמוד הבא, סוגרים hasMore
-            if (!res.products || res.products.length < 36) {
+
+            if (!res.products || res.products.length === 0) {
                 setHasMore(false);
             } else {
                 // מוסיפים את המוצרים החדשים למערך
                 setAllProducts(prev => [...prev, ...res.products]);
                 setPage(nextPage);
                 setSapSkip(res.nextSapSkip ?? 0);
+                // אם res.products.length < 36, אפשר להפסיק לטעון אחרי הוספה
+                if (res.products.length < 36) setHasMore(false);
             }
         } catch (err) {
             console.error("Load More error: ", err);
