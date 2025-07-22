@@ -174,9 +174,24 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
                   <FiMinus />
                 </span>
               </button>
-              <p className="text-sm font-semibold text-dark px-2">
+              {/* <p className="text-sm font-semibold text-dark px-2">
                 {item.quantity}
-              </p>
+              </p> */}
+              <input
+                type="number"
+                min={1}
+                max={9999}
+                value={item.quantity}
+                onChange={e => {
+                  // דואג שהערך יהיה בין 1 ל-9999 בלבד
+                  let val = Number(e.target.value);
+                  if (isNaN(val)) val = 1;
+                  val = Math.max(1, Math.min(9999, val));
+                  updateItemQuantity(item.id, val);
+                }}
+                className="no-spinner text-sm font-semibold text-dark px-2 text-center outline-none cursor-text"
+                style={{ MozAppearance: 'textfield' }}
+              />
               <button type="button" onClick={() => handleIncreaseQuantity(item)} className="px-1">
                 <span className="text-dark text-base">
                   <FiPlus />
