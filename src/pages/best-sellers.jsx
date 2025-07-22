@@ -82,13 +82,15 @@ const BestSellersPage = () => {
         try {
             const res = await ProductServices.getPopularProducts({ token: userInfo?.token });
 
-            if (!res.products || res.products.length < 36) {
+            if (!res.products || res.products.length === 0) {
                 setHasMore(false);
             } else {
                 // מוסיפים את המוצרים החדשים למערך
                 setAllProducts(prev => [...prev, ...res.products]);
                 setPage(nextPage);
                 setSapSkip(res.nextSapSkip ?? 0);
+                // אם res.products.length < 36, אפשר להפסיק לטעון אחרי הוספה
+                if (res.products.length < 36) setHasMore(false);
             }
         } catch (err) {
             console.error("Load More error: ", err);
