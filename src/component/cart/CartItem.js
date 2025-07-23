@@ -18,6 +18,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
 
   const [totalPrice, setTotalPrice] = useState((item.prices?.price ?? 0) * item.quantity);
   const [offerTitle, setOfferTitle] = useState('');
+  const [inputValue, setInputValue] = useState(item.quantity);
 
   let currentLang = Cookies.get('_lang');
 
@@ -44,6 +45,11 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
       setOfferTitle('');
     }
   }, [items]);
+
+  // אם הכמות משתנה מבחוץ (למשל ע"י עדכון מהשרת), נעדכן גם את ה-input
+  useEffect(() => {
+    setInputValue(item.quantity);
+  }, [item.quantity]);
 
   // החלת ההצעות על כמות המוצרים שנלקחו תוך חישוב שמכניס כמה שיותר מוצרים אל תוך ההצעות הקיימות
   // useEffect(() => {
@@ -181,12 +187,21 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
                 type="number"
                 min={1}
                 max={9999}
-                value={item.quantity}
+                value={inputValue === 0 ? "" : inputValue}
                 onChange={e => {
-                  // דואג שהערך יהיה בין 1 ל-9999 בלבד
+                  // מאפשר מחיקה מלאה
+                  if (e.target.value === "") {
+                    setInputValue(0);
+                    return;
+                  }
                   let val = Number(e.target.value);
-                  if (isNaN(val)) val = 1;
-                  val = Math.max(1, Math.min(9999, val));
+                  setInputValue(val);
+                }}
+                onBlur={e => {
+                  let val = Number(e.target.value);
+                  if (isNaN(val) || val < 1) val = 1;
+                  if (val > 9999) val = 9999;
+                  setInputValue(val);
                   updateItemQuantity(item.id, val);
                 }}
                 className="no-spinner text-sm font-semibold text-dark px-2 text-center outline-none cursor-text"

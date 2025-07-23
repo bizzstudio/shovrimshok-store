@@ -396,12 +396,23 @@ const ProductModal = ({
                       type="number"
                       min={1}
                       max={9999}
-                      value={item}
+                      value={item === 0 ? "" : item}
                       onChange={e => {
-                        // דואג שהערך יהיה בין 1 ל-9999 בלבד
+                        // אם המשתמש מוחק הכל, תן לערך להיות ריק
+                        if (e.target.value === "") {
+                          setItem(0);
+                          return;
+                        }
                         let val = Number(e.target.value);
                         if (isNaN(val)) val = 1;
-                        val = Math.max(1, Math.min(9999, val));
+                        // לא מגביל כאן, כדי לאפשר למשתמש להקליד מספרים גדולים ואז לתקן
+                        setItem(val);
+                      }}
+                      onBlur={e => {
+                        // אם נשאר ריק או לא חוקי, מחזיר ל-1
+                        let val = Number(e.target.value);
+                        if (isNaN(val) || val < 1) val = 1;
+                        if (val > 9999) val = 9999;
                         setItem(val);
                       }}
                       className="no-spinner font-semibold flex items-center justify-center h-full transition-colors duration-250 ease-in-out cursor-text flex-shrink-0 text-base text-heading w-8 md:w-20 xl:w-24 text-center outline-none"
