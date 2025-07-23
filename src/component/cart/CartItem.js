@@ -204,7 +204,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
                   setInputValue(val);
                   updateItemQuantity(item.id, val);
                 }}
-                className="no-spinner text-sm font-semibold text-dark px-2 text-center outline-none cursor-text"
+                className="no-spinner text-sm font-semibold text-dark text-center outline-none cursor-text"
                 style={{ MozAppearance: 'textfield' }}
               />
               <button type="button" onClick={() => handleIncreaseQuantity(item)} className="px-1">
