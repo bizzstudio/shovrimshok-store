@@ -1,6 +1,7 @@
 // shapira-store/src/component/login/Common.jsx
 import React, { useState } from "react";
 import { ImFacebook, ImGoogle } from "react-icons/im";
+import Link from "next/link";
 
 // Internal import
 import useAsync from "@hooks/useAsync";
@@ -67,15 +68,25 @@ const Common = ({ setModalOpen }) => {
             </>
           )}
         </div> */}
-        <div className="text-center text-sm text-gray-900 mt-4">
+        <div className="text-center text-base text-gray-900 mt-4">
           <div className="text-gray-500 mt-2.5">
             {showRegister ? t("common:alreadyHaveAccount") : t("common:notAccount")}
-            <button
-              onClick={handleModal}
-              className="text-gray-800 hover:text-customRed font-bold mx-1 underline"
-            >
-              {showRegister ? t("common:loginBtn") : t("common:register")}
-            </button>
+            {showRegister ? (
+              <button
+                onClick={handleModal}
+                className="text-gray-800 hover:text-customRed font-bold mx-1 underline"
+              >
+                {t("common:loginBtn")}
+              </button>
+            ) : (
+              <Link
+                href="/contact-us"
+                className="text-gray-800 hover:text-customRed font-bold mx-1 underline"
+                onClick={() => setModalOpen(false)}
+              >
+                {t("common:register")}
+              </Link>
+            )}
           </div>
         </div>
       </div>
