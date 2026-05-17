@@ -85,14 +85,14 @@ const Category = ({ onLinkClick }) => {
           <Loading loading />
         ) : (
           <div className="relative grid gap-2 px-4 py-2">
-            {/* הצגת כל הקטגוריות הראשיות */}
-            {categories.map((category) => (
+            {/* הצגת כל הקטגוריות — מדלגים על שורש "הקטגוריות" ומציגים את הילדים שלו */}
+            {(categories[0]?.children || categories).map((category) => (
               <CategoryCard
-                key={category.code}
-                id={category.code}
+                key={category.code || category._id}
+                id={category.code || category._id}
                 icon={null}
-                nested={category.children} // תתי קטגוריות
-                title={category.name}
+                nested={category.children}
+                title={showingTranslateValue(category.name)}
                 onLinkClick={onLinkClick}
               />
             ))}

@@ -455,7 +455,7 @@ const ProductModal = ({
                             className="text-gray-600 hover:text-customRed underline"
                             onClick={() => setIsLoading(!isLoading)}
                           >
-                            {category?.name}
+                            {showingTranslateValue(category?.name)}
                           </Link>
                         </li>
                         {subCategory?.code && (
@@ -469,7 +469,7 @@ const ProductModal = ({
                                 className="text-gray-600 hover:text-customRed underline"
                                 onClick={() => setIsLoading(!isLoading)}
                               >
-                                {subCategory.name}
+                                {showingTranslateValue(subCategory.name)}
                               </Link>
                             </li>
                           </>

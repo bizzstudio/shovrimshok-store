@@ -16,10 +16,12 @@ import OfferCard from "@component/offer/OfferCard";
 import StickyCart from "@component/cart/StickyCart";
 import Loading from "@component/preloader/Loading";
 import ProductServices from "@services/ProductServices";
+import CategoryServices from "@services/CategoryServices";
 import ProductCard from "@component/product/ProductCard";
 import MainCarousel from "@component/carousel/MainCarousel";
 import FeatureCategory from "@component/category/FeatureCategory";
 import AttributeServices from "@services/AttributeServices";
+import useUtilsFunction from "@hooks/useUtilsFunction";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg";
 import popolarTitle from "public/titles/popolarTitle.svg";
@@ -35,7 +37,22 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
 
   const { isLoading, setIsLoading, offers } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
+  const { showingTranslateValue } = useUtilsFunction();
   const [fakeLoading, setFakeLoading] = useState(false)
+  const [popularTitleOverride, setPopularTitleOverride] = useState(null);
+
+  // אם popular_title מכיל ObjectId של קטגוריה, נשלוף את שם הקטגוריה ונציג אותו במקום
+  useEffect(() => {
+    const raw = storeCustomizationSetting?.home?.popular_title;
+    const text = typeof raw === "object" ? showingTranslateValue(raw) : raw;
+    if (typeof text === "string" && /^[a-f0-9]{24}$/i.test(text)) {
+      CategoryServices.getCategoryById(text)
+        .then((cat) => setPopularTitleOverride(cat?.name ?? null))
+        .catch(() => setPopularTitleOverride(null));
+    } else {
+      setPopularTitleOverride(null);
+    }
+  }, [storeCustomizationSetting?.home?.popular_title]);
 
   useEffect(() => {
     const fakeLoadingSession = sessionStorage.getItem('fakeLoading');
@@ -257,7 +274,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                           data={popolarTitle.src}
                           isIimage={true}
                         /> */}
-                        <ShapiraTitle text={storeCustomizationSetting?.home?.popular_title} height={70} />
+                        <ShapiraTitle text={popularTitleOverride ?? storeCustomizationSetting?.home?.popular_title} height={70} />
                       </h2>
                       <div className="text-base font-sans text-gray-600 leading-6">
                         <CMSkeleton

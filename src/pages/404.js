@@ -10,7 +10,7 @@ const NotFound = () => {
   return (
     <>
       <Head>
-        <title>אחים שפירא | 404</title>
+        <title>שוברים שוק | 404</title>
         <meta name="description" content="This is page not found 404 page" />
         <link rel="icon" href="/shapira_leaf.svg" />
       </Head>

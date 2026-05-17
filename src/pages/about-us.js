@@ -17,7 +17,7 @@ const AboutUs = () => {
   // console.log('storeCustomizationSetting :>> ', storeCustomizationSetting);
 
   return (
-    <Layout title="אודות" description="אודות האחים שפירא י.ת.ר">
+    <Layout title="אודות" description="אודות שוברים שוק">
       {/* כותרת העמוד */}
       <PageHeader
         headerBg={storeCustomizationSetting?.about_us?.header_bg}

@@ -13,11 +13,13 @@ import useTranslation from "next-translate/useTranslation";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import { SidebarContext } from "@context/SidebarContext";
 import getCategoryIconByCode from "@utils/getCategoryIconByCode";
+import useUtilsFunction from "@hooks/useUtilsFunction";
 
 const FeatureCategory = () => {
   const { categories } = useContext(SidebarContext);
   const [activePopover, setActivePopover] = useState(null);
   const { t } = useTranslation();
+  const { showingTranslateValue } = useUtilsFunction();
 
   return (
     <div className="container mx-auto">
@@ -25,9 +27,9 @@ const FeatureCategory = () => {
         <CMSkeleton count={10} height={20} />
       ) : (
         <ul className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {categories?.map((category, i) => {
+          {(categories[0]?.children || categories)?.map((category, i) => {
             const icon = getCategoryIconByCode(category?.code);
-            const title = category?.name;
+            const title = showingTranslateValue(category?.name);
             return (
               <li
                 onClick={() => Router.push(`/category/${category?.code}`)}
@@ -114,8 +116,8 @@ const FeatureCategory = () => {
                               <span className="text-xs text-gray-500 pr-2">
                                 <IoRemoveSharp />
                               </span>
-                              <span className="whitespace-nowrap truncate" title={child?.name}>
-                                {child?.name}
+                              <span className="whitespace-nowrap truncate" title={showingTranslateValue(child?.name)}>
+                                {showingTranslateValue(child?.name)}
                               </span>
                             </Link>
                           </li>

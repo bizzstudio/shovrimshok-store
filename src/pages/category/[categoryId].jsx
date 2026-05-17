@@ -18,6 +18,14 @@ import Loading from "@component/preloader/Loading";
 import { useRouter } from "next/router";
 import ProductCardSkeleton from "@component/preloader/ProductCardSkeleton";
 
+// בוחר טקסט בעברית מתוך אובייקט רב־לשוני {he, en} או מחרוזת רגילה
+const pickName = (val, fallback = "") => {
+    if (val == null) return fallback;
+    if (typeof val === "string" || typeof val === "number") return val;
+    if (typeof val === "object") return val.he ?? val.en ?? fallback;
+    return fallback;
+};
+
 // import categories titles
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import { UserContext } from "@context/UserContext";
@@ -49,13 +57,15 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
     const categoriesData = serverCategories || categories;
     
     // חישוב הטיטל
-    const foundParent = categoriesData?.find((cat) => cat.code === categoryId);
-    const parentName = foundParent?.name || categoryId;
+    const matchesCategory = (cat, id) =>
+        String(cat?._id) === id || cat?.slug === id || cat?.code === id;
+    const foundParent = categoriesData?.find((cat) => matchesCategory(cat, categoryId));
+    const parentName = pickName(foundParent?.name, categoryId);
 
     let childName = "";
     if (sub && foundParent?.children?.length > 0) {
-        const foundChild = foundParent.children.find((child) => child.code === sub);
-        childName = foundChild?.name || sub;
+        const foundChild = foundParent.children.find((child) => matchesCategory(child, sub));
+        childName = pickName(foundChild?.name, sub);
     }
 
     const layoutTitle = childName ? `${parentName} / ${childName}` : parentName;
@@ -293,17 +303,19 @@ export async function getServerSideProps(context) {
         const categories = await CategoryServices.getShowingCategory();
         
         // חישוב הטיטל בשרת
-        const foundParent = categories?.find((cat) => cat.code === categoryId);
-        const parentName = foundParent?.name || categoryId;
-        
+        const matchesCategory = (cat, id) =>
+            String(cat?._id) === id || cat?.slug === id || cat?.code === id;
+        const foundParent = categories?.find((cat) => matchesCategory(cat, categoryId));
+        const parentName = pickName(foundParent?.name, categoryId);
+
         let childName = "";
         if (sub && foundParent?.children?.length > 0) {
-            const foundChild = foundParent.children.find((child) => child.code === sub);
-            childName = foundChild?.name || sub;
+            const foundChild = foundParent.children.find((child) => matchesCategory(child, sub));
+            childName = pickName(foundChild?.name, sub);
         }
         
         const categoryTitle = childName ? `${parentName} / ${childName}` : parentName;
-        const categoryDescription = `מוצרים בקטגוריה ${categoryTitle} - האחים שפירא י.ת.ר`;
+        const categoryDescription = `מוצרים בקטגוריה ${categoryTitle} - שוברים שוק`;
         
         return {
             props: {

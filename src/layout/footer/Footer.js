@@ -470,7 +470,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="text-customRed"
             >
-              לאחים שפירא
+              לשוברים שוק
             </Link>
           </span>
           <hr className="sm:h-4 sm:w-[1px] h-[1px] w-7 bg-gray-400"/>

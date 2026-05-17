@@ -183,7 +183,7 @@ const contactData = [
     title: "contact-page-box1-title",
     info: "contact-page-box1-info",
     icon: FiMail,
-    contact: "אחים שפירא@gmail.com",
+    contact: "שוברים שוק@gmail.com",
     className: "bg-customBrown-light",
   },
   {

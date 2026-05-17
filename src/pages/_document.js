@@ -45,10 +45,10 @@ class MyDocument extends Document {
           <link rel="icon" href={favicon || "/shapira_leaf.svg"} />
 
           {/* Regular meta tags that Google prefers */}
-          <title>{meta_title || "האחים שפירא י.ת.ר"}</title>
+          <title>{meta_title || "שוברים שוק"}</title>
           <meta 
             name="description" 
-            content={meta_description || 'האחים שפירא י.ת.ר - ספקי שיווק מזון מורשים, במכירה ישירה ללא פערי תיווך, משלוחים / איסוף עצמי - הזמינו אונליין'}
+            content={meta_description || 'שוברים שוק - ספקי שיווק מזון מורשים, במכירה ישירה ללא פערי תיווך, משלוחים / איסוף עצמי - הזמינו אונליין'}
           />
 
           {/* Google Tag Manager */}
@@ -80,7 +80,7 @@ class MyDocument extends Document {
             property="og:title"
             content={
               meta_title ||
-              "האחים שפירא י.ת.ר"
+              "שוברים שוק"
             }
           />
           <meta property="og:type" content="eCommerce Website" />
@@ -88,12 +88,12 @@ class MyDocument extends Document {
             property="og:description"
             content={
               meta_description ||
-             'האחים שפירא י.ת.ר - ספקי שיווק מזון מורשים, במכירה ישירה ללא פערי תיווך, משלוחים / איסוף עצמי - הזמינו אונליין'
+             'שוברים שוק - ספקי שיווק מזון מורשים, במכירה ישירה ללא פערי תיווך, משלוחים / איסוף עצמי - הזמינו אונליין'
             }
           />
           <meta
             name="keywords"
-            content={meta_keywords || "האחים שפירא י.ת.ר - ספקי שיווק מזון מורשים"}
+            content={meta_keywords || "שוברים שוק - ספקי שיווק מזון מורשים"}
           />
           <meta
             property="og:url"

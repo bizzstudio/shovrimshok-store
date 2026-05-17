@@ -11,8 +11,10 @@ import {
 
 import { SidebarContext } from "@context/SidebarContext";
 import getCategoryIconByCode from "@utils/getCategoryIconByCode";
+import useUtilsFunction from "@hooks/useUtilsFunction";
 
 const CategoryCard = ({ title, nested, id, onLinkClick }) => {
+  const { showingTranslateValue } = useUtilsFunction();
   const router = useRouter();
   const { query, pathname } = router;
 
@@ -103,8 +105,8 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
                 <span className="text-xs text-gray-500 pr-2">
                   <IoRemoveSharp />
                 </span>
-                <span className=" truncate max-w-[150px]" title={child?.name || `תת קטגוריה ${ci + 1}`}>
-                  {child?.name || `תת קטגוריה ${ci + 1}`}
+                <span className=" truncate max-w-[150px]" title={showingTranslateValue(child?.name) || `תת קטגוריה ${ci + 1}`}>
+                  {showingTranslateValue(child?.name) || `תת קטגוריה ${ci + 1}`}
                 </span>
               </Link>
             </li>

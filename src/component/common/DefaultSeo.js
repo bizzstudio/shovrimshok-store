@@ -14,12 +14,12 @@ const DefaultSeo = () => {
 
   return (
     <NextSeo
-      title={meta_title || "האחים שפירא י.ת.ר"}
+      title={meta_title || "שוברים שוק"}
       openGraph={{
         type: "website",
         locale: "he_IL",
         url: meta_url || "https://shapirabro.co.il",
-        site_name: meta_title || "האחים שפירא י.ת.ר",
+        site_name: meta_title || "שוברים שוק",
       }}
       twitter={{
         handle: "@handle",

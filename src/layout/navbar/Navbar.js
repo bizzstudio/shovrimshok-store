@@ -126,11 +126,11 @@ const Navbar = () => {
           <div className="top-bar h-auto flex sm:flex-row flex-col items-center justify-between pt-3 xl:pb-2 pb-4 mx-auto">
             <Link
               href="/"
-              className="sm:w-fit sm:h-fit h-[90px] sm:mb-0 mb-3"
+              className="sm:w-fit sm:h-fit h-[65px] sm:mb-0 mb-3"
             >
               <Image
-                width={290}
-                height={117}
+                width={200}
+                height={80}
                 src={
                   storeCustomizationSetting?.navbar?.logo
                   || 'https://i.imgur.com/hlKKyn1.png'

@@ -108,7 +108,7 @@ const Dashboard = ({ title, description, children }) => {
       ) : (
         <Layout
           title={title ? title : "אזור אישי"}
-          description={description ? description : "עמוד אזור אישי - האחים שפירא י.ת.ר"}
+          description={description ? description : "עמוד אזור אישי - שוברים שוק"}
         >
           <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
             <div className="py-10 lg:py-12 flex flex-col lg:flex-row w-full">

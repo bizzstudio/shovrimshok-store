@@ -123,7 +123,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
               {product.unit}
             </span>
             <h2 className="text-heading line-clamp-2 mb-0 block text-base font-medium text-gray-600">
-              {product?.ItemName}
+              {showingTranslateValue(product?.title) || product?.ItemName}
             </h2>
           </div>
 
@@ -146,7 +146,7 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                     : product?.Price ?? product?.prices?.originalPrice
                 }
               /> */}
-              <div className="text-xs font-bold text-gray-500 truncate -mt-0.5">{t("common:itemCode")}: {product?.ItemCode}</div>
+              <div className="text-xs font-bold text-gray-500 truncate -mt-0.5">{t("common:itemCode")}: {product?.barcode ?? product?.ItemCode}</div>
             </div>
 
             {inCart((product._id ?? product.ItemCode)) ? (

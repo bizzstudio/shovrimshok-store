@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }) {
 
       // Track page view on route change
       const handleRouteChange = (url) => {
-        handlePageView(url, "אחים שפירא");
+        handlePageView(url, "שוברים שוק");
 
         // Google Analytics
         // עדכון Google Tag עם הנתיב החדש

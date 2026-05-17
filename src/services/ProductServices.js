@@ -2,81 +2,61 @@
 import requests from "./httpServices";
 
 const ProductServices = {
-
-  getShowingProducts: async () => {
-    return requests.get("/products/show");
-  },
-
-  // getShowingStoreProducts: async ({ category = "", title = "", slug = "", sku = "" }) => {
-  //   // resolve the issue with URLs that include non-English letters.
-  //   let newSlug = slug.toLowerCase().replace(/[()]+/g, "").replace(/\s+/g, "-");
-  //   const encodedSlug = encodeURIComponent(newSlug);
-  //   // Replace '[' and '\' with '' - משום מה זה גורם לקריסה, צריך לבדוק מה הלוז
-  //   const cleanTitle = title.replace(/[\[\\]/g, "");
-  //   const encodedTitle = encodeURIComponent(cleanTitle);
-  //   const encodedCategory = encodeURIComponent(category);
-
-  //   // console.log({ encodedSlug })
-
-  //   return requests.get(
-  //     `/products/store?category=${encodedCategory}&title=${encodedTitle}&slug=${encodedSlug}&sku=${sku}`
-  //   );
-  // },
-
-  // פונקציה חדשה/מעודכנת שמכינה query string
+  // מוצרי החנות לדף הבית / קטגוריה / חיפוש / לפי slug
   getShowingStoreProducts: async ({
     category = "",
-    subcategories = "",
-    page = 1,
-    limit = 36, // ברירת מחדל
     title = "",
-    itemCode = "",
-  }) => {
-    let queryString = `?page=${page}&limit=${limit}`;
+    slug = "",
+    sku = "",
+    token = "",
+  } = {}) => {
+    const cleanSlug = slug
+      ? slug.toLowerCase().replace(/[()]+/g, "").replace(/\s+/g, "-")
+      : "";
+    const encodedSlug = encodeURIComponent(cleanSlug);
+    const cleanTitle = (title || "").replace(/[\[\\]/g, "");
+    const encodedTitle = encodeURIComponent(cleanTitle);
+    const encodedCategory = encodeURIComponent(category || "");
 
-    if (category) queryString += `&category=${encodeURIComponent(category)}`;
+    const config = token
+      ? { headers: { authorization: `Bearer ${token}` } }
+      : undefined;
 
-    if (subcategories) {
-      // אם זה array או string בודד
-      const subArr = Array.isArray(subcategories)
-        ? subcategories
-        : [subcategories];
-      // מחברים בפורמט sub1,sub2,sub3
-      queryString += `&subcategories=${subArr.join(",")}`;
-    }
-
-    if (title) queryString += `&title=${encodeURIComponent(title)}`;
-
-    if (itemCode) queryString += `&itemCode=${encodeURIComponent(itemCode)}`;
-
-    // עכשיו קוראים ל-API
-    return requests.get(`/products/store${queryString}`);
+    return requests.get(
+      `/products/store?category=${encodedCategory}&title=${encodedTitle}&slug=${encodedSlug}&sku=${sku}`,
+      config
+    );
   },
 
-  getProductsByTitle: async ({ title, page = 1, limit = 36 }) => {
-    let queryString = `?page=${page}&limit=${limit}`;
-    if (title) queryString += `&title=${encodeURIComponent(title)}`;
-    return requests.get(`/products/search${queryString}`);
+  // חיפוש לפי כותרת — כעת ב-/products/store?title=...
+  getProductsByTitle: async ({ title, page = 1, limit = 36 } = {}) => {
+    const encodedTitle = encodeURIComponent(title || "");
+    return requests.get(
+      `/products/store?title=${encodedTitle}&page=${page}&limit=${limit}`
+    );
   },
 
-  getDiscountedProducts: async () => {
-    return requests.get("/products/discount");
-  },
-
+  // מוצר בודד לפי slug — דף מוצר
   getProductBySlug: async (slug) => {
     const encodedSlug = encodeURIComponent(slug);
     return requests.get(`/products/product/${encodedSlug}`);
   },
 
-  // משיכת מוצרים פופולריים
-  getPopularProducts: async () => {
-    return requests.get("/products/popular-products");
+  // מוצרים פופולריים — נשלף מתוך תגובת /store (שדה popularProducts)
+  getPopularProducts: async ({ token = "" } = {}) => {
+    const config = token
+      ? { headers: { authorization: `Bearer ${token}` } }
+      : undefined;
+    const data = await requests.get(`/products/store`, config);
+    return {
+      products: data?.popularProducts || [],
+      totalDoc: (data?.popularProducts || []).length,
+    };
   },
 
-  // משיכת מוצרים שנרכשו
-  getPurchasedProducts: async ({ page = 1, limit = 36 }) => {
-    let queryString = `?page=${page}&limit=${limit}`;
-    return requests.get(`/products/purchased-products${queryString}`);
+  // היסטוריית רכישות לקוח — היה תלוי SAP. כרגע ריק (יתממש כשנמגרר הזמנות)
+  getPurchasedProducts: async () => {
+    return { products: [], totalDoc: 0, limits: 0, pages: 1 };
   },
 };
 

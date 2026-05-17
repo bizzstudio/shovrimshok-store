@@ -312,7 +312,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                         type="button"
                         onClick={() => setIsLoading(!isLoading)}
                       >
-                        {category?.name}
+                        {showingTranslateValue(category?.name)}
                       </button>
                     </Link>
                   </li>
@@ -330,7 +330,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             type="button"
                             onClick={() => setIsLoading(!isLoading)}
                           >
-                            {subCategory?.name}
+                            {showingTranslateValue(subCategory?.name)}
                           </button>
                         </Link>
                       </li>
@@ -519,7 +519,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                                 className="text-gray-600 hover:text-customRed underline"
                                 onClick={() => setIsLoading(!isLoading)}
                               >
-                                {category?.name}
+                                {showingTranslateValue(category?.name)}
                               </Link>
                             </li>
                             {subCategory?.code && (
@@ -533,7 +533,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                                     className="text-gray-600 hover:text-customRed underline"
                                     onClick={() => setIsLoading(!isLoading)}
                                   >
-                                    {subCategory.name}
+                                    {showingTranslateValue(subCategory.name)}
                                   </Link>
                                 </li>
                               </>
@@ -564,7 +564,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                         {/* <ul className="flex gap-2 mt-4">
                           <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <FacebookShareButton
-                              url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
+                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
                               quote=""
                             >
                               <FacebookIcon size={32} round />
@@ -572,7 +572,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                           </li>
                           <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <TwitterShareButton
-                              url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
+                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
                               quote=""
                             >
                               <TwitterIcon size={32} round />
@@ -580,7 +580,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                           </li>
                           <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <RedditShareButton
-                              url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
+                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
                               quote=""
                             >
                               <RedditIcon size={32} round />
@@ -588,7 +588,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                           </li>
                           <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <WhatsappShareButton
-                              url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
+                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
                               quote=""
                             >
                               <WhatsappIcon size={32} round />
@@ -596,7 +596,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                           </li>
                           <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
                             <LinkedinShareButton
-                              url={`https://אחים שפירא-store-nine.vercel.app/product/${router.query.slug}`}
+                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
                               quote=""
                             >
                               <LinkedinIcon size={32} round />
