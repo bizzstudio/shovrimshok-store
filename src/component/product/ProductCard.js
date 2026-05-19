@@ -1,6 +1,7 @@
 // src/component/product/ProductCard.js
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { useContext, useState } from "react";
 import { IoAdd, IoBagAddSharp, IoRemove } from "react-icons/io5";
 import dayjs from "dayjs";
@@ -89,14 +90,8 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
           //  title={offerName}
           /> */}
         </div>
-        <div
-          onClick={() => {
-            handleModalOpen(!modalOpen, (product._id ?? product.ItemCode));
-            handleLogEvent(
-              "product",
-              `opened ${showingTranslateValue(product?.title)} product modal`
-            );
-          }}
+        <Link
+          href={`/product/${product.slug ?? product._id}`}
           className="relative flex justify-center cursor-pointer pt-2 w-full h-44"
         >
           <div className="relative w-full h-full p-2">
@@ -116,15 +111,17 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
               />
             )}
           </div>
-        </div>
+        </Link>
         <div className="w-full px-3 lg:px-4 pb-4 overflow-hidden">
           <div className="relative mb-1">
             <span className="text-gray-400 font-medium text-xs d-block mb-1">
               {product.unit}
             </span>
-            <h2 className="text-heading line-clamp-2 mb-0 block text-base font-medium text-gray-600">
-              {showingTranslateValue(product?.title) || product?.ItemName}
-            </h2>
+            <Link href={`/product/${product.slug ?? product._id}`}>
+              <h2 className="text-heading line-clamp-2 mb-0 block text-base font-medium text-gray-600 hover:text-customRed transition-colors">
+                {showingTranslateValue(product?.title) || product?.ItemName}
+              </h2>
+            </Link>
           </div>
 
           <div className="w-full overflow-hidden flex justify-between items-center gap-2 text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl mt-1.5">

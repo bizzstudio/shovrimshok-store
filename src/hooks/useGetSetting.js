@@ -69,13 +69,20 @@ const useGetSetting = () => {
 
         setLoading(false);
       } catch (err) {
-        // בדיקה אם יש הודעת שגיאה מותאמת מהשרת
         if (err.response && err.response.data && err.response.data.message) {
           setError(err.response.data.message);
         } else {
           setError(err.message);
         }
         console.log("Error on getting storeCustomizationSetting setting", err);
+        // fallback to local settings if API fails
+        const storeCustomizationData = {
+          ...storeCustomization?.setting,
+          name: "storeCustomizationSetting",
+        };
+        if (storeCustomization?.setting) {
+          dispatch(addSetting(storeCustomizationData));
+        }
       }
     };
 
@@ -113,9 +120,9 @@ const useGetSetting = () => {
       }
     };
 
-    fetchAndAddSetting();
-    fetchGlobalSetting();
-    fetchStoreSetting();
+    if (!storeCustomizationSetting) fetchAndAddSetting();
+    if (!globalSetting) fetchGlobalSetting();
+    if (!storeSetting) fetchStoreSetting();
 
     // Check if the "lang" value is not set and set a default value
     if (!lang || lang === "" || lang === "null" || lang === "undefined") {

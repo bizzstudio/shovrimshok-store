@@ -324,7 +324,7 @@ const ProductModal = ({
                     onClick={() => handleClose()}
                     className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif hover:text-black cursor-pointer text-right mb-1 hover:underline"
                   >
-                    {product?.ItemName || product?.title}
+                    {product?.ItemName || showingTranslateValue(product?.title)}
                   </h1>
                 </Link>
                 {!inStock && (

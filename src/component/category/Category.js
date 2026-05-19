@@ -88,8 +88,8 @@ const Category = ({ onLinkClick }) => {
             {/* הצגת כל הקטגוריות — מדלגים על שורש "הקטגוריות" ומציגים את הילדים שלו */}
             {(categories[0]?.children || categories).map((category) => (
               <CategoryCard
-                key={category.code || category._id}
-                id={category.code || category._id}
+                key={category.slug || category._id}
+                id={category.slug || category._id}
                 icon={null}
                 nested={category.children}
                 title={showingTranslateValue(category.name)}

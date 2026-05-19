@@ -30,13 +30,14 @@ const FeatureCategory = () => {
           {(categories[0]?.children || categories)?.map((category, i) => {
             const icon = getCategoryIconByCode(category?.code);
             const title = showingTranslateValue(category?.name);
+            const catId = category?.slug || category?.code || category?._id;
             return (
               <li
-                onClick={() => Router.push(`/category/${category?.code}`)}
+                onClick={() => Router.push(`/category/${catId}`)}
                 className="group relative"
-                key={category?.code + i}
+                key={`${category?._id ?? category?.slug ?? i}_${i}`}
                 title={title}
-                onMouseEnter={() => category.children?.length > 0 && setActivePopover(category?.code)}
+                onMouseEnter={() => category.children?.length > 0 && setActivePopover(catId)}
                 onMouseLeave={() => setActivePopover(null)}
               >
                 <div className="flex justify-center md:justify-start w-full h-full border border-gray-100 shadow-sm bg-white p-4 cursor-pointer transition duration-200 ease-linear transform group-hover:shadow-lg">
@@ -73,14 +74,14 @@ const FeatureCategory = () => {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setActivePopover(activePopover === category?.code ? null : category?.code);
+                              setActivePopover(activePopover === catId ? null : catId);
                             }}
                             className="flex items-center gap-1 text-xs text-gray-400 hover:text-customRed-light transition-all duration-150 font-serif"
                           >
                             <span className="text-sm">
                               <ChevronDownIcon 
                                 className={`w-3 h-3 transition-transform duration-200 ${
-                                  activePopover === category?.code ? 'rotate-180' : ''
+                                  activePopover === category?.slug ? 'rotate-180' : ''
                                 }`} 
                               />
                             </span>
@@ -94,7 +95,7 @@ const FeatureCategory = () => {
 
                 {/* תפריט נפתח של תתי קטגוריות */}
                 <Transition
-                  show={activePopover === category?.code && category.children?.length > 0}
+                  show={activePopover === catId && category.children?.length > 0}
                   as={Fragment}
                   enter="transition ease-out duration-200"
                   enterFrom="opacity-0 translate-y-1"
@@ -106,10 +107,10 @@ const FeatureCategory = () => {
                   <div className="absolute top-full left-0 right-0 z-20 bg-white shadow-lg rounded-b-md ring-1 ring-black ring-opacity-5">
                     <div className="p-2">
                       <ul className="">
-                        {category.children && category.children.map((child) => (
-                          <li key={child.code}>
+                        {category.children && category.children.map((child, ci) => (
+                          <li key={`${child._id ?? child.slug ?? ci}_${ci}`}>
                             <Link
-                              href={`/category/${category?.code}?sub=${child?.code}`}
+                              href={`/category/${catId}?sub=${child?.slug || child?.code || child?._id}`}
                               className="p-2 flex items-center gap-1 text-sm text-gray-600 hover:text-customRed hover:bg-gray-100 rounded-md transition-all duration-100"
                               onClick={(e) => e.stopPropagation()}
                             >

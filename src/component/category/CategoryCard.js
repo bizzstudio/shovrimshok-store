@@ -96,19 +96,28 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
       {show && nested?.length > 0 && (
         <ul className="pl-6 pb-3 pt-1 -mt-1">
           {nested.map((child, ci) => (
-            <li key={child.code}>
-              <Link
-                href={`/category/${id}?sub=${child.code}`}
-                onMouseDown={() => handleClick(`/category/${id}`, child.code)} // סוגר את התפריט לפני הניווט
-                className="flex items-center gap-1 font-serif py-1 text-sm text-gray-600 hover:text-customRed"
-              >
-                <span className="text-xs text-gray-500 pr-2">
-                  <IoRemoveSharp />
-                </span>
-                <span className=" truncate max-w-[150px]" title={showingTranslateValue(child?.name) || `תת קטגוריה ${ci + 1}`}>
-                  {showingTranslateValue(child?.name) || `תת קטגוריה ${ci + 1}`}
-                </span>
-              </Link>
+            <li key={child.slug || child._id}>
+              {child.children?.length > 0 ? (
+                <CategoryCard
+                  title={showingTranslateValue(child?.name) || `תת קטגוריה ${ci + 1}`}
+                  nested={child.children}
+                  id={child.slug || child._id}
+                  onLinkClick={onLinkClick}
+                />
+              ) : (
+                <Link
+                  href={`/category/${id}?sub=${child.slug || child._id}`}
+                  onMouseDown={() => handleClick(`/category/${id}`, child.slug || child._id)}
+                  className="flex items-center gap-1 font-serif py-1 text-sm text-gray-600 hover:text-customRed"
+                >
+                  <span className="text-xs text-gray-500 pr-2">
+                    <IoRemoveSharp />
+                  </span>
+                  <span className="truncate max-w-[150px]" title={showingTranslateValue(child?.name) || `תת קטגוריה ${ci + 1}`}>
+                    {showingTranslateValue(child?.name) || `תת קטגוריה ${ci + 1}`}
+                  </span>
+                </Link>
+              )}
             </li>
           ))}
         </ul>

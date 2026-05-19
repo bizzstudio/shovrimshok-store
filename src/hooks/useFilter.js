@@ -68,8 +68,8 @@ const useFilter = (data) => {
       services = services?.sort((a, b) => {
         // אם אין מספר מיקום לשניהם, מיין לפי א-ב
         if (!a.itemLocation && !b.itemLocation) {
-          const nameA = (a.ItemName || a.title || '').toLowerCase();
-          const nameB = (b.ItemName || b.title || '').toLowerCase();
+          const nameA = String(a.ItemName || a.title || '').toLowerCase();
+          const nameB = String(b.ItemName || b.title || '').toLowerCase();
           return nameA.localeCompare(nameB, 'he');
         }
         // אם אין מספר מיקום לאחד מהם, הוא יהיה אחרון
@@ -83,8 +83,8 @@ const useFilter = (data) => {
     // מיון לפי א-ב (אלפביתי)
     if (sortedField === "Alphabetical") {
       services = services?.sort((a, b) => {
-        const nameA = (a.ItemName || a.title || '').toLowerCase();
-        const nameB = (b.ItemName || b.title || '').toLowerCase();
+        const nameA = String(a.ItemName || a.title || '').toLowerCase();
+        const nameB = String(b.ItemName || b.title || '').toLowerCase();
         return nameA.localeCompare(nameB, 'he');
       });
     }

@@ -24,20 +24,7 @@ class MyDocument extends Document {
     const { seo } = setting || {};
     const { favicon, meta_description, meta_img, meta_keywords, meta_title, meta_url } = seo || {};
 
-    // Check if there was an error during data fetching
-    if (error) {
-      return (
-        <Html lang="he" dir="rtl">
-          <head>
-            <title>שגיאה - האתר אינו זמין</title>
-          </head>
-          <body>
-            <h1>שגיאה</h1>
-            <p>מצטערים, האתר אינו זמין כרגע. נסה שוב מאוחר יותר.</p>
-          </body>
-        </Html>
-      );
-    }
+    // Check if there was an error during data fetching — still must render required Next.js components
 
     return (
       <Html lang="he" dir="rtl">

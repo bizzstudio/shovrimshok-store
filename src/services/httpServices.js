@@ -26,7 +26,21 @@ instance.interceptors.request.use(function (config) {
   };
 });
 
-// console.log(process.env.API_BASE_URL);
+// Auto-logout on 401 (expired token)
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && Cookies.get('userInfo')) {
+      Cookies.remove('userInfo');
+      Cookies.remove('couponInfo');
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 const responseBody = (response) => response.data;
 
 const requests = {

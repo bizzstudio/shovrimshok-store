@@ -41,6 +41,7 @@ import getOfferNames from "@component/offer/getOfferNames";
 import MainBT from "@component/button/MainBT";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import ProductDescription from "@component/product/ProductDescription";
+import ProductRichDescription from "@component/product/ProductRichDescription";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   // console.log('product :>> ', product);
@@ -257,12 +258,12 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
     const newItem = {
       ...p,
-      id: p.ItemCode,
+      id: p._id ?? p.ItemCode ?? p.slug,
       title: p.ItemName ? p.ItemName : showingTranslateValue(p.title),
       image: img,
       price: price,
       originalPrice: originalPrice,
-      variant: {}, // אפשר להשאיר ריק
+      variant: {},
     };
     handleAddItem(newItem);
   };
@@ -278,10 +279,18 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   //   .toLowerCase()
   // .replace(/[^A-Z0-9]+/gi, "-");
 
-  const categoryId = product?.ItemCode?.slice(0, 4);
-  const subCategoryId = product?.ItemCode?.slice(0, 8);
-  const category = categories?.find((cat) => cat.code == categoryId);
-  const subCategory = categories?.find((cat) => cat.code == categoryId)?.children?.find((child) => child.code == subCategoryId);
+  const productCategoryIds = Array.isArray(product?.categories) ? product.categories.map(c => c?._id ?? c) : [];
+  const allCategories = categories ?? [];
+  const category = allCategories.find(
+    (cat) => productCategoryIds.includes(cat._id) || productCategoryIds.includes(cat.slug) || productCategoryIds.includes(cat.code)
+  ) ?? null;
+  const subCategory = allCategories
+    .flatMap((cat) => cat.children ?? [])
+    .find(
+      (child) => productCategoryIds.includes(child._id) || productCategoryIds.includes(child.slug) || productCategoryIds.includes(child.code)
+    ) ?? null;
+  const catHref = category?.slug ?? category?.code ?? category?._id;
+  const subCatHref = subCategory?.slug ?? subCategory?.code ?? subCategory?._id;
 
   return (
     <>
@@ -306,38 +315,28 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                     <FiChevronLeft />{" "}
                   </li>
 
-                  <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold ">
-                    <Link href={`/category/${categoryId}`}>
-                      <button
-                        type="button"
-                        onClick={() => setIsLoading(!isLoading)}
-                      >
-                        {showingTranslateValue(category?.name)}
-                      </button>
-                    </Link>
-                  </li>
-
-                  <li className="text-sm mt-[1px]">
-                    {" "}
-                    <FiChevronLeft />{" "}
-                  </li>
-
-                  {subCategory?.code && subCategory?.name && (
+                  {category?.name && (
                     <>
-                      <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold ">
-                        <Link href={`/category/${categoryId}?sub=${subCategory?.code}`}>
-                          <button
-                            type="button"
-                            onClick={() => setIsLoading(!isLoading)}
-                          >
-                            {showingTranslateValue(subCategory?.name)}
-                          </button>
+                      <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold">
+                        <Link href={`/category/${catHref}`} onClick={() => setIsLoading(!isLoading)}>
+                          {showingTranslateValue(category.name)}
                         </Link>
                       </li>
-
                       <li className="text-sm mt-[1px]">
-                        {" "}
-                        <FiChevronLeft />{" "}
+                        {" "}<FiChevronLeft />{" "}
+                      </li>
+                    </>
+                  )}
+
+                  {subCategory?.name && (
+                    <>
+                      <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-customRed font-semibold">
+                        <Link href={`/category/${catHref}?sub=${subCatHref}`} onClick={() => setIsLoading(!isLoading)}>
+                          {showingTranslateValue(subCategory.name)}
+                        </Link>
+                      </li>
+                      <li className="text-sm mt-[1px]">
+                        {" "}<FiChevronLeft />{" "}
                       </li>
                     </>
                   )}
@@ -347,36 +346,35 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   </li>
                 </ol>
               </div>
-              {/* <div className="rounded-lg p-3 lg:p-12 bg-white"> */}
-              <div className="w-full flex flex-col items-center justify-center lg:flex-row rounded-lg p-3 lg:p-12 bg-white">
-                <div className="w-fit max-w-full flex flex-col items-center justify-center relative">
-                  {/* <Discount slug product={product} /> */}
+              <div className="w-full flex flex-col lg:flex-row gap-6 lg:gap-10 rounded-lg p-4 sm:p-6 lg:p-10 bg-white">
 
+                {/* Left: Image section */}
+                <div className="lg:w-5/12 flex flex-col items-center justify-start flex-shrink-0">
                   {product.image?.[0] ? (
-                    <div className="w-full h-[300px] max-w-[400px] flex items-center justify-center select-none">
+                    <div className="w-full h-[300px] sm:h-[380px] flex items-center justify-center select-none bg-gray-50 rounded-lg overflow-hidden">
                       <Image
                         src={img || product.image?.[0]}
                         alt="product"
                         width={650}
                         height={650}
                         priority
-                        className="w-full sm:min-w-[300px] min-w-[70vw] max-h-[300px] object-contain"
+                        className="w-full h-full object-contain p-4"
                       />
                     </div>
                   ) : (
-                    <div className="w-full h-[300px] max-w-[400px] flex items-center justify-center select-none">
+                    <div className="w-full h-[300px] sm:h-[380px] flex items-center justify-center select-none bg-gray-50 rounded-lg overflow-hidden">
                       <Image
                         src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
                         width={650}
                         height={650}
                         alt="product Image"
-                        className="w-full sm:min-w-[300px] min-w-[70vw] max-h-[300px] object-contain"
+                        className="w-full h-full object-contain p-4"
                       />
                     </div>
                   )}
 
                   {product?.image?.length > 1 && (
-                    <div className="flex flex-row flex-wrap mt-4 border-t w-full">
+                    <div className="flex flex-row flex-wrap mt-3 pt-3 border-t border-gray-100 w-full">
                       <ImageCarousel
                         images={product.image}
                         handleChangeImage={handleChangeImage}
@@ -385,239 +383,134 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   )}
                 </div>
 
-                {/* <div className="w-full"> */}
-                <div className="flex flex-col md:flex-row md:w-1/2 lg:flex-row lg:w-1/2 xl:flex-row xl:w-1/2">
-                  <div className="xl:pr-6 md:pr-6 w-full">
-                    <div className="mb-3">
-                      <h1 className="leading-7 text-lg md:text-xl lg:text-2xl mb-1 font-semibold font-serif text-gray-800">
-                        {product?.ItemName ?? showingTranslateValue(product?.title)}
-                      </h1>
+                {/* Divider */}
+                <div className="hidden lg:block w-px bg-gray-100 self-stretch flex-shrink-0" />
+                <div className="block lg:hidden h-px w-full bg-gray-100" />
 
-                      <p className="uppercase font-serif font-medium text-gray-500 text-sm">
-                        {t("common:SKU")} :{" "}
-                        <span className="font-bold text-gray-600">
-                          {product?.ItemCode ?? product.sku}
+                {/* Right: Product info */}
+                <div className="lg:w-7/12 flex flex-col min-w-0">
+
+                  {/* Title + SKU */}
+                  <div className="pb-4 border-b border-gray-100">
+                    <h1 className="leading-snug text-xl md:text-2xl font-semibold font-serif text-gray-800 mb-2 break-words">
+                      {product?.ItemName ?? showingTranslateValue(product?.title)}
+                    </h1>
+                    {(product?.sku || product?.ItemCode) && (
+                      <p className="font-serif font-medium text-gray-400 text-sm">
+                        {t("common:SKU")}:{" "}
+                        <span className="font-bold text-gray-500">
+                          {product?.sku ?? product?.ItemCode}
                         </span>
                       </p>
+                    )}
+                  </div>
 
-                      {/* {!inStock && (
-                        <div className="pt-2">
-                          <Stock
-                            product={product}
-                            arrivalDate={product?.purchaseOrderInfo?.arrivalDate}
-                            stock={product.stock ?? product.OnHand}
-                            card={false}
-                          />
-                        </div>
-                      )} */}
-                    </div>
-
-                    {/* מחיר */}
-                    {/* <Price
+                  {/* Price */}
+                  <div className="py-4 border-b border-gray-100">
+                    <Price
                       price={price}
                       product={product}
                       currency={currency}
                       originalPrice={originalPrice}
-                    /> */}
+                    />
+                  </div>
 
-                    {/* אופציות מוצר (גדול קטן בינוני וכו') */}
-                    {/* <div className="mb-4">
-                      {variantTitle?.map((a, i) => (
-                        <span key={a._id}>
-                          <h4 className="text-sm py-1">
-                            {showingTranslateValue(a?.name)}:
-                          </h4>
-                          <div className="flex flex-row items-center justify-center gap-2 w-fit mb-3">
-                            <VariantList
-                              att={a._id}
-                              lang={lang}
-                              option={a.option}
-                              setValue={setValue}
-                              varTitle={variantTitle}
-                              variants={product?.variants}
-                              setSelectVa={setSelectVa}
-                              selectVariant={selectVariant}
-                              setSelectVariant={setSelectVariant}
-                            />
-                          </div>
-                        </span>
-                      ))}
-                    </div> */}
+                  {/* Description */}
+                  {product?.description && (
+                    <div className="py-4 border-b border-gray-100 overflow-hidden">
+                      <ProductDescription description={product.description} />
+                    </div>
+                  )}
 
-                    <div className="whitespace-pre-line">
-                      {product?.description && (
-                        <ProductDescription description={product.description} />
-                      )}
-
-                      <div className="flex items-center mt-4">
-                        <div className="flex items-center justify-start space-s-3 sm:space-s-4 w-full gap-3">
-                          <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 md:h-12 border-gray-300">
-                            <button
-                              onClick={() => setItem(item - 1)}
-                              disabled={item === 1}
-                              className="flex items-center justify-center flex-shrink-0 h-full transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-e border-gray-300 hover:text-gray-500"
-                            >
-                              <span className="text-dark text-base">
-                                <FiMinus />
-                              </span>
-                            </button>
-                            <input
-                              type="number"
-                              min={1}
-                              max={9999}
-                              value={item === 0 ? "" : item}
-                              onChange={e => {
-                                // אם המשתמש מוחק הכל, תן לערך להיות ריק
-                                if (e.target.value === "") {
-                                  setItem(0);
-                                  return;
-                                }
-                                let val = Number(e.target.value);
-                                if (isNaN(val)) val = 1;
-                                // לא מגביל כאן, כדי לאפשר למשתמש להקליד מספרים גדולים ואז לתקן
-                                setItem(val);
-                              }}
-                              onBlur={e => {
-                                // אם נשאר ריק או לא חוקי, מחזיר ל-1
-                                let val = Number(e.target.value);
-                                if (isNaN(val) || val < 1) val = 1;
-                                if (val > 9999) val = 9999;
-                                setItem(val);
-                              }}
-                              className="no-spinner font-semibold flex items-center justify-center h-full transition-colors duration-250 ease-in-out cursor-text flex-shrink-0 text-base text-heading w-8 md:w-20 xl:w-24 text-center outline-none"
-                              style={{ MozAppearance: 'textfield' }}
-                            />
-                            <button
-                              onClick={() => setItem(item + 1)}
-                              // disabled={selectVariant?.quantity <= item}
-                              // disabled={stock <= item}
-                              className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-s border-gray-300 hover:text-gray-500"
-                            >
-                              <span className="text-dark text-base">
-                                <FiPlus />
-                              </span>
-                            </button>
-                          </div>
-                          <MainBT
-                            onClick={() => handleAddToCart(product)}
-                            className="w-full h-12"
-                          >
-                            {t("common:addToCart")}
-                          </MainBT>
-                        </div>
+                  {/* Add to cart */}
+                  <div className="py-4 border-b border-gray-100">
+                    <div className="flex items-center gap-3 w-full">
+                      <div className="flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 border-gray-300">
+                        <button
+                          onClick={() => setItem(item - 1)}
+                          disabled={item === 1}
+                          className="flex items-center justify-center flex-shrink-0 h-full w-10 transition ease-in-out duration-300 focus:outline-none border-e border-gray-300 hover:text-gray-500"
+                        >
+                          <FiMinus />
+                        </button>
+                        <input
+                          type="number"
+                          min={1}
+                          max={9999}
+                          value={item === 0 ? "" : item}
+                          onChange={e => {
+                            if (e.target.value === "") { setItem(0); return; }
+                            let val = Number(e.target.value);
+                            if (isNaN(val)) val = 1;
+                            setItem(val);
+                          }}
+                          onBlur={e => {
+                            let val = Number(e.target.value);
+                            if (isNaN(val) || val < 1) val = 1;
+                            if (val > 9999) val = 9999;
+                            setItem(val);
+                          }}
+                          className="no-spinner font-semibold flex items-center justify-center h-full text-base text-heading w-14 sm:w-20 text-center outline-none"
+                          style={{ MozAppearance: 'textfield' }}
+                        />
+                        <button
+                          onClick={() => setItem(item + 1)}
+                          className="flex items-center justify-center h-full flex-shrink-0 w-10 transition ease-in-out duration-300 focus:outline-none border-s border-gray-300 hover:text-gray-500"
+                        >
+                          <FiPlus />
+                        </button>
                       </div>
-
-                      <div className="flex flex-col items-start gap-2 mt-4">
-                        <div className="flex items-center gap-1 text-sm text-gray-700">
-                          <span className="font-serif font-semibold">
-                            {t("common:category")}:
-                          </span>
-                          <ol className="flex items-center gap-1 font-serif">
-                            <li>
-                              <Link
-                                href={`/category/${category?.code}`}
-                                className="text-gray-600 hover:text-customRed underline"
-                                onClick={() => setIsLoading(!isLoading)}
-                              >
-                                {showingTranslateValue(category?.name)}
-                              </Link>
-                            </li>
-                            {subCategory?.code && (
-                              <>
-                                <li className="flex items-center">
-                                  <FiChevronLeft />
-                                </li>
-                                <li>
-                                  <Link
-                                    href={`/category/${category?.code}?sub=${subCategory?.code}`}
-                                    className="text-gray-600 hover:text-customRed underline"
-                                    onClick={() => setIsLoading(!isLoading)}
-                                  >
-                                    {showingTranslateValue(subCategory.name)}
-                                  </Link>
-                                </li>
-                              </>
-                            )}
-                          </ol>
-                        </div>
-
-                        <Tags product={product} />
-                      </div>
-
-                      {/* <div className="mt-8">
-                        <p className="text-xs sm:text-sm text-gray-700 font-medium">
-                          Call Us To Order By Mobile Number :{" "}
-                          <span className="text-customRed-dark font-semibold">
-                            +0044235234
-                          </span>{" "}
-                        </p>
-                      </div> */}
-
-                      {/* social share */}
-                      <div className="mt-2">
-                        {/* <h3 className="text-base font-semibold mb-1 font-serif">
-                          {t("common:shareYourSocial")}
-                        </h3> */}
-                        {/* <p className="font-sans text-sm text-gray-500">
-                          {t("common:shareYourSocialText")}
-                        </p> */}
-                        {/* <ul className="flex gap-2 mt-4">
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
-                            <FacebookShareButton
-                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
-                              quote=""
-                            >
-                              <FacebookIcon size={32} round />
-                            </FacebookShareButton>
-                          </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
-                            <TwitterShareButton
-                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
-                              quote=""
-                            >
-                              <TwitterIcon size={32} round />
-                            </TwitterShareButton>
-                          </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
-                            <RedditShareButton
-                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
-                              quote=""
-                            >
-                              <RedditIcon size={32} round />
-                            </RedditShareButton>
-                          </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
-                            <WhatsappShareButton
-                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
-                              quote=""
-                            >
-                              <WhatsappIcon size={32} round />
-                            </WhatsappShareButton>
-                          </li>
-                          <li className="flex items-center text-center border border-gray-100 rounded-full hover:bg-customRed transition ease-in-out duration-500">
-                            <LinkedinShareButton
-                              url={`https://shovrim-shuk-store.vercel.app/product/${router.query.slug}`}
-                              quote=""
-                            >
-                              <LinkedinIcon size={32} round />
-                            </LinkedinShareButton>
-                          </li>
-                        </ul> */}
-                      </div>
+                      <MainBT
+                        onClick={() => handleAddToCart(product)}
+                        className="flex-1 h-11"
+                      >
+                        {t("common:addToCart")}
+                      </MainBT>
                     </div>
                   </div>
 
-                  {/* shipping description card */}
-
-                  {/* <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12">
-                        <div className="mt-6 md:mt-0 lg:mt-0 bg-gray-50 border border-gray-100 p-4 lg:p-8 rounded-lg">
-                          <Card />
-                        </div>
-                      </div> */}
+                  {/* Category + Tags */}
+                  <div className="pt-4 flex flex-col gap-2">
+                    {(category?.name) && (
+                      <div className="flex items-start gap-1 text-sm text-gray-700 flex-wrap">
+                        <span className="font-serif font-semibold flex-shrink-0">
+                          {t("common:category")}:
+                        </span>
+                        <ol className="flex items-center gap-1 font-serif flex-wrap">
+                          <li>
+                            <Link
+                              href={`/category/${category?.slug ?? category?.code ?? category?._id}`}
+                              className="text-gray-600 hover:text-customRed underline"
+                              onClick={() => setIsLoading(!isLoading)}
+                            >
+                              {showingTranslateValue(category?.name)}
+                            </Link>
+                          </li>
+                          {subCategory?.name && (
+                            <>
+                              <li className="flex items-center text-gray-400">
+                                <FiChevronLeft />
+                              </li>
+                              <li>
+                                <Link
+                                  href={`/category/${category?.slug ?? category?.code ?? category?._id}?sub=${subCategory?.slug ?? subCategory?.code ?? subCategory?._id}`}
+                                  className="text-gray-600 hover:text-customRed underline"
+                                  onClick={() => setIsLoading(!isLoading)}
+                                >
+                                  {showingTranslateValue(subCategory.name)}
+                                </Link>
+                              </li>
+                            </>
+                          )}
+                        </ol>
+                      </div>
+                    )}
+                    <Tags product={product} />
+                  </div>
                 </div>
-                {/* </div> */}
-                {/* </div> */}
               </div>
+
+              <ProductRichDescription product={product} />
 
               {/* related products */}
               {relatedProducts?.length >= 2 && (
@@ -660,16 +553,14 @@ export const getServerSideProps = async (context) => {
 
   const [data, attributes] = await Promise.all([
     ProductServices.getShowingStoreProducts({
-      itemCode: slug,
-      subcategories: slug.slice(0, 8), // תת הקטגוריה של המוצר
-      limit: 13, // כדי שיהיה מקום ל־related
+      slug: slug,
       token,
     }),
     AttributeServices.getShowingAttributes({}),
   ]);
 
-  const product = data?.products?.find(p => p.ItemCode === slug);
-  const relatedProducts = data?.products?.filter(p => p.ItemCode !== slug);
+  const product = data?.products?.find(p => p.slug === slug) ?? data?.products?.[0];
+  const relatedProducts = data?.relatedProducts || data?.products?.filter(p => p.slug !== slug) || [];
 
   if (!product) {
     return { notFound: true };

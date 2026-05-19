@@ -54,7 +54,7 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
     const { categoryId, sub } = router.query;
 
     // נשתמש בקטגוריות מהשרת אם הן זמינות, אחרת מהקונטקסט
-    const categoriesData = serverCategories || categories;
+    const categoriesData = serverCategories?.length ? serverCategories : categories;
     
     // חישוב הטיטל
     const matchesCategory = (cat, id) =>
@@ -130,10 +130,7 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
         setIsLoadMore(true);
         try {
             const res = await ProductServices.getShowingStoreProducts({
-                category: categoryId,
-                subcategories: sub,
-                page: nextPage,
-                sapSkip: sapSkip,
+                category: sub || categoryId,
                 token: userInfo?.token,
             });
 
@@ -168,11 +165,7 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
                 // טען מוצרים ו-attributes במקביל
                 const [productsRes, attributesRes] = await Promise.all([
                     ProductServices.getShowingStoreProducts({
-                        category: categoryId,
-                        subcategories: sub,
-                        page: 1,
-                        limit: 36,
-                        sapSkip: 0,
+                        category: sub || categoryId,
                         token: userInfo?.token,
                     }),
                     AttributeServices.getShowingAttributes({})
@@ -263,7 +256,7 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
                                         >
                                             {productData.map((product, i) => (
                                                 <div
-                                                    key={product.ItemCode + i}
+                                                    key={`${product._id ?? product.ItemCode ?? product.slug ?? i}_${i}`}
                                                 >
                                                     <ProductCard
                                                         product={product}
