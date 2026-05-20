@@ -35,6 +35,19 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
   const currency = globalSetting?.default_currency || "₪";
   const inStock = product?.stock > 0 || product?.OnHand > 0;
 
+  const firstPriceEntry = Array.isArray(product?.prices) ? product.prices[0] : null;
+  const arraySalePrice = firstPriceEntry?.salePrice;
+  const arrayBasePrice = firstPriceEntry?.price;
+  const variantPrice = product?.isCombination ? product?.variants?.[0]?.price : undefined;
+  const variantOriginalPrice = product?.isCombination ? product?.variants?.[0]?.originalPrice : undefined;
+  const resolvedPrice = product?.hasSpecialPrice && product?.specialPrice
+    ? product.specialPrice.price
+    : variantPrice ?? product?.Price ?? (arraySalePrice && arraySalePrice > 0 ? arraySalePrice : arrayBasePrice) ?? product?.prices?.price;
+  const resolvedOriginalPrice = variantOriginalPrice
+    ?? product?.Price
+    ?? arrayBasePrice
+    ?? product?.prices?.originalPrice;
+
   // console.log('attributes in product cart',attributes)
 
   const handleAddItem = (p) => {
@@ -126,24 +139,13 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
 
           <div className="w-full overflow-hidden flex justify-between items-center gap-2 text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl mt-1.5">
             <div className="flex flex-col flex-1 min-w-0">
-              {/* <Price
+              <Price
                 card
                 product={product}
                 currency={currency}
-                price={
-                  product?.hasSpecialPrice && product?.specialPrice
-                    ? product.specialPrice.price
-                    : product?.isCombination
-                      ? product?.variants[0]?.price
-                      : product?.Price ?? product?.prices?.price
-                }
-                originalPrice={
-                  product?.isCombination
-                    ? product?.variants[0]?.originalPrice
-                    : product?.Price ?? product?.prices?.originalPrice
-                }
-              /> */}
-              <div className="text-xs font-bold text-gray-500 truncate -mt-0.5">{t("common:itemCode")}: {product?.barcode ?? product?.ItemCode}</div>
+                price={resolvedPrice}
+                originalPrice={resolvedOriginalPrice}
+              />
             </div>
 
             {inCart((product._id ?? product.ItemCode)) ? (

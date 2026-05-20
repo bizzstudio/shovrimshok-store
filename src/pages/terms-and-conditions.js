@@ -11,6 +11,16 @@ const TermAndConditions = () => {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
 
+  if (storeCustomizationSetting?.term_and_condition?.status === false) {
+    return (
+      <Layout title="תנאים והגבלות" description="עמוד תנאים והגבלות - שוברים שוק">
+        <div className="max-w-screen-2xl mx-auto py-20 px-4 text-center text-gray-500">
+          העמוד אינו זמין כרגע.
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout
       title="תנאים והגבלות"

@@ -454,7 +454,7 @@ const Checkout = () => {
                           </div> */}
 
                           {/* עלות ההזמנה */}
-                          {/* <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                          <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.sub_total
                             )}
@@ -466,10 +466,10 @@ const Checkout = () => {
                                 </>
                                 : <Calculating />}
                             </span>
-                          </div> */}
+                          </div>
 
                           {/* מחיר משלוח */}
-                          {/* <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                          <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.shipping_cost
                             )}
@@ -480,10 +480,11 @@ const Checkout = () => {
                             <span className="ml-auto flex-shrink-0 text-customRed font-bold">
                               {typeof customCartTotal === 'number' && <>({shippingPercentageIncrease?.toFixed(2)}%)</>}
                             </span>
-                          </div> */}
+                          </div>
 
                           {/* הנחה */}
-                          {/* <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
+                          {discountAmount > 0 && (
+                          <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0 gap-1.5">
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.discount
                             )}
@@ -491,10 +492,11 @@ const Checkout = () => {
                               {currency}
                               {discountAmount?.toFixed(2)}
                             </span>
-                          </div> */}
+                          </div>
+                          )}
 
                           {/* סה"כ */}
-                          {/* <div className="border-t mt-4">
+                          <div className="border-t mt-4">
                             <div className="flex items-center font-bold font-serif justify-between pt-5 text-sm uppercase">
                               {showingTranslateValue(
                                 storeCustomizationSetting?.checkout?.total_cost
@@ -508,7 +510,7 @@ const Checkout = () => {
                                   : <Calculating />}
                               </span>
                             </div>
-                          </div> */}
+                          </div>
                         </div>
                       </div>
 

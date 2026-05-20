@@ -111,17 +111,76 @@ const ContactUs = () => {
           </div>
         </div>
 
+        {/* Contact info boxes from admin (email/phone/address) */}
+        {(() => {
+          const cu = storeCustomizationSetting?.contact_us || {};
+          const showEmailBox = cu.email_box_status !== false && (cu.email_box_title || cu.email_box_email || cu.email_box_text);
+          const showCallBox = cu.call_box_status !== false && (cu.call_box_title || cu.call_box_phone || cu.call_box_text);
+          const showAddressBox = cu.address_box_status !== false && (cu.address_box_title || cu.address_box_address_one || cu.address_box_address_two || cu.address_box_address_three);
+          const anyBox = showEmailBox || showCallBox || showAddressBox;
+          if (!anyBox) return null;
+          return (
+            <div className="w-full px-4 sm:px-6 xl:px-56 md:px-20 sm:mb-16 mb-10">
+              <div className={`grid gap-4 sm:gap-8 ${[showEmailBox, showCallBox, showAddressBox].filter(Boolean).length === 3 ? "md:grid-cols-3" : [showEmailBox, showCallBox, showAddressBox].filter(Boolean).length === 2 ? "md:grid-cols-2" : "grid-cols-1"}`}>
+                {showEmailBox && (
+                  <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+                    <h3 className="text-xl font-bold text-customBlue mb-2">
+                      {showingTranslateValue(cu.email_box_title)}
+                    </h3>
+                    {cu.email_box_email && (
+                      <a href={`mailto:${showingTranslateValue(cu.email_box_email)}`} className="text-customRed underline block mb-1">
+                        {showingTranslateValue(cu.email_box_email)}
+                      </a>
+                    )}
+                    <p className="text-gray-600 text-sm">{showingTranslateValue(cu.email_box_text)}</p>
+                  </div>
+                )}
+                {showCallBox && (
+                  <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+                    <h3 className="text-xl font-bold text-customBlue mb-2">
+                      {showingTranslateValue(cu.call_box_title)}
+                    </h3>
+                    {cu.call_box_phone && (
+                      <a href={`tel:${showingTranslateValue(cu.call_box_phone)}`} className="text-customRed underline block mb-1">
+                        {showingTranslateValue(cu.call_box_phone)}
+                      </a>
+                    )}
+                    <p className="text-gray-600 text-sm">{showingTranslateValue(cu.call_box_text)}</p>
+                  </div>
+                )}
+                {showAddressBox && (
+                  <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+                    <h3 className="text-xl font-bold text-customBlue mb-2">
+                      {showingTranslateValue(cu.address_box_title)}
+                    </h3>
+                    <p className="text-gray-600 text-sm">{showingTranslateValue(cu.address_box_address_one)}</p>
+                    <p className="text-gray-600 text-sm">{showingTranslateValue(cu.address_box_address_two)}</p>
+                    <p className="text-gray-600 text-sm">{showingTranslateValue(cu.address_box_address_three)}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Main Content - Centered */}
+        {storeCustomizationSetting?.contact_us?.form_status !== false && (
         <div className="w-full bg-gray-100 sm:pb-[70px] sm:pt-14 pt-7 pb-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center sm:mb-9 mb-5">
               {/* <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-customRed mb-6">
               {t("common:contact-main-title")}
             </h1> */}
-              <ShapiraTitle text={t("common:contact-main-title")} height={70} className="!mb-5" />
-              {/* <p className="sm:text-3xl text-xl text-customBlue font-bold">
-                {t("common:contact-main-subtitle")}
-              </p> */}
+              <ShapiraTitle
+                text={showingTranslateValue(storeCustomizationSetting?.contact_us?.form_title) || t("common:contact-main-title")}
+                height={70}
+                className="!mb-5"
+              />
+              {storeCustomizationSetting?.contact_us?.form_description && (
+                <p className="sm:text-xl text-base text-customBlue max-w-3xl mx-auto whitespace-pre-line">
+                  {showingTranslateValue(storeCustomizationSetting?.contact_us?.form_description)}
+                </p>
+              )}
             </div>
 
             {/* Contact Form */}
@@ -188,6 +247,7 @@ const ContactUs = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
     </Layout>
   );

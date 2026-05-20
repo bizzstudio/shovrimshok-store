@@ -24,6 +24,19 @@ const Faq = () => {
     { questionKey: "faq_eight", answerKey: "description_eight" },
   ];
 
+  if (storeCustomizationSetting?.faq?.page_status === false) {
+    return (
+      <Layout title="שאלות ותשובות" description="עמוד שאלות ותשובות - שוברים שוק">
+        <div className="max-w-screen-2xl mx-auto py-20 px-4 text-center text-gray-500">
+          העמוד אינו זמין כרגע.
+        </div>
+      </Layout>
+    );
+  }
+
+  const showLeftCol = storeCustomizationSetting?.faq?.leftcol_status !== false;
+  const showRightCol = storeCustomizationSetting?.faq?.rightcol_status !== false;
+
   return (
     <Layout title="שאלות ותשובות" description="עמוד שאלות ותשובות - שוברים שוק">
       <PageHeader
@@ -32,7 +45,8 @@ const Faq = () => {
       />
       <div className="bg-white">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 py-10 lg:py-12">
-          <div className="grid gap-4 lg:mb-8 items-center md:grid-cols-2 xl:grid-cols-2">
+          <div className={`grid gap-4 lg:mb-8 items-center ${showLeftCol && showRightCol ? "md:grid-cols-2 xl:grid-cols-2" : "grid-cols-1"}`}>
+            {showLeftCol && (
             <div className="pr-16">
               <Image
                 width={720}
@@ -41,6 +55,8 @@ const Faq = () => {
                 alt="logo"
               />
             </div>
+            )}
+            {showRightCol && (
             <div>
               {faqItems.map(({ questionKey, answerKey }, index) => {
                 const question = showingTranslateValue(storeCustomizationSetting?.faq?.[questionKey]);
@@ -70,6 +86,7 @@ const Faq = () => {
                 );
               })}
             </div>
+            )}
           </div>
         </div>
       </div>

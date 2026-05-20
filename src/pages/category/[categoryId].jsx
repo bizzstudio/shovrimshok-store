@@ -26,6 +26,21 @@ const pickName = (val, fallback = "") => {
     return fallback;
 };
 
+// מתאים קטגוריה לפי _id / slug / code
+const matchesCategory = (cat, id) =>
+    String(cat?._id) === id || cat?.slug === id || cat?.code === id;
+
+// חיפוש רקורסיבי בעץ הקטגוריות (לפעמים העץ עטוף ב-root עם children)
+const findCategoryRecursive = (cats, id) => {
+    if (!cats || !id) return null;
+    for (const cat of cats) {
+        if (matchesCategory(cat, id)) return cat;
+        const inChildren = findCategoryRecursive(cat?.children, id);
+        if (inChildren) return inChildren;
+    }
+    return null;
+};
+
 // import categories titles
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import { UserContext } from "@context/UserContext";
@@ -56,19 +71,21 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
     // נשתמש בקטגוריות מהשרת אם הן זמינות, אחרת מהקונטקסט
     const categoriesData = serverCategories?.length ? serverCategories : categories;
     
-    // חישוב הטיטל
-    const matchesCategory = (cat, id) =>
-        String(cat?._id) === id || cat?.slug === id || cat?.code === id;
-    const foundParent = categoriesData?.find((cat) => matchesCategory(cat, categoryId));
+    // חישוב הטיטל - חיפוש רקורסיבי כי העץ יכול להיות מקונן
+    const foundParent = findCategoryRecursive(categoriesData, categoryId);
     const parentName = pickName(foundParent?.name, categoryId);
+    const parentDescription = pickName(foundParent?.description, "");
 
     let childName = "";
+    let childDescription = "";
     if (sub && foundParent?.children?.length > 0) {
-        const foundChild = foundParent.children.find((child) => matchesCategory(child, sub));
+        const foundChild = findCategoryRecursive(foundParent.children, sub);
         childName = pickName(foundChild?.name, sub);
+        childDescription = pickName(foundChild?.description, "");
     }
 
     const layoutTitle = childName ? `${parentName} / ${childName}` : parentName;
+    const categoryDescriptionText = childName ? childDescription : parentDescription;
     
     // useFilter עדיין יכול לעבוד: למשל אם צריך למיין מוצרים
     const { productData, setSortedField, sortedField } = useFilter(allProducts);
@@ -79,15 +96,8 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
     // הגדרות לוגיקה לתמונה - מיידי!
     useEffect(() => {
         if (!parentName) return;
-        let catName = parentName;
-
-        // אם יש childName ולא מצאנו תמונה מיוחדת, נוסיף " / childName" בכותרת
-        if (childName) {
-            catName += " / " + childName;
-        }
-
-        setFallbackTitle(catName);
-    }, [parentName, childName]);
+        setFallbackTitle(parentName);
+    }, [parentName]);
 
     // נוסיף ref לאלמנט האחרון
     const observerTarget = useRef(null);
@@ -205,9 +215,20 @@ const CategoryPage = ({ categories: serverCategories, categoryTitle, categoryDes
                             <div className="w-full">
                                 {/* הכותרת מוצגת מיידי! */}
                                 {fallbackTitle && (
-                                    <div className="flex justify-center items-center mb-3">
+                                    <div className="flex flex-col justify-center items-center mb-3">
                                         <ShapiraTitle text={fallbackTitle} height={70} key={fallbackTitle} />
+                                        {childName && (
+                                            <h2 className="text-center text-red-600 font-popper font-light text-xl md:text-2xl mt-2">
+                                                {childName}
+                                            </h2>
+                                        )}
                                     </div>
+                                )}
+
+                                {categoryDescriptionText && (
+                                    <p className="text-center text-gray-600 text-sm md:text-base leading-7 max-w-3xl mx-auto mb-4 px-3">
+                                        {categoryDescriptionText}
+                                    </p>
                                 )}
 
                                 {/* הוספת רכיב המיון */}
@@ -294,16 +315,14 @@ export async function getServerSideProps(context) {
     try {
         // טעינת קטגוריות מהשרת
         const categories = await CategoryServices.getShowingCategory();
-        
-        // חישוב הטיטל בשרת
-        const matchesCategory = (cat, id) =>
-            String(cat?._id) === id || cat?.slug === id || cat?.code === id;
-        const foundParent = categories?.find((cat) => matchesCategory(cat, categoryId));
+
+        // חישוב הטיטל בשרת - חיפוש רקורסיבי בעץ
+        const foundParent = findCategoryRecursive(categories, categoryId);
         const parentName = pickName(foundParent?.name, categoryId);
 
         let childName = "";
         if (sub && foundParent?.children?.length > 0) {
-            const foundChild = foundParent.children.find((child) => matchesCategory(child, sub));
+            const foundChild = findCategoryRecursive(foundParent.children, sub);
             childName = pickName(foundChild?.name, sub);
         }
         

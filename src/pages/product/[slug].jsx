@@ -156,8 +156,12 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     // } else {
     setStock(product?.stock ?? 0);
     setImg(product?.image?.[0]);
-    const price = getNumber(product?.Price ?? product?.prices?.price ?? product?.LastPurPrc ?? 0);
-    const originalPrice = getNumber(product?.Price ?? product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
+    const firstPriceEntry = Array.isArray(product?.prices) ? product.prices[0] : null;
+    const arraySalePrice = firstPriceEntry?.salePrice;
+    const arrayBasePrice = firstPriceEntry?.price;
+    const arrayResolvedPrice = arraySalePrice && arraySalePrice > 0 ? arraySalePrice : arrayBasePrice;
+    const price = getNumber(product?.Price ?? arrayResolvedPrice ?? product?.prices?.price ?? product?.LastPurPrc ?? 0);
+    const originalPrice = getNumber(product?.Price ?? arrayBasePrice ?? product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
     const discountPercentage = getNumber(
       ((originalPrice - price) / originalPrice) * 100
     );

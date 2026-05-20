@@ -47,8 +47,15 @@ const Invoice = ({ data, printRef, globalSetting, currency, docType = "order" })
   // console.log('invoice data',data)
   const { storeCustomizationSetting } = useGetSetting();
 
-  const { getNumberTwo } = useUtilsFunction();
+  const { getNumberTwo, showingTranslateValue } = useUtilsFunction();
   const { t } = useTranslation();
+
+  const invoiceMessageFirst = showingTranslateValue(
+    storeCustomizationSetting?.dashboard?.invoice_message_first
+  );
+  const invoiceMessageLast = showingTranslateValue(
+    storeCustomizationSetting?.dashboard?.invoice_message_last
+  );
 
   let currentLang = Cookies.get('_lang');
 
@@ -178,6 +185,11 @@ const Invoice = ({ data, printRef, globalSetting, currency, docType = "order" })
             </span>
           </div>
         </div>
+        {invoiceMessageFirst && (
+          <div className="text-xs text-gray-600 mt-3 px-1 print:mt-2 print:text-xs whitespace-pre-line">
+            {invoiceMessageFirst}
+          </div>
+        )}
       </div>
       <div className="px-6 mb-7 print:my-2 print:px-0">
         <div className="-my-1 overflow-x-auto">
@@ -238,6 +250,11 @@ const Invoice = ({ data, printRef, globalSetting, currency, docType = "order" })
               </span>
             </div>
           </div>
+        </div>
+      )}
+      {invoiceMessageLast && (
+        <div className="bg-white px-4 py-3 text-xs text-gray-600 text-center print:px-2 print:py-2 whitespace-pre-line">
+          {invoiceMessageLast}
         </div>
       )}
     </div>

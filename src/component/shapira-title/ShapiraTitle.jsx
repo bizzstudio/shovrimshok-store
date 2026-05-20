@@ -54,7 +54,7 @@ export default function ShapiraTitle({
 
             {/* פס עליון */}
             <div
-                className="bg-[#f56416] rounded-full self-start animate-slide-in-left"
+                className="bg-[#005db5] rounded-full self-start animate-slide-in-left"
                 style={{
                     width: "min(200px, 50%)",
                     height: currentHeight * 0.12,
@@ -75,7 +75,7 @@ export default function ShapiraTitle({
 
             {/* פס תחתון */}
             <div
-                className="bg-[#f56416] rounded-full self-start ms-auto animate-slide-in-right"
+                className="bg-[#005db5] rounded-full self-start ms-auto animate-slide-in-right"
                 style={{
                     width: "min(200px, 40%)",
                     height: currentHeight * 0.12,

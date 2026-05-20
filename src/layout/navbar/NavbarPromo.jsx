@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 // Internal import
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import useGetSetting from "@hooks/useGetSetting";
 import useAsync from "@hooks/useAsync";
 import CategoryServices from "@services/CategoryServices";
 import Loading from "@component/preloader/Loading";
@@ -34,6 +35,7 @@ const NavbarPromo = () => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
 
   const { showingTranslateValue } = useUtilsFunction();
+  const { storeCustomizationSetting } = useGetSetting();
 
   const { data, loading, error } = useAsync(() => CategoryServices.getShowingCategory());
   const { state: { userInfo } } = useContext(UserContext);
@@ -138,33 +140,66 @@ const NavbarPromo = () => {
               className="flex items-center w-full h-full bg-gray-100"
             >
               {/* categories list */}
-              <div className="flex-1 flex items-center flex-wrap gap-1 px-4 h-full">
+              {storeCustomizationSetting?.navbar?.categories_menu_status !== false && (
+              <div className="flex-1 min-w-0 flex items-center justify-center flex-nowrap gap-0 px-2 h-full">
                 {!loading && !error && data[0]?.children?.map((category, index) => {
                   const categoryId = category.slug || category._id;
                   const title = showingTranslateValue(category?.name);
                   const hasChildren = category.children?.length > 0;
                   const isActive = selectedCategory === index;
 
+                  const renderIcon = () => {
+                    if (!category.icon && !category.coloredIcon) return null;
+                    return (
+                      <span className="relative w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 flex-shrink-0 inline-block">
+                        {category.icon && (
+                          <img
+                            src={category.icon}
+                            alt=""
+                            className={`absolute inset-0 w-full h-full object-contain transition-opacity ${
+                              isActive && category.coloredIcon
+                                ? "opacity-0"
+                                : "opacity-100 group-hover:opacity-0"
+                            }`}
+                          />
+                        )}
+                        {category.coloredIcon && (
+                          <img
+                            src={category.coloredIcon}
+                            alt=""
+                            className={`absolute inset-0 w-full h-full object-contain transition-opacity ${
+                              isActive
+                                ? "opacity-100"
+                                : "opacity-0 group-hover:opacity-100"
+                            }`}
+                          />
+                        )}
+                      </span>
+                    );
+                  };
+
                   if (!hasChildren) {
                     return (
                       <Link
                         key={category._id}
                         href={`/category/${categoryId}`}
-                        className={`flex-shrink-0 font-serif px-3 py-3 text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
+                        className={`group min-w-0 font-serif inline-flex items-center gap-1 px-1 lg:px-1.5 xl:px-2 2xl:px-3 py-3 text-xs lg:text-sm xl:text-base 2xl:text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
                       >
+                        {renderIcon()}
                         {title}
                       </Link>
                     );
                   }
 
                   return (
-                    <div key={category._id} className="group relative flex-shrink-0 h-full flex items-center">
+                    <div key={category._id} className="group relative min-w-0 h-full flex items-center">
                       <Link
                         href={`/category/${categoryId}`}
-                        className={`font-serif inline-flex items-center gap-1 px-3 py-3 text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
+                        className={`font-serif inline-flex items-center gap-1 px-1 lg:px-1.5 xl:px-2 2xl:px-3 py-3 text-xs lg:text-sm xl:text-base 2xl:text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
                       >
+                        {renderIcon()}
                         {title}
-                        <ChevronDownIcon className="h-3 w-3" aria-hidden="true" />
+                        <ChevronDownIcon className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
                       </Link>
 
                       {/* hover dropdown */}
@@ -186,6 +221,7 @@ const NavbarPromo = () => {
                   );
                 })}
               </div>
+              )}
 
               {/* pages */}
               {/* <Popover className="relative font-serif">

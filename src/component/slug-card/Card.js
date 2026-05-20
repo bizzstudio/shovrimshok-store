@@ -17,6 +17,10 @@ const Card = () => {
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
 
+  if (storeCustomizationSetting?.slug?.right_box_status === false) {
+    return null;
+  }
+
   return (
     <ul className="my-0">
       <li className="flex items-center py-3">
@@ -35,7 +39,7 @@ const Card = () => {
         </span>
         <p className="font-sans leading-5 text-sm text-gray-500">
           {showingTranslateValue(
-            storeCustomizationSetting?.slug?.card_description_one
+            storeCustomizationSetting?.slug?.card_description_four
           )}
         </p>
       </li>

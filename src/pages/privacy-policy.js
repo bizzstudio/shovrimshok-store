@@ -10,7 +10,16 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 const PrivacyPolicy = () => {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
-  // console.log("data", storeCustomizationSetting);
+
+  if (storeCustomizationSetting?.privacy_policy?.status === false) {
+    return (
+      <Layout title="מדיניות פרטיות" description="עמוד מדיניות פרטיות - שוברים שוק">
+        <div className="max-w-screen-2xl mx-auto py-20 px-4 text-center text-gray-500">
+          העמוד אינו זמין כרגע.
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout title="מדיניות פרטיות" description="עמוד מדיניות פרטיות - שוברים שוק">

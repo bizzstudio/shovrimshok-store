@@ -16,20 +16,28 @@ const AboutUs = () => {
 
   // console.log('storeCustomizationSetting :>> ', storeCustomizationSetting);
 
+  const showHeader = storeCustomizationSetting?.about_us?.header_status !== false;
+  const showLeft = storeCustomizationSetting?.about_us?.content_left_status !== false;
+  const showRight = storeCustomizationSetting?.about_us?.content_right_status !== false;
+  const showMiddle = storeCustomizationSetting?.about_us?.content_middle_status !== false;
+
   return (
     <Layout title="אודות" description="אודות שוברים שוק">
       {/* כותרת העמוד */}
+      {showHeader && (
       <PageHeader
         headerBg={storeCustomizationSetting?.about_us?.header_bg}
         title={showingTranslateValue(
           storeCustomizationSetting?.about_us?.title
         )}
       />
+      )}
 
       <div className="bg-white">
         {/* חלק עליון - מידע על החברה */}
         <div className="max-w-screen-2xl mx-auto lg:pt-20 pb-1 py-10 px-4 sm:px-10">
-          <div className="grid grid-flow-row lg:grid-cols-2 gap-4 lg:gap-16 items-center">
+          <div className={`grid grid-flow-row gap-4 lg:gap-16 items-center ${showLeft && showRight ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
+            {showLeft && (
             <div className="">
               <h3 className="text-xl lg:text-3xl mb-2 font-serif font-semibold">
                 {/* {t("common:about-section-title")} */}
@@ -115,8 +123,10 @@ const AboutUs = () => {
                 </div>
               </div>
             </div>
+            )}
 
             {/* תמונה ימנית */}
+            {showRight && (
             <div className="mt-10 lg:mt-0 h-full">
               <Image
                 width={920}
@@ -129,6 +139,7 @@ const AboutUs = () => {
                 className="object-cover w-full h-full rounded-lg"
               />
             </div>
+            )}
           </div>
           {/* טקסט תיאורי נוסף */}
           <div className="mt-10 lg:mt-16 text-base opacity-90 leading-7">
@@ -157,6 +168,7 @@ const AboutUs = () => {
             </p>
           </div>
           {/* תמונת באנר גדולה */}
+          {showMiddle && (
           <div className="mt-10 lg:mt-12 flex flex-col sm:grid gap-4">
             <Image
               width={1920}
@@ -169,6 +181,7 @@ const AboutUs = () => {
               className="block rounded-lg max-h-[570px] object-cover"
             />
           </div>
+          )}
         </div>
         {/* חלק הצוות - תמונות וקטעי מידע על המייסדים */}
         {storeCustomizationSetting?.about_us?.founder_status && (

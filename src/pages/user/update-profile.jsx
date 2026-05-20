@@ -32,6 +32,10 @@ const UpdateProfile = () => {
   const { showingTranslateValue } = useUtilsFunction();
   const { t } = useTranslation();
 
+  // Helper: use admin-provided label when present, fall back to common translation
+  const dashLabel = (key, fallbackKey) =>
+    showingTranslateValue(storeCustomizationSetting?.dashboard?.[key]) || t(fallbackKey);
+
   const {
     register,
     handleSubmit,
@@ -191,10 +195,10 @@ const UpdateProfile = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
-                          label={t("common:cardName")}
+                          label={dashLabel("full_name", "common:cardName")}
                           name="CardName"
                           type="text"
-                          placeholder={t("common:cardName")}
+                          placeholder={dashLabel("full_name", "common:cardName")}
                         />
                         <Error errorName={errors.CardName} />
                       </div>
@@ -215,10 +219,10 @@ const UpdateProfile = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
-                          label={t("common:email")}
+                          label={dashLabel("user_email", "common:email")}
                           name="EmailAddress"
                           type="email"
-                          placeholder={t("common:email")}
+                          placeholder={dashLabel("user_email", "common:email")}
                         />
                         <Error errorName={errors.EmailAddress} />
                       </div>
@@ -227,10 +231,10 @@ const UpdateProfile = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
-                          label={t("common:phone1")}
+                          label={dashLabel("user_phone", "common:phone1")}
                           name="Phone1"
                           type="text"
-                          placeholder={t("common:phone1")}
+                          placeholder={dashLabel("user_phone", "common:phone1")}
                         />
                         <Error errorName={errors.Phone1} />
                       </div>
@@ -259,10 +263,10 @@ const UpdateProfile = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
-                          label={t("common:address")}
+                          label={dashLabel("address", "common:address")}
                           name="BillToAddress"
                           type="text"
-                          placeholder={t("common:address")}
+                          placeholder={dashLabel("address", "common:address")}
                           // disabled={true}
                         />
                         <Error errorName={errors.BillToAddress} />
