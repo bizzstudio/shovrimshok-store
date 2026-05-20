@@ -29,10 +29,14 @@ const ProductServices = {
   },
 
   // חיפוש לפי כותרת — כעת ב-/products/store?title=...
-  getProductsByTitle: async ({ title, page = 1, limit = 36 } = {}) => {
+  getProductsByTitle: async ({ title, page = 1, limit = 36, token = "" } = {}) => {
     const encodedTitle = encodeURIComponent(title || "");
+    const config = token
+      ? { headers: { authorization: `Bearer ${token}` } }
+      : undefined;
     return requests.get(
-      `/products/store?title=${encodedTitle}&page=${page}&limit=${limit}`
+      `/products/store?title=${encodedTitle}&page=${page}&limit=${limit}`,
+      config
     );
   },
 
