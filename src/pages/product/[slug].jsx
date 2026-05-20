@@ -314,7 +314,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
           title={product?.ItemName ?? showingTranslateValue(product?.title)}
           description={showingTranslateValue(product.description)}
         >
-          <div className="px-0 py-10 lg:py-10">
+          <div className="px-0 py-10 lg:py-10 bg-white">
             <div className="mx-auto px-3 lg:px-10 max-w-screen-2xl">
               <div className="flex items-center pb-4">
                 <ol className="flex items-center w-full overflow-hidden font-serif">
@@ -364,7 +364,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                 {/* Left: Image section */}
                 <div className="lg:w-5/12 flex flex-col items-center justify-start flex-shrink-0">
                   {product.image?.[0] ? (
-                    <div className="w-full h-[300px] sm:h-[380px] flex items-center justify-center select-none bg-gray-50 rounded-lg overflow-hidden">
+                    <div className="w-full h-[300px] sm:h-[380px] flex items-center justify-center select-none bg-white rounded-lg overflow-hidden">
                       <Image
                         src={img || product.image?.[0]}
                         alt="product"
@@ -375,7 +375,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                       />
                     </div>
                   ) : (
-                    <div className="w-full h-[300px] sm:h-[380px] flex items-center justify-center select-none bg-gray-50 rounded-lg overflow-hidden">
+                    <div className="w-full h-[300px] sm:h-[380px] flex items-center justify-center select-none bg-white rounded-lg overflow-hidden">
                       <Image
                         src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
                         width={650}

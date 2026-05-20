@@ -477,11 +477,11 @@ const Footer = () => {
           <span>
             {/* האתר נבנה על ידי */}
             <Link
-              href="https://www.abudi-group.co.il"
+              href="https://bizzstudio.co.il/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-customRed"
-            >עבודי - שיווק ופרסום</Link>
+            >ביז סטודיו פתרונות תוכנה</Link>
             {/* בית תוכנה ובניית אתרים בע"מ */}
           </span>
         </div>
