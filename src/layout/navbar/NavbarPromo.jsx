@@ -148,36 +148,6 @@ const NavbarPromo = () => {
                   const hasChildren = category.children?.length > 0;
                   const isActive = selectedCategory === index;
 
-                  const renderIcon = () => {
-                    if (!category.icon && !category.coloredIcon) return null;
-                    return (
-                      <span className="relative w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 flex-shrink-0 inline-block">
-                        {category.icon && (
-                          <img
-                            src={category.icon}
-                            alt=""
-                            className={`absolute inset-0 w-full h-full object-contain transition-opacity ${
-                              isActive && category.coloredIcon
-                                ? "opacity-0"
-                                : "opacity-100 group-hover:opacity-0"
-                            }`}
-                          />
-                        )}
-                        {category.coloredIcon && (
-                          <img
-                            src={category.coloredIcon}
-                            alt=""
-                            className={`absolute inset-0 w-full h-full object-contain transition-opacity ${
-                              isActive
-                                ? "opacity-100"
-                                : "opacity-0 group-hover:opacity-100"
-                            }`}
-                          />
-                        )}
-                      </span>
-                    );
-                  };
-
                   if (!hasChildren) {
                     return (
                       <Link
@@ -185,7 +155,6 @@ const NavbarPromo = () => {
                         href={`/category/${categoryId}`}
                         className={`group min-w-0 font-serif inline-flex items-center gap-1 px-1 lg:px-1.5 xl:px-2 2xl:px-3 py-3 text-xs lg:text-sm xl:text-base 2xl:text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
                       >
-                        {renderIcon()}
                         {title}
                       </Link>
                     );
@@ -197,7 +166,6 @@ const NavbarPromo = () => {
                         href={`/category/${categoryId}`}
                         className={`font-serif inline-flex items-center gap-1 px-1 lg:px-1.5 xl:px-2 2xl:px-3 py-3 text-xs lg:text-sm xl:text-base 2xl:text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
                       >
-                        {renderIcon()}
                         {title}
                         <ChevronDownIcon className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
                       </Link>

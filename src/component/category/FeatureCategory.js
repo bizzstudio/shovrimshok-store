@@ -12,8 +12,10 @@ import useTranslation from "next-translate/useTranslation";
 // Internal import
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import { SidebarContext } from "@context/SidebarContext";
-import getCategoryIconByCode from "@utils/getCategoryIconByCode";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+
+const PLACEHOLDER_ICON =
+  "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png";
 
 const FeatureCategory = () => {
   const { categories } = useContext(SidebarContext);
@@ -28,7 +30,9 @@ const FeatureCategory = () => {
       ) : (
         <ul className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {(categories[0]?.children || categories)?.map((category, i) => {
-            const icon = getCategoryIconByCode(category?.code);
+            const icon = {
+              color: category?.coloredIcon || category?.icon || PLACEHOLDER_ICON,
+            };
             const title = showingTranslateValue(category?.name);
             const catId = category?.slug || category?.code || category?._id;
             return (
@@ -45,18 +49,11 @@ const FeatureCategory = () => {
                     <div className="p-2 flex items-center gap-2 group">
                       <div className="relative w-[55px] h-[55px]">
                         <Image
-                          src={icon.bw}
-                          width={55}
-                          height={55}
-                          alt="Category BW"
-                          className="absolute top-0 left-0 object-contain transition-opacity duration-200 sm:group-hover:opacity-0 sm:block hidden filter-custom-blue"
-                        />
-                        <Image
                           src={icon.color}
                           width={55}
                           height={55}
-                          alt="Category Color"
-                          className="absolute top-0 left-0 object-contain opacity-100 transition-opacity duration-200 sm:opacity-0 sm:group-hover:opacity-100"
+                          alt={title}
+                          className="object-contain"
                         />
                       </div>
                     </div>

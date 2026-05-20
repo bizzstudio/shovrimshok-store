@@ -71,6 +71,15 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   const inStock = product?.stock > 0 || product?.OnHand > 0;
 
+  // Extract stock count from extraData.upgrades' "כמות במלאי" group (Shtibay-style data)
+  const stockUpgradeGroup = Array.isArray(product?.extraData?.upgrades)
+    ? product.extraData.upgrades.find((g) => g?.topic === "כמות במלאי")
+    : null;
+  const upgradeStock = stockUpgradeGroup?.options?.reduce(
+    (sum, opt) => sum + (Number(opt?.stock) || 0),
+    0
+  );
+
   // עדכון מחיר המוצר על סמך המבצע שלו
   useEffect(() => {
     const offerName = getOfferNames(offers, product);
@@ -410,13 +419,16 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   </div>
 
                   {/* Price */}
-                  <div className="py-4 border-b border-gray-100">
+                  <div className="py-4 border-b border-gray-100 flex items-center gap-3 flex-wrap">
                     <Price
                       price={price}
                       product={product}
                       currency={currency}
                       originalPrice={originalPrice}
                     />
+                    {stockUpgradeGroup && (
+                      <Stock stock={upgradeStock ?? 0} />
+                    )}
                   </div>
 
                   {/* Description */}

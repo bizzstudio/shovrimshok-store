@@ -98,8 +98,11 @@ const MainCarousel = () => {
     },
   ].filter(item => item.image);
 
+  // slider_width_status: true = full width, false (ברירת מחדל) = boxed within max-w-screen-2xl
+  const fullWidth = storeCustomizationSetting?.home?.slider_width_status === true;
+
   return (
-    <div className="w-full aspect-[1578/246]">
+    <div className={`${fullWidth ? "w-full" : "w-full max-w-screen-2xl mx-auto"} aspect-[1578/246]`}>
       <Swiper
         spaceBetween={30}
         centeredSlides={true}

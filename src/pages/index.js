@@ -19,6 +19,7 @@ import ProductServices from "@services/ProductServices";
 import CategoryServices from "@services/CategoryServices";
 import ProductCard from "@component/product/ProductCard";
 import MainCarousel from "@component/carousel/MainCarousel";
+import FeatureCategory from "@component/category/FeatureCategory";
 import AttributeServices from "@services/AttributeServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import CMSkeleton from "@component/preloader/CMSkeleton";
@@ -28,6 +29,7 @@ import logoGif from "public/shapira_loading_gif.gif";
 import Image from "next/image";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import MainBT from "@component/button/MainBT";
+import CouponBanner from "@component/coupon/CouponBanner";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 const Home = ({ popularProducts, discountProducts, attributes }) => {
@@ -134,6 +136,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
         ) : (
           <Layout>
             <div className="min-h-screen">
+              <CouponBanner />
               <div className="bg-white">
                 <div className="mx-auto py-6 max-w-screen-2x1 px-3 sm:px-7">
                   <div className="w-full flex gap-8">
@@ -180,39 +183,42 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 </div>
               </div>
 
-              {/* logos_carousel */}
-              {storeCustomizationSetting?.home?.logos_carousel_status && (
-                <div className="bg-white lg:py-10 py-3 select-none">
-                  <div className="mx-auto px-3 sm:px-24">
-                    <Swiper
-                      modules={[Autoplay]}
-                      spaceBetween={30}
-                      slidesPerView="auto"
-                      loop={true}
-                      speed={4000}
-                      autoplay={{
-                        delay: 0,
-                        disableOnInteraction: false,
-                        pauseOnMouseEnter: true,
-                        waitForTransition: false,
-                      }}
-                      allowTouchMove={false}
-                      className="flex items-center"
-                    >
-                      {storeCustomizationSetting?.home?.logos_carousel?.map((logo, index) => (
-                        <SwiperSlide
-                          key={index}
-                          className="w-auto flex items-center justify-center"
-                          style={{ width: "150px" }}
-                        >
-                          <img
-                            src={logo}
-                            alt={`Logo ${index}`}
-                            className="h-[70px] object-contain transition duration-300 select-none"
-                          />
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
+              {/* feature category's */}
+              {storeCustomizationSetting?.home?.featured_status && (
+                <div className="bg-gray-100 lg:py-16 sm:py-11 py-3">
+                  <div className="mx-auto max-w-screen-2x1 px-3 sm:px-10">
+                    {storeCustomizationSetting?.home?.feature_title?.he &&
+                      <div className="mb-10 flex justify-center">
+                        <div className="text-center w-full lg:w-2/5">
+                          {storeCustomizationSetting?.home?.feature_title?.he &&
+                            <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
+                              <CMSkeleton
+                                count={1}
+                                height={30}
+                                // error={error}
+                                loading={loading}
+                                data={storeCustomizationSetting?.home?.feature_title}
+                              />
+                            </h2>
+                          }
+                          {storeCustomizationSetting?.home?.feature_description?.he &&
+                            <div className="text-base font-sans text-gray-600 leading-6">
+                              <CMSkeleton
+                                count={4}
+                                height={10}
+                                error={error}
+                                loading={loading}
+                                data={
+                                  storeCustomizationSetting?.home?.feature_description
+                                }
+                              />
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+
+                    <FeatureCategory />
                   </div>
                 </div>
               )}
@@ -295,6 +301,43 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 </div>
               )}
 
+              {/* logos_carousel */}
+              {storeCustomizationSetting?.home?.logos_carousel_status && (
+                <div className="bg-white lg:py-10 py-3 select-none">
+                  <div className="mx-auto px-3 sm:px-24">
+                    <Swiper
+                      modules={[Autoplay]}
+                      spaceBetween={30}
+                      slidesPerView="auto"
+                      loop={true}
+                      speed={4000}
+                      autoplay={{
+                        delay: 0,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                        waitForTransition: false,
+                      }}
+                      allowTouchMove={false}
+                      className="flex items-center"
+                    >
+                      {storeCustomizationSetting?.home?.logos_carousel?.map((logo, index) => (
+                        <SwiperSlide
+                          key={index}
+                          className="w-auto flex items-center justify-center"
+                          style={{ width: "150px" }}
+                        >
+                          <img
+                            src={logo}
+                            alt={`Logo ${index}`}
+                            className="h-[70px] object-contain transition duration-300 select-none"
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                  </div>
+                </div>
+              )}
+
               {/* promotional banner card */}
               {storeCustomizationSetting?.home?.delivery_status && (
                 // <div className="block mx-auto max-w-screen-2xl">
@@ -305,6 +348,16 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                 </div>
                 // </div>
               )}
+
+              {/* discount section heading (separate from discount products) */}
+              {storeCustomizationSetting?.home?.discount_status &&
+                showingTranslateValue(storeCustomizationSetting?.home?.discount_title) && (
+                  <div className="bg-customRed-superLight border-y border-customRed-superLight mx-auto max-w-screen-2xl mt-6 px-3 sm:px-10">
+                    <h2 className="text-center text-customRed-dark text-xl lg:text-2xl font-serif font-semibold py-3">
+                      {showingTranslateValue(storeCustomizationSetting?.home?.discount_title)}
+                    </h2>
+                  </div>
+                )}
 
               {/* discounted products */}
               {storeCustomizationSetting?.home?.discount_product_status &&

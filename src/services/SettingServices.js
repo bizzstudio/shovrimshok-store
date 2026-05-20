@@ -21,6 +21,11 @@ const SettingServices = {
   getGlobalSetting: async () => {
     return requests.get("/setting/global/all");
   },
+
+  // custom scripts (head / bodyStart / bodyEnd) managed in admin
+  getStoreScriptsSetting: async () => {
+    return requests.get("/setting/store-scripts/all");
+  },
 };
 
 export default SettingServices;

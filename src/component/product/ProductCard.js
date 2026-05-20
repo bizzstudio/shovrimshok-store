@@ -28,11 +28,14 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
   const { toggleCartDrawer, closeCartDrawer } = useContext(SidebarContext)
   const { items, addItem, updateItemQuantity, inCart } = useCart();
   const { handleIncreaseQuantity } = useAddToCart();
-  const { globalSetting } = useGetSetting();
+  const { globalSetting, storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
   const { t } = useTranslation();
 
   const currency = globalSetting?.default_currency || "₪";
+  const placeholderImg =
+    storeCustomizationSetting?.home?.place_holder_img ||
+    "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png";
   const inStock = product?.stock > 0 || product?.OnHand > 0;
 
   const firstPriceEntry = Array.isArray(product?.prices) ? product.prices[0] : null;
@@ -110,10 +113,10 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
           <div className="relative w-full h-full p-2">
             {/* {!inStock && <div className="absolute z-10 w-full h-full flex items-center justify-center"><div className="bg-white bg-opacity-70 -rotate-6 text-customRed border-4 border-customRed rounded inline-flex items-center justify-center px-2 py-1 text-2xl font-bold font-serif">{t("common:stockOut")}</div></div>} */}
             {product.image?.[0] ? (
-              <ImageWithFallback src={product.image?.[0]} outOfStock={!inStock} alt="product" />
+              <ImageWithFallback src={product.image?.[0]} fallback={placeholderImg} outOfStock={!inStock} alt="product" />
             ) : (
               <Image
-                src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                src={placeholderImg}
                 fill
                 style={{
                   objectFit: "contain",
@@ -146,6 +149,11 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
                 price={resolvedPrice}
                 originalPrice={resolvedOriginalPrice}
               />
+              {(product?.ItemCode || product?.sku) && (
+                <span className="text-gray-400 text-xs font-normal mt-0.5 truncate">
+                  {t("common:itemCode")}: {product?.ItemCode ?? product?.sku}
+                </span>
+              )}
             </div>
 
             {inCart((product._id ?? product.ItemCode)) ? (

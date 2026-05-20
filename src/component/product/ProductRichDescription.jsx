@@ -181,7 +181,10 @@ const ProductRichDescription = ({ product }) => {
   const delivery     = ed.delivery     ?? null;
   const warranty     = ed.warranty     ?? null;
   const sellingPts   = ed.sellingPoints ?? null;
-  const upgrades     = ed.upgrades     ?? null;
+  // Drop the "כמות במלאי" group — it's surfaced next to the price instead of in the upgrades section
+  const upgrades     = Array.isArray(ed.upgrades)
+    ? ed.upgrades.filter((g) => g?.topic !== "כמות במלאי")
+    : ed.upgrades ?? null;
   const videos       = Array.isArray(ed.videos) ? ed.videos.filter(Boolean) : [];
 
   const spContent  = renderField(sellingPts, opts);

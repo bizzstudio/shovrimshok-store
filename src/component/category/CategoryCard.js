@@ -1,5 +1,4 @@
 // src/component/category/CategoryCard.js
-import Image from "next/image";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
@@ -10,7 +9,6 @@ import {
 } from "react-icons/io5";
 
 import { SidebarContext } from "@context/SidebarContext";
-import getCategoryIconByCode from "@utils/getCategoryIconByCode";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 
 const CategoryCard = ({ title, nested, id, onLinkClick }) => {
@@ -48,8 +46,6 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
     router.push(finalPath);
   };
 
-  const icon = getCategoryIconByCode(id);
-
   return (
     <>
       <div className="flex items-center rounded-md hover:bg-gray-50 w-full hover:text-customRed cursor-pointer select-none">
@@ -58,22 +54,6 @@ const CategoryCard = ({ title, nested, id, onLinkClick }) => {
           onMouseDown={() => handleClick(`/category/${id}`)} // סוגר את התפריט לפני הניווט
           className="p-2 flex items-center w-full gap-2 group"
         >
-          <div className="relative w-[25px] h-[25px]">
-            <Image
-              src={icon.bw}
-              width={25}
-              height={25}
-              alt="Category BW"
-              className="absolute top-0 left-0 object-contain transition-opacity duration-200 group-hover:opacity-0"
-            />
-            <Image
-              src={icon.color}
-              width={25}
-              height={25}
-              alt="Category Color"
-              className="absolute top-0 left-0 object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-            />
-          </div>
           <div className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-customRed">
             {title}
           </div>
