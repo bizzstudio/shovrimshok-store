@@ -110,8 +110,8 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
                     <div className="overflow-y-auto sm:max-h-[570px] max-h-[450px]">
                         {products.slice(0, 10).map((product, i) => (
                             <Link
-                                href={`/product/${product.ItemCode}`} onClick={() => clearInput()}
-                                key={(product._id ?? product.ItemCode) + i}>
+                                href={`/product/${product.slug ?? product._id ?? product.ItemCode}`} onClick={() => clearInput()}
+                                key={(product._id ?? product.slug ?? product.ItemCode) + i}>
                                 <div className="flex items-center justify-between border-t p-4 hover:bg-gray-100">
                                     {/* תמונה כותרת ומחיר */}
                                     <div className="flex items-center gap-2">
