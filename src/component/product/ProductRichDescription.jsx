@@ -181,18 +181,13 @@ const ProductRichDescription = ({ product }) => {
   const delivery     = ed.delivery     ?? null;
   const warranty     = ed.warranty     ?? null;
   const sellingPts   = ed.sellingPoints ?? null;
-  // Drop the "כמות במלאי" group — it's surfaced next to the price instead of in the upgrades section
-  const upgrades     = Array.isArray(ed.upgrades)
-    ? ed.upgrades.filter((g) => g?.topic !== "כמות במלאי")
-    : ed.upgrades ?? null;
   const videos       = Array.isArray(ed.videos) ? ed.videos.filter(Boolean) : [];
 
   const spContent  = renderField(sellingPts, opts);
-  const upContent  = renderField(upgrades, opts);
   const delContent = renderField(delivery, opts);
   const warContent = renderField(warranty, opts);
 
-  const hasAny = descHtml || spContent || delContent || warContent || upContent || videos.length;
+  const hasAny = descHtml || spContent || delContent || warContent || videos.length;
   if (!hasAny) return null;
 
   return (
@@ -220,12 +215,6 @@ const ProductRichDescription = ({ product }) => {
       {warContent && (
         <Section title="אחריות">
           {warContent}
-        </Section>
-      )}
-
-      {upContent && (
-        <Section title="אפשרויות מוצר">
-          {upContent}
         </Section>
       )}
 
