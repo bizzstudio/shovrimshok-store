@@ -25,7 +25,7 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import CMSkeleton from "@component/preloader/CMSkeleton";
 import ourOffers from "public/titles/ourOffers.svg";
 import popolarTitle from "public/titles/popolarTitle.svg";
-import logoGif from "public/shovrimshok_loading.gif";
+import logoGif from "public/שוברים שוק-לוגו.p.gif";
 import Image from "next/image";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import MainBT from "@component/button/MainBT";
