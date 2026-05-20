@@ -14,8 +14,7 @@ const Stock = ({ stock, card, top = 2, right = 2, arrivalDate }) => {
           ? `bg-red-100 absolute top-2 right-2 z-10 text-red-700 rounded-full text-xs px-2 py-0.5 font-medium`
           : `bg-red-100 text-red-700 rounded-full inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium font-serif`
           }`}>
-          {/* {t("common:stockOut")} */}
-          {arrivalDateFormatted ? `${t("common:backInStock")} ${arrivalDateFormatted}` : ""}
+          {arrivalDateFormatted ? `${t("common:backInStock")} ${arrivalDateFormatted}` : "המלאי אזל"}
         </span>
       ) : (
         <>
