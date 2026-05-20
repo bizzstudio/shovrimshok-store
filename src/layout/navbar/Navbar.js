@@ -129,8 +129,8 @@ const Navbar = () => {
               className="sm:w-fit sm:h-fit h-[65px] sm:mb-0 mb-3"
             >
               <Image
-                width={200}
-                height={80}
+                width={170}
+                height={50}
                 src={
                   storeCustomizationSetting?.navbar?.logo
                   || 'https://i.imgur.com/hlKKyn1.png'

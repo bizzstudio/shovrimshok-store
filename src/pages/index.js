@@ -19,7 +19,6 @@ import ProductServices from "@services/ProductServices";
 import CategoryServices from "@services/CategoryServices";
 import ProductCard from "@component/product/ProductCard";
 import MainCarousel from "@component/carousel/MainCarousel";
-import FeatureCategory from "@component/category/FeatureCategory";
 import AttributeServices from "@services/AttributeServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import CMSkeleton from "@component/preloader/CMSkeleton";
@@ -180,46 +179,6 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
                   )}
                 </div>
               </div>
-
-              {/* feature category's */}
-              {storeCustomizationSetting?.home?.featured_status && (
-                <div className="bg-gray-100 lg:py-16 sm:py-11 py-3">
-                  <div className="mx-auto max-w-screen-2x1 px-3 sm:px-10">
-                    {storeCustomizationSetting?.home?.feature_title?.he &&
-                      <div className="mb-10 flex justify-center">
-                        <div className="text-center w-full lg:w-2/5">
-                          {storeCustomizationSetting?.home?.feature_title?.he &&
-                            <h2 className="text-xl lg:text-2xl mb-2 font-serif font-semibold">
-                              <CMSkeleton
-                                count={1}
-                                height={30}
-                                // error={error}
-                                loading={loading}
-                                data={storeCustomizationSetting?.home?.feature_title}
-                              />
-                            </h2>
-                          }
-                          {storeCustomizationSetting?.home?.feature_description?.he &&
-                            <div className="text-base font-sans text-gray-600 leading-6">
-                              <CMSkeleton
-                                count={4}
-                                height={10}
-                                error={error}
-                                loading={loading}
-                                data={
-                                  storeCustomizationSetting?.home?.feature_description
-                                }
-                              />
-                            </div>
-                          }
-                        </div>
-                      </div>
-                    }
-
-                    <FeatureCategory />
-                  </div>
-                </div>
-              )}
 
               {/* logos_carousel */}
               {storeCustomizationSetting?.home?.logos_carousel_status && (

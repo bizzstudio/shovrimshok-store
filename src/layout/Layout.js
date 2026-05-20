@@ -217,7 +217,7 @@ const Layout = ({ title, description, children, noFooterTop = false }) => {
         </div>
         <MobileFooter />
         <div className="w-full">
-          {!noFooterTop && <FooterTop />}
+          {!noFooterTop && storeCustomizationSetting?.home?.daily_needs_status && <FooterTop />}
           {/* <div className="hidden relative lg:block mx-auto max-w-screen-2xl py-6 px-3 sm:px-10">
             <FeatureCard />
           </div> */}

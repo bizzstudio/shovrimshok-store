@@ -5,12 +5,8 @@ import { Transition, Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import SettingServices from "@services/SettingServices";
 import Cookies from "js-cookie";
-import useTranslation from "next-translate/useTranslation";
-import { RiCustomerServiceFill } from "react-icons/ri";
 
 // Internal import
-import useGetSetting from "@hooks/useGetSetting";
-import Category from "@component/category/Category";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import useAsync from "@hooks/useAsync";
@@ -35,7 +31,6 @@ const NavbarPromo = () => {
   const [currentLang, setCurrentLang] = useState({});
   const [deliveriesPopup, setDeliveriesPopup] = useState(false);
   const [LoginModalOpen, setLoginModalOpen] = useState(false);
-  const { lang, storeCustomizationSetting } = useGetSetting();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
 
   const { showingTranslateValue } = useUtilsFunction();
@@ -44,8 +39,6 @@ const NavbarPromo = () => {
   const { state: { userInfo } } = useContext(UserContext);
 
   const router = useRouter();
-
-  const { t } = useTranslation();
 
   const handleOpenLogin = () => {
     if (router.push("/?redirect=/user/my-orders")) {
@@ -140,196 +133,58 @@ const NavbarPromo = () => {
       <div className="hidden lg:block xl:block border-b border-gray-200">
         <div className="h-[70px]">
           <Popover className="relative w-full h-full">
-            {/* <div className="relative grid gap-2 p-6">
-                  {data[0]?.children?.map((category) => (
-                    <CategoryCard
-                      key={category._id}
-                      id={category._id}
-                      icon={category.icon}
-                      nested={category.children}
-                      title={showingTranslateValue(category?.name)}
-                    />
-                  ))}
-                </div> */}
             <Popover.Group
               as="nav"
-              className="flex items-center justify-center text-center w-full h-full bg-gray-100"
+              className="flex items-center w-full h-full bg-gray-100"
             >
-              {/* main */}
-              <Link
-                href="/"
-                // onClick={() => setIsLoading(true)}
-                className="flex-grow font-serif mx-4 p-3 text-lg font-medium text-customBlue hover:text-customRed"
-              >
-                {t("common:main")}
-              </Link>
+              {/* categories list */}
+              <div className="flex-1 flex items-center flex-wrap gap-1 px-4 h-full">
+                {!loading && !error && data[0]?.children?.map((category, index) => {
+                  const categoryId = category.slug || category._id;
+                  const title = showingTranslateValue(category?.name);
+                  const hasChildren = category.children?.length > 0;
+                  const isActive = selectedCategory === index;
 
-              <hr className="w-[1px] bg-gray-300 h-3/4" />
+                  if (!hasChildren) {
+                    return (
+                      <Link
+                        key={category._id}
+                        href={`/category/${categoryId}`}
+                        className={`flex-shrink-0 font-serif px-3 py-3 text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
+                      >
+                        {title}
+                      </Link>
+                    );
+                  }
 
-              {/* categoies */}
-              {storeCustomizationSetting?.navbar
-                ?.categories_menu_status && (
-                  <Popover className="flex-grow relative font-serif flex items-center justify-center p-3">
-                    {({ open, close }) => (
-                      <>
-                        <Popover.Button className="group w-full gap-2 inline-flex items-center justify-center text-customBlue hover:text-customRed focus:outline-none">
-                          <span className="font-serif text-lg font-medium">
-                            {showingTranslateValue(
-                              storeCustomizationSetting?.navbar?.categories
-                            )}
-                          </span>
+                  return (
+                    <div key={category._id} className="group relative flex-shrink-0 h-full flex items-center">
+                      <Link
+                        href={`/category/${categoryId}`}
+                        className={`font-serif inline-flex items-center gap-1 px-3 py-3 text-lg font-medium whitespace-nowrap hover:text-customRed ${isActive ? "text-customRed" : "text-customBlue"}`}
+                      >
+                        {title}
+                        <ChevronDownIcon className="h-3 w-3" aria-hidden="true" />
+                      </Link>
 
-                          <ChevronDownIcon
-                            className="ml-1 h-3 w-3 group-text-customBlue hover:text-customRed"
-                            aria-hidden="true"
-                          />
-                        </Popover.Button>
-
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-200"
-                          enterFrom="opacity-0 translate-y-1"
-                          enterTo="opacity-100 translate-y-0"
-                          leave="transition ease-in duration-150"
-                          leaveFrom="opacity-100 translate-y-0"
-                          leaveTo="opacity-0 translate-y-1"
-                        >
-                          <Popover.Panel className="absolute top-full z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
-                            <div className="rounded-md shadow-lg ring-1 ring-black ring-opacity-5 flex-grow w-full h-full">
-                              <Category onLinkClick={() => close()} />
-                            </div>
-                          </Popover.Panel>
-                        </Transition>
-                      </>
-                    )}
-                  </Popover>
-                  // <>
-                  //   {!loading && !error && data && data[0]?.children?.map((category, index) => {
-                  //     const title = showingTranslateValue(category?.name)
-                  //     return <Link
-                  //       onMouseEnter={() => setIsHover(index)}
-                  //       onMouseLeave={() => setIsHover(null)}
-                  //       // onClick={() => showCategory(category._id, title)}
-                  //       href={'/category/' + category?.name?.he}
-                  //       className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md text-customBlue hover:text-customRed transform transition duration-300 hover:scale-105 ${selectedCategory == index ? 'scale-105' : ''}`}
-                  //       role="button"
-                  //       key={category._id}
-                  //     >
-                  //       {category.icon ? (
-                  //         isHover == index || selectedCategory == index ?
-                  //           <Image src={category.coloredIcon} width={200} height={200} alt="Category"
-                  //             className="sm:w-[30px] w-[6vw]" /> :
-                  //           <Image src={category.icon} width={200} height={200} alt="Category"
-                  //             className="sm:w-[30px] w-[6vw]" />
-                  //       ) : (
-                  //         <Image
-                  //           src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                  //           width={200}
-                  //           height={200}
-                  //           alt="category"
-                  //           className="sm:w-[30px] w-[6vw]"
-                  //         />
-                  //       )}
-
-                  //       <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full text-customBlue hover:text-customRed whitespace-nowrap">
-                  //         {title}
-                  //       </div>
-                  //     </Link>
-                  //   })}
-
-                  //   <Link onMouseEnter={() => setIsHover(categoriesLength)}
-                  //     onMouseLeave={() => setIsHover(null)}
-                  //     href="/offers"
-                  //     className={`p-2 flex flex-col md:flex-row items-center md:gap-2 rounded-md text-customBlue hover:text-customRed transform transition duration-300 hover:scale-105 ${selectedCategory == categoriesLength ? 'scale-105' : ''}`}
-                  //     role="button">
-                  //     {isHover == categoriesLength || selectedCategory == categoriesLength ?
-                  //       <Image src={offerIcon.src} width={200} height={200} alt="Category"
-                  //         className="sm:w-[30px] w-[6vw]" /> :
-                  //       <Image src={offerIconNoColor.src} width={200} height={200} alt="Category"
-                  //         className="sm:w-[30px] w-[6vw]" />}
-                  //     <div className="inline-flex items-center justify-center text-center text-xs sm:text-2xl font-light w-full text-customBlue hover:text-customRed whitespace-nowrap">
-                  //       {t("common:Offers")}
-                  //     </div>
-                  //   </Link>
-
-                  // </>
-                )}
-
-              <hr className="w-[1px] bg-gray-300 h-3/4" />
-
-              {/* best-sellers */}
-              <Link
-                href="/best-sellers"
-                // onClick={() => setIsLoading(true)}
-                className="flex-grow font-serif mx-4 p-3 text-lg font-medium text-customBlue hover:text-customRed"
-              >
-                {t("common:bestSellers")}
-              </Link>
-
-              {/* <hr className="w-[1px] bg-gray-300 h-3/4" /> */}
-
-              {/* about-us */}
-              {/* {storeCustomizationSetting?.navbar?.about_menu_status && (
-                <Link
-                  href="/about-us"
-                  onClick={() => setIsLoading(true)}
-                  className="flex-grow font-serif mx-4 p-3 text-lg font-medium text-customBlue hover:text-customRed"
-                >
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.navbar?.about_us
-                  )}
-                </Link>
-              )} */}
-
-              {userInfo && (
-                <>
-                  <hr className="w-[1px] bg-gray-300 h-3/4" />
-
-                  {/* purchased-products */}
-                  <Link
-                    href="/purchased-products"
-                    // onClick={() => setIsLoading(true)}
-                    className="flex-grow font-serif mx-4 p-3 text-lg font-medium text-customBlue hover:text-customRed"
-                  >
-                    {t("common:purchasedProducts")}
-                  </Link>
-                </>
-              )}
-
-              <hr className="w-[1px] bg-gray-300 h-3/4" />
-
-              {/* contact-us */}
-              {storeCustomizationSetting?.navbar?.contact_menu_status && (
-                <Link
-                  onClick={() => setIsLoading(true)}
-                  href="/contact-us"
-                  className="flex-grow font-serif mx-4 p-3 text-lg font-medium text-customBlue hover:text-customRed"
-                >
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.navbar?.contact_us
-                  )}
-                </Link>
-              )}
-
-              <div className="bg-white h-full flex items-center justify-center gap-3 px-8">
-                <Link
-                  href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
-                  // target="_blank"
-                  className="bg-transparent flex items-center justify-center gap-1 text-customBlue">
-                  <RiCustomerServiceFill />
-                  {/* {t("common:customerService")} */}
-                  {storeCustomizationSetting?.footer?.block4_phone}
-                </Link>
-
-                <hr className="w-[1px] bg-customBlue h-6" />
-
-                <Link
-                  href="/accessibility-statement"
-                  className="bg-transparent flex items-center justify-center gap-1 text-customBlue">
-                  <FaWheelchair size={14} />
-                  {t("common:accessibility")}
-                </Link>
-
+                      {/* hover dropdown */}
+                      <div className="absolute top-full right-0 z-20 hidden group-hover:block min-w-[220px] bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                        <ul className="py-2">
+                          {category.children.map((child) => (
+                            <li key={child._id}>
+                              <Link
+                                href={`/category/${categoryId}?sub=${child.slug || child._id}`}
+                                className="block px-4 py-2 text-sm font-medium text-customBlue hover:text-customRed hover:bg-gray-50 whitespace-nowrap"
+                              >
+                                {showingTranslateValue(child?.name)}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* pages */}
