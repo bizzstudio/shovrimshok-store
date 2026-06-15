@@ -320,6 +320,9 @@
 
   "loginTitle": "Login",
   "loginBoxText": "Login with your email and password",
+  "loginRegularTab": "Private",
+  "loginBusinessTab": "Business / Institutional",
+  "rivhitCustomerNumber": "Rivhit Customer Number",
   "email": "Email",
   "phone": "Phone",
   "clientCode": "Client Code",
@@ -411,6 +414,8 @@
   "addingItems": "Adding items to cart...",
   "personalDetails": "Personal Details",
   "firstName": "First Name",
+  "guestCheckoutTitle": "Quick checkout without login",
+  "pleaseFillAllRequiredFields": "Please fill in all required fields",
   "emailAddress": "Email address",
   "phoneNumber": "Phone Number",
 
@@ -543,7 +548,9 @@
   "processing": "Processing",
   "Cancel": "Cancel",
   "payNow": "Pay Now",
-  
+  "createCreditOrder": "Credit Order",
+  "mustBeLoggedIn": "Please log in before placing an order",
+
   "fileToBig": "The image size exceeds 3MB.",
   "username_at_least_two_words": "First name and last name must be entered!",
 

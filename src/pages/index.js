@@ -435,7 +435,7 @@ const Home = ({ popularProducts, discountProducts, attributes }) => {
   } else {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <img src={logoGif.src} alt="loading" className="m-auto w-[550px] max-w-[90%]" />
+        <img src={logoGif.src} alt="loading" className="m-auto w-[700px] max-w-[90%]" />
       </div>
     );
   }

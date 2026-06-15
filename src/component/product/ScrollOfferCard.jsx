@@ -16,13 +16,16 @@ import ProductModal from "@component/modal/ProductModal";
 import ImageWithFallback from "@component/common/ImageWithFallBack";
 import { handleLogEvent } from "@utils/analytics";
 import { SidebarContext } from "@context/SidebarContext";
+import { UserContext } from "@context/UserContext";
 import useTranslation from "next-translate/useTranslation";
 import getOfferNames from "@component/offer/getOfferNames";
 import useCart from "@hooks/useCart";
+import { getUserPrice } from "@utils/priceUtils";
 
 const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { toggleCartDrawer, closeCartDrawer } = useContext(SidebarContext)
+  const { state: { userInfo } } = useContext(UserContext);
   const { items, addItem, updateItemQuantity, inCart } = useCart();
   const { handleIncreaseQuantity } = useAddToCart();
   const { globalSetting } = useGetSetting();
@@ -42,13 +45,16 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
     }
     const { slug, variants, categories, description, ...updatedProduct } =
       product;
+    // שימוש ב-getUserPrice (כולל מע"מ) - חייב להתאים ללוגיקה בבקאנד.
+    const userPriceInfo = getUserPrice(p, userInfo);
+    const resolvedPrice = p?.Price ?? (userPriceInfo.salePrice && userPriceInfo.salePrice > 0 ? userPriceInfo.salePrice : userPriceInfo.price) ?? 0;
     const newItem = {
       ...updatedProduct,
       title: p.title,
       id: p._id ?? p.ItemCode,
       variant: p.prices || 0,
-      price: p.prices?.price || 0,
-      originalPrice: product.prices?.originalPrice || 0,
+      price: Number(resolvedPrice) || 0,
+      originalPrice: Number(p?.Price ?? userPriceInfo.originalPrice ?? resolvedPrice) || 0,
       slug: p.ItemCode,
     };
     addItem(newItem);
@@ -155,12 +161,12 @@ const ScrollOfferCard = ({ product, attributes, offers = [] }) => {
                 price={
                   product?.isCombination
                     ? product?.variants[0]?.price
-                    : product?.prices?.price
+                    : (getUserPrice(product, userInfo).salePrice || getUserPrice(product, userInfo).price)
                 }
                 originalPrice={
                   product?.isCombination
                     ? product?.variants[0]?.originalPrice
-                    : product?.prices?.originalPrice
+                    : getUserPrice(product, userInfo).originalPrice
                 }
               />
 

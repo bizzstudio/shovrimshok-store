@@ -42,6 +42,8 @@ import MainBT from "@component/button/MainBT";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import ProductDescription from "@component/product/ProductDescription";
 import ProductRichDescription from "@component/product/ProductRichDescription";
+import { UserContext } from "@context/UserContext";
+import { getUserPrice } from "@utils/priceUtils";
 
 const ProductScreen = ({ product, attributes, relatedProducts }) => {
   // console.log('product :>> ', product);
@@ -51,6 +53,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const { lang, showingTranslateValue, getNumber, currency } = useUtilsFunction();
 
   const { isLoading, setIsLoading, offers, categories } = useContext(SidebarContext);
+  const { state: { userInfo } } = useContext(UserContext);
   const { handleAddItem, item, setItem } = useAddToCart();
 
   const [value, setValue] = useState("");
@@ -165,12 +168,11 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     // } else {
     setStock(product?.stock ?? 0);
     setImg(product?.image?.[0]);
-    const firstPriceEntry = Array.isArray(product?.prices) ? product.prices[0] : null;
-    const arraySalePrice = firstPriceEntry?.salePrice;
-    const arrayBasePrice = firstPriceEntry?.price;
-    const arrayResolvedPrice = arraySalePrice && arraySalePrice > 0 ? arraySalePrice : arrayBasePrice;
-    const price = getNumber(product?.Price ?? arrayResolvedPrice ?? product?.prices?.price ?? product?.LastPurPrc ?? 0);
-    const originalPrice = getNumber(product?.Price ?? arrayBasePrice ?? product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
+    // שימוש ב-getUserPrice (כולל מע"מ) - חייב להתאים ללוגיקה בבקאנד.
+    const userPriceInfo = getUserPrice(product, userInfo);
+    const arrayResolvedPrice = userPriceInfo.salePrice && userPriceInfo.salePrice > 0 ? userPriceInfo.salePrice : userPriceInfo.price;
+    const price = getNumber(product?.Price ?? arrayResolvedPrice ?? product?.LastPurPrc ?? 0);
+    const originalPrice = getNumber(product?.Price ?? userPriceInfo.originalPrice ?? product?.AvgPrice ?? price);
     const discountPercentage = getNumber(
       ((originalPrice - price) / originalPrice) * 100
     );
@@ -179,9 +181,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     setOriginalPrice(originalPrice);
     // }
   }, [
-    product?.prices?.discount,
-    product?.prices?.originalPrice,
-    product?.prices?.price,
+    product?.prices,
+    product?.isVatFree,
     product?.Price,
     product?.stock,
     product.variants,
@@ -191,6 +192,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     product?.OnHand,
     product?.LastPurPrc,
     product?.AvgPrice,
+    userInfo,
   ]);
 
   // קביעת שם הגרסת מוצר

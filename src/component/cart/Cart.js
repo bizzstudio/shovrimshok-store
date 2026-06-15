@@ -12,6 +12,7 @@ import LoginModal from "@component/modal/LoginModal";
 import { UserContext } from "@context/UserContext";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import useGetSetting from "@hooks/useGetSetting";
 import useCart from "@hooks/useCart";
 import { FiInfo } from "react-icons/fi";
 import Calculating from "./Calculating";
@@ -24,12 +25,17 @@ const Cart = () => {
   const { isEmpty, items, customCartTotal } = useCart();
   const { toggleCartDrawer, closeCartDrawer } = useContext(SidebarContext);
   const { currency } = useUtilsFunction();
+  const { storeSetting } = useGetSetting();
   const { t } = useTranslation();
   const buttonRef = useRef(null);
 
   const {
     state: { userInfo },
   } = useContext(UserContext);
+
+  // אם הטוגל "אפשר התחברות לקוחות פרטיים" כבוי - חובה להתחבר.
+  // אחרת - אורח יכול לעבור ישר ל-checkout (רכישה מהירה ללא התחברות).
+  const allowGuestCheckout = storeSetting?.enable_private_customers !== false;
 
   const handleOpenLogin = () => {
     router.push(
@@ -44,14 +50,12 @@ const Cart = () => {
 
   const handleCheckoutClick = (e) => {
     e.stopPropagation(); // Prevent event propagation
-    if (!userInfo) {
-      handleOpenLogin(); // Handle login if user is not logged in
+    if (!userInfo && !allowGuestCheckout) {
+      // לקוחות פרטיים חסומים - חובה להתחבר
+      handleOpenLogin();
     } else {
-      // if (!userInfo?.address?.city) {
-      //   localStorage.setItem("firstTime", true);
-      // } else {
-        router.push("/checkout"); // Redirect to checkout page
-      // }
+      // מחובר, או אורח כשהטוגל דלוק - מעבר ישיר ל-checkout
+      router.push("/checkout");
     }
     closeCartDrawer(); // Call the closeCartDrawer function
   };

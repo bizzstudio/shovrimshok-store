@@ -5,6 +5,10 @@ const OrderServices = {
     return requests.post("/order/add", body, headers);
   },
 
+  addGuestOrder: async (body, headers) => {
+    return requests.post("/order/add-guest", body, headers);
+  },
+
   createPaymentIntent: async (body) => {
     return requests.post("/order/create-payment-intent", body);
   },

@@ -18,14 +18,17 @@ import ProductModal from "@component/modal/ProductModal";
 import ImageWithFallback from "@component/common/ImageWithFallBack";
 import { handleLogEvent } from "@utils/analytics";
 import { SidebarContext } from "@context/SidebarContext";
+import { UserContext } from "@context/UserContext";
 import useTranslation from "next-translate/useTranslation";
 import getOfferNames from "@component/offer/getOfferNames";
 import useCart from "@hooks/useCart";
 import { LiaCartPlusSolid } from "react-icons/lia";
+import { getUserPrice } from "@utils/priceUtils";
 
 const ProductCard = ({ product, attributes, offers = [] }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { toggleCartDrawer, closeCartDrawer } = useContext(SidebarContext)
+  const { state: { userInfo } } = useContext(UserContext);
   const { items, addItem, updateItemQuantity, inCart } = useCart();
   const { handleIncreaseQuantity } = useAddToCart();
   const { globalSetting, storeCustomizationSetting } = useGetSetting();
@@ -38,18 +41,18 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
     "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png";
   const inStock = product?.stock > 0 || product?.OnHand > 0;
 
-  const firstPriceEntry = Array.isArray(product?.prices) ? product.prices[0] : null;
-  const arraySalePrice = firstPriceEntry?.salePrice;
-  const arrayBasePrice = firstPriceEntry?.price;
+  // שימוש ב-getUserPrice המחושב כמו בבקאנד (כולל מע"מ לפי isVatFree).
+  // קריטי - אם זה לא תואם לבקאנד, נוצרים priceConflicts ב-checkout.
+  const userPriceInfo = getUserPrice(product, userInfo);
   const variantPrice = product?.isCombination ? product?.variants?.[0]?.price : undefined;
   const variantOriginalPrice = product?.isCombination ? product?.variants?.[0]?.originalPrice : undefined;
   const resolvedPrice = product?.hasSpecialPrice && product?.specialPrice
     ? product.specialPrice.price
-    : variantPrice ?? product?.Price ?? (arraySalePrice && arraySalePrice > 0 ? arraySalePrice : arrayBasePrice) ?? product?.prices?.price;
+    : variantPrice ?? product?.Price ?? (userPriceInfo.salePrice && userPriceInfo.salePrice > 0 ? userPriceInfo.salePrice : userPriceInfo.price);
   const resolvedOriginalPrice = variantOriginalPrice
     ?? product?.Price
-    ?? arrayBasePrice
-    ?? product?.prices?.originalPrice;
+    ?? userPriceInfo.originalPrice
+    ?? resolvedPrice;
 
   // console.log('attributes in product cart',attributes)
 
@@ -62,13 +65,14 @@ const ProductCard = ({ product, attributes, offers = [] }) => {
       return;
     }
     const { slug, variants, categories, description, ...updatedProduct } = product;
+    // resolvedPrice/resolvedOriginalPrice מחושבים מ-prices[0] (מערך) כפי שכבר נעשה לתצוגה למעלה
     const newItem = {
       ...updatedProduct,
       title: p.title,
       id: p._id ?? p.ItemCode,
       variant: p.prices ?? 0,
-      price: p.Price ?? p.prices?.price ?? 0,
-      originalPrice: p.Price ?? p.prices?.originalPrice ?? 0,
+      price: Number(resolvedPrice) || 0,
+      originalPrice: Number(resolvedOriginalPrice ?? resolvedPrice) || 0,
       slug: p.ItemCode,
     };
     addItem(newItem);

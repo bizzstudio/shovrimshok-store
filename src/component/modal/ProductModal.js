@@ -17,11 +17,13 @@ import MainModal from "@component/modal/MainModal";
 import Discount from "@component/common/Discount";
 import VariantList from "@component/variants/VariantList";
 import { SidebarContext } from "@context/SidebarContext";
+import { UserContext } from "@context/UserContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { handleLogEvent } from "@utils/analytics";
 import MainBT from "@component/button/MainBT";
 import ProductDescription from "@component/product/ProductDescription";
 import ImageCarousel from "@component/carousel/ImageCarousel";
+import { getUserPrice } from "@utils/priceUtils";
 
 const ProductModal = ({
   modalOpen,
@@ -35,6 +37,7 @@ const ProductModal = ({
   // console.log('ProductModal product: ', product);
   const router = useRouter();
   const { setIsLoading, isLoading, categories } = useContext(SidebarContext);
+  const { state: { userInfo } } = useContext(UserContext);
   const { t } = useTranslation("ns1");
 
   const { handleAddItem, setItem, item } = useAddToCart();
@@ -144,8 +147,11 @@ const ProductModal = ({
     } else {
       setStock(product?.stock ?? 0);
       setImg(product?.image?.[0]);
-      const price = getNumber(product?.Price ?? product?.prices?.price ?? product?.LastPurPrc ?? 0);
-      const originalPrice = getNumber(product?.Price ?? product?.prices?.originalPrice ?? product?.AvgPrice ?? price);
+      // שימוש ב-getUserPrice המחושב כמו בבקאנד (כולל מע"מ לפי isVatFree).
+      const userPriceInfo = getUserPrice(product, userInfo);
+      const computedPrice = userPriceInfo.salePrice && userPriceInfo.salePrice > 0 ? userPriceInfo.salePrice : userPriceInfo.price;
+      const price = getNumber(product?.Price ?? computedPrice ?? product?.LastPurPrc ?? 0);
+      const originalPrice = getNumber(product?.Price ?? userPriceInfo.originalPrice ?? product?.AvgPrice ?? price);
       const discountPercentage = getNumber(
         ((originalPrice - price) / originalPrice) * 100
       );
@@ -154,15 +160,15 @@ const ProductModal = ({
       setOriginalPrice(originalPrice);
     }
   }, [
-    product?.prices?.discount,
-    product?.prices?.originalPrice,
-    product?.prices?.price,
+    product?.prices,
+    product?.isVatFree,
     product?.Price,
     product?.stock,
     product.variants,
     selectVa,
     selectVariant,
     value,
+    userInfo,
   ]);
 
   useEffect(() => {

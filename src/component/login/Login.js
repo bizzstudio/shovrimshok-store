@@ -1,5 +1,5 @@
 // shapira-store/src/component/login/Login.js
-import { FiLock, FiUser } from "react-icons/fi"; // שינוי מ־FiPhone ל־FiUser
+import { FiHash, FiLock, FiMail } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 
 // Internal import
@@ -9,9 +9,12 @@ import InputArea from "@component/form/InputArea";
 import ShapiraTitle from "@component/shapira-title/ShapiraTitle";
 import MainBT from "@component/button/MainBT";
 
-const Login = ({ setShowResetPassword, setModalOpen }) => {
-  const { handleSubmit, submitHandler, register, errors, loading } = useLoginSubmit(setModalOpen);
+const Login = ({ loginType = "regular", setShowResetPassword, setModalOpen }) => {
+  const { handleSubmit, submitHandler, register, errors, loading } =
+    useLoginSubmit(setModalOpen);
   const { t } = useTranslation();
+
+  const isBusinessLogin = loginType === "business";
 
   return (
     <>
@@ -23,24 +26,41 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
           <div className="w-full">
             <InputArea
               register={register}
-              name="username"                             // שינוי מ-phone ל-username
-              type="text"
-              placeholder={t("common:clientCodeOrEmail")}   // שינוי טקסט placeholder
-              Icon={FiUser}                              // אייקון משתמש
+              name="registerEmail"
+              type="email"
+              placeholder={t("common:email")}
+              Icon={FiMail}
             />
-            <Error errorName={errors.username} />
+            <Error errorName={errors.registerEmail} />
           </div>
           <div className="w-full">
             <InputArea
               register={register}
               name="password"
               type="password"
-              placeholder={t("common:password")} // שינוי placeholder לסיסמה
+              placeholder={t("common:password")}
               Icon={FiLock}
             />
             <Error errorName={errors.password} />
           </div>
-          <p className="-mt-2 -mb-1 text-sm text-start text-customRed-leaf">{t("common:loginPasswordNote")}</p>
+
+          {isBusinessLogin && (
+            <div className="w-full">
+              <InputArea
+                register={register}
+                name="rivhitCustomerNumber"
+                type="tel"
+                placeholder={t("common:rivhitCustomerNumber")}
+                Icon={FiHash}
+                isRequired={true}
+              />
+              <Error errorName={errors.rivhitCustomerNumber} />
+            </div>
+          )}
+
+          <p className="-mt-2 -mb-1 text-sm text-start text-customRed-leaf">
+            {t("common:loginPasswordNote")}
+          </p>
 
           <div className="flex items-center justify-between">
             <div className="flex ms-auto">
@@ -55,18 +75,18 @@ const Login = ({ setShowResetPassword, setModalOpen }) => {
           </div>
 
           {loading ? (
-            <MainBT
-              disabled={true}
-              type="submit"
-            >
-              <img src="/loader/spinner.gif" className="saturate-0" alt="Loading" width={20} height={10} />
+            <MainBT disabled={true} type="submit">
+              <img
+                src="/loader/spinner.gif"
+                className="saturate-0"
+                alt="Loading"
+                width={20}
+                height={10}
+              />
               <span className="ms-1">{t("common:processing")}</span>
             </MainBT>
           ) : (
-            <MainBT
-              disabled={loading}
-              type="submit"
-            >
+            <MainBT disabled={loading} type="submit">
               {t("common:loginTitle")}
             </MainBT>
           )}

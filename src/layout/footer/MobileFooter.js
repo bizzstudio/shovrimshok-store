@@ -83,17 +83,17 @@ const MobileFooter = () => {
             // className="flex flex-col gap-4 items-center justify-center text-xl text-customRed bg-white p-0.5 
             // aspect-1 rounded-full outline outline-2 outline-white outline-offset-2"
             >
-              {userInfo?.Picture ? (
+              {(userInfo?.Picture || userInfo?.image) ? (
                 <Link href="/user/dashboard" className="w-6 h-6">
                   <Image
                     width={29}
                     height={29}
-                    src={userInfo?.Picture}
+                    src={userInfo?.Picture || userInfo?.image}
                     alt="user"
                     className="rounded-full object-cover aspect-1 border-2 border-white"
                   />
                 </Link>
-              ) : userInfo?.CardName ? (
+              ) : (userInfo?.name || userInfo?.CardName || userInfo?.email) ? (
                 <Link
                   href="/user/dashboard"
                   className="leading-none font-bold font-serif block mb-0.5"
@@ -106,7 +106,7 @@ const MobileFooter = () => {
                 </div>
               )}
             </div>
-            {userInfo?.CardName ? (
+            {(userInfo?.name || userInfo?.CardName || userInfo?.email) ? (
               <p className="text-xs text-center">{t("common:profile")}</p>
             ) : (
               <p className="text-xs text-center">{t("common:login")}</p>

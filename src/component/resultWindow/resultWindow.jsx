@@ -14,6 +14,8 @@ import Discount from '@component/common/Discount';
 import useCart from '@hooks/useCart';
 import getOfferNames from '@component/offer/getOfferNames';
 import { SidebarContext } from '@context/SidebarContext';
+import { UserContext } from '@context/UserContext';
+import { getUserPrice } from '@utils/priceUtils';
 import dayjs from "dayjs";
 
 export default function ResultWindow({ products = [], attributes, clearInput, closeResultWindow }) {
@@ -23,6 +25,7 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     const { items, addItem, updateItemQuantity, inCart } = useCart();
+    const { state: { userInfo } } = useContext(UserContext);
     const { handleIncreaseQuantity } = useAddToCart();
     const { globalSetting } = useGetSetting();
     const { showingTranslateValue } = useUtilsFunction();
@@ -57,12 +60,15 @@ export default function ResultWindow({ products = [], attributes, clearInput, cl
         // if (!inStock) return notifyError(arrivalDate ? t("common:productStockOutUntil", { date: arrivalDate }) : t("common:productStockOutNow"));
 
         const { slug, variants, categories, description, ...updatedProduct } = product;
+        // שימוש ב-getUserPrice (כולל מע"מ) - חייב להתאים ללוגיקה בבקאנד.
+        const userPriceInfo = getUserPrice(product, userInfo);
+        const resolvedPrice = product?.Price ?? (userPriceInfo.salePrice && userPriceInfo.salePrice > 0 ? userPriceInfo.salePrice : userPriceInfo.price) ?? 0;
         const newItem = {
             ...updatedProduct,
             id: (product._id ?? product.ItemCode),
             title: product.ItemName || product.title,
-            price: product?.Price ?? product.prices?.price,
-            originalPrice: product?.Price ?? product.prices?.originalPrice,
+            price: Number(resolvedPrice) || 0,
+            originalPrice: Number(product?.Price ?? userPriceInfo.originalPrice ?? resolvedPrice) || 0,
             image: product.image?.[0],
             slug: product.ItemCode,  // Ensure slug is included
         };

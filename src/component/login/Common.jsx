@@ -1,6 +1,5 @@
 // shapira-store/src/component/login/Common.jsx
 import React, { useState } from "react";
-import { ImFacebook, ImGoogle } from "react-icons/im";
 import Link from "next/link";
 
 // Internal import
@@ -21,9 +20,67 @@ const Common = ({ setModalOpen }) => {
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
   const { t } = useTranslation();
 
+  // אם הוגדר במפורש false באדמין - להציג רק התחברות עסקית/מוסדית.
+  // ברירת מחדל (כולל כשהשדה חסר) - מציג את שני הטאבים.
+  const showPrivateTab = storeSetting?.enable_private_customers !== false;
+
+  // טאב פעיל: ברירת מחדל לפי כיבוי הלקוחות הפרטיים
+  const [activeLoginTab, setActiveLoginTab] = useState("regular");
+  const effectiveTab = showPrivateTab ? activeLoginTab : "business";
+
   const handleModal = () => {
     setShowRegister(!showRegister);
     setShowResetPassword(false);
+  };
+
+  const renderLoginContent = () => {
+    if (!showPrivateTab) {
+      // רק התחברות עסקית - בלי טאבים
+      return (
+        <Login
+          loginType="business"
+          setShowResetPassword={setShowResetPassword}
+          setModalOpen={setModalOpen}
+        />
+      );
+    }
+
+    // שני הטאבים זמינים
+    return (
+      <>
+        <div className="grid grid-cols-2 mb-5 border border-gray-200 rounded-lg overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setActiveLoginTab("regular")}
+            className={`py-2.5 text-sm font-semibold transition-colors ${
+              effectiveTab === "regular"
+                ? "bg-customRed text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            {t("common:loginRegularTab")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveLoginTab("business")}
+            className={`py-2.5 text-sm font-semibold transition-colors ${
+              effectiveTab === "business"
+                ? "bg-customRed text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            {t("common:loginBusinessTab")}
+          </button>
+        </div>
+
+        <Login
+          key={effectiveTab}
+          loginType={effectiveTab}
+          setShowResetPassword={setShowResetPassword}
+          setModalOpen={setModalOpen}
+        />
+      </>
+    );
   };
 
   return (
@@ -40,10 +97,7 @@ const Common = ({ setModalOpen }) => {
             setModalOpen={setModalOpen}
           />
         ) : (
-          <Login
-            setShowResetPassword={setShowResetPassword}
-            setModalOpen={setModalOpen}
-          />
+          renderLoginContent()
         )}
 
         {/* <div>

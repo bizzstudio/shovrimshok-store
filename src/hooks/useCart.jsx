@@ -61,9 +61,10 @@ const useCart = () => {
                             remainingQuantityToApply -= discountQuantity;
                             const nonDiscountQuantity = item.quantity - discountQuantity;
 
+                            const itemUnitPrice = Number(item.price ?? item.prices?.[0]?.price ?? 0);
                             const discountedPrice =
                                 discountQuantity * offerUnitPrice +
-                                nonDiscountQuantity * (item.prices?.price ?? 0);
+                                nonDiscountQuantity * itemUnitPrice;
 
                             return {
                                 ...item,
@@ -76,7 +77,10 @@ const useCart = () => {
                 });
 
                 // סך כל ההנחה שהתקבלה ממבצע זה
-                const originalPricePerItem = offer.products[0].prices.price;
+                const offerProductPrices = offer.products?.[0]?.prices;
+                const originalPricePerItem = Array.isArray(offerProductPrices)
+                    ? Number(offerProductPrices[0]?.price ?? 0)
+                    : Number(offerProductPrices?.price ?? 0);
                 totalDiscount += timesOfferCanApply * (offer.quantity * originalPricePerItem - offer.price);
             }
         });
@@ -107,14 +111,15 @@ const useCart = () => {
         // 2. חישוב הסכום הכולל (כמו בצד השרת)
         let localTotal = 0;
         updatedCartItems.forEach(item => {
-            // כמו בצד השרת: itemTotal = מחיר יחידה * כמות
-            const itemTotal = (item.prices?.price ?? 0) * item.quantity;
+            // מחיר היחידה: top-level item.price (נשמר באירוע addItem), עם fallback ל-prices[0]
+            const unitPrice = Number(item.price ?? item.prices?.[0]?.price ?? 0);
+            const itemTotal = unitPrice * item.quantity;
             // אם יש מחיר מבצע, נשתמש בו; אם לא, במחיר הרגיל
             localTotal += item.discountedPrice ? item.discountedPrice : itemTotal;
         });
 
-        // 3. הכפלת דמי ליקוט 10%
-        localTotal *= 1.1;
+        // הערה: בעבר היה כאן `localTotal *= 1.1` בשם "דמי ליקוט 10%".
+        // הוסר כדי להתיישר עם הבקאנד שלא מוסיף עמלה זו, אחרת נוצר priceConflict + mismatch.
 
         // 4. שמירה ב־state
         setCustomCart({

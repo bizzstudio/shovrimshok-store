@@ -13,8 +13,9 @@ const getProductPrice = (product, userInfo = null, storeSetting = null) => {
     }
   }
   
-  // מחיר בסיסי
-  return product?.Price ?? product?.prices?.price ?? 0;
+  // מחיר בסיסי - prices הוא מערך (priceList rows)
+  const firstPriceEntry = Array.isArray(product?.prices) ? product.prices[0] : null;
+  return product?.Price ?? firstPriceEntry?.salePrice ?? firstPriceEntry?.price ?? 0;
 };
 
 export default getProductPrice; 

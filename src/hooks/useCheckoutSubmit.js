@@ -44,6 +44,9 @@ const useCheckoutSubmit = () => {
   const [shippingPercentageIncrease, setShippingPercentageIncrease] = useState(0);
   const [readyToSubmit, setReadyToSubmit] = useState(null);
 
+  // עיר שנבחרה בטופס אורח (city_name_he בלבד מהקומפוננטה City)
+  const [chosenGuestCity, setChosenGuestCity] = useState(null);
+
   // סטייטים לקונפליקטים
   const [missingProductsModal, setMissingProductsModal] = useState(false);
   const [missingProducts, setMissingProducts] = useState([]);
@@ -64,6 +67,9 @@ const useCheckoutSubmit = () => {
     register,
     handleSubmit,
     setValue,
+    watch,
+    setError: setFormError,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
@@ -133,17 +139,14 @@ const useCheckoutSubmit = () => {
     setTotal(totalValue);
   }, [customCartTotal, shippingCost, discountPercentage]);
 
-  // if not login then push user to home page
+  // ה-redirect ללא משתמש מטופל ב-checkout.jsx על פי הגדרת enable_private_customers.
+  // פה רק ממלאים שדות פרטי המשתמש עבור משתמש מחובר.
   useEffect(() => {
-    if (!userInfo) {
-      router.push("/");
-    }
-
-    // התאמה למבנה החדש של userInfo
-    setValue("cardName", userInfo?.CardName || '');
+    if (!userInfo) return;
+    setValue("cardName", userInfo?.CardName || userInfo?.name || '');
     setValue("address", userInfo?.ShipToAddress?.Address || userInfo?.BillToAddress?.Address || '');
-    setValue("contact", userInfo?.Phone1 || userInfo?.Cellular || '');
-    setValue("email", userInfo?.EmailAddress || '');
+    setValue("contact", userInfo?.Phone1 || userInfo?.Cellular || userInfo?.phone || '');
+    setValue("email", userInfo?.EmailAddress || userInfo?.email || '');
     setValue("city", userInfo?.ShipToAddress?.City || userInfo?.BillToAddress?.City || '');
     setValue("country", userInfo?.ShipToAddress?.Country || userInfo?.BillToAddress?.Country || 'IL');
     setValue("zipCode", userInfo?.ShipToAddress?.ZipCode || userInfo?.BillToAddress?.ZipCode || '');
@@ -169,34 +172,138 @@ const useCheckoutSubmit = () => {
   // שליחת ההזמנה לשרת
   const submitHandler = async (data) => {
     try {
-      // console.log('items :>> ', items);
+      dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
+      Cookies.set("shippingAddress", JSON.stringify(data));
+      setIsCheckoutSubmit(true);
+      setError("");
+
+      const isGuest = !userInfo;
+      let res;
+
+      if (isGuest) {
+        // וולידציה בסיסית לאורח - שדות חובה
+        if (!data.guestName?.trim() || !data.guestLastName?.trim() || !data.guestEmail?.trim() ||
+            !data.guestPhone?.trim() || !chosenGuestCity || !data.guestStreet?.trim() ||
+            !data.guestHouseNumber?.trim() || !data.guestApartmentNumber?.trim()) {
+          notifyError(t("common:pleaseFillAllRequiredFields") || "נא למלא את כל השדות החובה");
+          setIsCheckoutSubmit(false);
+          return;
+        }
+
+        const guestPayload = {
+          name: data.guestName,
+          lastName: data.guestLastName,
+          email: data.guestEmail,
+          phone: data.guestPhone,
+          city: { city_name_he: chosenGuestCity },
+          street: data.guestStreet,
+          houseNumber: data.guestHouseNumber,
+          apartmentNumber: data.guestApartmentNumber,
+          floor: data.guestFloor || '',
+          entryCode: data.guestEntryCode || '',
+          postalCode: data.guestPostalCode || '',
+          shippingOption: data.shippingOption,
+          customer_note: data.customer_note,
+          paymentMethod: "creditCard",
+          status: "Pending",
+          cart: items.sort((a, b) => a.barcode - b.barcode) || items,
+          subTotal: Number(customCartTotal.toFixed(2)),
+          shippingCost: shippingCost,
+          discount: discountAmount,
+          total: total,
+          coupon: couponInfo._id || null,
+        };
+
+        res = await OrderServices.addGuestOrder(guestPayload);
+      } else {
+        // המבנה תואם ל-Order.user_info schema בבקאנד: name/lastName/email/contact/address{city,...}
+        const userDetails = {
+          name: userInfo?.name || userInfo?.CardName || '',
+          lastName: userInfo?.lastName || '',
+          email: userInfo?.email || userInfo?.EmailAddress || '',
+          contact: userInfo?.phone || userInfo?.Phone1 || userInfo?.Cellular || '',
+          address: {
+            city: userInfo?.address?.city || undefined,
+            street: userInfo?.address?.street || '',
+            houseNumber: userInfo?.address?.houseNumber || '',
+            apartmentNumber: userInfo?.address?.apartmentNumber || '',
+            floor: userInfo?.address?.floor || '',
+            entryCode: userInfo?.address?.entryCode || '',
+            postalCode: userInfo?.address?.postalCode || '',
+          },
+        };
+
+        const orderInfo = {
+          user_info: userDetails,
+          shippingOption: data.shippingOption,
+          customer_note: data.customer_note,
+          paymentMethod: "creditCard",
+          status: "Pending",
+          cart: items.sort((a, b) => a.barcode - b.barcode) || items,
+          subTotal: Number(customCartTotal.toFixed(2)),
+          shippingCost: shippingCost,
+          discount: discountAmount,
+          total: total,
+          coupon: couponInfo._id || null,
+        };
+
+        res = await OrderServices.addOrder(orderInfo);
+      }
+
+      const paymentUrl = res?.paymentUrl;
+      if (!paymentUrl) {
+        throw new Error("לא התקבל קישור תשלום מהשרת. אנא נסה שוב.");
+      }
+      setPaymentSrc(paymentUrl);
+    } catch (error) {
+      console.error('error :>> ', error);
+      if (error?.response?.status === 409) {
+        const errorData = error?.response?.data;
+        handleConflicts(errorData);
+        return;
+      } else {
+        notifyApiResponse(error, false);
+      }
+    } finally {
+      setIsCheckoutSubmit(false);
+    }
+  };
+
+  // יצירת הזמנה בהקפה (paymentMethod: "credit") — לא דורש סליקה
+  const submitCreditOrder = async (data) => {
+    try {
+      if (!userInfo) {
+        notifyError(t("common:mustBeLoggedIn") || "יש להתחבר לפני יצירת הזמנה");
+        return;
+      }
 
       dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
       Cookies.set("shippingAddress", JSON.stringify(data));
       setIsCheckoutSubmit(true);
       setError("");
 
-      // התאמה למבנה החדש של userInfo
+      // המבנה תואם ל-Order.user_info schema בבקאנד.
       const userDetails = {
-        CardName: userInfo?.CardName || '',
-        contact: userInfo?.Phone1 || userInfo?.Cellular || '',
-        email: userInfo?.EmailAddress || '',
-        address: userInfo?.ShipToAddress?.Address || userInfo?.BillToAddress?.Address || '',
-        city: userInfo?.ShipToAddress?.City || userInfo?.BillToAddress?.City || '',
-        country: userInfo?.ShipToAddress?.Country || userInfo?.BillToAddress?.Country || 'IL',
-        zipCode: userInfo?.ShipToAddress?.ZipCode || userInfo?.BillToAddress?.ZipCode || '',
-        cardCode: userInfo?.CardCode || '',
-        federalTaxID: userInfo?.FederalTaxID || '',
-        groupCode: userInfo?.GroupCode || '',
-        priceListNum: userInfo?.PriceListNum || '',
-        currency: userInfo?.Currency || currency,
+        name: userInfo?.name || userInfo?.CardName || '',
+        lastName: userInfo?.lastName || '',
+        email: userInfo?.email || userInfo?.EmailAddress || '',
+        contact: userInfo?.phone || userInfo?.Phone1 || userInfo?.Cellular || '',
+        address: {
+          city: userInfo?.address?.city || undefined,
+          street: userInfo?.address?.street || '',
+          houseNumber: userInfo?.address?.houseNumber || '',
+          apartmentNumber: userInfo?.address?.apartmentNumber || '',
+          floor: userInfo?.address?.floor || '',
+          entryCode: userInfo?.address?.entryCode || '',
+          postalCode: userInfo?.address?.postalCode || '',
+        },
       };
 
       const orderInfo = {
         user_info: userDetails,
         shippingOption: data.shippingOption,
         customer_note: data.customer_note,
-        paymentMethod: "creditCard", // data.paymentMethod,
+        paymentMethod: "credit",
         status: "Pending",
         cart: items.sort((a, b) => a.barcode - b.barcode) || items,
         subTotal: Number(customCartTotal.toFixed(2)),
@@ -206,27 +313,21 @@ const useCheckoutSubmit = () => {
         coupon: couponInfo._id || null,
       };
 
-      // יצירת ההזמנה בדטאבייס עם סטטוס Pending
-      const dbOrder = await OrderServices.addOrder(orderInfo)
-      console.log('success :>> ', dbOrder);
-      router.push({
-        pathname: '/success',
-        query: { orderNumber: dbOrder.DocNum }
-      });
+      const dbOrder = await OrderServices.addOrder(orderInfo);
       notifyApiResponse(dbOrder, true);
       await fetchOrderData(true);
-      // await fetchDocumentData(true);
-      // setPaymentSrc(res.paymentUrl);
+      router.push({
+        pathname: '/success',
+        query: { orderNumber: dbOrder?.invoice || dbOrder?.DocNum || '' }
+      });
     } catch (error) {
-      console.error('error :>> ', error);
+      console.error('submitCreditOrder error :>> ', error);
       if (error?.response?.status === 409) {
         const errorData = error?.response?.data;
         handleConflicts(errorData);
         return;
-      } else {
-        notifyApiResponse(error, false);
-        // notifyError(error?.response?.data?.message || "שגיאה ביצירת ההזמנה. מומלץ לרוקן את העגלה ולנסות שוב.");
       }
+      notifyApiResponse(error, false);
     } finally {
       setIsCheckoutSubmit(false);
     }
@@ -242,8 +343,9 @@ const useCheckoutSubmit = () => {
 
         let selectVariant = null;
         let stock = product.stock;
-        let price = product?.Price ?? product.prices.price;
-        let originalPrice = product?.Price ?? product.prices.originalPrice;
+        const firstPriceEntry = Array.isArray(product?.prices) ? product.prices[0] : null;
+        let price = product?.Price ?? firstPriceEntry?.salePrice ?? firstPriceEntry?.price ?? 0;
+        let originalPrice = product?.Price ?? firstPriceEntry?.price ?? price;
         let img = product.image?.[0];
 
         if (
@@ -448,6 +550,7 @@ const useCheckoutSubmit = () => {
   return {
     handleSubmit,
     submitHandler,
+    submitCreditOrder,
     submitWithRefreshOffers,
     handleShippingCost,
     register,
@@ -472,6 +575,11 @@ const useCheckoutSubmit = () => {
     isDeliveryMetod,
     paymentSrc,
     setPaymentSrc,
+    chosenGuestCity,
+    setChosenGuestCity,
+    setError: setFormError,
+    clearErrors,
+    watch,
     shippingPercentageIncrease,
 
     missingProductsModal,

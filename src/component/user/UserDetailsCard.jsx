@@ -19,7 +19,7 @@ const UserDetailsCard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 text-right">
                 <div>
                     <span className="font-semibold">{t("common:customer_name")}:</span>{" "}
-                    {userInfo?.CardName?.replace(/"/g, "")}
+                    {(userInfo?.CardName || `${userInfo?.name || ''} ${userInfo?.lastName || ''}`.trim())?.replace(/"/g, "")}
                 </div>
                 {/* <div>
                     <span className="font-semibold">{t("common:customer_code")}:</span>{" "}
@@ -27,11 +27,11 @@ const UserDetailsCard = () => {
                 </div> */}
                 <div>
                     <span className="font-semibold">{t("common:email")}:</span>{" "}
-                    {userInfo?.EmailAddress}
+                    {userInfo?.EmailAddress || userInfo?.email}
                 </div>
                 <div>
                     <span className="font-semibold">{t("common:phone")}:</span>{" "}
-                    {userInfo?.Phone1 || userInfo?.Cellular}
+                    {userInfo?.Phone1 || userInfo?.Cellular || userInfo?.phone}
                 </div>
                 {/* <div>
                     <span className="font-semibold">{t("common:bill_to_address")}:</span>{" "}

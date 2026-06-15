@@ -16,7 +16,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
   const { handleIncreaseQuantity } = useAddToCart();
   const router = useRouter();
 
-  const [totalPrice, setTotalPrice] = useState((item.prices?.price ?? 0) * item.quantity);
+  const [totalPrice, setTotalPrice] = useState(Number(item.price ?? item.prices?.[0]?.price ?? 0) * item.quantity);
   const [offerTitle, setOfferTitle] = useState('');
   const [inputValue, setInputValue] = useState(item.quantity);
 
@@ -41,7 +41,7 @@ const CartItem = ({ item, currency, updateTotalPrice }) => {
       setTotalPrice(thisItem?.discountedPrice);
       setOfferTitle(thisItem?.offerTitle?.he);
     } else {
-      setTotalPrice((item.prices?.price ?? 0) * item.quantity);
+      setTotalPrice(Number(item.price ?? item.prices?.[0]?.price ?? 0) * item.quantity);
       setOfferTitle('');
     }
   }, [items]);

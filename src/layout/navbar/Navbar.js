@@ -193,17 +193,17 @@ const Navbar = () => {
               </button>
               {/* Profile dropdown */}
 
-              {userInfo?.CardName ?
+              {(userInfo?.name || userInfo?.CardName || userInfo?.email) ?
                 <Link
                   className="flex items-center justify-center text-white bg-customBlue text-2xl font-bold w-9 h-9 rounded-full leading-none outline outline-2 outline-customBlue outline-offset-2 hover:scale-110 hover:outline-none transition-all overflow-hidden"
                   aria-label="Login"
                   href="/user/dashboard"
                 >
-                  {imageUrl || userInfo?.Picture ?
+                  {imageUrl || userInfo?.Picture || userInfo?.image ?
                     <Image
                       width={100}
                       height={100}
-                      src={imageUrl || userInfo?.Picture}
+                      src={imageUrl || userInfo?.Picture || userInfo?.image}
                       alt="user"
                       className="min-w-full min-h-full object-cover"
                     /> :

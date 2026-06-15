@@ -77,18 +77,20 @@ const useLoginSubmit = (setModalOpen) => {
     }
 
     // התחברות רגילה
-    if (data.username && data.password) {
+    const loginEmail = data.registerEmail || data.username;
+    if (loginEmail && data.password) {
       if (localStorage.getItem("plsRegisterAgain")) {
         setLoading(false);
         notifyError(t("common:pls_register_again"));
         return;
       } else {
         CustomerServices.customerLogin({
-          username: data.username,
+          registerEmail: loginEmail,
           password: data.password,
+          rivhitCustomerNumber: data.rivhitCustomerNumber || "",
         })
           .then((res) => {
-          console.log('res: ', res)
+            console.log('res: ', res)
             setLoading(false);
             setModalOpen(false);
             localStorage.removeItem("plsRegisterAgain");
@@ -106,7 +108,7 @@ const useLoginSubmit = (setModalOpen) => {
           .catch((err) => {
             console.error(err);
             // בדיקה אם המשתמש כבר נרשם וממתין לאימות
-            if (localStorage.getItem("waitingForVerification") == data.username) {
+            if (localStorage.getItem("waitingForVerification") == loginEmail) {
               setLoading(false);
               notifyError(t("common:waiting_for_verification"));
               return;

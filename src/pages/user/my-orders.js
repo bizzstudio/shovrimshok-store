@@ -30,6 +30,7 @@ import notifyApiResponse from "@utils/notifyApiResponse";
 import { OrderContext } from "@context/OrderContext";
 import OrderCard from "@component/order/OrderCard";
 import getCustomPrice from "@utils/getCustomPrice";
+import { getUserPrice } from "@utils/priceUtils";
 import DocumentHistoryItem from "@component/user/DocumentHistoryItem";
 import DocumentCard from "@component/user/DocumentCard";
 import dayjs from "dayjs";
@@ -166,8 +167,10 @@ const MyOrders = () => {
 
         // שימוש בgetCustomPrice במקום הקוד הישן
         const { price: customPrice } = getCustomPrice(product, userInfo, storeSetting);
-        let price = customPrice || product?.Price || product.prices?.price || 0;
-        let originalPrice = customPrice || product?.Price || product.prices?.originalPrice || 0;
+        // fallback: getUserPrice לפי priceList של הלקוח + מע"מ (כמו בבקאנד)
+        const { price: fallbackPrice, originalPrice: fallbackOriginalPrice } = getUserPrice(product, userInfo);
+        let price = customPrice || product?.Price || fallbackPrice || 0;
+        let originalPrice = customPrice || product?.Price || fallbackOriginalPrice || 0;
         let img = product.image?.[0];
 
         if (

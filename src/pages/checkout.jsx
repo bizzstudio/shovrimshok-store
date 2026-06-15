@@ -2,10 +2,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { CardElement } from "@stripe/react-stripe-js";
-import Link from "next/link";
 import {
-  IoReturnUpBackOutline,
-  IoArrowForward,
   IoBagHandle,
   IoWalletSharp,
 } from "react-icons/io5";
@@ -29,6 +26,8 @@ import useGetSetting from "@hooks/useGetSetting";
 import InputShipping from "@component/form/InputShipping";
 import InputPayment from "@component/form/InputPayment";
 import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
+import CheckoutActions from "@component/checkout/CheckoutActions";
+import GuestAddressForm from "@component/guestAddress/GuestAddressForm";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import SettingServices from "@services/SettingServices";
 import { UserContext } from "@context/UserContext";
@@ -47,12 +46,12 @@ import Image from "next/image";
 import Calculating from "@component/cart/Calculating";
 import PriceUpdatedModal from "@component/modal/PriceUpdatedModal";
 import { SidebarContext } from "@context/SidebarContext";
-import MainBT from "@component/button/MainBT";
 
 const Checkout = () => {
   const {
     handleSubmit,
     submitHandler,
+    submitCreditOrder,
     submitWithRefreshOffers,
     handleShippingCost,
     register,
@@ -74,7 +73,12 @@ const Checkout = () => {
     isCheckoutSubmit,
     isDeliveryMetod,
     paymentSrc,
+    chosenGuestCity,
+    setChosenGuestCity,
     shippingPercentageIncrease,
+    setError: setFormError,
+    clearErrors,
+    watch,
 
     missingProductsModal,
     setMissingProductsModal,
@@ -155,20 +159,21 @@ const Checkout = () => {
     }
   }, [storeSetting]);
 
-  // ללא פרטי משתמש ניווט ללוגאין
+  // ללא פרטי משתמש: אם לקוחות פרטיים מורשים -> מאפשרים רכישה כאורח.
+  // אם הטוגל כבוי - מפנים לדף הבית (חייבים להתחבר).
   useEffect(() => {
     if (!userInfo) {
-      router.push("/");
-    }
-    else {
-      // if (!userInfo?.Address) {
-      //   localStorage.setItem("firstTime", true);
-      //   router.push("/");
-      // } else {
+      if (storeSetting && storeSetting.enable_private_customers === false) {
+        router.push("/");
+        return;
+      }
+      // המתנה לטעינת ה-setting לפני שמוחלט מה לעשות
+      if (!storeSetting) return;
       setLoading(false);
-      // }
+    } else {
+      setLoading(false);
     }
-  }, [userInfo]);
+  }, [userInfo, storeSetting]);
 
   // פונקציה לבדיקת כתובת
   const isAddressDeliverable = async (address) => {
@@ -342,23 +347,40 @@ const Checkout = () => {
                   // </div>
                   : <div className="md:col-span-2">
                     <form onSubmit={handleSubmit(submitHandler)}>
-                      <div className="w-full flex flex-col 2xl:flex-row items-center pb-3 gap-3.5">
-                        {/* פרטים אישיים */}
-                        <div className="w-full 2xl:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
-                          <CiUser className="text-[41px] text-customBlue group-hover:text-white transition ease-in-out duration-300" />
-                          <div className="flex flex-col items-start">
-                            <h2 className="text-xl truncate max-w-[90%]" title={userInfo?.CardName}>{userInfo?.CardName}</h2>
-                            {city && address &&
-                              <p className="text-base text-gray-400 -mt-1 truncate max-w-[200px]" title={`${city}, ${address}`}>{city}, {address}</p>
-                            }
-                          </div>
-                          <button type="button" className="underline w-max mr-auto hover:text-customRed transition ease-in-out duration-200" onClick={() => setModalOpen(true)}>
-                            {t("common:changeAddress")}
-                          </button>
+                      {/* פרטי לקוח: מחובר -> כרטיס סיכום | אורח -> טופס מלא */}
+                      {!userInfo ? (
+                        <div className="pb-3">
+                          <GuestAddressForm
+                            register={register}
+                            errors={errors}
+                            setError={setFormError}
+                            clearErrors={clearErrors}
+                            watch={watch}
+                            chosenCity={chosenGuestCity}
+                            setChosenCity={setChosenGuestCity}
+                          />
                         </div>
+                      ) : null}
+
+                      <div className="w-full flex flex-col 2xl:flex-row items-center pb-3 gap-3.5">
+                        {/* פרטים אישיים — מוצג רק למשתמש מחובר */}
+                        {userInfo && (
+                          <div className="w-full 2xl:w-1/2 h-auto sm:h-20 bg-white px-4 py-2 flex items-center gap-1.5 border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none">
+                            <CiUser className="text-[41px] text-customBlue group-hover:text-white transition ease-in-out duration-300" />
+                            <div className="flex flex-col items-start">
+                              <h2 className="text-xl truncate max-w-[90%]" title={userInfo?.CardName || userInfo?.name}>{userInfo?.CardName || `${userInfo?.name || ''} ${userInfo?.lastName || ''}`.trim()}</h2>
+                              {city && address &&
+                                <p className="text-base text-gray-400 -mt-1 truncate max-w-[200px]" title={`${city}, ${address}`}>{city}, {address}</p>
+                              }
+                            </div>
+                            <button type="button" className="underline w-max mr-auto hover:text-customRed transition ease-in-out duration-200" onClick={() => setModalOpen(true)}>
+                              {t("common:changeAddress")}
+                            </button>
+                          </div>
+                        )}
 
                         {/* שיטת משלוח */}
-                        <div className="w-full h-auto flex flex-col items-center gap-1.5 md:h-20 md:flex-row">
+                        <div className={`${userInfo ? '' : 'w-full'} h-auto flex flex-col items-center gap-1.5 md:h-20 md:flex-row ${userInfo ? 'w-full' : 'w-full'}`}>
                           <div className="w-full h-full relative">
                             {isDeliverable && <span className="absolute bottom-0 md:bottom-2.5 right-14">
                               <Error errorName={errors.shippingOption} />
@@ -539,54 +561,20 @@ const Checkout = () => {
                       </div>
 
                       {/* כפתורי אישור וחזרה */}
-                      <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
-                        <div className="col-span-6 sm:col-span-3">
-                          <Link
-                            href="/"
-                            className={currentLang ? "bg-customBrown-light border border-indigo-100 rounded-lg py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center gap-2 font-serif w-full" : "bg-customBrown-light border border-indigo-100 rounded-lg py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex flex-row-reverse justify-center gap-2 font-serif w-full"}
-                          >
-                            <span className="text-xl">
-                              <IoReturnUpBackOutline
-                                className={currentLang ? "transform scale-x-[-1]" : ""}
-                              />
-                            </span>
-                            {showingTranslateValue(
-                              storeCustomizationSetting?.checkout?.continue_button
-                            )}
-                          </Link>
-                        </div>
-                        <div className="col-span-6 sm:col-span-3">
-                          <MainBT
-                            onClick={() => isDeliveryMetod ? {} : (notifyError(t("common:selectDeliveryMethod")), scrollUp())}
-                            type="submit"
-                            disabled={isEmpty || isCheckoutSubmit || typeof customCartTotal !== 'number'}
-                            className={`w-full h-full ${isCheckoutSubmit ? '!bg-customRed !text-white' : ''}`}>
-                            {typeof customCartTotal !== 'number' ? (
-                              <Calculating />
-                            ) : isCheckoutSubmit ? (
-                              <>
-                                <img
-                                  src="/loader/spinner.gif"
-                                  alt="Loading"
-                                  width={20}
-                                  height={10}
-                                  className="saturate-0"
-                                />
-                                <span className="ms-0.5">
-                                  {t("common:processing")}
-                                </span>
-                              </>
-                            ) : (
-                              <span className={currentLang ? "flex justify-center items-center gap-2 text-center" : "flex flex-row-reverse justify-center items-center gap-2 text-center"}>
-                                {showingTranslateValue(storeCustomizationSetting?.checkout?.confirm_button)}
-                                <span className="text-xl">
-                                  <IoArrowForward className={currentLang ? "transform scale-x-[-1]" : ""} />
-                                </span>
-                              </span>
-                            )}
-                          </MainBT>
-                        </div>
-                      </div>
+                      <CheckoutActions
+                        isEmpty={isEmpty}
+                        isCheckoutSubmit={isCheckoutSubmit}
+                        customCartTotal={customCartTotal}
+                        storeCustomizationSetting={storeCustomizationSetting}
+                        showingTranslateValue={showingTranslateValue}
+                        userInfo={userInfo}
+                        submitCreditOrder={submitCreditOrder}
+                        handleSubmit={handleSubmit}
+                        total={total}
+                        isDeliveryMetod={isDeliveryMetod}
+                        notifyError={notifyError}
+                        scrollUp={scrollUp}
+                      />
                     </form>
                   </div>
                 ) : (

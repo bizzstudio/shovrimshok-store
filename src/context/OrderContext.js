@@ -71,7 +71,8 @@ export const OrderProvider = ({ children }) => {
     useEffect(() => {
         if (userInfo) {
             fetchOrderData();
-            fetchDocumentData();
+            // fetchDocumentData הוסר - ה-endpoint /customer/documents שובר את ה-route /customer/:id (isAdmin)
+            // ומחזיר 401, מה שמפעיל auto-logout. נטען מסמכים רק כשנמצאים בדף /user/my-orders.
         } else {
             // Reset all data when user logs out
             setOrderData(null);
